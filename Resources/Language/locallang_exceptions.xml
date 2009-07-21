@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="no_template_file">No template file found!</label>
+			<label index="no_table">No table configured for %s!</label>
+			<label index="extension_required">The extension "%s" is required for %s!</label>
+			<label index="missing_component">Missing %s! The Flexform contains '%s' but typoscript configuration is incomplete. Please add : %s</label>
+			<label index="no_config">Missing config for %s!</label>
+			<label index="no_config_confirmation">Missing config for %s! Please provide a '%s' either in the TypoScript configuration or in the Flexfom.</label>
+			<label index="insufficient_config">Insufficient config for %s!</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="no_template_file">Ficher de template non trouvé!</label>
+			<label index="no_table">Pas de table configurée pour %s!</label>
+			<label index="extension_required">L'extension "%s" est requise pour %s!</label>
+			<label index="missing_component">Il manque %s! Le Flexform contient '%s' mais la configuration TypoScript est incomplète. Ajouter: %s</label>
+			<label index="no_config">Configuration manquante pour %s!</label>
+			<label index="no_config_confirmation">Configuration manquante pour %s! Ajouter un '%s' soit dans la configuration TypoScript ou dans le Flexform.</label>
+			<label index="insufficient_config">Insufficient config for %s!</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="no_template_file">Keine Templatedatei gefunden!</label>
+			<label index="no_table">Keine Tabelle konfiguriert für %s!</label>
+			<label index="extension_required">Die Extension "%s" wird benötigt für %s!</label>
+			<label index="missing_component">%s fehlt! Flexform beinhaltet '%s',aber die TypoScript-Konfiguration ist unvollständig. Bitte fügen Sie '%s' hinzu!</label>
+			<label index="no_config">Fehlende Konfiguration für %s!</label>
+			<label index="no_config_confirmation">Fehlende Konfiguration für %s! Bitte geben Sie '%s' entweder in der TypoScript-Konfiguration oderr im Flexfom ein.</label>
+			<label index="insufficient_config">Unzureichende Konfiguration für %s!</label>
+		</languageKey>
+	</data>
+</T3locallang>

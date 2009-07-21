@@ -1,0 +1,76 @@
+includeLibs.Tx_Formhandler_default = EXT:formhandler/Classes/Controller/tx_Formhandler_Dispatcher.php
+plugin.Tx_Formhandler = USER_INT
+plugin.Tx_Formhandler.userFunc = tx_Formhandler_Dispatcher->main
+tt_content.list.20.formhandler_pi1 < plugin.Tx_Formhandler
+
+plugin.Tx_Formhandler.settings.predef.default {
+
+	# GENERAL CONFIGURATION
+	name = Default
+	debug = 0
+	addErrorAnchors = 1
+	formValuesPrefix = formhandler
+
+
+	# FILES UPLOAD CONFIGURATION
+	singleFileMarkerTemplate {
+		totalWrap = <ul>|</ul>
+		singleWrap = <li style="color:maroon;">|</li>
+	}
+	totalFilesMarkerTemplate {
+		totalWrap = <ul>|</ul>
+		singleWrap = <li style="color:red;">|</li>
+	}
+	files {
+		clearTempFilesOlderThanHours = 24
+		tmpUploadFolder = uploads/Formhandler/tmp2/
+		enableAjaxFileRemoval = 1
+	}
+
+	# ERRORS LAYOUT
+	singleErrorTemplate {
+		totalWrap = <div>|</div>
+		singleWrap = <span class="error">|</span><br />
+	}
+	errorListTemplate {
+		totalWrap = <ul>|</ul>
+		singleWrap = <li class="error">|</li>
+	}
+	
+	# LOG EVERY FORM SUBMISSIONS
+	loggers {
+		1 {
+			class = Tx_Formhandler_Logger_DB
+		}
+	}
+	
+	initInterceptors {
+		1 {
+			class = Tx_Formhandler_Interceptor_RemoveXSS
+		}
+	}
+	
+	validators {
+		1.class = Tx_Formhandler_Validator_Default
+		1.config {
+			fieldConf {
+			}
+		}
+	}
+	
+
+	finishers {
+		1.class = Tx_Formhandler_Finisher_Mail
+		1.config {
+			limitMailsToUser = 5
+			admin {
+			}
+			user {
+		    }
+		}
+		2.class = Tx_Formhandler_Finisher_Redirect
+		2.config {
+		
+		}
+	}
+}

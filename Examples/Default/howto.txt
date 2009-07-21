@@ -1,0 +1,11 @@
+**************************************
+*    Set up this form			     *
+**************************************
+
+1. Create a new page
+
+2. Create a content element of type "General plugin"
+
+3. Select "Formhandler"
+
+4. Save and view the page.

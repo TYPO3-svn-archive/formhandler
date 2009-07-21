@@ -1,0 +1,266 @@
+###NO_TABLE_ERROR###
+<div style="color:dd7777;font-weight:bold;font-size:11px;">
+	<br />
+	<p style="color:dd7777;font-weight:bold;font-size:11px;">###LLL:noLogTable###</p>
+	<br />
+	<br />
+	<p style="color:dd7777;font-weight:bold;font-size:11px;">TypoScript:</p><br />
+	<span style="font-family:Monospace;color:dd7777;font-weight:bold;font-size:11px;">
+		plugin.Tx_Formhandler.settings.loggers.1 {<br />
+			class = Tx_Formhandler_Logger_Default	<br />
+		} <br />
+	</span>
+</div>
+###NO_TABLE_ERROR###
+
+###CLEAR_LOGS###
+<form action="###URL###" method="post"> 
+			<table>
+				<tr class="bgColor2">
+					<td>###LLL:table###</td>
+					<td>###LLL:total_rows###</td>
+					<td>&nbsp;</td>				
+				</tr>
+				###TABLES###
+			</table>
+			<br />
+			<input type="submit" value="###LLL:clear###" />
+			</form>
+###CLEAR_LOGS###
+
+###CLEAR_LOGS_TABLE###
+<tr class="bgColor3-20">
+	<td>###TABLE###</td>
+	<td>###ROW_COUNT###</td>
+	<td><input type="checkbox" name="formhandler[clearTables][]" value="###TABLE###"/></td>				
+</tr>
+###CLEAR_LOGS_TABLE###
+
+###EXPORT_FIELDS_SELECTOR###
+<h3>###LLL:select_export_fields###</h3><br />
+###SELECTION###
+<form id="formhandler_module_form" action="###URL###" method="post">
+	<input type="hidden" name="formhandler[csvFormat]" value="###CSV_FORMAT###" />
+	<input type="hidden" name="formhandler[renderMethod]" value="###RENDER_METHOD###" />
+	###SELECTED_RECORDS###
+	<table>
+	###EXPORTFIELDS###
+	</table>
+	<input type="submit" value="###LLL:export###" /></form>
+###EXPORT_FIELDS_SELECTOR###
+
+###FORMATS_SELECTOR###
+<h3>###LLL:formats_found###</h3><br />
+<table>
+	<tr>
+		<td>
+			
+			###FORMATS###
+			
+		</td>
+	</tr>
+</table>
+<br /><hr /><a href="###BACK_URL###">###LLL:back###</a>
+###FORMATS_SELECTOR###
+
+###SINGLE_FORMAT###
+<tr><td>
+<form action="###URL###" method="post">
+###HIDDEN_FIELDS###
+<input type="hidden" name="formhandler[csvFormat]" value="###KEY###" />
+<input type="hidden" name="formhandler[renderMethod]" value="csv" />
+<input type="submit" value="###LLL:export###" />
+</form>
+</td>
+<td>###FORMAT###</td>
+</tr>
+###SINGLE_FORMAT###
+
+
+###CALENDAR_JS###
+<style type="text/css">@import url(../../../Resources/JS/jscalendar-1.0/skins/aqua/theme.css);</style>
+<script type="text/javascript" src="../../../Resources/JS/jscalendar-1.0/calendar.js"></script>
+<script type="text/javascript" src="../../../Resources/JS/jscalendar-1.0/lang/calendar-en.js"></script>
+<script type="text/javascript" src="../../../Resources/JS/jscalendar-1.0/calendar-setup.js"></script>
+
+<script type="text/javascript">
+	Calendar.setup(
+	    {
+	      inputField  : "startdate",         // ID of the input field
+	      ifFormat    : "%d.%m.%Y",    // the date format
+	      button      : "trigger_startdate"       // ID of the button
+	    }
+	  );
+	 Calendar.setup(
+	    {
+	      inputField  : "enddate",         // ID of the input field
+	      ifFormat    : "%d.%m.%Y",    // the date format
+	      button      : "trigger_enddate"       // ID of the button
+	    }
+	  );
+
+</script>
+###CALENDAR_JS###
+
+###SELECTION_BOX###
+<div class="selection_box">
+	<input type="button" onclick="selectAll()" value="###LLL:select_all###" />
+	<input type="button" onclick="deselectAll()" value="###LLL:deselect_all###" />
+</div>
+###SELECTION_BOX###
+
+###JS_CODE###
+<script type="text/javascript">
+	function selectAll() {
+	  var form = document.getElementById("formhandler_module_form");
+	  var inputs = form.getElementsByTagName("input");
+	  for(var i=0;i<inputs.length;i++) {
+	    if(inputs[i].type == "checkbox") {
+	      inputs[i].checked = true;	
+		}	
+	  }	
+	}
+	
+	function deselectAll() {
+	  var form = document.getElementById("formhandler_module_form");
+	  var inputs = form.getElementsByTagName("input");
+	  for(var i=0;i<inputs.length;i++) {
+	    if(inputs[i].type == "checkbox") {
+	      inputs[i].checked = false;	
+		}	
+	  }	
+	}
+</script>
+###JS_CODE###
+
+###FILTER_FORM###
+	<form action="###URL###" method="post">
+	<div class="filter">
+		<h2>###LLL:filter###</h2>
+		<table>
+			<tr>
+				<td class="label">###LLL:pid_label###</td>
+				<td><input type="text" name="formhandler[pidFilter]" value="###value_pidFilter###"/></td>
+			</tr>
+			<tr>
+				<td class="label">###LLL:startdate###</td>
+				<td>
+					<input type="text" readonly="readonly" id="startdate" value="###value_startdate###" name="formhandler[startdateFilter]" />
+					<input type="button" id="trigger_startdate" value="###LLL:cal###"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">###LLL:enddate###</td>
+				<td>
+					<input type="text" readonly="readonly" id="enddate" value="###value_enddate###" name="formhandler[enddateFilter]" />
+					<input type="button" id="trigger_enddate" value="###LLL:cal###"/>
+				</td>
+
+			</tr>
+			<tr>
+				<td><input type="submit" value="###LLL:filter###" /></td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+	</div>
+	</form>
+	<hr />
+###FILTER_FORM###
+
+###DELETE_FIELDS###
+<div class="delete_fields">
+	<input type="submit" value="Delete selected" name="formhandler[delete]" />
+</div>
+###DELETE_FIELDS###
+
+###FUNCTION_AREA###
+<form id="formhandler_module_form" action="###URL###" method="post">
+<div>
+###EXPORT_FIELDS_MARKER###
+###DELETE_FIELDS_MARKER###
+###SELECTION_BOX_MARKER###
+<div class="clear"></div>
+</div>
+
+###FUNCTION_AREA###
+
+
+###LIST_TABLE###
+<div id="list_table">
+<table>
+
+	<tr class="bgColor2 list_table_header">
+		<td>###LLL:PAGE_ID###</td>
+		<td>###LLL:SUBMISSION_DATE###</td>
+		<td>###LLL:IP###</td>
+		<td>###LLL:DETAIL_VIEW###</td>
+		<td>###LLL:EXPORT###</td>
+		<td>&nbsp;</td>
+	</tr>
+	
+	
+	
+
+	###ROWS###
+
+</table>
+</div>
+###LIST_TABLE###
+
+###LIST_TABLE_ROW###
+<tr ###ROW_STYLE###>
+		<td>###PID###</td>
+		<td>###SUBMISSION_DATE###</td>
+		<td>###IP###</td>
+		<td>###DETAIL_LINK###</td>
+
+		<td>
+			###EXPORT_LINKS###
+		</td>
+		<td>###CHECKBOX###</td>
+	</tr>
+###LIST_TABLE_ROW###
+
+###EXPORT_FIELDS###
+Export selected as: 
+<input type="submit" value="PDF" name="formhandler[renderMethod]" />
+<input type="submit" value="CSV" name="formhandler[renderMethod]" />
+
+###EXPORT_FIELDS###
+
+
+###DETAIL_VIEW###
+<div id="formhandler">
+	<div>
+		<div class="detailLabel"><h4>###LLL:page_id###</h4></div>
+		<div class="detailValue">###PID###</div>
+		<div class="clear"></div>
+	</div>
+	<div>
+		<div class="detailLabel"><h4>###LLL:crdate###</h4></div>
+		<div class="detailValue">###CRDATE###</div>
+		<div class="clear"></div>
+	</div>
+	<div>
+		<div class="detailLabel"><h4>###LLL:ip_address###</h4></div>
+		<div class="detailValue">###IP###</div>
+		<div class="clear"></div>
+	</div>
+	<div>
+		<div class="detailLabel"><h4>###LLL:params###</h4></div>
+		<div class="clear"></div>
+		<div class="params_table">
+			###PARAMS###
+		</div>
+	</div>
+	<hr />
+	<div>
+		<div class="detailLabel"><h4>###LLL:export_as###</h4></div>
+		<div class="detailValue">###EXPORT_LINKS###</div>
+		<div class="clear"></div>
+	</div>
+	<div class="back_link">
+		###BACK_LINK###
+	</div>
+</div>
+###DETAIL_VIEW###

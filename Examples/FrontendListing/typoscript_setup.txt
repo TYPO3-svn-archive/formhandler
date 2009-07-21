@@ -1,0 +1,25 @@
+includeLibs.Tx_Formhandler_FEListing = EXT:formhandler/Classes/Controller/tx_Formhandler_Dispatcher.php
+plugin.Tx_Formhandler_FEListing = USER_INT
+plugin.Tx_Formhandler_FEListing.userFunc = tx_Formhandler_Dispatcher->main
+tt_content.list.20.formhandler_pi2 < plugin.Tx_Formhandler_FEListing
+tt_content.list.20.formhandler_pi2.controller = Tx_Formhandler_Controller_Listing
+
+
+
+
+plugin.Tx_Formhandler.settings.fe_listing {
+  view = Tx_Formhandler_View_Listing
+  templateFile = EXT:formhandler/Examples/FrontendListing/template.html
+  pid = 39
+  table = tt_content
+  orderby = subheader DESC
+  enableDelete = 1
+  mapping {
+    header = name
+    bodytext = subject
+    subheader = sub_datetime
+    crdate = sub_tstamp
+    tstamp = sub_tstamp
+    imagecaption = ip
+  }
+}

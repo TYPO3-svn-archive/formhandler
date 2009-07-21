@@ -1,0 +1,67 @@
+@CHARSET "ISO-8859-1";
+
+.selection_box {
+	width: 200px;
+	float: right;
+}
+
+.delete_fields {
+	width: 200px;
+	float: left;	
+}
+
+div.clear {
+	clear: both;
+}
+
+div.filter h2 {
+	text-align: center;
+}
+
+div.filter td.label {
+	font-weight: bold;
+}
+
+tr.list_table_header {
+	font-size: large;
+	font-weight: bold;
+}
+
+#list_table {
+	margin-top: 15px;	
+}
+
+#list_table td {
+	padding:3px 7px 3px 7px;
+}
+
+div.detailLabel {
+	width: 100px;
+	float: left;
+	margin-top:5px;
+}
+
+div.detailLabel h4 {
+	margin:0;	
+}
+
+div.detailValue {
+	width: 200px;
+	float: left;
+	margin-top:5px;
+}
+
+div.params_table {
+	width: 300px;
+	margin-left: 30px;	
+}
+
+div.back_link {
+	margin-top: 30px;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+#list_table a {
+	text-decoration: underline;
+}
