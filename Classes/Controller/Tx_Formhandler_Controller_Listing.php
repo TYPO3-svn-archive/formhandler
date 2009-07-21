@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id: Tx_Formhandler_Controller_Listing.php 20303 2009-05-14 13:25:27Z reinhardfuehricht $
+ * $Id$
  *                                                                        */
 
 /**

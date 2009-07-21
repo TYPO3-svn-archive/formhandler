@@ -1,6 +1,6 @@
 <?php
 
-/* $Id: Tx_Formhandler_Template_PDF.php 22085 2009-07-06 12:03:19Z reinhardfuehricht $ */
+/* $Id$ */
 
 if (TYPO3_MODE=="BE")   {
 	require_once("../../../Resources/PHP/fpdf/fpdf.php");

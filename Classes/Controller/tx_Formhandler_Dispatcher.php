@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id: tx_Formhandler_Dispatcher.php 22459 2009-07-18 16:00:40Z fabien_u $
+ * $Id$
  *                                                                        */
 
 require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');

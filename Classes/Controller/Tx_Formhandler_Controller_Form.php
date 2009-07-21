@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id: Tx_Formhandler_Controller_Default.php 18794 2009-04-07 20:31:29Z erep $
+ * $Id$
  *                                                                        */
 
 /**

@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id: Tx_Formhandler_Finisher_StoreUploadedFiles.php 19911 2009-05-05 14:26:16Z reinhardfuehricht $
+ * $Id$
  *                                                                        */
 
 /**

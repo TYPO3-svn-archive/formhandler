@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id: Tx_Formhandler_Generator_PDF.php 18491 2009-03-30 09:23:57Z reinhardfuehricht $
+ * $Id$
  *                                                                        */
 
 /**
