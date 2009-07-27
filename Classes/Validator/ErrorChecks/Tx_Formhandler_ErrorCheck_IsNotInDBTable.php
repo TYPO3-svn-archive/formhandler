@@ -37,7 +37,7 @@ class Tx_Formhandler_ErrorCheck_IsNotInDBTable extends Tx_Formhandler_AbstractEr
 		if(isset($gp[$name]) && !empty($gp[$name])) {
 			$checkTable = $check['params']['table'];
 			$checkField = $check['params']['field'];
-			$where = $check['params']['additionalWhere'];
+			$additionalWhere = $check['params']['additionalWhere'];
 			if (!empty($checkTable) && !empty($checkField)) {
 				$where = $checkField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($gp[$name], $checkTable) . ' ' . $additionalWhere;
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($checkField, $checkTable, $where);
