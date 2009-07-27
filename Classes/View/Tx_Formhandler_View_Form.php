@@ -577,8 +577,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					if(t3lib_extMgm::isLoaded('xajax') && $settings['files.']['enableAjaxFileRemoval']) {
 						$text = 'X';
 						if($settings['files.']['customRemovalText']) {
-							$text = $settings['files.']['customRemovalText'];
+							if($settings['files.']['customRemovalText.']) {
+								$text = $this->cObj->cObjGetSingle($settings['files.']['customRemovalText'], $settings['files.']['customRemovalText.']);
+							} else {
+								$text = $settings['files.']['customRemovalText'];
+							}
 						}
+						
 						$link= '<a 
 								href="javascript:void(0)" 
 								class="formhandler_removelink" 
