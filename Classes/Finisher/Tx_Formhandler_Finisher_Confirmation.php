@@ -54,12 +54,7 @@ class Tx_Formhandler_Finisher_Confirmation extends Tx_Formhandler_AbstractFinish
 				Tx_Formhandler_StaticFuncs::debugArray($this->settings);
 				Tx_Formhandler_StaticFuncs::throwException('no_config_confirmation', 'Tx_Formhandler_Finisher_Confirmation', 'templateFile');
 			}
-			$templateFile = $this->settings['templateFile'];
-			if(isset($this->settings['templateFile.']) && is_array($this->settings['templateFile.'])) {
-				$this->templateFile = $this->cObj->cObjGetSingle($this->settings['templateFile'], $this->settings['templateFile.']);
-			} else {
-				$this->templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
-			}
+			$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->settings['templateFile'], $this->settings);
 		}
 
 		//set view
@@ -69,11 +64,7 @@ class Tx_Formhandler_Finisher_Confirmation extends Tx_Formhandler_AbstractFinish
 		if(!strcasecmp($this->gp['renderMethod'], 'pdf')) {
 				
 			//set language file
-			if(isset($this->settings['langFile.']) && is_array($this->settings['langFile.'])) {
-				$langFile = $this->cObj->cObjGetSingle($this->settings['langFile'], $this->settings['langFile.']);
-			} else {
-				$langFile = Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($this->settings['langFile']);
-			}
+			$langFile = Tx_Formhandler_StaticFuncs::readLanguageFile(NULL, $this->settings);
 			$generatorClass = $this->settings['pdf.']['class'];
 			if(!$generatorClass) {
 				$generatorClass = 'Tx_Formhandler_Generator_PDF';

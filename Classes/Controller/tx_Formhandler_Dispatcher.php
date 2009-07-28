@@ -121,11 +121,14 @@ class tx_Formhandler_Dispatcher extends tslib_pibase {
 		if(strlen($predef) > 0) {
 			$controller->setPredefined($predef);
 		}
-		//try {
+		try {
 			$result = $controller->process();
-		//} catch(Exception $e) {
-		//	$result = '<div style="color:red; font-weight: bold">Caught exception: ' . $e->getMessage() . '</div>';
-		//}
+		} catch(Exception $e) {
+			$result = '<div style="color:red; font-weight: bold">Caught exception: ' . $e->getMessage() . '</div>';
+			$result .= '<div style="color:red; font-weight: bold">File: ' . $e->getFile() . '(' . $e->getLine() . ')</div>';
+			
+			#$result .= '<div style="color:#000; font-weight: bold">Trace: ' . $e->getTraceAsString(). '</div>';
+		}
 		return $result;
 	}
 }

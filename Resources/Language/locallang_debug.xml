@@ -27,6 +27,7 @@
 			<label index="mail_subject">Subject: %s</label>
 			<label index="mail_sender">Sender: %s</label>
 			<label index="mail_replyto">Reply to: %s</label>
+			<label index="mail_returnpath">Return path: %s</label>
 			<label index="mail_cc">CC: %s</label>
 			<label index="mail_plain">Message plain: %s</label>
 			<label index="mail_html">Message HTML: %s</label>
@@ -76,6 +77,7 @@
 			<label index="mail_subject">Betreff: %s</label>
 			<label index="mail_sender">Absender: %s</label>
 			<label index="mail_replyto">Reply to: %s</label>
+			<label index="mail_returnpath">Return path: %s</label>
 			<label index="mail_cc">CC: %s</label>
 			<label index="mail_plain">Nachricht plain: %s</label>
 			<label index="mail_html">Nachricht HTML: %s</label>
@@ -127,6 +129,7 @@
 			<label index="mail_subject">Sujet: %s</label>
 			<label index="mail_sender">Expéditeur: %s</label>
 			<label index="mail_replyto">Réponse à: %s</label>
+			<label index="mail_returnpath">Return path: %s</label>
 			<label index="mail_cc">CC: %s</label>
 			<label index="mail_plain">Message en text brute: %s</label>
 			<label index="mail_html">Message HTML: %s</label>

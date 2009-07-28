@@ -213,8 +213,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 							Tx_Formhandler_StaticFuncs::debugMessage('calling_finisher', $className);
 							$finisher = $this->componentManager->getComponent($className);
-							$tsConfig['config.']['templateFile'] = $this->settings['templateFile'];
-							$tsConfig['config.']['langFile'] = $this->settings['langFile'];
+							if(!$tsConfig['config.']['templateFile']) {
+								$tsConfig['config.']['templateFile'] = $this->templateFile;
+							}
+							if(!$tsConfig['config.']['langFile']) {
+								$tsConfig['config.']['langFile'] = $this->langFile;
+							}
 							$tsConfig['config.']['formValuesPrefix'] = $this->settings['formValuesPrefix'];
 							$tsConfig['config.']['templateSuffix'] = $this->settings['templateSuffix'];
 							$finisher->loadConfig($this->gp, $tsConfig['config.']);
@@ -301,8 +305,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 								if(!$_SESSION['submitted_ok']) {
 
 									Tx_Formhandler_StaticFuncs::debugMessage('calling_finisher', $className);
-									$tsConfig['config.']['templateFile'] = $this->settings['templateFile'];
-									$tsConfig['config.']['langFile'] = $this->settings['langFile'];
+									if(!$tsConfig['config.']['templateFile']) {
+										$tsConfig['config.']['templateFile'] = $this->templateFile;
+									}
+									if(!$tsConfig['config.']['langFile']) {
+										$tsConfig['config.']['langFile'] = $this->langFile;
+									}
 									$tsConfig['config.']['formValuesPrefix'] = $this->settings['formValuesPrefix'];
 									$tsConfig['config.']['templateSuffix'] = $this->settings['templateSuffix'];
 									$finisher->loadConfig($this->gp,$tsConfig['config.']);
@@ -321,8 +329,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 									$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 									Tx_Formhandler_StaticFuncs::debugMessage('calling_finisher', $className);
 									$finisher = $this->componentManager->getComponent($className);
-									$tsConfig['config.']['templateFile'] = $this->settings['templateFile'];
-									$tsConfig['config.']['langFile'] = $this->settings['langFile'];
+									if(!$tsConfig['config.']['templateFile']) {
+										$tsConfig['config.']['templateFile'] = $this->templateFile;
+									}
+									if(!$tsConfig['config.']['langFile']) {
+										$tsConfig['config.']['langFile'] = $this->langFile;
+									}
 									$tsConfig['config.']['formValuesPrefix'] = $this->settings['formValuesPrefix'];
 									$tsConfig['config.']['templateSuffix'] = $this->settings['templateSuffix'];
 									$finisher->loadConfig($this->gp, $tsConfig['config.']);
@@ -658,8 +670,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->loadGP();
 
 		//read template file
-		$this->readTemplateFile();
-
+		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
+		$this->langFile = Tx_Formhandler_StaticFuncs::readLanguageFile($this->langFile, $this->settings);
 		$this->getStepInformation();
 		$this->loadSettingsForStep($this->currentStep);
 		$this->validateConfig();
@@ -812,52 +824,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Read template file set in flexform or TypoScript, read the file's contents to $this->templateFile
-	 *
-	 * @param $settings The formhandler settings
-	 * @return void
-	 * @author	Reinhard Führicht <rf@typoheads.at>
-	 */
-	protected function readTemplateFile() {
-		
-		//template file was not set in flexform, search TypoScript for setting
-		if(!$this->templateFile) {
-
-			$templateFile = $this->settings['templateFile'];
-			if(isset($this->settings['templateFile.']) && is_array($this->settings['templateFile.'])) {
-			} else {
-				$this->templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
-			}
-		} else {
-			$templateFile = $this->templateFile;
-			$this->templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
-		}
-
-		if(!$this->templateFile) {
-			Tx_Formhandler_StaticFuncs::throwException('no_template_file');
-		}
-
-	}
-
-	/**
-	 * Read language file set in flexform or TypoScript, read the file's path to $this->langFile
-	 *
-	 * @param $settings The formhandler settings
-	 * @return void
-	 * @author	Reinhard Führicht <rf@typoheads.at>
-	 */
-	protected function readLanguageFile(&$settings) {
-
-		//language file was not set in flexform, search TypoScript for setting
-		if(!$this->langFile) {
-			$langFile = $settings['langFile'];
-		} else {
-			$langFile = $this->langFile;
-		}
-		$this->langFile = Tx_Formhandler_StaticFuncs::convertToRelativePath($langFile);
 	}
 
 	/**

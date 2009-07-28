@@ -98,7 +98,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		$view->setLangFile($this->langFile);
 		$view->setPredefined($this->predefined);
 		
-		$templateCode = $this->getTemplate();
+		$templateCode = Tx_Formhandler_StaticFuncs::readTemplateFile($this->settings['templateFile'], $this->settings);
 		$view->setTemplate($templateCode, ('EMAIL_' . strtoupper($mode) . '_' . strtoupper($suffix) . $this->settings['templateSuffix']));
 		if(!$view->hasTemplate()) {
 			$view->setTemplate($templateCode, ('EMAIL_' . strtoupper($mode) . '_' . strtoupper($suffix)));
@@ -138,25 +138,6 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		foreach($markers as $field => &$value) {
 			$value = nl2br($value);
 		}
-	}
-
-	/**
-	 * Parses the globally defined template file for E-mail template with given mode and suffix
-	 *
-	 * @param string $mode user/admin
-	 * @param string $suffix plain/html
-	 * @return string The template code
-	 */
-	protected function getTemplate() {
-		$templateFile = $this->settings['templateFile'];
-		if(isset($this->settings['templateFile.']) && is_array($this->settings['templateFile.'])) {
-			$templateFile = $this->cObj->cObjGetSingle($this->settings['templateFile'], $this->settings['templateFile.']);
-		} else {
-			$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
-		}
-		$template = t3lib_div::getURL($templateFile);
-		
-		return $template;
 	}
 
 	/**
@@ -204,7 +185,12 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		}
 		$emailObj->recipient_copy = $cc;
 		
-		$emailObj->returnPath = '';
+		$returnPath = $mailSettings['return_path'];
+		if(isset($mailSettings['return_path']) && is_array($mailSettings['return_path'])) {
+			$returnPath = implode(',', $mailSettings['return_path']);
+		}
+		$emailObj->returnPath = $returnPath;
+		
 		if($mailSettings['email_header']) {
 			$emailObj->add_header($mailSettings['header']);
 		}
@@ -275,6 +261,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', ($emailObj->from_name . ' <' . $emailObj->from_email . '>'), false);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_replyto', ($emailObj->replyto_name . ' <' . $emailObj->replyto_email . '>'), false);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_returnpath', $emailObj->returnPath, false);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_cc', $emailObj->recipient_copy, false);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_plain', $template['plain'], false);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_html', $template['html'], false);
@@ -283,6 +270,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', ($emailObj->from_name . ' <' . $emailObj->from_email . '>'), false);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_replyto', ($emailObj->replyto_name . ' <' . $emailObj->replyto_email . '>'), false);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_returnpath', $emailObj->returnPath, false);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_cc', $emailObj->recipient_copy, false);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_plain', $template['plain'], false);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_html', $template['html'], false);
@@ -431,13 +419,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @return void
 	 */
 	protected function init() {
-
-		//set language file
-		if(isset($this->settings['langFile.']) && is_array($this->settings['langFile.'])) {
-			$this->langFile = $this->cObj->cObjGetSingle($this->settings['langFile'], $this->settings['langFile.']);
-		} else {
-			$this->langFile = Tx_Formhandler_StaticFuncs::resolvePath($this->settings['langFile']);
-		}
+		$this->langFile = Tx_Formhandler_StaticFuncs::readLanguageFile($this->settings['langFile'], $this->settings);
 	}
 
 	/**
@@ -465,7 +447,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			}
 		}
 
-		// Unset unecessary variables.
+		// Unset unnecessary variables.
 		unset($this->settings['admin.']);
 		unset($this->settings['user.']);
 	}
@@ -498,6 +480,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			'replyto_name',
 			'cc_email',
 			'to_name',
+			'return_path',
 			'attachment',
 			'attachPDF',
 			'htmlEmailAsAttachment'
@@ -537,6 +520,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 					case 'sender_email':
 					case 'replyto_email':
 					case 'cc_email':
+					case 'return_path':
 						$emailSettings[$option] = $this->parseList($currentSettings, $type, $option);
 						break;
 
@@ -570,7 +554,8 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 							}
 							$file = tempnam('typo3temp/', '/'. $prefix) . '.pdf';
 							$file = str_replace('.tmp', '', $file);
-							$generator->setTemplateCode($this->getTemplate());
+							$templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->settings['templateFile'], $this->settings);
+							$generator->setTemplateCode($templateFile);
 							$generator->generateFrontendPDF($this->gp, $this->langFile, $exportFields, $file, true);
 							$emailSettings['attachPDF'] = $file;
 						} elseif ($currentSettings['attachPDF']) {

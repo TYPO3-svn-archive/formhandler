@@ -126,6 +126,53 @@ class Tx_Formhandler_StaticFuncs {
 		}
 		return $content;
 	}
+	
+	/**
+	 * Read template file set in flexform or TypoScript, read the file's contents to $this->templateFile
+	 *
+	 * @param $settings The formhandler settings
+	 * @return void
+	 * @author	Reinhard Führicht <rf@typoheads.at>
+	 */
+	static public function readTemplateFile($templateFile, &$settings) {
+		
+		//template file was not set in flexform, search TypoScript for setting
+		if(!$templateFile) {
+
+			$templateFile = $settings['templateFile'];
+			if(isset($settings['templateFile.']) && is_array($settings['templateFile.'])) {
+				$templateFile = Tx_Formhandler_StaticFuncs::$cObj->cObjGetSingle($settings['templateFile'], $settings['templateFile.']);
+			} else {
+				$templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
+			}
+		} else {
+			if(strpos($templateFile, "\n") == -1) {
+				$templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
+			}
+		}
+
+		if(!$templateFile) {
+			Tx_Formhandler_StaticFuncs::throwException('no_template_file');
+		}
+		return $templateFile;
+	}
+	
+	/**
+	 * Read language file set in flexform or TypoScript, read the file's path to $this->langFile
+	 *
+	 * @param $settings The formhandler settings
+	 * @return void
+	 * @author	Reinhard Führicht <rf@typoheads.at>
+	 */
+	static public function readLanguageFile($langFile, &$settings) {
+
+		//language file was not set in flexform, search TypoScript for setting
+		if(!$langFile) {
+			$langFile = $settings['langFile'];
+		}
+		$langFile = Tx_Formhandler_StaticFuncs::convertToRelativePath($langFile);
+		return $langFile;
+	}
 
 	/**
 	 * Return value from somewhere inside a FlexForm structure

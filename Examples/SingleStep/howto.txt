@@ -12,6 +12,6 @@
 
 5. Select "Formhandler"
 
-6. Select "Example Captcha" from "Predefined".
+6. Select "Example SingleStep" from "Predefined".
 
 7. Save and view the page.
