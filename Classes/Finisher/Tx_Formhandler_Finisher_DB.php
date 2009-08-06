@@ -115,6 +115,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			if(!$this->doUpdate) {
 				$this->gp['inserted_uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
 				$this->gp[$this->table . '_inserted_uid'] = $this->gp['inserted_uid'];
+				$this->gp['saveDB']['table'] = $this->table;
+				$this->gp['saveDB']['uid'] = $this->gp['inserted_uid'];
 			}	
 		}
 

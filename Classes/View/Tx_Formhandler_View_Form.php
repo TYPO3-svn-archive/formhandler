@@ -353,6 +353,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers['###TIMESTAMP###'] = time();
 		$markers['###ABS_URL###'] = t3lib_div::locationHeaderUrl('') . $path;
 		
+		if($this->gp['generated_authCode']) {
+			$markers['###auth_code###'] = $this->gp['generated_authCode'];
+		}
 		
 		$markers['###ip###'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
 		$markers['###submission_date###'] = date('d.m.Y H:i:s', time());
