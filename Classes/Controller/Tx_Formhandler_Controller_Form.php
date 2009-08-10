@@ -760,6 +760,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$_SESSION['formhandlerSettings']['totalSteps'] = $this->totalSteps;
 		$_SESSION['formhandlerSettings']['lastStep'] = $this->lastStep;
 		$_SESSION['formhandlerSettings']['debugMode'] = $this->debugMode;
+		$_SESSION['formhandlerSettings']['templateSuffix'] = $this->settings['templateSuffix'];
 	}
 
 	protected function loadSettingsForStep($step) {

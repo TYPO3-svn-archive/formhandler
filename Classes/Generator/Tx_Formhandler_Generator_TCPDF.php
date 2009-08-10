@@ -181,7 +181,18 @@ class Tx_Formhandler_Generator_TCPDF {
 		$this->pdf->AddPage();
 		$this->pdf->SetFont('Freesans', '', 12);
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_PDF');
-		$view->setTemplate($this->templateCode, 'PDF');
+		session_start();
+		$suffix = $_SESSION['formhandlerSettings']['templateSuffix'];
+		if($suffix) {
+			$view->setTemplate($this->templateCode, 'PDF' . $suffix);
+		}
+		if(!$view->hasTemplate()) {
+			$view->setTemplate($this->templateCode, 'PDF');
+		}
+		if(!$view->hasTemplate()) {
+			Tx_Formhandler_StaticFuncs::throwException('no_pdf_template');
+		}
+		
 		$view->setPredefined(Tx_Formhandler_StaticFuncs::$predefined);
 		
 		$content = $view->render($gp, array());
