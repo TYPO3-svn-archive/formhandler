@@ -547,7 +547,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 										$markers['###' . $replacedFieldname . '_remainingCount###'] = $remaining;
 										break;
 									case 'fileMinCount':
-										$maxCount = $fieldSettings['errorCheck.'][$key.'.']['minCount'];
+										$minCount = $fieldSettings['errorCheck.'][$key.'.']['minCount'];
 										$markers['###' . $replacedFieldname . '_minCount###'] = $minCount;
 										break;
 									case 'required':
