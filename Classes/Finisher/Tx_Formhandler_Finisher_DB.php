@@ -115,8 +115,14 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			if(!$this->doUpdate) {
 				$this->gp['inserted_uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
 				$this->gp[$this->table . '_inserted_uid'] = $this->gp['inserted_uid'];
-				$this->gp['saveDB']['table'] = $this->table;
-				$this->gp['saveDB']['uid'] = $this->gp['inserted_uid'];
+				if(!is_array($this->gp['saveDB'])) {
+					$this->gp['saveDB'] = array();
+				}
+				$info = array(
+					'table' => $this->table,
+					'uid' => $this->gp['inserted_uid']
+				);
+				array_push($this->gp['saveDB'], $info);
 			}	
 		}
 
@@ -160,7 +166,10 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			$query = $GLOBALS['TYPO3_DB']->INSERTquery($this->table, $queryFields);
 			Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
 			$res = $GLOBALS['TYPO3_DB']->sql_query($query);
-				
+			if($GLOBALS['TYPO3_DB']->sql_error()) {
+				print $GLOBALS['TYPO3_DB']->sql_error();
+			}
+			
 			//update query
 		} else {
 				
@@ -170,7 +179,6 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 				$uid = $this->gp[$this->key];
 			}
 			if($uid) {
-
 				$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
 				Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
 				$res = $GLOBALS['TYPO3_DB']->sql_query($query);
@@ -226,12 +234,18 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 				
 			if(isset($options) && is_array($options) && !isset($options['special'])) {
 
+				$mapping = $options['mapping'];
 				//if no mapping default to the name of the form field
-				if(!$options['mapping']) {
-					$options['mapping'] = $fieldname;
+				if(!$mapping) {
+					$mapping = $fieldname;
 				}
 				
-				$fieldValue = $this->gp[$options['mapping']];
+				
+				$fieldValue = $this->gp[$mapping];
+				
+				if($options['mapping.']) {
+					$fieldValue = $this->cObj->cObjGetSingle($options['mapping'], $options['mapping.']);
+				}
 
 				//pre process the field value. e.g. to format a date
 				if(is_array($options['preProcessing.'])) {
@@ -282,6 +296,16 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 						break;
 					case 'ip':
 						$queryFields[$fieldname] = t3lib_div::getIndpEnv('REMOTE_ADDR');
+						break;
+					case 'inserted_uid':
+						$table = $options['special.']['table'];
+						if(is_array($this->gp['saveDB'])) {
+							foreach($this->gp['saveDB'] as $info) {
+								if($info['table'] == $table) {
+									$queryFields[$fieldname] = $info['uid'];
+								}
+							}
+						}
 						break;
 				}
 			} else {
