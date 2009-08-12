@@ -59,6 +59,9 @@ class Tx_Formhandler_View_Confirmation extends Tx_Formhandler_View_Form {
 
 			//fill value_[fieldname] markers
 		$this->fillValueMarkers();
+		
+			//fill selected_[fieldname]_value markers and checked_[fieldname]_value markers
+		$this->fillSelectedMarkers();
 
 			//fill LLL:[language_key] markers
 		$this->fillLangMarkers();
