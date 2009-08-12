@@ -51,30 +51,7 @@ class Tx_Formhandler_Finisher_Redirect extends Tx_Formhandler_AbstractFinisher {
 			return;
 		}
 
-		//if redirect_page was page id
-		if (is_numeric($emailRedirect)) {
-
-			// these parameters have to be added to the redirect url
-			$addparams = array();
-			if (t3lib_div::_GP('L')) {
-				$addparams['L'] = t3lib_div::_GP('L');
-			}
-				
-			$url = $this->cObj->getTypoLink_URL($emailRedirect, '', $addparams);
-				
-			//else it may be a full URL
-		} else {
-			$url = $emailRedirect;
-		}
-
-		//correct the URL by replacing &amp;
-		if ($this->settings['correctRedirectUrl']) {
-			$url = str_replace('&amp;', '&', $url);
-		}
-
-		if($url) {
-			header('Location: ' . t3lib_div::locationHeaderUrl($url));
-		}
+		Tx_Formhandler_Staticfuncs::doRedirect($emailRedirect, $this->settings['correctRedirectUrl']);
 		exit();
 	}
 

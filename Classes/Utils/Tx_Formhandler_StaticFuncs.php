@@ -173,6 +173,42 @@ class Tx_Formhandler_StaticFuncs {
 		$langFile = Tx_Formhandler_StaticFuncs::convertToRelativePath($langFile);
 		return $langFile;
 	}
+	
+	/**
+	 * Redirects to a specified page or URL.
+	 *
+	 * @param mixed $redirect Page id or URL to redirect to
+	 * @param boolean $correctRedirectUrl replace &amp; with & in URL 
+	 * @return void
+	 */
+	static public function doRedirect($redirect, $correctRedirectUrl) {
+	
+		//if redirect_page was page id
+		if (is_numeric($redirect)) {
+
+			// these parameters have to be added to the redirect url
+			$addparams = array();
+			if (t3lib_div::_GP('L')) {
+				$addparams['L'] = t3lib_div::_GP('L');
+			}
+
+			$url = Tx_Formhandler_StaticFuncs::$cObj->getTypoLink_URL($redirect, $addparams);
+
+			//else it may be a full URL
+		} else {
+			$url = $redirect;
+		}
+
+		//correct the URL by replacing &amp;
+		session_start();
+		if ($correctRedirectUrl) {
+			$url = str_replace('&amp;', '&', $url);
+		}
+
+		if($url) {
+			header("Location: ".t3lib_div::locationHeaderUrl($url));
+		}
+	}
 
 	/**
 	 * Return value from somewhere inside a FlexForm structure

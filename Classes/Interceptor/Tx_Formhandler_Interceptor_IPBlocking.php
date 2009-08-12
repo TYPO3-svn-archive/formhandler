@@ -150,46 +150,12 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			t3lib_div::devLog('IP blocker caught possible spamming on page ' . $GLOBALS['TSFE']->id . '!', 'formhandler', 2, unserialize($row['params']));
 			if($this->settings['redirectPage']) {
-				$this->doRedirect($this->settings['redirectPage']);
+				Tx_Formhandler_StaticFuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl']);
 				Tx_Formhandler_StaticFuncs::debugMessage('redirect_failed');
 				exit(0);
 			} else {
 				throw new Exception($message);
 			}
-		}
-	}
-
-	/**
-	 * Redirects to given page id or url
-	 *
-	 * @param mixed $emailRedirect
-	 * @return void
-	 */
-	private function doRedirect($emailRedirect) {
-
-		//if redirect_page was page id
-		if (is_numeric($emailRedirect)) {
-
-			// these parameters have to be added to the redirect url
-			$addparams = array();
-			if (t3lib_div::_GP('L')) {
-				$addparams['L'] = t3lib_div::_GP('L');
-			}
-
-			$url = $this->cObj->getTypoLink_URL($emailRedirect, '', $addparams);
-
-			//else it may be a full URL
-		} else {
-			$url = $emailRedirect;
-		}
-
-		//correct the URL by replacing &amp;
-		if ($this->settings['correctRedirectUrl']) {
-			$url = str_replace('&amp;', '&', $url);
-		}
-
-		if($url) {
-			header("Location: ".t3lib_div::locationHeaderUrl($url));
 		}
 	}
 
