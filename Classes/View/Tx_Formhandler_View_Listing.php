@@ -32,7 +32,7 @@ class Tx_Formhandler_View_Listing extends Tx_Formhandler_AbstractView {
 	 */
 	public function render($gp, $errors) {
 
-		$this->gp = t3lib_div::_GP('formhandler');
+		$this->gp = $gp;
 
 		//set template
 		$this->template = $this->subparts['template'];

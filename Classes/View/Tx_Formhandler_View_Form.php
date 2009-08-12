@@ -83,8 +83,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	public function render($gp,$errors) {
 
 		session_start();
-
+		
 		//set GET/POST parameters
+		/*$this->gp = array();
+		foreach($gp as $k=>&$v) {
+			$this->gp[$k] = $v;
+			if(is_array)
+		}*/
 		$this->gp = $gp;
 
 		//set template
@@ -843,9 +848,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillValueMarkers() {
 		$markers = array();
+		print 'view form :'. $errors['mode']. ' <br />';
+		print_r($this->gp);
+		print "------------------------------------------<br />";
 		if (is_array($this->gp)) {
 			foreach($this->gp as $k => $v) {
 				if (!ereg('EMAIL_', $k)) {
+					
 					if (is_array($v)) {
 						$v = implode(',', $v);
 					}
@@ -859,12 +868,14 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					} else {
 						$markers['###value_' . $k . '###'] = '';
 					}
+				
 					$markers['###' . $k . '###'] = $markers['###value_' . $k . '###'];
 					$markers['###' . strtoupper($k) . '###'] = $markers['###value_' . $k . '###'];
 					$markers['###' . (strtoupper('VALUE_' . $k)) . '###'] = $markers['###value_' . $k . '###'];
 				} //if end
 			} // foreach end
 		} // if end
+		
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
 
 		//remove remaining VALUE_-markers

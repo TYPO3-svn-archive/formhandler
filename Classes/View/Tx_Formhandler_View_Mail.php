@@ -32,11 +32,16 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 	 */
 	public function render($gp, $errors) {
 
-
+		
 		session_start();
 
 		//set GET/POST parameters
+		$this->gp = array();
 		$this->gp = $gp;
+		
+		print 'view :'. $errors['mode']. ' <br />';
+		print_r($this->gp);
+		print "------------------------------------------<br />";
 
 		//set template
 		$this->template = $this->subparts['template'];
@@ -66,9 +71,6 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 
 		//fill value_[fieldname] markers
 		$this->fillValueMarkers();
-		
-		//fill selected_[fieldname]_value markers and checked_[fieldname]_value markers
-		$this->fillSelectedMarkers();
 
 		//fill LLL:[language_key] markers
 		$this->fillLangMarkers();
@@ -91,14 +93,12 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 		if ($checkBinaryCrLf != '') {
 			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
 			foreach($paramsToCheck as &$val) {
-				
-				$val = str_replace (chr(13), '<br />', $val);
-				$val = str_replace ('\\', '', $val);
-
+				if(!is_array($val)) {
+					$val = str_replace (chr(13), '<br />', $val);
+					$val = str_replace ('\\', '', $val);
+					$val = nl2br($val);
+				}
 			}
-		}
-		foreach($this->gp as $field => &$value) {
-			$value = nl2br($value);
 		}
 	}
 

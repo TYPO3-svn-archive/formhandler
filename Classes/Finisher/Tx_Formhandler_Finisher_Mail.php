@@ -82,7 +82,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		//send emails
 		$this->sendMail('admin');
 		$this->sendMail('user');
-
+		
 		return $this->gp;
 	}
 
@@ -106,7 +106,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 				Tx_Formhandler_StaticFuncs::debugMessage('no_mail_template', $mode, $suffix);
 			}
 		}
-
+		
 		return $view->render($this->gp, array('mode' => $suffix));
 	}
 
