@@ -848,9 +848,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillValueMarkers() {
 		$markers = array();
-		print 'view form :'. $errors['mode']. ' <br />';
-		print_r($this->gp);
-		print "------------------------------------------<br />";
 		if (is_array($this->gp)) {
 			foreach($this->gp as $k => $v) {
 				if (!ereg('EMAIL_', $k)) {

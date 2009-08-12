@@ -38,10 +38,6 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 		//set GET/POST parameters
 		$this->gp = array();
 		$this->gp = $gp;
-		
-		print 'view :'. $errors['mode']. ' <br />';
-		print_r($this->gp);
-		print "------------------------------------------<br />";
 
 		//set template
 		$this->template = $this->subparts['template'];

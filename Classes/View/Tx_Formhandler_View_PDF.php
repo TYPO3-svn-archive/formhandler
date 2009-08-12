@@ -53,14 +53,12 @@ class Tx_Formhandler_View_PDF extends Tx_Formhandler_View_Form {
 		if ($checkBinaryCrLf != '') {
 			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
 			foreach($paramsToCheck as &$val) {
-				
-				$val = str_replace (chr(13), '<br />', $val);
-				$val = str_replace ('\\', '', $val);
-
+				if(!is_array($val)) {
+					$val = str_replace (chr(13), '<br />', $val);
+					$val = str_replace ('\\', '', $val);
+					$val = nl2br($val);
+				}
 			}
-		}
-		foreach($this->gp as $field => &$value) {
-			$value = nl2br($value);
 		}
 	}
 }
