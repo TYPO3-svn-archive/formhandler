@@ -315,7 +315,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			//post process the field value after formhandler did it's magic.
 			if(is_array($options['postProcessing.'])) {
 				$options['postProcessing.']['value'] = $queryFields[$fieldname];
-				$queryFields[$fieldname] = $this->cObj->cObjGetSingle($options['preProcessing'], $options['preProcessing.']);
+				$queryFields[$fieldname] = $this->cObj->cObjGetSingle($options['postProcessing'], $options['postProcessing.']);
 			}
 		}
 		return $queryFields;
