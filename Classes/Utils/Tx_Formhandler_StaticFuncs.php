@@ -146,7 +146,7 @@ class Tx_Formhandler_StaticFuncs {
 				$templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
 			}
 		} else {
-			if(strpos($templateFile, "\n") == -1) {
+			if(strpos($templateFile, "\n") === FALSE) {
 				$templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
 			}
 		}
