@@ -167,14 +167,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return boolean
 	 */
 	protected function markersCountAsSet($conditionValue) {
-		print $conditionValue;
+
 		// Find first || or && or !
 		$pattern = '/(_*([a-zA-Z0-9\-]+)_*(\|\||&&)_*([^_]+)_*)|(_*(!)_*([a-zA-Z0-9\-]+))/';
 
 		session_start();
 		// recurse if there are more
 		if( preg_match($pattern, $conditionValue, $matches) ){
-			//print_r($matches);
 			$isset = isset($this->gp[$matches[2]]);
 			if($matches[3] == '||' && $isset) {
 				$return = true;
