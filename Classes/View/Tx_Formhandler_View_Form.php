@@ -167,13 +167,14 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return boolean
 	 */
 	protected function markersCountAsSet($conditionValue) {
-
+		print $conditionValue;
 		// Find first || or && or !
-		$pattern = '/(_*([A-Za-z0-9]+)_*(\|\||&&)_*([^_]+)_*)|(_*(!)_*([A-Za-z0-9]+))/';
+		$pattern = '/(_*([a-zA-Z0-9\-]+)_*(\|\||&&)_*([^_]+)_*)|(_*(!)_*([a-zA-Z0-9\-]+))/';
 
 		session_start();
 		// recurse if there are more
 		if( preg_match($pattern, $conditionValue, $matches) ){
+			//print_r($matches);
 			$isset = isset($this->gp[$matches[2]]);
 			if($matches[3] == '||' && $isset) {
 				$return = true;
@@ -213,9 +214,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 			// set for odd ISSET_xyz, else reset
 			if(preg_match($pattern, $line, $matches)) {
+				//print_r($matches);
 				if(!$flags[$matches[1]]) { // set
 					$flags[$matches[1]] = true;
-
+					//print $matches[1].'<br />';
 					// set nowrite flag if required until the next ISSET_xyz
 					// (only if not already set by envelop)
 					if((!$this->markersCountAsSet($matches[1])) && (!$nowrite)) {
