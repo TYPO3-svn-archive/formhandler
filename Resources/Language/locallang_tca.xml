@@ -30,6 +30,9 @@
 			<label index="formhandler.pi_flexform.replyTo">Reply-To E-mail (optional, name of input field)</label>
 			<label index="formhandler.pi_flexform.replyToName">Reply-To Name (optional, name of input field)</label>			
 			<label index="formhandler.pi_flexform.cc">Send CC E-mail to (optional, name of input field)</label>
+			<label index="formhandler.pi_flexform.ccName">CC Name</label>
+			<label index="formhandler.pi_flexform.bcc">Send BCC E-mail to (optional, name of input field)</label>
+			<label index="formhandler.pi_flexform.bccName">BCC Name</label>
 
 			<label index="formhandler.pi_flexform.emailConfirm">Send E-mail to address entered in form (enter name of form field here)</label>
 			<label index="formhandler.pi_flexform.emailConfirmSubject">Subject of the mail to the user:</label>
@@ -55,7 +58,10 @@
 			<label index="formhandler.pi_flexform.mandatoryFields">Pflichtfelder (Kommaseparierte Liste mit Formularfeldnamen)</label>
 			<label index="formhandler.pi_flexform.replyTo">Reply-To E-mail</label>
 			<label index="formhandler.pi_flexform.replyToName">Reply-To Name</label>			
-			<label index="formhandler.pi_flexform.cc">E-Mail-Kopieempfänger</label>
+			<label index="formhandler.pi_flexform.cc">Sende CC E-mail an</label>
+			<label index="formhandler.pi_flexform.ccName">CC Name</label>
+			<label index="formhandler.pi_flexform.bcc">Sende BCC E-mail an</label>
+			<label index="formhandler.pi_flexform.bccName">BCC Name</label>
 			<label index="formhandler.pi_flexform.emailConfirm">Sende E-mail an eine Adresse, die im Formular eingegeben wurde (Name des Formularfelds eingeben)</label>
 			<label index="formhandler.pi_flexform.emailConfirmSubject">Betreff dieser E-Mail</label>
 			<label index="formhandler.pi_flexform.template_predefined">Vordefinierte Formulare</label>

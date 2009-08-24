@@ -405,12 +405,54 @@ class Tx_Formhandler_StaticFuncs {
 		}
 		return $mixed;
 	}
+	
+	/**
+	 * Method to print a debug header to screen and open a section for message
+	 *
+	 * @param string $key The message or key in language file (locallang_debug.xml) to print
+	 * @return void
+	 * @static
+	 */
+	static public function debugBeginSection($key) {
+		session_start();
+		if($_SESSION['formhandlerSettings']['debugMode']) {
+			$message = Tx_Formhandler_Messages::getDebugMessage($key);
+			if(strlen($message) == 0) {
+				$message = Tx_Formhandler_Messages::formatDebugHeader($key);
+				
+			} else {
+				if(func_num_args() > 1) {
+					$args = func_get_args();
+					array_shift($args);
+					if(is_bool($args[count($args) - 1])) {
+						array_pop($args);
+					}
+					$message = vsprintf($message, $args);
+				}
+				$message = Tx_Formhandler_Messages::formatDebugHeader($message);
+				
+			}
+			print $message . '<div style="border:1px solid #ccc; padding:7px; background:#dedede;">' . "\n";
+		}
+	}
+	
+	/**
+	 * Method to print an end tag for an opened debug section
+	 *
+	 * @return void
+	 * @static
+	 */
+	static public function debugEndSection() {
+		session_start();
+		if($_SESSION['formhandlerSettings']['debugMode']) {
+			print '</div>' . "\n";
+		}
+	}
 
 	/**
 	 * Method to print a debug message to screen
 	 *
-	 * @param string $message The message to print
-	 * @param boolean $extended Print a header style message or default output
+	 * @param string $key The message or key in language file (locallang_debug.xml) to print
 	 * @return void
 	 * @static
 	 */
@@ -419,14 +461,19 @@ class Tx_Formhandler_StaticFuncs {
 		if($_SESSION['formhandlerSettings']['debugMode']) {
 			$message = Tx_Formhandler_Messages::getDebugMessage($key);
 			if(strlen($message) == 0) {
-				print $key . '<br />';
+				$message = Tx_Formhandler_Messages::formatDebugMessage($key);
+				print $message;
 			} else {
 				if(func_num_args() > 1) {
 					$args = func_get_args();
 					array_shift($args);
+					if(is_bool($args[count($args) - 1])) {
+						array_pop($args);
+					}
 					$message = vsprintf($message, $args);
 				}
-				print $message . '<br />';
+				$message = Tx_Formhandler_Messages::formatDebugMessage($message);
+				print $message;
 			}
 		}
 	}
@@ -462,11 +509,12 @@ class Tx_Formhandler_StaticFuncs {
 	 */
 	static public function debugArray($arr) {
 		if(!is_array($arr)) {
-			return;
+			$arr = array();
 		}
 		session_start();
 		if($_SESSION['formhandlerSettings']['debugMode']) {
 				t3lib_div::print_array($arr);
+				print '<br />';
 		}
 	}
 

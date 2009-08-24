@@ -151,6 +151,39 @@
 						</config>
 					</TCEforms>
 				</cc_email>
+				
+				<cc_name>
+					<TCEforms>
+						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.ccName</label>
+						<config>
+							<type>input</type>
+							<eval>text</eval>
+							<size>50</size>
+						</config>
+					</TCEforms>
+				</cc_name>
+				
+				<bcc_email>
+					<TCEforms>
+						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.bcc</label>
+						<config>
+							<type>input</type>
+							<eval>text</eval>
+							<size>50</size>
+						</config>
+					</TCEforms>
+				</bcc_email>
+				
+				<bcc_name>
+					<TCEforms>
+						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.bccName</label>
+						<config>
+							<type>input</type>
+							<eval>text</eval>
+							<size>50</size>
+						</config>
+					</TCEforms>
+				</bcc_name>
 			</el>
 		</ROOT>
 	</sEMAILADMIN>
@@ -234,6 +267,39 @@
 						</config>
 					</TCEforms>
 				</cc_email>
+				
+				<cc_name>
+					<TCEforms>
+						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.ccName</label>
+						<config>
+							<type>input</type>
+							<eval>text</eval>
+							<size>50</size>
+						</config>
+					</TCEforms>
+				</cc_name>
+				
+				<bcc_email>
+					<TCEforms>
+						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.bcc</label>
+						<config>
+							<type>input</type>
+							<eval>text</eval>
+							<size>50</size>
+						</config>
+					</TCEforms>
+				</bcc_email>
+				
+				<bcc_name>
+					<TCEforms>
+						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.bccName</label>
+						<config>
+							<type>input</type>
+							<eval>text</eval>
+							<size>50</size>
+						</config>
+					</TCEforms>
+				</bcc_name>
 			</el>
 		</ROOT>
 	</sEMAILUSER>

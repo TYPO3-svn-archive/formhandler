@@ -15,6 +15,7 @@
 			<label index="using_prefix">Using prefix for form values: "%s"</label>
 			<label index="store_gp">Storing GP in session!</label>
 			<label index="form_finished">Form is finished!</label>
+			<label index="init_values">Initial values</label>
 			<label index="current_gp">The current GET/POST params are:</label>
 			<label index="current_files">The current uploaded files are:</label>
 			<label index="current_session_params">The current values in session are:</label>
@@ -29,6 +30,7 @@
 			<label index="mail_replyto">Reply to: %s</label>
 			<label index="mail_returnpath">Return path: %s</label>
 			<label index="mail_cc">CC: %s</label>
+			<label index="mail_bcc">BCC: %s</label>
 			<label index="mail_plain">Message plain: %s</label>
 			<label index="mail_html">Message HTML: %s</label>
 			<label index="mail_message">Message: %s</label>
@@ -65,6 +67,7 @@
 			<label index="using_prefix">Verwende Prefix für Formularwerte: "%s"</label>
 			<label index="store_gp">Speichere GP in Session!</label>
 			<label index="form_finished">Formular ist beendet!</label>
+			<label index="init_values">Initiale Werte</label>
 			<label index="current_gp">Die aktuellen GET/POST-Parameter:</label>
 			<label index="current_files">Aktuell hochgeladene Dateien:</label>
 			<label index="current_session_params">Die aktuellen Werte in der Session:</label>
@@ -79,6 +82,7 @@
 			<label index="mail_replyto">Reply to: %s</label>
 			<label index="mail_returnpath">Return path: %s</label>
 			<label index="mail_cc">CC: %s</label>
+			<label index="mail_bcc">BCC: %s</label>
 			<label index="mail_plain">Nachricht plain: %s</label>
 			<label index="mail_html">Nachricht HTML: %s</label>
 			<label index="mail_message">Nachricht: %s</label>
