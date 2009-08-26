@@ -538,7 +538,7 @@ class Tx_Formhandler_StaticFuncs {
 	 */
 	static public function resolvePath($path) {
 		$path = explode('/', $path);
-		if(strpos($path[0], 'EXT') > -1) {
+		if(strpos($path[0], 'EXT') === 0) {
 			$parts = explode(':', $path[0]);
 			$path[0] = t3lib_extMgm::extPath($parts[1]);
 		}
@@ -556,7 +556,7 @@ class Tx_Formhandler_StaticFuncs {
 	 */
 	static public function resolveRelPath($path) {
 		$path = explode('/', $path);
-		if(strpos($path[0], 'EXT') > -1) {
+		if(strpos($path[0], 'EXT') === 0) {
 			$parts = explode(':', $path[0]);
 			$path[0] = t3lib_extMgm::extRelPath($parts[1]);
 		}
@@ -574,7 +574,7 @@ class Tx_Formhandler_StaticFuncs {
 	 */
 	static public function resolveRelPathFromSiteRoot($path) {
 		$path = explode('/', $path);
-		if(strpos($path[0], 'EXT') > -1) {
+		if(strpos($path[0], 'EXT') === 0) {
 			$parts = explode(':', $path[0]);
 			$path[0] = t3lib_extMgm::extRelPath($parts[1]);
 		}
