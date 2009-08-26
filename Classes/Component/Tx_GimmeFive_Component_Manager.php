@@ -60,8 +60,15 @@ class Tx_GimmeFive_Component_Manager {
 	 * @author adapted for TYPO3v4 by Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getComponent($componentName) {
+		if(!is_array($this->classFiles)) {
+			$this->classFiles = array();
+		}
 		if ($this->componentObjectExists($componentName)) {
 			$componentObject = $this->componentObjects[$componentName];
+		} elseif (!array_key_exists($componentName, $this->classFiles)) {
+			$this->loadClass($componentName);
+			$componentObject = $this->createComponentObject($componentName, array());
+			$this->putComponentObject($componentName, $componentObject);
 		} else {
 			$arguments =  array_slice(func_get_args(), 1, NULL, TRUE); // array keys are preserved (TRUE) -> argument array starts with key=1 
 			$componentObject = $this->createComponentObject($componentName, $arguments);
@@ -81,7 +88,10 @@ class Tx_GimmeFive_Component_Manager {
 	protected function createComponentObject($componentName, array $overridingConstructorArguments) {
 		$componentConfiguration = $this->getComponentConfiguration($componentName);		
 		$className = $componentConfiguration['className'] ? $componentConfiguration['className'] : $componentName;
-		if (!class_exists($className, TRUE)) throw new Exception('No valid implementation class for component "' . $componentName . '" found while building the component object (Class "' . $className . '" does not exist).');
+		
+		if (!class_exists($className, TRUE)) {
+			throw new Exception('No valid implementation class for component "' . $componentName . '" found while building the component object (Class "' . $className . '" does not exist).');
+		}
 
 		$constructorArguments = $componentConfiguration['arguments.'] ? $componentConfiguration['arguments.'] : array();
 		foreach ($overridingConstructorArguments as $index => $value) {
@@ -274,25 +284,35 @@ class Tx_GimmeFive_Component_Manager {
 	 */
 	protected function buildArrayOfClassFiles($packageKey, $subDirectory = '', $recursionLevel = 0) {
 		$classFiles = array();
-		$currentPath = $this->getPackagePath($packageKey) . self::DIRECTORY_CLASSES . $subDirectory;
+		if(strpos($packageKey, '/') === FALSE) {
+			$currentPath = $this->getPackagePath($packageKey) . self::DIRECTORY_CLASSES . $subDirectory;
+		} else {
+			$currentPath = $this->getPackagePath($packageKey) . $subDirectory;
+		}
+		
 		if (!is_dir($currentPath)) return array();
 		if ($recursionLevel > 100) throw new Exception('Recursion too deep.');
 
 		try {
+			
 			$classesDirectoryIterator = new DirectoryIterator($currentPath);
 			while ($classesDirectoryIterator->valid()) {
 				$filename = $classesDirectoryIterator->getFilename();
+				
 				if ($filename{0} != '.') {
 					if (is_dir($currentPath . $filename)) {
 						$classFiles = array_merge($classFiles, $this->buildArrayOfClassFiles($packageKey, $subDirectory . $filename . '/', ($recursionLevel+1)));
 					} else {
 						if (substr($filename, 0, 3) == self::PACKAGE_PREFIX . '_' && substr($filename, -4, 4) == '.php') {
 							$classFiles[substr($filename, 0, -4)] = $currentPath . $filename;
+							
 						}
 					}
 				}
 				$classesDirectoryIterator->next();
 			}
+			
+			
 		} catch(Exception $exception) {
 			throw new Exception($exception->getMessage());
 		}
@@ -313,13 +333,50 @@ class Tx_GimmeFive_Component_Manager {
 		if ($classNameParts[0] === self::PACKAGE_PREFIX) {
 			// TODO The $classFiles should be cached by package key
 			$this->classFiles = $this->buildArrayOfClassFiles($classNameParts[1]);
+			
+			$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
+	
+			if(!$GLOBALS['TSFE']->sys_page) {
+				$GLOBALS['TSFE']->sys_page = $sysPageObj;
+			}
+			
+			$rootLine = $sysPageObj->getRootLine($GLOBALS['TSFE']->id);
+			$TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
+			$TSObj->tt_track = 0;
+			$TSObj->init();
+			$TSObj->runThroughTemplates($rootLine);
+			$TSObj->generateConfig();
+			$conf = $TSObj->setup['plugin.']['Tx_Formhandler.']['settings.'];
+			
+			if(is_array($conf['additionalIncludePaths.'])) {
+				foreach($conf['additionalIncludePaths.'] as $dir) {
+					
+					$temp = array();
+					$temp = $this->buildArrayOfClassFiles($dir);
+					
+					$this->classFiles = array_merge($temp, $this->classFiles);
+				}
+			}
+
 			$classFilePathAndName = isset($this->classFiles[$className]) ? $this->classFiles[$className] : NULL;
-			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) require_once ($classFilePathAndName);			
+			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
+				require_once ($classFilePathAndName);			
+			}
 		}
 	}
 	
 	protected function getPackagePath($packageKey) {
-		return t3lib_extMgm::extPath(strtolower($packageKey));
+		if(strpos($packageKey, '/') === FALSE) {
+			$path = t3lib_extMgm::extPath(strtolower($packageKey));	
+		} else {
+			$path = t3lib_div::getFileAbsFileName($packageKey);
+			if(substr($path,strlen($path) -1) !== '/') {
+				$path .= '/';
+			}
+		}
+		
+		return $path;
+		
 	}
 }
 ?>
