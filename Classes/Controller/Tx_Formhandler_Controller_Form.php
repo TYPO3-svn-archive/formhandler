@@ -229,6 +229,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				}
 
 			} else {
+				
+				//run init interceptors
+				$output = $this->runClasses($this->settings['initInterceptors.']);
+				if(strlen($output) > 0) {
+					return $output;
+				}
 
 				if($this->currentStep > $this->lastStep) {
 					$this->loadSettingsForStep($this->lastStep);
