@@ -1,9 +1,9 @@
-includeLibs.Tx_Formhandler_default = EXT:formhandler/Classes/Controller/tx_Formhandler_Dispatcher.php
-plugin.Tx_Formhandler = USER_INT
-plugin.Tx_Formhandler.userFunc = tx_Formhandler_Dispatcher->main
-tt_content.list.20.formhandler_pi1 < plugin.Tx_Formhandler
+#includeLibs.Tx_Formhandler_default = EXT:formhandler/Classes/Controller/tx_Formhandler_Dispatcher.php
+#plugin.Tx_Formhandler = USER_INT
+#plugin.Tx_Formhandler.userFunc = tx_Formhandler_Dispatcher->main
+#tt_content.list.20.formhandler_pi1 < plugin.Tx_Formhandler
 
-plugin.Tx_Formhandler.settings.predef.default {
+plugin.tx_formhandler.settings.predef.default {
 
 	# GENERAL CONFIGURATION
 	name = Default
