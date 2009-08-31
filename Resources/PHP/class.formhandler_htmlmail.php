@@ -16,7 +16,7 @@ require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
 /**
  * HTML mail class for Formhandler
  *
- * @author	Reinhard FÃ¼hricht <rf@typoheads.at>
+ * @author	Reinhard Führicht <rf@typoheads.at>
  */
 class formhandler_htmlmail extends t3lib_htmlMail {
 		
@@ -114,11 +114,19 @@ class formhandler_htmlmail extends t3lib_htmlMail {
 			$this->add_message('This is a multi-part message in MIME format.' . "\n");
 			$this->constructMixed($boundary);
 		} elseif ($this->theParts['html']['content']) {
-			// Generate plain/HTML mail
-			$this->add_header('Content-Type: ' . $this->getHTMLContentType() . ';');
-			$this->add_header(' boundary="' . $boundary . '"');
-			$this->add_message('This is a multi-part message in MIME format.' . "\n");
-			$this->constructHTML($boundary);
+			if(strlen(trim($this->getContent('plain'))) > 0) {
+				// Generate plain/HTML mail
+				$this->add_header('Content-Type: ' . $this->getHTMLContentType() . ';');
+				$this->add_header(' boundary="' . $boundary . '"');
+				$this->add_message('This is a multi-part message in MIME format.' . "\n");
+			} else {
+				$this->add_header('Content-Type: text/html;');
+				$this->add_header(' boundary="' . $boundary . '"');
+				$this->constructHTML($boundary);
+			}
+			
+			
+			
 		} elseif(strlen(trim($this->getContent('plain'))) > 0) {
 			
 			
