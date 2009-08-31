@@ -1,54 +1,28 @@
 <?php
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 1999-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
+
+/*                                                                        *
+ * This script is part of the TYPO3 project - inspiring people to share!  *
+ *                                                                        *
+ * TYPO3 is free software; you can redistribute it and/or modify it under *
+ * the terms of the GNU General Public License version 2 as published by  *
+ * the Free Software Foundation.                                          *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+ * Public License for more details.                                       *
+ */
 /**
- * HTML mail class
- *
- * $Id: class.t3lib_htmlmail.php 5487 2009-05-23 14:40:33Z ohader $
+ * HTML mail class for Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-
-/**
- * HTML mail class
- *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @package	TYPO3
- * @subpackage	t3lib
- */
 class formhandler_htmlmail extends t3lib_htmlMail {
+		
 		// Headerinfo:
 	var $recipient_copy	= '';	// This recipient (or list of...) will also receive the mail. Regard it as a copy.
 	var $recipient_blindcopy = ''; // This recipient (or list of...) will also receive the mail as a blind copy. Regard it as a copy.
-
-	/*****************************************
-	 *
-	 * Main functions
-	 *
-	 *****************************************/
 
 	/**
 	 * Clears the header-string and sets the headers based on object-vars.
