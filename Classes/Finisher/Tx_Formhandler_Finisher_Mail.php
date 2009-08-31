@@ -154,21 +154,27 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		} 
 		
 		$mailSettings = $this->settings[$type];
-		$template['plain'] = $this->parseTemplate($type, 'plain');
-		$template['html'] = $this->parseTemplate($type, 'html');
+		$plain = $this->parseTemplate($type, 'plain');
+		if(strlen(trim($plain)) > 0) {
+			$template['plain'] = $plain;
+		}
+		$html = $this->parseTemplate($type, 'html');
+		if(strlen(trim($html)) > 0) {
+			$template['html'] = $html;
+		}
 
 		//init mailer object
 		$version = TYPO3_version;
 		$version = preg_replace('/[a-zA-Z]*[0-9]{0,1}$/','',$version);
 		
-		if(version_compare($version, '4.3.0', '>=')) {
+		/*if(version_compare($version, '4.3.0', '>=')) {
 			
 			require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
 			$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
-		} else {
+		} else {*/
 			require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/class.formhandler_htmlmail.php');
 			$emailObj = t3lib_div::makeInstance('formhandler_htmlmail');
-		}
+		//}
 		
 		$emailObj->start();
 
@@ -216,11 +222,14 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		if($mailSettings['email_header']) {
 			$emailObj->add_header($mailSettings['header']);
 		}
-		if($template['plain']) {
+		
+		if(strlen(trim($template['plain'])) > 0) {
 			$emailObj->setPlain($template['plain']);
+		} else {
+			$emailObj->setPlain(NULL);
 		}
 
-		if($template['html']) {
+		if(strlen(trim($template['html'])) > 0) {
 			if($mailSettings['htmlEmailAsAttachment']) {
 				$prefix = 'formhandler_';
 				if(isset($mailSettings['filePrefix.']['html'])) {
