@@ -610,13 +610,10 @@ class Tx_Formhandler_StaticFuncs {
 			$uploadFolder = Tx_Formhandler_StaticFuncs::sanitizePath($uploadFolder);
 		}
 
-		//if the set directory doesn't exist, print a message
-		#if(!is_dir(Tx_Formhandler_StaticFuncs::getDocumentRoot().$uploadFolder)) {
-		#		Tx_Formhandler_StaticFuncs::debugMessage("Folder: '".Tx_Formhandler_StaticFuncs::getDocumentRoot().$uploadFolder."' doesn't exist!");
-		#	}
+		//if the set directory doesn't exist, print a message and try to create
 		if(!is_dir(Tx_Formhandler_StaticFuncs::getTYPO3Root() . $uploadFolder)) {
-			//Tx_Formhandler_StaticFuncs::debugMessage('folder_doesnt_exist', Tx_Formhandler_StaticFuncs::getTYPO3Root() . $uploadFolder);
-			print t3lib_div::mkdir_deep(Tx_Formhandler_StaticFuncs::getTYPO3Root() . '/',$uploadFolder);
+			Tx_Formhandler_StaticFuncs::debugMessage('folder_doesnt_exist', Tx_Formhandler_StaticFuncs::getTYPO3Root() . '/' . $uploadFolder);
+			t3lib_div::mkdir_deep(Tx_Formhandler_StaticFuncs::getTYPO3Root() . '/',$uploadFolder);
 		}
 		return $uploadFolder;
 	}

@@ -51,10 +51,7 @@ class Tx_Formhandler_Messages {
 	 * @return string The formatted message
 	 */
 	public static function formatDebugMessage($message) {
-		//$message = str_replace('<', '&lt;', $message);
-		//$message = str_replace('>', '&gt;', $message);
 		$message = str_replace("\n", '<br />', $message);
-		
 		return '<div style="font-weight:bold;color:#333;">' . $message . '</div>' . "\n";	
 	}
 	

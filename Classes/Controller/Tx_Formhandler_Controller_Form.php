@@ -275,6 +275,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					//if no more steps
 					if($this->finished) {
 						
+						Tx_Formhandler_StaticFuncs::debugBeginSection('form_finished');
+						Tx_Formhandler_StaticFuncs::debugEndSection();
+						
 						$this->mergeGPWithSession();
 						
 						//run save interceptors

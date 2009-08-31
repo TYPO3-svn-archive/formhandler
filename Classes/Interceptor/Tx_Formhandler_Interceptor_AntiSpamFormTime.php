@@ -60,7 +60,7 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 				$templateCode = $this->getTemplate();
 				$view->setTemplate($templateCode, 'ANTISPAM');
 				if(!$view->hasTemplate()) {
-					Tx_Formhandler_StaticFuncs::throwException('SPAM!!!!!!');
+					Tx_Formhandler_StaticFuncs::throwException('spam_detected');
 					return 'Lousy spammer!';
 				}
 				
