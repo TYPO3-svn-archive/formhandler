@@ -46,8 +46,8 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 		$this->settings = $this->parseSettings();
 
 		//set language file
-		if(!$this->langFile) {
-			$this->readLangFile();
+		if(!$this->langFiles) {
+			$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
 		}
 		
 		if($errors['mode'] != 'plain') {

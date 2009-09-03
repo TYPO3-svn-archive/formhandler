@@ -688,7 +688,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		//read template file
 		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
-		$this->langFile = Tx_Formhandler_StaticFuncs::readLanguageFile($this->langFile, $this->settings);
+		$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
 		$this->getStepInformation();
 		$this->loadSettingsForStep($this->currentStep);
 		$this->validateConfig();

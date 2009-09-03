@@ -62,14 +62,14 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers = array();
 			$this->fillFileMarkers($markers);
 			$content = $markers['###'. $fieldname. '_uploadedFiles###'];
-			$objResponse->assign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', $content);
+			$objResponse->addAssign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', $content);
 
 		} else {
-			$objResponse->assign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', '');
+			$objResponse->addAssign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', '');
 		}
 
 		//return the XML response
-		return $objResponse;
+		return $objResponse->getXML();
 	}
 
 
@@ -85,11 +85,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		session_start();
 		
 		//set GET/POST parameters
-		/*$this->gp = array();
-		foreach($gp as $k=>&$v) {
-			$this->gp[$k] = $v;
-			if(is_array)
-		}*/
 		$this->gp = $gp;
 
 		//set template
@@ -101,8 +96,17 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$this->errors = $errors;
 
 		//set language file
-		if(!$this->langFile) {
-			$this->readLangFile();
+		if(!$this->langFiles) {
+			$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
+		}
+		
+		//set language file
+		if(!$this->masterTemplate) {
+			$this->readMasterTemplate();
+		}
+		
+		if($this->masterTemplate) {
+			$this->replaceMarkersFromMaster();
 		}
 		
 		if(!$this->gp['submitted']) {
@@ -145,17 +149,67 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		return $this->pi_wrapInBaseClass($content);
 	}
-
+	
 	/**
 	 * Reads the translation file entered in TS setup.
 	 *
 	 * @return void
 	 */
-	protected function readLangFile() {
-		if(is_array($this->settings['langFile.'])) {
-			$this->langFile = $this->cObj->cObjGetSingle($this->settings['langFile'], $this->settings['langFile.']);
+	protected function readMasterTemplate() {
+		if(is_array($this->settings['masterTemplateFile.'])) {
+			$this->masterTemplate = $this->cObj->cObjGetSingle($this->settings['masterTemplateFile'], $this->settings['masterTemplateFile.']);
 		} else {
-			$this->langFile = Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($this->settings['langFile']);
+			$this->masterTemplate = Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($this->settings['masterTemplateFile']);
+		}
+	}
+	
+	protected function replaceMarkersFromMaster() {
+		$masterTemplateCode = t3lib_div::getURL($this->masterTemplate);
+		$matches = array();
+		preg_match_all('/###field_(.*)###/', $masterTemplateCode, $matches);
+		
+		if(!empty($matches[0])) {
+			$subparts = array_unique($matches[0]);
+			
+			$subpartsCodes = array();
+			if(is_array($subparts)) {
+				foreach($subparts as $subpart) {
+					$subpartKey = str_replace('#', '', $subpart);
+					$subpartsCodes[$subpartKey] = $this->cObj->getSubpart($masterTemplateCode, $subpart);
+				}
+				
+			}
+			
+			$fieldMarkers = array();
+			foreach($subpartsCodes as $subpart=>$code) {
+				$matchesSlave = array();
+				preg_match_all('/###' . $subpart . '(.*)###/', $this->template, $matchesSlave);
+				if(!empty($matchesSlave[0])) {
+					foreach($matchesSlave[0] as $key=>$markerName) {
+						
+						$fieldName = $matchesSlave[1][$key];
+						if($fieldName) {
+							$fieldName = substr($fieldName,1);
+							if($this->settings['formValuesPrefix']) {
+								$fieldName = $this->settings['formValuesPrefix'] . '[' . $fieldName . ']'; 
+							}
+							$markers = array(
+								'###fieldname###' => $fieldName
+							);
+							$replacedCode = $this->cObj->substituteMarkerArray($code, $markers);
+							
+							
+							
+							 
+						} else {
+							$replacedCode = $code;
+						}
+						
+						$fieldMarkers[$markerName] = $replacedCode;
+					}
+				}
+			}
+			$this->template = $this->cObj->substituteMarkerArray($this->template, $fieldMarkers);
 		}
 	}
 
@@ -358,12 +412,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers['###REL_URL###'] = $path;
 		$markers['###TIMESTAMP###'] = time();
 		$markers['###ABS_URL###'] = t3lib_div::locationHeaderUrl('') . $path;
+		$markers['###rel_url###'] = $markers['###REL_URL###'];
+		$markers['###timestamp###'] = $markers['###TIMESTAMP###'];
+		$markers['###abs_url###'] = $markers['###ABS_URL###'];
 		
 		if($this->gp['generated_authCode']) {
 			$markers['###auth_code###'] = $this->gp['generated_authCode'];
 		}
-		
-		
 		
 		$markers['###ip###'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
 		$markers['###submission_date###'] = date('d.m.Y H:i:s', time());
@@ -408,10 +463,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$this->fillFEUserMarkers($markers);
 		$this->fillFileMarkers($markers);
 
-		
-		Tx_Formhandler_StaticFuncs::$ajaxHandler->fillAjaxMarkers($markers);
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
-		
 	}
 
 	/**
@@ -588,6 +640,24 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
 					}
+					if(t3lib_extMgm::isLoaded('xajax') && $settings['files.']['enableAjaxFileRemoval']) {
+						$text = 'X';
+						if($settings['files.']['customRemovalText']) {
+							if($settings['files.']['customRemovalText.']) {
+								$text = $this->cObj->cObjGetSingle($settings['files.']['customRemovalText'], $settings['files.']['customRemovalText.']);
+							} else {
+								$text = $settings['files.']['customRemovalText'];
+							}
+						}
+						
+						$link= '<a 
+								href="javascript:void(0)" 
+								class="formhandler_removelink" 
+								onclick="xajax_' . $this->prefixId . '_removeUploadedFile(\'' . $field . '\',\'' . $fileInfo['uploaded_name'] . '\')"
+								>' . $text . '</a>';
+						$filename .= $link;
+						$thumb .= $link;
+					}
 					if(strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
 						$wrappedFilename = str_replace('|', $filename, $singleWrap);
 						$wrappedThumb = str_replace('|', $thumb, $singleWrap);
@@ -635,15 +705,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers['###TOTAL_UPLOADEDFILES###'] = $markers['###total_uploadedFiles###'];
 			$markers['###total_uploadedfiles###'] = $markers['###total_uploadedFiles###'];
 				
-			
+			$requiredSign = '*';
+			if(isset($settings['requiredSign'])) {
+				$requiredSign = $settings['requiredSign'];
+			}
+			$markers['###required###'] = $requiredSign;
+			$markers['###REQUIRED###'] = $markers['###required###'];
 		}
-		
-		$requiredSign = '*';
-		if(isset($settings['requiredSign'])) {
-			$requiredSign = $settings['requiredSign'];
-		}
-		$markers['###required###'] = $requiredSign;
-		$markers['###REQUIRED###'] = $markers['###required###'];
 	}
 	
 	protected function getThumbnail(&$imgConf, &$fileInfo) {
@@ -879,13 +947,23 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillLangMarkers() {
 		$langMarkers = array();
-		if ($this->langFile != '') {
+		
+		if (is_array($this->langFiles)) {
 			$aLLMarkerList = array();
 			preg_match_all('/###LLL:.+?###/Ssm', $this->template, $aLLMarkerList);
 			foreach($aLLMarkerList[0] as $LLMarker){
+				
 				$llKey = substr($LLMarker, 7, (strlen($LLMarker) - 10));
+				
 				$marker = $llKey;
-				$langMarkers['###LLL:' . $marker . '###'] = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':' . $llKey));
+				$message = '';
+				foreach($this->langFiles as $langFile) {
+					$temp = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':' . $llKey));
+					if(strlen($temp) > 0) {
+						$message = $temp;
+					} 
+				}
+				$langMarkers['###LLL:' . $marker . '###'] = $message;
 			}
 		}
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $langMarkers);

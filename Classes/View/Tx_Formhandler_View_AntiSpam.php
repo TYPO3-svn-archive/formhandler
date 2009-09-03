@@ -23,56 +23,5 @@
  */
 class Tx_Formhandler_View_AntiSpam extends Tx_Formhandler_View_Form {
 
-	/**
-	 * Main method called by the controller.
-	 *
-	 * @param array $gp The current GET/POST parameters
-	 * @param array $errors The errors occurred in validation
-	 * @return string content
-	 */
-	public function render($gp, $errors) {
-
-
-		session_start();
-
-		//set GET/POST parameters
-		$this->gp = $gp;
-
-		//set template
-		$this->template = $this->subparts['template'];
-		
-		//set settings
-		$this->settings = $this->parseSettings();
-
-		//set language file
-		if(!$this->langFile) {
-			$this->readLangFile();
-		}
-		
-		//substitute ISSET markers
-		$this->substituteIssetSubparts();
-
-		//fill TypoScript markers
-		if(is_array($this->settings['markers.'])) {
-			$this->fillTypoScriptMarkers();
-		}
-
-		//fill default markers
-		$this->fillDefaultMarkers();
-
-		//fill value_[fieldname] markers
-		$this->fillValueMarkers();
-
-		//fill LLL:[language_key] markers
-		$this->fillLangMarkers();
-
-
-		//remove markers that were not substituted
-		$content = Tx_Formhandler_StaticFuncs::removeUnfilledMarkers($this->template);
-
-
-		return trim($content);
-	}
-
 }
 ?>

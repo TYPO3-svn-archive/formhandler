@@ -164,14 +164,23 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return void
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
-	static public function readLanguageFile($langFile, &$settings) {
+	static public function readLanguageFiles($langFiles, &$settings) {
 
 		//language file was not set in flexform, search TypoScript for setting
-		if(!$langFile) {
-			$langFile = $settings['langFile'];
+		if(!$langFiles) {
+			$langFiles = array();
+			if($settings['langFile.']) {
+				foreach($settings['langFile.'] as $langFile) {
+					$langFiles[] = $langFile;
+				}
+			} elseif($settings['langFile']) {
+				$langFiles[] = $settings['langFile'];
+			}
 		}
-		$langFile = Tx_Formhandler_StaticFuncs::convertToRelativePath($langFile);
-		return $langFile;
+		foreach($langFiles as &$langFile) {
+			$langFile = Tx_Formhandler_StaticFuncs::convertToRelativePath($langFile);
+		}
+		return $langFiles;
 	}
 	
 	/**
@@ -344,17 +353,21 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return array The filled language markers
 	 * @static
 	 */
-	static public function getFilledLangMarkers(&$template,$langFile) {
+	static public function getFilledLangMarkers(&$template,$langFiles) {
 		$GLOBALS['TSFE']->readLLfile($langFile);
 		$langMarkers = array();
-		if (strlen($langFile) > 0) {
+		if (is_array($langFiles)) {
 			$aLLMarkerList = array();
 			preg_match_all('/###LLL:.+?###/Ssm', $template, $aLLMarkerList);
 
 			foreach($aLLMarkerList[0] as $LLMarker){
 				$llKey =  substr($LLMarker, 7, strlen($LLMarker) - 10);
 				$marker = $llKey;
-				$langMarkers['###LLL:'.$marker.'###'] = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile. ':' . $llKey));
+				$message = '';
+				foreach($langFiles as $langFile) {
+					$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':' . $llKey));
+				}
+				$langMarkers['###LLL:' . $marker . '###'] = $message;
 			}
 		}
 		return $langMarkers;
