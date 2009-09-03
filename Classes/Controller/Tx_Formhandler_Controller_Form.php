@@ -432,7 +432,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 */
 	protected function processFiles() {
 		session_start();
-
+		
 		//if files were uploaded
 		if(isset($_FILES) && is_array($_FILES) && !empty($_FILES)) {
 

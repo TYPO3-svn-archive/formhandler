@@ -31,6 +31,8 @@ class Tx_Formhandler_StaticFuncs {
 	 * @var tslib_cObj
 	 */
 	static public $cObj;
+	
+	static public $ajaxHandler;
 
 	/**
 	 * Identifier of the selected predefined form
@@ -181,7 +183,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @param boolean $correctRedirectUrl replace &amp; with & in URL 
 	 * @return void
 	 */
-	static public function doRedirect($redirect, $correctRedirectUrl) {
+	static public function doRedirect($redirect, $correctRedirectUrl, $additionalParams = array()) {
 	
 		//if redirect_page was page id
 		if (is_numeric($redirect)) {
@@ -191,7 +193,7 @@ class Tx_Formhandler_StaticFuncs {
 			if (t3lib_div::_GP('L')) {
 				$addparams['L'] = t3lib_div::_GP('L');
 			}
-
+			$addparams = array_merge($addparams, $additionalParams);
 			$url = Tx_Formhandler_StaticFuncs::$cObj->getTypoLink_URL($redirect, $addparams);
 
 			//else it may be a full URL
@@ -607,6 +609,12 @@ class Tx_Formhandler_StaticFuncs {
 		//if temp upload folder set in TypoScript, take that setting
 		if($_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder']) {
 			$uploadFolder = $_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder'];
+			if($_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder.']) {
+				$uploadFolder = Tx_Formhandler_StaticFuncs::$cObj->cObjGetSingle(
+					$_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder'], 
+					$_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder.']
+				);
+			}
 			$uploadFolder = Tx_Formhandler_StaticFuncs::sanitizePath($uploadFolder);
 		}
 
@@ -671,6 +679,73 @@ class Tx_Formhandler_StaticFuncs {
 				break;
 		}
 		return $convertedValue;
+	}
+	
+	static public function getErrorMessage($field, $types) {
+		
+		session_start();
+		$settings = $_SESSION['formhandlerSettings']['settings'];
+		$singleWrap = $settings['singleErrorTemplate.']['singleWrap'];
+		$langFile = Tx_Formhandler_StaticFuncs::readLanguageFile('', $settings);
+		
+		$errorMessages = array();
+		$clearErrorMessages = array();
+		if(strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':error_' . $field))) > 0) {
+			$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':error_' . $field));
+			if($errorMessage) {
+				if(strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
+					$errorMessage = str_replace('|', $errorMessage, $singleWrap);
+				}
+
+				$errorMessages[] = $errorMessage;
+			}
+		}
+		if(!is_array($types)) {
+			$types = array($types);
+		}
+		foreach($types as $type) {
+
+			$temp = t3lib_div::trimExplode(';', $type);
+			$type = array_shift($temp);
+			foreach($temp as $item) {
+				$item = t3lib_div::trimExplode('::', $item);
+				$values[$item[0]] = $item[1];
+			}
+
+				//try to load specific error message with key like error_fieldname_integer
+			$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':error_' . $field . '_' . $type));
+			if(strlen($errorMessage) == 0) {
+				$type = strtolower($type);
+				$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':error_' . $field . '_' . $type));
+			}
+			if($errorMessage) {
+				if(is_array($values)) {
+					foreach($values as $key => $value) {
+						$errorMessage = str_replace('###' . $key . '###', $value, $errorMessage);
+					}
+				}
+				if(strlen($singleWrap) > 0 && strstr($singleWrap,'|')) {
+					$errorMessage = str_replace('|', $errorMessage, $singleWrap);
+				}
+				$errorMessages[] = $errorMessage;
+			} else {
+				Tx_Formhandler_StaticFuncs::debugMessage('no_error_message', 'error_' . $field . '_' . $type);
+			}
+		}
+		$errorMessage = implode('', $errorMessages);
+		$totalWrap = $settings['singleErrorTemplate.']['totalWrap'];
+		if(strlen($totalWrap) > 0 && strstr($totalWrap, '|')) {
+			$errorMessage = str_replace('|', $errorMessage, $totalWrap);
+		}
+		$clearErrorMessage = $errorMessage;
+		if($settings['addErrorAnchors']) {
+			$errorMessage = '<a name="' . $field . '">' . $errorMessage . '</a>';
+
+		}
+		$langMarkers = Tx_Formhandler_StaticFuncs::getFilledLangMarkers($errorMessage, $langFile);
+		$errorMessage = Tx_Formhandler_StaticFuncs::$cObj->substituteMarkerArray($errorMessage, $langMarkers);
+		return $errorMessage;
+		
 	}
 }
 

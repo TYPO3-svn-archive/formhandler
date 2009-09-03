@@ -62,14 +62,14 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers = array();
 			$this->fillFileMarkers($markers);
 			$content = $markers['###'. $fieldname. '_uploadedFiles###'];
-			$objResponse->addAssign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', $content);
+			$objResponse->assign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', $content);
 
 		} else {
-			$objResponse->addAssign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', '');
+			$objResponse->assign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', '');
 		}
 
 		//return the XML response
-		return $objResponse->getXML();
+		return $objResponse;
 	}
 
 
@@ -363,6 +363,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers['###auth_code###'] = $this->gp['generated_authCode'];
 		}
 		
+		
+		
 		$markers['###ip###'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
 		$markers['###submission_date###'] = date('d.m.Y H:i:s', time());
 		$markers['###pid###'] = $GLOBALS['TSFE']->id;
@@ -406,7 +408,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$this->fillFEUserMarkers($markers);
 		$this->fillFileMarkers($markers);
 
+		
+		Tx_Formhandler_StaticFuncs::$ajaxHandler->fillAjaxMarkers($markers);
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
+		
 	}
 
 	/**
@@ -583,24 +588,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
 					}
-					if(t3lib_extMgm::isLoaded('xajax') && $settings['files.']['enableAjaxFileRemoval']) {
-						$text = 'X';
-						if($settings['files.']['customRemovalText']) {
-							if($settings['files.']['customRemovalText.']) {
-								$text = $this->cObj->cObjGetSingle($settings['files.']['customRemovalText'], $settings['files.']['customRemovalText.']);
-							} else {
-								$text = $settings['files.']['customRemovalText'];
-							}
-						}
-						
-						$link= '<a 
-								href="javascript:void(0)" 
-								class="formhandler_removelink" 
-								onclick="xajax_' . $this->prefixId . '_removeUploadedFile(\'' . $field . '\',\'' . $fileInfo['uploaded_name'] . '\')"
-								>' . $text . '</a>';
-						$filename .= $link;
-						$thumb .= $link;
-					}
 					if(strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
 						$wrappedFilename = str_replace('|', $filename, $singleWrap);
 						$wrappedThumb = str_replace('|', $thumb, $singleWrap);
@@ -648,13 +635,15 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers['###TOTAL_UPLOADEDFILES###'] = $markers['###total_uploadedFiles###'];
 			$markers['###total_uploadedfiles###'] = $markers['###total_uploadedFiles###'];
 				
-			$requiredSign = '*';
-			if(isset($settings['requiredSign'])) {
-				$requiredSign = $settings['requiredSign'];
-			}
-			$markers['###required###'] = $requiredSign;
-			$markers['###REQUIRED###'] = $markers['###required###'];
+			
 		}
+		
+		$requiredSign = '*';
+		if(isset($settings['requiredSign'])) {
+			$requiredSign = $settings['requiredSign'];
+		}
+		$markers['###required###'] = $requiredSign;
+		$markers['###REQUIRED###'] = $markers['###required###'];
 	}
 	
 	protected function getThumbnail(&$imgConf, &$fileInfo) {
