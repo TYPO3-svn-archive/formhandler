@@ -176,6 +176,8 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			$emailObj = t3lib_div::makeInstance('formhandler_htmlmail');
 		//}
 		
+			#require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
+			#$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
 		$emailObj->start();
 
 		//set e-mail options
@@ -401,7 +403,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 */
 	private function parseFilesList($settings ,$type, $key) {
 		if(isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
-			$parsed = $this->cObj->cObjGetSingle($settings[$key],$settings[$key . '.']);
+			$parsed = $this->cObj->cObjGetSingle($settings[$key], $settings[$key . '.']);
 		} elseif($settings[$key]) {
 			$files = t3lib_div::trimExplode(',', $settings[$key]);
 			$parsed = array();
@@ -571,14 +573,14 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 						break;
 
 					case 'attachment':
-						$emailSettings[$option] = $this->parseFilesList($currentSettings,$type,$option);
+						$emailSettings[$option] = $this->parseFilesList($currentSettings, $type, $option);
 						break;
 
 					case 'attachPDF':
 						if(isset($currentSettings['attachPDF.']) && is_array($currentSettings['attachPDF.'])) {
 							$generatorClass = $currentSettings['attachPDF.']['class'];
 							if(!$generatorClass) {
-								$generatorClass = 'Tx_Formhandler_Generator_PDF';
+								$generatorClass = 'Tx_Formhandler_Generator_WebkitPDF';
 							}
 							$generatorClass = Tx_Formhandler_StaticFuncs::prepareClassName($generatorClass);
 							$generator = $this->componentManager->getComponent($generatorClass);

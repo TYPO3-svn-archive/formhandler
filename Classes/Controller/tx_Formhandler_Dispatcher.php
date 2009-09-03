@@ -42,23 +42,26 @@ class tx_Formhandler_Dispatcher extends tslib_pibase {
 		}
 		if (!$this->xajax && class_exists('tx_xajax')) {
 			$view = $this->componentManager->getComponent('Tx_Formhandler_View_Form');
+			$validator = $this->componentManager->getComponent('Tx_Formhandler_Validator_Ajax');
 
 			$this->xajax = t3lib_div::makeInstance('tx_xajax');
-			$this->xajax->decodeUTF8InputOn();
+			$this->xajax->setFlag('decodeUTF8Input',true);
 			$this->prefixId = 'Tx_Formhandler';
 			$this->xajax->setCharEncoding('utf-8');
 			#$this->xajax->setWrapperPrefix($this->prefixId);
-				
-			$this->xajax->registerFunction(array($this->prefixId . '_removeUploadedFile', &$view, 'removeUploadedFile'));
+			//$this->xajax->registerPreFunction("showLoadingAnimation");
+			$this->xajax->register(XAJAX_FUNCTION, array($this->prefixId . '_removeUploadedFile', &$view, 'removeUploadedFile'));
+			$this->xajax->register(XAJAX_FUNCTION, array($this->prefixId . '_validateAjax', &$validator, 'validateAjax'));
 			
 			// Do you wnat messages in the status bar?
-			$this->xajax->statusMessagesOn();
 			
+			$this->xajax->setFlag('statusMessages',true);
+			$this->xajax->configure('debug',false);
 			// Turn only on during testing
-			$this->xajax->debugOff();
+			//$this->xajax->debugOff();
 			
 			$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] = $this->xajax->getJavascript(t3lib_extMgm::siteRelPath('xajax'));
-			$this->xajax->processRequests();
+			$this->xajax->processRequest();
 		}
 	}
 
@@ -76,8 +79,23 @@ class tx_Formhandler_Dispatcher extends tslib_pibase {
 
 		Tx_Formhandler_StaticFuncs::$cObj = $this->cObj;
 
+		/*
+		 * set ajax handler:
+		 * 1. Default handler
+		 * 2. TypoScript
+		 */
+		$handler = 'Tx_Formhandler_AjaxHandler_Xajax';
+		if($setup['ajaxHandler']) {
+			$handler = $setup['ajaxHandler'];
+		}
+		
+		$handler = Tx_Formhandler_StaticFuncs::prepareClassName($handler);
+		$handler = $this->componentManager->getComponent($handler);
+		
+		Tx_Formhandler_StaticFuncs::$ajaxHandler = $handler;
+		
 		//handle AJAX stuff
-		$this->handleAjax();
+		$handler->initAjax();
 
 		//init flexform
 		$this->pi_initPIflexForm();
