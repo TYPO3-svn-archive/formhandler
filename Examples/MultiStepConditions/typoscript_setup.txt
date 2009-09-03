@@ -112,7 +112,7 @@ plugin.Tx_Formhandler.settings.predef.multistep_conditions_example {
 	# Interceptors configuration
 	initInterceptors {
 		1 {
-			class = Tx_Formhandler_Interceptor_RemoveXSS
+			class = Tx_Formhandler_Interceptor_Filtreatment
 		}
 	}
 
