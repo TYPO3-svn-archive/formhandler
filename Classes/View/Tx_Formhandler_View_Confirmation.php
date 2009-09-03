@@ -92,21 +92,17 @@ class Tx_Formhandler_View_Confirmation extends Tx_Formhandler_View_Form {
 		}
 		$markers['###PRINT_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $params);
 		unset($params['type']);
-		/*if($this->settings['formValuesPrefix']) {
+		if($this->settings['formValuesPrefix']) {
 			$params[$this->settings['formValuesPrefix']]['renderMethod'] = 'pdf';
 		} else {
 			$params['renderMethod'] = 'pdf';
-		}*/
+		}
 		
 		$label = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':pdf'));
 		if(strlen($label) == 0) {
 			$label = 'pdf';
 		}
-		$url = Tx_Formhandler_StaticFuncs::$cObj->getTypoLink_URL($GLOBALS['TSFE']->id, $params);
-		$pdfParams = array();
-		$pdfParams['tx_webkitpdf_pi1']['urls'][] = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '/' . $url;
-		$pdfParams['no_cache'] = 1;
-		$markers['###PDF_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $pdfParams);
+		$markers['###PDF_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $params);
 		if($this->settings['formValuesPrefix']) {
 			$params[$this->settings['formValuesPrefix']]['renderMethod'] = 'csv';
 		} else {

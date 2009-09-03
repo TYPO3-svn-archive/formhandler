@@ -67,7 +67,7 @@ class Tx_Formhandler_Finisher_Confirmation extends Tx_Formhandler_AbstractFinish
 			$langFile = Tx_Formhandler_StaticFuncs::readLanguageFile(NULL, $this->settings);
 			$generatorClass = $this->settings['pdf.']['class'];
 			if(!$generatorClass) {
-				$generatorClass = 'Tx_Formhandler_Generator_WebkitPDF';
+				$generatorClass = 'Tx_Formhandler_Generator_PDF';
 			}
 			$generatorClass = Tx_Formhandler_StaticFuncs::prepareClassName($generatorClass);
 			$generator = $this->componentManager->getComponent($generatorClass);
