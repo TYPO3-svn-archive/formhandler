@@ -29,43 +29,6 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
 class tx_Formhandler_Dispatcher extends tslib_pibase {
 
 	/**
-	 * Adds JavaScript for xajax and registers callable methods.
-	 * Passes AJAX requests to requested methods.
-	 *
-	 * @return void
-	 */
-	protected function handleAjax() {
-		if(t3lib_extMgm::isLoaded('xajax', 0) && !class_exists('tx_xajax') && !$this->xajax) {
-			require_once(t3lib_extMgm::extPath('xajax') . 'class.tx_xajax.php');
-				
-				
-		}
-		if (!$this->xajax && class_exists('tx_xajax')) {
-			$view = $this->componentManager->getComponent('Tx_Formhandler_View_Form');
-			$validator = $this->componentManager->getComponent('Tx_Formhandler_Validator_Ajax');
-
-			$this->xajax = t3lib_div::makeInstance('tx_xajax');
-			$this->xajax->setFlag('decodeUTF8Input',true);
-			$this->prefixId = 'Tx_Formhandler';
-			$this->xajax->setCharEncoding('utf-8');
-			#$this->xajax->setWrapperPrefix($this->prefixId);
-			//$this->xajax->registerPreFunction("showLoadingAnimation");
-			$this->xajax->register(XAJAX_FUNCTION, array($this->prefixId . '_removeUploadedFile', &$view, 'removeUploadedFile'));
-			$this->xajax->register(XAJAX_FUNCTION, array($this->prefixId . '_validateAjax', &$validator, 'validateAjax'));
-			
-			// Do you wnat messages in the status bar?
-			
-			$this->xajax->setFlag('statusMessages',true);
-			$this->xajax->configure('debug',false);
-			// Turn only on during testing
-			//$this->xajax->debugOff();
-			
-			$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] = $this->xajax->getJavascript(t3lib_extMgm::siteRelPath('xajax'));
-			$this->xajax->processRequest();
-		}
-	}
-
-	/**
 	 * Main method of the dispatcher. This method is called as a user function.
 	 *
 	 * @return string rendered view
@@ -78,24 +41,6 @@ class tx_Formhandler_Dispatcher extends tslib_pibase {
 		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
 
 		Tx_Formhandler_StaticFuncs::$cObj = $this->cObj;
-
-		/*
-		 * set ajax handler:
-		 * 1. Default handler
-		 * 2. TypoScript
-		 */
-		$handler = 'Tx_Formhandler_AjaxHandler_Xajax';
-		if($setup['ajaxHandler']) {
-			$handler = $setup['ajaxHandler'];
-		}
-		
-		$handler = Tx_Formhandler_StaticFuncs::prepareClassName($handler);
-		$handler = $this->componentManager->getComponent($handler);
-		
-		Tx_Formhandler_StaticFuncs::$ajaxHandler = $handler;
-		
-		//handle AJAX stuff
-		$handler->initAjax();
 
 		//init flexform
 		$this->pi_initPIflexForm();

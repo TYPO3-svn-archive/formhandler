@@ -48,6 +48,7 @@
 			<label index="store_gp">Storing GP in session!</label>
 			<label index="subparts_missing">Subparts in template missing! Found: %s</label>
 			<label index="total_steps">Highest step subpart found in template file (number of steps): %s</label>
+			<label index="using_ajax">Using ajax handler "%s"</label>
 			<label index="using_controller">Using controller "%s"</label>
 			<label index="using_prefix">Using prefix for form values: "%s"</label>
 			<label index="using_subpart">Using subpart "%s"!</label>

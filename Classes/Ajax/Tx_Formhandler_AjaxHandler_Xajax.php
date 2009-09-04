@@ -12,12 +12,11 @@ class Tx_Formhandler_AjaxHandler_Xajax extends Tx_Formhandler_AbstractAjaxHandle
 
 			$this->xajax = t3lib_div::makeInstance('tx_xajax');
 			$this->xajax->setFlag('decodeUTF8Input',true);
-			$this->prefixId = 'Tx_Formhandler';
 			$this->xajax->setCharEncoding('utf-8');
 			#$this->xajax->setWrapperPrefix($this->prefixId);
 			//$this->xajax->registerPreFunction("showLoadingAnimation");
-			$this->xajax->register(XAJAX_FUNCTION, array($this->prefixId . '_removeUploadedFile', &$view, 'removeUploadedFile'));
-			$this->xajax->register(XAJAX_FUNCTION, array($this->prefixId . '_validateAjax', &$validator, 'validateAjax'));
+			$this->xajax->register(XAJAX_FUNCTION, array($this->configuration->getPrefixedPackageKey() . '_removeUploadedFile', &$view, 'removeUploadedFile'));
+			$this->xajax->register(XAJAX_FUNCTION, array($this->configuration->getPrefixedPackageKey() . '_validateAjax', &$validator, 'validateAjax'));
 			
 			// Do you wnat messages in the status bar?
 			
@@ -26,7 +25,7 @@ class Tx_Formhandler_AjaxHandler_Xajax extends Tx_Formhandler_AbstractAjaxHandle
 			// Turn only on during testing
 			//$this->xajax->debugOff();
 			
-			$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] = $this->xajax->getJavascript(t3lib_extMgm::siteRelPath('xajax'));
+			$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPrefixedPackageKey()] = $this->xajax->getJavascript(t3lib_extMgm::siteRelPath('xajax'));
 			$this->xajax->processRequest();
 		}
 	}
@@ -34,7 +33,6 @@ class Tx_Formhandler_AjaxHandler_Xajax extends Tx_Formhandler_AbstractAjaxHandle
 	public function fillAjaxMarkers(&$markers) {
 		session_start();
 		$settings = $_SESSION['formhandlerSettings']['settings'];
-
 		$flexformValue = Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], 'required_fields', 'sMISC');
 		if($flexformValue) {
 			$fields = t3lib_div::trimExplode(',', $flexformValue);
@@ -81,8 +79,15 @@ class Tx_Formhandler_AjaxHandler_Xajax extends Tx_Formhandler_AbstractAjaxHandle
 				if(is_array($validatorSettings['config.']['fieldConf.'])) {
 					foreach($validatorSettings['config.']['fieldConf.'] as $fieldname => $fieldSettings) {
 						$replacedFieldname = str_replace('.', '', $fieldname);
-						$markers['###validate_' . $replacedFieldname . '###'] = 'onblur="showLoading(\'' . $replacedFieldname .'\');xajax_' . $this->prefixId . '_validateAjax(\'' . $replacedFieldname . '\', this.value);"';
-						$markers['###loading_' . $replacedFieldname . '###'] = '<span style="display:none" id="loading_' . $replacedFieldname . '"><img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ajax-loader.gif' . ' "/></span>';
+						$markers['###validate_' . $replacedFieldname . '###'] = 'onblur="showLoading(\'' . $replacedFieldname .'\');xajax_' . $this->configuration->getPrefixedPackageKey() . '_validateAjax(\'' . $replacedFieldname . '\', this.value);"';
+						$loadingImg = t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ajax-loader.gif';
+						
+						if($this->settings['images.']['loading']) {
+							$loadingImg = $this->settings['images.']['loading'];
+						} elseif($this->settings['images.']['loading.']) {
+							$loadingImg = $this->cObj->cObjGetSingle($this->settings['images.']['loading'], $this->settings['images.']['loading.']);
+						}
+						$markers['###loading_' . $replacedFieldname . '###'] = '<span style="display:none" id="loading_' . $replacedFieldname . '"><img src="' . $loadingImg . ' "/></span>';
 					}
 				}
 			}
@@ -103,7 +108,7 @@ class Tx_Formhandler_AjaxHandler_Xajax extends Tx_Formhandler_AbstractAjaxHandle
 						$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
 					}
-					if(t3lib_extMgm::isLoaded('xajax') && $settings['files.']['enableAjaxFileRemoval']) {
+					if(t3lib_extMgm::isLoaded('xajax') && $this->settings['enableAjaxFileRemoval']) {
 						$text = 'X';
 						if($settings['files.']['customRemovalText']) {
 							if($settings['files.']['customRemovalText.']) {
@@ -116,7 +121,7 @@ class Tx_Formhandler_AjaxHandler_Xajax extends Tx_Formhandler_AbstractAjaxHandle
 						$link= '<a 
 								href="javascript:void(0)" 
 								class="formhandler_removelink" 
-								onclick="xajax_' . $this->prefixId . '_removeUploadedFile(\'' . $field . '\',\'' . $fileInfo['uploaded_name'] . '\')"
+								onclick="xajax_' . $this->configuration->getPrefixedPackageKey() . '_removeUploadedFile(\'' . $field . '\',\'' . $fileInfo['uploaded_name'] . '\')"
 								>' . $text . '</a>';
 						$filename .= $link;
 						$thumb .= $link;

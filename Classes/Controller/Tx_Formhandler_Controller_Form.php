@@ -682,6 +682,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		//set debug mode
 		$this->debugMode = ($this->settings['debug'] == '1') ? TRUE : FALSE;
+		
+		if(!$this->debugMode && t3lib_div::_GP('debug') === '1') {
+			$this->debugMode = TRUE;
+		}
+		
 		$_SESSION['formhandlerSettings']['debugMode'] = $this->debugMode;
 		Tx_Formhandler_StaticFuncs::debugBeginSection('init_values');
 		$this->loadGP();
@@ -695,6 +700,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		//set debug mode again cause it may have changed in specific step settings
 		$this->debugMode = ($this->settings['debug'] == '1') ? TRUE : FALSE;
+		
+		if(!$this->debugMode && t3lib_div::_GP('debug') === '1') {
+			$this->debugMode = TRUE;
+		}
+		
 		$_SESSION['formhandlerSettings']['debugMode'] = $this->debugMode;
 		
 		Tx_Formhandler_StaticFuncs::debugMessage('using_prefix', $this->formValuesPrefix);
@@ -706,6 +716,21 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 
 		Tx_Formhandler_StaticFuncs::debugMessage('using_view', $viewClass);
+		
+		//init ajax
+		$ajaxHandler = $this->settings['ajax.']['class'];
+		if(!$ajaxHandler) {
+			$ajaxHandler = 'Tx_Formhandler_AjaxHandler_Xajax';
+		}
+		Tx_Formhandler_StaticFuncs::debugMessage('using_ajax', $ajaxHandler);
+		$ajaxHandler = Tx_Formhandler_StaticFuncs::prepareClassName($ajaxHandler);
+		$ajaxHandler = $this->componentManager->getComponent($ajaxHandler);
+		
+		Tx_Formhandler_StaticFuncs::$ajaxHandler = $ajaxHandler;
+		
+		
+		$ajaxHandler->init($this->settings['ajax.']['config.']);
+		$ajaxHandler->initAjax();
 		
 		Tx_Formhandler_StaticFuncs::debugEndSection();
 		Tx_Formhandler_StaticFuncs::debugBeginSection('current_gp');

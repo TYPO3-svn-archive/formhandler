@@ -43,6 +43,11 @@ abstract class Tx_Formhandler_AbstractAjaxHandler {
 	
 	abstract public function initAjax();
 	
+	public function init($settings) {
+		
+		$this->settings = $settings;
+	}
+	
 	abstract public function fillAjaxMarkers(&$markers);
 	
 	
