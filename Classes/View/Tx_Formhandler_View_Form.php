@@ -757,15 +757,15 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				}
 			} elseif(strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error_' . $field))) > 0) {
 				$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error_' . $field));
-			} elseif (strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error'))) > 0) {
-				$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error'));
-			} elseif($this->settings['isErrorMarker.']['global']) {
-				if($this->settings['isErrorMarker.']['global.']) {
-					$errorMessage = $this->cObj->cObjGetSingle($this->settings['isErrorMarker.']['global'], $this->settings['isErrorMarker.']['global.']);
+			} elseif($this->settings['isErrorMarker.']['default']) {
+				if($this->settings['isErrorMarker.']['default.']) {
+					$errorMessage = $this->cObj->cObjGetSingle($this->settings['isErrorMarker.']['default'], $this->settings['isErrorMarker.']['default.']);
 				} else {
-					$errorMessage = $this->settings['isErrorMarker.']['global'];
+					$errorMessage = $this->settings['isErrorMarker.']['default'];
 				}
-			}
+			} elseif (strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error_default'))) > 0) {
+				$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error_default'));
+			} 
 			$markers['###is_error_' . $field . '###'] = $errorMessage;
 		}
 		if($this->settings['isErrorMarker.']['global']) {
