@@ -172,10 +172,11 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
 			$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
 		} else {*/
-			require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/class.formhandler_htmlmail.php');
-			$emailObj = t3lib_div::makeInstance('formhandler_htmlmail');
+			//require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/class.formhandler_htmlmail.php');
+			//$emailObj = t3lib_div::makeInstance('formhandler_htmlmail');
 		//}
-		
+		require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
+		$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
 		$emailObj->start();
 
 		//set e-mail options

@@ -7,7 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_tabs_tab">Formhandler</label>
-			<label index="mlang_labels_tabdescr">MyDescription</label>
+			<label index="mlang_labels_tabdescr">The swiss army knife for all kinds of mailforms.</label>
 			<label index="mlang_labels_tablabel">Formhandler</label>
 		</languageKey>
 	</data>
