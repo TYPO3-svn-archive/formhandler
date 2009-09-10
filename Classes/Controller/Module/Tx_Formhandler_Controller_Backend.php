@@ -824,7 +824,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$markers['###ROW_STYLE###'] = $style;
 			$markers['###PID###'] = $record['pid'];
 			$markers['###SUBMISSION_DATE###'] = date('Y/m/d H:i', $record['crdate']);
-			$markers['###IP###'] = $_SERVER['REMOTE_ADDR'];
+			$markers['###IP###'] = $record['ip'];
 			$markers['###DETAIL_LINK###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $record['uid'] . '"><img ' . t3lib_iconWorks::skinImg('../../../../../../typo3/', 'gfx/zoom.gif') . '/></a>';
 			$markers['###EXPORT_LINKS###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $record['uid'] . '&formhandler[renderMethod]=pdf">PDF</a>
 						/<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $record['uid'] . '&formhandler[renderMethod]=csv">CSV</a>';
