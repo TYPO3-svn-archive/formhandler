@@ -453,7 +453,10 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @return void
 	 */
 	protected function init() {
-		$this->langFile = Tx_Formhandler_StaticFuncs::readLanguageFile($this->settings['langFile'], $this->settings);
+		$this->langFile = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->settings['langFile'], $this->settings);
+		if(is_array($this->langFile)) {
+			$this->langFile = $this->langFile[0];
+		}
 	}
 
 	/**
