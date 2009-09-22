@@ -36,10 +36,9 @@ class Tx_Formhandler_ErrorCheck_BetweenValue extends Tx_Formhandler_AbstractErro
 		$min = $check['params']['minValue'];
 		$max = $check['params']['maxValue'];
 		if(	isset($gp[$name]) &&
-		!empty($gp[$name]) &&
-		!empty($min) &&
-		!empty($max) &&
-		(!t3lib_div::testInt($gp[$name]) || intVal($gp[$name]) < $min || intVal($gp[$name]) > $max)) {
+			(!t3lib_div::testInt($gp[$name]) || 
+			intVal($gp[$name]) < intVal($min) || 
+			intVal($gp[$name]) > intVal($max))) {
 				
 			$checkFailed = $this->getCheckFailed($check);
 		}
