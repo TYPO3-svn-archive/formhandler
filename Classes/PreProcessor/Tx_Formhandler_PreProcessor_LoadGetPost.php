@@ -26,14 +26,12 @@ class Tx_Formhandler_PreProcessor_LoadGetPost extends Tx_Formhandler_AbstractPre
 	/**
 	 * Main method called by the controller.
 	 *
-	 * @param array $gp The current GET/POST parameters
-	 * @param array $settings The settings for the logger
 	 * @return array The probably modified GET/POST parameters
 	 */
-	public function process(&$gp, $settings) {
-		$this->gp = $gp;
+	public function process() {
+
 		
-		$this->formValuesPrefix = $settings['formValuesPrefix'];
+		$this->formValuesPrefix = $this->settings['formValuesPrefix'];
 		
 		$loadedGP = $this->loadGP();
 		

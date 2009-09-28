@@ -43,64 +43,22 @@ class Tx_Formhandler_Finisher_Confirmation extends Tx_Formhandler_AbstractFinish
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-
+		
 		//set session value to prevent another validation or finisher circle. Formhandler will call only this Finisher if the user reloads the page.
 		session_start();
 		$_SESSION['submitted_ok'] = 1;
-
-		//read template file
-		if(!$this->templateFile) {
-			if (!isset($this->settings['templateFile'])) {
-				Tx_Formhandler_StaticFuncs::debugArray($this->settings);
-				Tx_Formhandler_StaticFuncs::throwException('no_config_confirmation', 'Tx_Formhandler_Finisher_Confirmation', 'templateFile');
-			}
-			$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->settings['templateFile'], $this->settings);
+		
+		$action = $this->gp['action'];
+		if($action) {
+			$this->processAction($action);
 		}
 
+		//read template file
+		$this->templateFile = Tx_Formhandler_Globals::$templateCode;
+		
 		//set view
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_Confirmation');
 			
-		//render pdf
-		if(!strcasecmp($this->gp['renderMethod'], 'pdf')) {
-				
-			//set language file
-			$langFile = Tx_Formhandler_StaticFuncs::readLanguageFile(NULL, $this->settings);
-			$generatorClass = $this->settings['pdf.']['class'];
-			if(!$generatorClass) {
-				$generatorClass = 'Tx_Formhandler_Generator_PDF';
-			}
-			$generatorClass = Tx_Formhandler_StaticFuncs::prepareClassName($generatorClass);
-			$generator = $this->componentManager->getComponent($generatorClass);
-			$exportFields = array();
-			if($this->settings['pdf.']['exportFields']) {
-				$exportFields = t3lib_div::trimExplode(',', $this->settings['pdf.']['exportFields']);
-			}
-			$file = "";
-			if($this->settings['pdf.']['export2File']) {
-				//tempnam seems to be buggy and insecure
-				//$file = tempnam("typo3temp/","/formhandler_").".pdf";
-
-				//using random numbered file for now
-				$file = 'typo3temp/formhandler__' . rand(0,getrandmax()) . '.pdf';
-			}
-			$generator->setTemplateCode($this->templateFile);
-			$generator->generateFrontendPDF($this->gp, $langFile, $exportFields, $file);
-				
-			//render csv
-		} elseif(!strcasecmp($this->gp['renderMethod'],"csv")) {
-			$generatorClass = $this->settings['csv.']['class'];
-			if(!$generatorClass) {
-				$generatorClass = 'Tx_Formhandler_Generator_CSV';
-			}
-			$generatorClass = Tx_Formhandler_StaticFuncs::prepareClassName($generatorClass);
-			$generator = $this->componentManager->getComponent($generatorClass);
-			$exportFields = array();
-			if($this->settings['csv.']['exportFields']) {
-				$exportFields = t3lib_div::trimExplode(',', $this->settings['csv.']['exportFields']);
-			}
-			$generator->generateFrontendCSV($this->gp, $exportFields);
-		}
-
 		//show TEMPLATE_CONFIRMATION
 		$view->setTemplate($this->templateFile, ('CONFIRMATION' . $this->settings['templateSuffix']));
 		if(!$view->hasTemplate()) {
@@ -111,7 +69,26 @@ class Tx_Formhandler_Finisher_Confirmation extends Tx_Formhandler_AbstractFinish
 		}
 		
 		$view->setSettings($this->settings);
-		return $view->render($this->gp,array());
+		return $view->render($this->gp, array());
+	}
+	
+	protected function processAction($action) {
+		if(is_array($this->settings['actions.'])) {
+			foreach($this->settings['actions.'] as $key=>$options) {
+				if(strpos($key, '.') !== FALSE) {
+					$currentAction = str_replace('.', '', $key);
+					if($currentAction === $action) {
+						$class = $options['class'];
+						if($class) {
+							$class = Tx_Formhandler_StaticFuncs::prepareClassName($class);
+							$object = $this->componentManager->getComponent($class);
+							$object->init($this->gp, $options['config.']);
+							$object->process();
+						}
+					}
+				}
+			}
+		}
 	}
 
 }

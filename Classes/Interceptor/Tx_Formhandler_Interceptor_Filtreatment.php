@@ -26,13 +26,13 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 	/**
 	 * The main method called by the controller
 	 *
-	 * @param array $gp The GET/POST parameters
-	 * @param array $settings The defined TypoScript settings for the finisher
 	 * @return array The probably modified GET/POST parameters
 	 */
-	public function process($gp, $settings) {
-
-		return $this->sanitizeValues($gp);
+	public function process() {
+		
+		$this->gp = $this->sanitizeValues($this->gp);
+		
+		return $this->gp;
 	}
 
 	/**
@@ -46,14 +46,16 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 		if(!is_array($values)) {
 			return array();
 		}
-
-		require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/filtreatment/Filtreatment.php');
+		
+		if(!class_exists('Filtreatment')) {
+			require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/filtreatment/Filtreatment.php');
+		}
 		$filter = new Filtreatment();
 		foreach ($values as $key => $value) {
 			if(is_array($value)) {
 				$sanitizedArray[$key] = $this->sanitizeValues($value);
 			} elseif(!empty($value)) {
-
+				
 				$value = str_replace("\t", '', $value);
 				$isUTF8 = true;
 				if(!$this->isUTF8($value)) {
@@ -63,6 +65,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 				if(!$isUTF8) {
 					$value = utf8_encode($value);
 				}
+				
 				$value = $filter->ft_xss($value, 'UTF-8');
 
 				if(!$isUTF8) {

@@ -69,15 +69,9 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	/**
 	 * The main method called by the controller
 	 *
-	 * @param array $gp The GET/POST parameters
-	 * @param array $settings The defined TypoScript settings for the finisher
 	 * @return array The probably modified GET/POST parameters
 	 */
-	public function process($gp, $settings) {
-		$this->gp = $gp;
-		$this->settings = $settings;
-
-
+	public function process() {
 		$ipTimebaseValue = $this->settings['ip.']['timebase.']['value'];
 		$ipTimebaseUnit = $this->settings['ip.']['timebase.']['unit'];
 		$ipMaxValue = $this->settings['ip.']['threshold'];

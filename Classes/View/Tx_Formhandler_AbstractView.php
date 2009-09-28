@@ -138,7 +138,7 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 		parent::__construct();
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
-		$this->cObj = Tx_Formhandler_StaticFuncs::$cObj;
+		$this->cObj = Tx_Formhandler_Globals::$cObj;
 		$this->typolinkConf['parameter.']['current'] = 1;
 		$this->typolinkConf['additionalParams'] = $this->cObj->stdWrap($typolinkConf['additionalParams'], $typolinkConf['additionalParams.']);
 		unset($this->typolinkConf['additionalParams.']);
@@ -153,8 +153,8 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	 * @param string $langFile The file path
 	 * @return void
 	 */
-	public function setLangFile($langFile) {
-		$this->langFile = $langFile;
+	public function setLangFiles($langFiles) {
+		$this->langFiles = $langFiles;
 	}
 
 	/**

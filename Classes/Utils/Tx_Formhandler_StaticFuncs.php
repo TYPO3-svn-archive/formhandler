@@ -24,24 +24,6 @@
 class Tx_Formhandler_StaticFuncs {
 
 	/**
-	 * The cObj
-	 *
-	 * @access public
-	 * @static
-	 * @var tslib_cObj
-	 */
-	static public $cObj;
-
-	/**
-	 * Identifier of the selected predefined form
-	 *
-	 * @access public
-	 * @static
-	 * @var string
-	 */
-	static public $predefined;
-
-	/**
 	 * Returns the absolute path to the document root
 	 *
 	 * @return string
@@ -138,20 +120,22 @@ class Tx_Formhandler_StaticFuncs {
 		
 		//template file was not set in flexform, search TypoScript for setting
 		if(!$templateFile) {
-
 			$templateFile = $settings['templateFile'];
 			if(isset($settings['templateFile.']) && is_array($settings['templateFile.'])) {
 				$templateFile = Tx_Formhandler_StaticFuncs::$cObj->cObjGetSingle($settings['templateFile'], $settings['templateFile.']);
 			} else {
-				$templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
+				$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
+				$templateFile = t3lib_div::getURL($templateFile);
 			}
 		} else {
 			if(strpos($templateFile, "\n") === FALSE) {
-				$templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
+				$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
+				$templateFile = t3lib_div::getURL($templateFile);
 			}
 		}
 
 		if(!$templateFile) {
+			
 			Tx_Formhandler_StaticFuncs::throwException('no_template_file');
 		}
 		return $templateFile;
@@ -183,6 +167,20 @@ class Tx_Formhandler_StaticFuncs {
 		return $langFiles;
 	}
 	
+	static public function getTranslatedMessage($langFiles, $key) {
+		$message = '';
+		if(!is_array($langFiles)) {
+			$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFiles . ':' . $key));
+		} else {
+			foreach($langFiles as $langFile) {
+				if(strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':' . $key))) > 0) {
+					$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':' . $key));
+				}
+			}
+		}
+		return $message;
+	}
+	
 	/**
 	 * Redirects to a specified page or URL.
 	 *
@@ -201,7 +199,7 @@ class Tx_Formhandler_StaticFuncs {
 				$addparams['L'] = t3lib_div::_GP('L');
 			}
 
-			$url = Tx_Formhandler_StaticFuncs::$cObj->getTypoLink_URL($redirect, $addparams);
+			$url = Tx_Formhandler_Globals::$cObj->getTypoLink_URL($redirect, $addparams);
 
 			//else it may be a full URL
 		} else {
@@ -354,7 +352,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @static
 	 */
 	static public function getFilledLangMarkers(&$template,$langFiles) {
-		$GLOBALS['TSFE']->readLLfile($langFile);
+		//$GLOBALS['TSFE']->readLLfile($langFile);
 		$langMarkers = array();
 		if (is_array($langFiles)) {
 			$aLLMarkerList = array();

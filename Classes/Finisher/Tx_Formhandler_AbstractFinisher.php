@@ -22,81 +22,7 @@
  * @subpackage	Finisher
  * @abstract
  */
-abstract class Tx_Formhandler_AbstractFinisher {
-
-	/**
-	 * The GimmeFive component manager
-	 *
-	 * @access protected
-	 * @var Tx_GimmeFive_Component_Manager
-	 */
-	protected $componentManager;
-
-	/**
-	 * The global Formhandler configuration
-	 *
-	 * @access protected
-	 * @var Tx_Formhandler_Configuration
-	 */
-	protected $configuration;
-
-	/**
-	 * The GET/POST parameters
-	 *
-	 * @access protected
-	 * @var array
-	 */
-	protected $gp;
-
-	/**
-	 * The cObj
-	 *
-	 * @access protected
-	 * @var tslib_cObj
-	 */
-	protected $cObj;
-
-	/**
-	 * The settings array passed to the finisher.
-	 *
-	 * @access protected
-	 * @var array
-	 */
-	protected $settings;
-
-	/**
-	 * The constructor for a finisher setting the component manager, configuration and the repository.
-	 *
-	 * @param Tx_GimmeFive_Component_Manager $componentManager
-	 * @param Tx_Formhandler_Configuration $configuration
-	 * @param Tx_DataProvider_Repository $repository
-	 * @return void
-	 */
-	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration) {
-		$this->componentManager = $componentManager;
-		$this->configuration = $configuration;
-		$this->cObj = Tx_Formhandler_StaticFuncs::$cObj;
-
-	}
-
-	/**
-	 * The main method called by the controller
-	 *
-	 * @return array The probably modified GET/POST parameters
-	 */
-	abstract public function process();
-
-	/**
-	 * Method to set GET/POST for this class and load the configuration
-	 *
-	 * @param array The GET/POST values
-	 * @param array The TypoScript configuration
-	 * @return void
-	 */
-	public function loadConfig($gp, $tsConfig) {
-		$this->settings = $tsConfig;
-		$this->gp = $gp;
-	}
+abstract class Tx_Formhandler_AbstractFinisher extends Tx_Formhandler_AbstractComponent {
 
 	/**
 	 * Method to define whether the config is valid or not. If no, display a warning on the frontend.
@@ -105,6 +31,10 @@ abstract class Tx_Formhandler_AbstractFinisher {
 	 */
 	public function validateConfig() {
 
+	}
+	
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
 	}
 
 }

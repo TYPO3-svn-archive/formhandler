@@ -50,7 +50,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 	 * @param array The TypoScript configuration
 	 * @return void
 	 */
-	public function loadConfig($gp, $tsConfig) {
+	public function init($gp, $tsConfig) {
 		$this->settings = $tsConfig;
 
 		$flexformValue = Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], 'required_fields', 'sMISC');

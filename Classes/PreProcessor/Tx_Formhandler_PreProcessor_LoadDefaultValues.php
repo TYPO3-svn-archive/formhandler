@@ -46,10 +46,10 @@
 
 class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_AbstractPreProcessor {
 
-	public function process(&$gp, $settings) {
-		$this->gp = $gp;
+	public function process() {
+		
 
-		foreach ($settings as $step => $stepSettings){
+		foreach ($this->settings as $step => $stepSettings){
 			$step= preg_replace('/\.$/', '', $step);
 
 			if ($step == 1){

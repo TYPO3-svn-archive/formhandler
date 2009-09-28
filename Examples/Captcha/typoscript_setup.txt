@@ -12,7 +12,7 @@ plugin.Tx_Formhandler.settings.predef.captcha_example {
 	# Cummon configuration
 	name = Example Captcha
 	templateFile = EXT:formhandler/Examples/Captcha/template.html
-	langFile = EXT:formhandler/Examples/Captcha/lang.xml
+	langFile.1 = EXT:formhandler/Examples/Captcha/lang.xml
 	stylesheetFile = EXT:formhandler/Examples/Captcha/styles.css
 	formValuesPrefix = formhandler
 	addErrorAnchors = 1

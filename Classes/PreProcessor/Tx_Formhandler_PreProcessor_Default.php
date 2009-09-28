@@ -26,12 +26,10 @@ class Tx_Formhandler_PreProcessor_Default extends Tx_Formhandler_AbstractPreProc
 	/**
 	 * Main method called by the controller.
 	 *
-	 * @param array $gp The current GET/POST parameters
-	 * @param array $settings The settings for the logger
 	 * @return array The probably modified GET/POST parameters
 	 */
-	public function process(&$gp, $settings) {
-		$this->gp = $gp;
+	public function process() {
+
 		return $this->gp;
 	}
 

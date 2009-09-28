@@ -395,7 +395,7 @@ public function ft_xss($str, $charset = 'ISO-8859-1') {
     *
     */		
     $str = preg_replace('#<(/*\s*)(alert|applet|basefont|base|behavior|bgsound|blink|body|embed|expression|form|frameset|frame|head|html|ilayer|iframe|input|layer|link|meta|object|plaintext|style|script|textarea|title|xml|xss)([^>]*)>#is', "&lt;\\1\\2\\3&gt;", $str);
-            
+         //print '<pre>' . $str . '</pre><br />';  
     /*
     * Sanitize naughty scripting elements
     *

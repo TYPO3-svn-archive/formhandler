@@ -77,8 +77,6 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 */
 	public function process() {
 
-		$this->init();
-
 		//send emails
 		$this->sendMail('admin');
 		$this->sendMail('user');
@@ -95,10 +93,10 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function parseTemplate($mode, $suffix) {
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_Mail');
-		$view->setLangFile($this->langFile);
+		$view->setLangFiles(Tx_Formhandler_Globals::$langFiles);
 		$view->setPredefined($this->predefined);
 		
-		$templateCode = Tx_Formhandler_StaticFuncs::readTemplateFile($this->settings['templateFile'], $this->settings);
+		$templateCode = Tx_Formhandler_Globals::$templateCode;
 		$view->setTemplate($templateCode, ('EMAIL_' . strtoupper($mode) . '_' . strtoupper($suffix) . $this->settings['templateSuffix']));
 		if(!$view->hasTemplate()) {
 			$view->setTemplate($templateCode, ('EMAIL_' . strtoupper($mode) . '_' . strtoupper($suffix)));
@@ -147,6 +145,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @return void
 	 */
 	protected function sendMail($type) {
+		
 		$doSend = true;
 		if($this->settings[$type]['disable'] == '1') {
 			Tx_Formhandler_StaticFuncs::debugMessage('mail_disabled', $type);
@@ -164,64 +163,88 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		}
 
 		//init mailer object
-		//$version = TYPO3_version;
-		//$version = preg_replace('/[a-zA-Z]*[0-9]{0,1}$/','',$version);
-		
-		/*if(version_compare($version, '4.3.0', '>=')) {
-			
-			require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
-			$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
-		} else {*/
-			//require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/class.formhandler_htmlmail.php');
-			//$emailObj = t3lib_div::makeInstance('formhandler_htmlmail');
-		//}
-		require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
-		$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
-		$emailObj->start();
+		$emailClass = $this->settings['mailer.']['class'];
+		if(!$emailClass) {
+			$emailClass = 'Tx_Formhandler_Mailer_HtmlMail';
+		}
+		$emailClass = Tx_Formhandler_StaticFuncs::prepareClassName($emailClass);
+		$emailObj = $this->componentManager->getComponent($emailClass);
+		$emailObj->init($this->gp, $this->settings['mailer.']['config.']);
+		#print_r($emailObj);
 
 		//set e-mail options
-		$emailObj->subject = $mailSettings['subject'];
+		$emailObj->setSubject($mailSettings['subject']);
 
 		$sender = $mailSettings['sender_email'];
 		if(isset($mailSettings['sender_email']) && is_array($mailSettings['sender_email'])) {
 			$sender = implode(',', $mailSettings['sender_email']);
 		}
-		$emailObj->from_email = $sender;
-		$emailObj->from_name = $mailSettings['sender_name'];
+		
+		$senderName = $mailSettings['sender_name'];
+		if(isset($mailSettings['sender_name']) && is_array($mailSettings['sender_name'])) {
+			$senderName = implode(',', $mailSettings['sender_name']);
+		}
+		
+		$emailObj->setSender($sender, $senderName);
 
 		$replyto = $mailSettings['replyto_email'];
 		if(isset($mailSettings['replyto_email']) && is_array($mailSettings['replyto_email'])) {
 			$replyto = implode(',', $mailSettings['replyto_email']);
 		}
-		$emailObj->replyto_email = $replyto;
-		$emailObj->replyto_name = $mailSettings['replyto_name'];
+		
+		$replytoName = $mailSettings['replyto_name'];
+		if(isset($mailSettings['replyto_name']) && is_array($mailSettings['replyto_name'])) {
+			$replytoName = implode(',', $mailSettings['replyto_name']);
+		}
+		$emailObj->setReplyTo($replyto, $replytoName);
 		
 		$cc = $mailSettings['cc_email'];
-		if(isset($mailSettings['cc_email']) && is_array($mailSettings['cc_email'])) {
-			$cc = implode(',', $mailSettings['cc_email']);
+		if(!is_array($cc)) {
+			$cc = array($cc);
 		}
-		if($mailSettings['cc_name']) {
-			$cc = $mailSettings['cc_name'] . ' <' . $cc . '>'; 
+		
+		$ccName = $mailSettings['cc_name'];
+		if(!is_array($ccName)) {
+			$ccName = array($ccName);
 		}
-		$emailObj->recipient_copy = $cc;
+		foreach($cc as $key => $email) {
+			$name = '';
+			if(isset($ccName[$key])) {
+				$name = $ccName[$key];
+			}
+			if(strlen($email) > 0) {
+				$emailObj->addCc($email, $name);
+			}
+		}
 		
 		$bcc = $mailSettings['bcc_email'];
-		if(isset($mailSettings['bcc_email']) && is_array($mailSettings['bcc_email'])) {
-			$bcc = implode(',', $mailSettings['bcc_email']);
+		if(!is_array($bcc)) {
+			$bcc = array($bcc);
 		}
-		if($mailSettings['bcc_name']) {
-			$bcc = $mailSettings['bcc_name'] . ' <' . $bcc . '>'; 
+		
+		$bccName = $mailSettings['bcc_name'];
+		if(!is_array($bccName)) {
+			$bccName = array($bccName);
 		}
-		$emailObj->recipient_blindcopy = $bcc;
+		foreach($bcc as $key => $email) {
+			$name = '';
+			if(isset($bccName[$key])) {
+				$name = $bccName[$key];
+			}
+			if(strlen($email) > 0) {
+				$emailObj->addBcc($email, $name);
+			}
+		}
 		
 		$returnPath = $mailSettings['return_path'];
 		if(isset($mailSettings['return_path']) && is_array($mailSettings['return_path'])) {
 			$returnPath = implode(',', $mailSettings['return_path']);
 		}
-		$emailObj->returnPath = $returnPath;
+		
+		$emailObj->setReturnPath($returnPath);
 		
 		if($mailSettings['email_header']) {
-			$emailObj->additionalHeaders = $mailSettings['header'];
+			$emailObj->addHeader($mailSettings['header']);
 		}
 		
 		if(strlen(trim($template['plain'])) > 0) {
@@ -278,12 +301,12 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
 		//send e-mails
 		foreach($mailSettings['to_email'] as $mailto) {
-
+			$sent = FALSE;
 			if($count < $max) {
 				if (strstr($mailto, '@') && !eregi("\r", $mailto) && !eregi("\n", $mailto)) {
-					$sent = false;
+					
 					if($doSend) {
-						$emailObj->recipient = $mailto;
+						
 						$sent = $emailObj->send($mailto);
 					}
 				}
@@ -291,29 +314,22 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			}
 			if($sent) {
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_sent', $mailto);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', ($emailObj->from_name . ' &lt;' . $emailObj->from_email . '&gt;'), false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_replyto', ($emailObj->replyto_name . ' &lt;' . $emailObj->replyto_email . '&gt;'), false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_returnpath', $emailObj->returnPath, false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_cc', $emailObj->recipient_copy, false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_bcc', $emailObj->recipient_blindcopy, false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_plain', $template['plain'], false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_html', $template['html'], false);
 			} else {
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_not_sent',$mailto);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', ($emailObj->from_name . ' &lt;' . $emailObj->from_email . '&gt;'), false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_replyto', ($emailObj->replyto_name . ' &lt;' . $emailObj->replyto_email . '&gt;'), false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_returnpath', $emailObj->returnPath, false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_cc', str_replace('>', '&gt;', str_replace('<', '&lt;', $emailObj->recipient_copy)), false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_bcc', str_replace('>', '&gt;', str_replace('<', '&lt;', $emailObj->recipient_blindcopy)), false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_plain', $template['plain'], false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_html', $template['html'], false);
 			}
+			Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->getSubject());
+			Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', $emailObj->getSender());
+			Tx_Formhandler_StaticFuncs::debugMessage('mail_replyto', $emailObj->getReplyTo());
+			Tx_Formhandler_StaticFuncs::debugMessage('mail_returnpath', $emailObj->returnPath);
+			Tx_Formhandler_StaticFuncs::debugMessage('mail_cc', implode('<br />', $emailObj->getCc()));
+			Tx_Formhandler_StaticFuncs::debugMessage('mail_bcc', implode('<br />', $emailObj->getBcc()));
+			Tx_Formhandler_StaticFuncs::debugMessage('mail_plain', $template['plain']);
+			Tx_Formhandler_StaticFuncs::debugMessage('mail_html', $template['html']);
 		}
 		if($tmphtml) {
 			unlink($tmphtml);
 		}
+		
 	}
 
 	/**
@@ -449,28 +465,16 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	}
 
 	/**
-	 * Inits the finisher mapping settings values to internal attributes.
-	 *
-	 * @return void
-	 */
-	protected function init() {
-		$this->langFile = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->settings['langFile'], $this->settings);
-		if(is_array($this->langFile)) {
-			$this->langFile = $this->langFile[0];
-		}
-	}
-
-	/**
 	 * Method to set GET/POST for this class and load the configuration
 	 *
 	 * @param array The GET/POST values
 	 * @param array The TypoScript configuration
 	 * @return void
 	 */
-	public function loadConfig($gp,$tsConfig) {
+	public function init($gp,$tsConfig) {
 		$this->gp = $gp;
 		$this->settings = $tsConfig;
-		$this->init();
+		
 		$this->settings = $this->parseEmailSettings($tsConfig);
 
 		// Defines default values
@@ -579,29 +583,20 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 						break;
 
 					case 'attachPDF':
+						
 						if(isset($currentSettings['attachPDF.']) && is_array($currentSettings['attachPDF.'])) {
+							
 							$generatorClass = $currentSettings['attachPDF.']['class'];
-							if(!$generatorClass) {
-								$generatorClass = 'Tx_Formhandler_Generator_PDF';
+							if($generatorClass) {
+								
+							
+								$generatorClass = Tx_Formhandler_StaticFuncs::prepareClassName($generatorClass);
+								$generator = $this->componentManager->getComponent($generatorClass);
+								$generator->init($this->gp, $currentSettings['attachPDF.']['config.']);
+								$file = $generator->process();
+								unset($currentSettings['attachPDF.']);
+								$emailSettings['attachPDF'] = $file;
 							}
-							$generatorClass = Tx_Formhandler_StaticFuncs::prepareClassName($generatorClass);
-							$generator = $this->componentManager->getComponent($generatorClass);
-							$exportFields = array();
-							if($emailSettings['attachPDF.']['exportFields']) {
-								$exportFields = t3lib_div::trimExplode(',', $currentSettings['attachPDF.']['exportFields']);
-							}
-							$prefix = 'formhandler_';
-							if(isset($emailSettings['filePrefix.']['pdf'])) {
-								$prefix = $emailSettings['filePrefix.']['pdf'];
-							} elseif(isset($emailSettings['filePrefix'])) {
-								$prefix = $emailSettings['filePrefix'];
-							}
-							$file = tempnam('typo3temp/', '/'. $prefix) . '.pdf';
-							$file = str_replace('.tmp', '', $file);
-							$templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->settings['templateFile'], $this->settings);
-							$generator->setTemplateCode($templateFile);
-							$generator->generateFrontendPDF($this->gp, $this->langFile, $exportFields, $file, true);
-							$emailSettings['attachPDF'] = $file;
 						} elseif ($currentSettings['attachPDF']) {
 							$emailSettings['attachPDF'] = $currentSettings['attachPDF'];
 						}

@@ -102,9 +102,6 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		if($evaluation) {
 			Tx_Formhandler_StaticFuncs::debugMessage('data_stored');
 				
-			//initialize
-			$this->init();
-				
 			//set fields to insert/update
 			$queryFields = $this->parseFields();
 				
@@ -193,8 +190,9 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	 *
 	 * @return void
 	 */
-	protected function init() {
-
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		
 		//make cObj instance
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
 		$this->cObj->setCurrentVal($GLOBALS['TSFE']->id);

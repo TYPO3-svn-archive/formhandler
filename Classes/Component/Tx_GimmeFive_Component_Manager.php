@@ -265,7 +265,7 @@ class Tx_GimmeFive_Component_Manager {
 	 * @author adapted for TYPO3v4 by Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function getComponentScope($componentName, $componentConfiguration) {
-		$scope = !is_null($componentConfiguration['scope']) ? $componentConfiguration['scope'] : 'singleton';		
+		$scope = !is_null($componentConfiguration['scope']) ? $componentConfiguration['scope'] : 'prototype';		
 		return $scope;
 	}
 	

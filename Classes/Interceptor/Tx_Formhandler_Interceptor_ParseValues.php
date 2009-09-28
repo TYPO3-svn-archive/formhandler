@@ -27,12 +27,9 @@ class Tx_Formhandler_Interceptor_ParseValues extends Tx_Formhandler_AbstractInte
 	/**
 	 * The main method called by the controller
 	 *
-	 * @param array $gp The GET/POST parameters
-	 * @param array $settings The defined TypoScript settings for the interceptor
 	 * @return array The probably modified GET/POST parameters
 	 */
-	public function process($gp, $settings) {
-		$this->gp = $gp;
+	public function process() {
 
 		//parse as float
 		$fields = t3lib_div::trimExplode(',', $settings['parseFloatFields'], true);

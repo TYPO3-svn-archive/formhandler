@@ -26,12 +26,9 @@ class Tx_Formhandler_Interceptor_Default extends Tx_Formhandler_AbstractIntercep
 	/**
 	 * The main method called by the controller
 	 *
-	 * @param array $gp The GET/POST parameters
-	 * @param array $settings The defined TypoScript settings for the finisher
 	 * @return array The probably modified GET/POST parameters
 	 */
-	public function process($gp, $settings) {
-		$this->gp = $gp;
+	public function process() {
 
 		return $this->gp;
 	}

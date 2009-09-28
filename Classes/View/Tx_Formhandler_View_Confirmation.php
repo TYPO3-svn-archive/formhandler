@@ -46,28 +46,19 @@ class Tx_Formhandler_View_Confirmation extends Tx_Formhandler_View_Form {
 		}
 		$markers['###PRINT_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $params);
 		unset($params['type']);
-		if($this->settings['formValuesPrefix']) {
-			$params[$this->settings['formValuesPrefix']]['renderMethod'] = 'pdf';
-		} else {
-			$params['renderMethod'] = 'pdf';
-		}
 		
-		$label = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':pdf'));
-		if(strlen($label) == 0) {
-			$label = 'pdf';
+		if($this->settings['actions.']) {
+			foreach($this->settings['actions.'] as $action=>$options) {
+				$sanitizedAction = str_replace('.', '', $action);
+				$class = $options['class'];
+				if($class) {
+					$class = Tx_Formhandler_StaticFuncs::prepareClassName($class);
+					$generator = $this->componentManager->getComponent($class);
+					$generator->init($this->gp, $options['config.']);
+					$markers['###' . strtoupper($sanitizedAction) . '_LINK###'] = $generator->getLink($params);
+				}
+			}
 		}
-		$markers['###PDF_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $params);
-		if($this->settings['formValuesPrefix']) {
-			$params[$this->settings['formValuesPrefix']]['renderMethod'] = 'csv';
-		} else {
-			$params['renderMethod'] = 'csv';
-		}
-		
-		$label = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':csv'));
-		if(strlen($label) == 0) {
-			$label = 'csv';
-		}
-		$markers['###CSV_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $params);
 		
 		$this->fillFEUserMarkers($markers);
 		$this->fillFileMarkers($markers);

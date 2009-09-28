@@ -21,7 +21,7 @@
  * @package	Tx_Formhandler
  * @subpackage	Logger
  */
-class Tx_Formhandler_Logger_DB {
+class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 
 	/**
 	 * Logs the given values.
@@ -30,7 +30,7 @@ class Tx_Formhandler_Logger_DB {
 	 * @param array $settings The settings for the logger
 	 * @return void
 	 */
-	public function log(&$gp, $settings) {
+	public function process() {
 
 		//set params
 		$table = "tx_formhandler_log";
@@ -42,10 +42,9 @@ class Tx_Formhandler_Logger_DB {
 		$fields['tstamp'] = time();
 		$fields['crdate'] = time();
 		$fields['pid'] = $GLOBALS['TSFE']->id;
-		$keys = array_keys($gp);
-		ksort($gp);
-		sort($keys);
-		$serialized = serialize($gp);
+		ksort($this->gp);
+		$keys = array_keys($this->gp);
+		$serialized = serialize($this->gp);
 		$hash = hash("md5",serialize($keys));
 		$fields['params'] = $serialized;
 		$fields['key_hash'] = $hash;

@@ -40,13 +40,9 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 	/**
 	 * The main method called by the controller
 	 *
-	 * @param array $gp The GET/POST parameters
-	 * @param array $settings The defined TypoScript settings for the finisher
 	 * @return array The probably modified GET/POST parameters
 	 */
-	public function process($gp, $settings) {
-		$this->gp = $gp;
-		$this->settings = $settings;
+	public function process() {
 		$isSpam = $this->doCheck();
 		if($isSpam) {
 			$this->log();
@@ -54,10 +50,10 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 				Tx_Formhandler_Staticfuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl']);
 			} else {
 				$view = $this->componentManager->getComponent('Tx_Formhandler_View_AntiSpam');
-				$view->setLangFile($this->langFile);
+				$view->setLangFiles(Tx_Formhandler_Globals::$langFiles);
 				$view->setPredefined($this->predefined);
 				
-				$templateCode = $this->getTemplate();
+				$templateCode = Tx_Formhandler_Globals::$templateCode;
 				$view->setTemplate($templateCode, 'ANTISPAM');
 				if(!$view->hasTemplate()) {
 					Tx_Formhandler_StaticFuncs::throwException('spam_detected');
@@ -72,23 +68,6 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 		}
 		
 		return $this->gp;
-	}
-	
-	/**
-	 * Loads the template file.
-	 *
-	 * @return string The template code
-	 */
-	protected function getTemplate() {
-		$templateFile = $this->settings['templateFile'];
-		if(isset($this->settings['templateFile.']) && is_array($this->settings['templateFile.'])) {
-			$templateFile = $this->cObj->cObjGetSingle($this->settings['templateFile'], $this->settings['templateFile.']);
-		} else {
-			$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
-		}
-		$template = t3lib_div::getURL($templateFile);
-		
-		return $template;
 	}
 	
 	/**

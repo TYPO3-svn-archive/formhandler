@@ -5,7 +5,7 @@ plugin.Tx_Formhandler.settings.predef.singlestep_example {
 	debug = 0
 	addErrorAnchors = 1
 	templateFile = EXT:formhandler/Examples/SingleStep/template.html
-	langFile = EXT:formhandler/Examples/SingleStep/lang.xml
+	langFile.1 = EXT:formhandler/Examples/SingleStep/lang.xml
 	stylesheetFile = EXT:formhandler/Examples/SingleStep/styles.css
 	formValuesPrefix = formhandler
 
@@ -119,7 +119,7 @@ plugin.Tx_Formhandler.settings.predef.singlestep_example {
 		2.config {
 			limitMailsToUser = 5
 			admin {
-				to_email = email@host.com
+				to_email = rf@typoheads.at
 				to_name = Some Admin
 				subject = SingleStep Request
 				sender_email = email
@@ -140,21 +140,27 @@ plugin.Tx_Formhandler.settings.predef.singlestep_example {
 				replyto_name.value = Some Company
 				htmlEmailAsAttachment = 1
 				attachment = picture
-				attachPDF.class = Tx_Formhandler_Generator_PDF
-				attachPDF.exportFields = firstname,lastname,email,interests,pid,submission_date,ip
+				attachPDF {
+				  class = Generator_WebkitPdf
+				  config {
+				    pid = 23
+				  }
+				}
 		 	}
 		}
 		3.class = Tx_Formhandler_Finisher_Confirmation
 		3.config {
 			returns = 1
-			pdf {
-				class = Tx_Formhandler_Generator_PDF
-				exportFields = firstname,lastname,interests,pid,ip,submission_date
-				export2File = 1
-			}
-			csv {
-				class = Tx_Formhandler_Generator_CSV
-				exportFields = firstname,lastname,interests
+			actions {
+				pdf {
+					class = Generator_WebkitPdf
+					config {
+				  	  pid = 23
+				  	}	
+				}
+				csv {
+					class = Generator_Csv		
+				}
 			}
 		}
 	}

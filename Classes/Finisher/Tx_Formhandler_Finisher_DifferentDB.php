@@ -163,8 +163,9 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 	 * @see Tx_Formhandler_Finisher_DB::init
 	 * @return void
 	 */
-	protected function init() {
-		parent::init();
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		
 		$this->driver = $this->settings['driver'];
 		$this->db = $this->settings['db'];
 		$this->host = $this->settings['host'];

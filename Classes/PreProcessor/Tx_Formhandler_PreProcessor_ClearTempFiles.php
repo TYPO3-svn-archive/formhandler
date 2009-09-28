@@ -38,8 +38,8 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 	 * @param array $settings The defined TypoScript settings for the finisher
 	 * @return array The probably modified GET/POST parameters
 	 */
-	public function process(&$gp, $settings) {
-		$this->init($gp, $settings);
+	public function process() {
+
 		$this->olderThanValue = $this->settings['clearTempFilesOlderThan.']['value'];
 		$this->olderThanUnit = $this->settings['clearTempFilesOlderThan.']['unit'];
 		if(!empty($this->olderThanValue) && is_numeric($this->olderThanValue)) {

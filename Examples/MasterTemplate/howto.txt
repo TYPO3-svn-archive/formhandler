@@ -1,0 +1,17 @@
+**************************************
+*    Set up this form			     *
+**************************************
+
+1. Create a new page
+
+2. Create an "Extension template" for this page and paste the TypoScript in "typoscript_setup.txt".
+
+3. Adjust settings for Finisher_Mail according to your wishes.
+
+4. Create a content element of type "General plugin"
+
+5. Select "Formhandler"
+
+6. Select "Example SingleStep" from "Predefined".
+
+7. Save and view the page.
