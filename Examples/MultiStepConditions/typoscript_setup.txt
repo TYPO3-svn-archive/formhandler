@@ -185,7 +185,7 @@ plugin.Tx_Formhandler.settings.predef.multistep_conditions_example {
 					  }
 				}
 				csv {
-					class = Generator_CSV
+					class = Generator_Csv
 				}
 		}
 	}

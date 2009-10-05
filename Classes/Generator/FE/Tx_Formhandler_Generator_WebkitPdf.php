@@ -1,6 +1,6 @@
 <?php
 
-class Tx_Formhandler_Generator_PdfGenerator extends Tx_Formhandler_AbstractGenerator {
+class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerator {
 	
 	/**
 	 * Renders the PDF.
