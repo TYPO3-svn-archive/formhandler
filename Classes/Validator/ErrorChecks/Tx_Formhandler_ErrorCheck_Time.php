@@ -40,11 +40,11 @@ class Tx_Formhandler_ErrorCheck_Time extends Tx_Formhandler_AbstractErrorCheck {
 			$sep = $res[1];
 			$timeCheck = t3lib_div::trimExplode($sep, $gp[$name]);
 			if (is_array($timeCheck)) {
-				$hours = $tc[0];
+				$hours = $timeCheck[0];
 				if (!is_numeric($hours) || $hours < 0 || $hours > 23) {
 					$checkFailed = $this->getCheckFailed($check);
 				}
-				$minutes = $tc[1];
+				$minutes = $timeCheck[1];
 				if (!is_numeric($minutes) || $minutes < 0 || $minutes > 59) {
 					$checkFailed = $this->getCheckFailed($check);
 				}
