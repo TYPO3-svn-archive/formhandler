@@ -69,6 +69,8 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @var string
 	 */
 	protected $templateCode;
+	
+	protected $id;
 
 	/**
 	 * The constructor for a finisher setting the component manager and the configuration.
@@ -85,6 +87,10 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$this->templateFile = $this->templatePath . 'template.html';
 		$this->templateCode = t3lib_div::getURL($this->templateFile);
 
+	}
+	
+	public function setId($id) {
+		$this->id = $id;
 	}
 
 	/**
@@ -240,7 +246,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				//sum up all params for selection view
 				$allParams = array_merge($allParams, $row['params']);
 			}
-			t3lib_div::devLog('Bla', 'formhandler', 2, $gp);
+
 			//if fields were chosen in selection view, export the records using the selected fields
 			if(isset($gp['exportParams'])) {
 				$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_TCPDF');
@@ -307,7 +313,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$availableFormatsCount = count($availableFormats);
 		
 			//only one format found
-			if($availableFormatsCount == 1) {
+			if($availableFormatsCount === 1) {
 				
 				//if fields were chosen in the selection view, perform the export
 				if(isset($params['exportParams'])) {
@@ -405,7 +411,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		foreach($params as $field=>$value) {
 			$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="' . $field . '">' . $field . '</td></tr>';
 		}
-
+		$markers['###UID###'] = $this->id;
 		$markers['###LLL:export###'] = $LANG->getLL('export');
 		$returnCode = $this->getSelectionJS();
 		$returnCode .= Tx_Formhandler_StaticFuncs::substituteMarkerArray($selectorCode, $markers);
@@ -471,7 +477,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		foreach($params as $field => $value) {
 			$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="' . $field . '">' . $field . '</td></tr>';
 		}
-
+		$markers['###UID###'] = $this->id;
 		$markers['###LLL:export###'] = $LANG->getLL('export');
 		$returnCode = $this->getSelectionJS();
 		$returnCode .= Tx_Formhandler_StaticFuncs::substituteMarkerArray($selectorCode, $markers);
@@ -535,7 +541,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			}
 			
 		}
-		
+		$markers['###UID###'] = $this->id;
 		$markers['###LLL:formats_found###'] = sprintf($LANG->getLL('formats_found'), $foundFormats);
 		$markers['###BACK_URL###'] = $_SERVER['PHP_SELF'];
 		$markers['###LLL:back###'] = $LANG->getLL('back');
@@ -595,7 +601,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$markers['###LLL:params###'] = $LANG->getLL('params');
 			$markers['###PARAMS###'] = $paramsTable;
 
-
+			$markers['###UID###'] = $this->id;
 			$markers['###LLL:export_as###'] = $LANG->getLL('export_as');
 			$markers['###EXPORT_LINKS###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $row['uid'] . '&formhandler[renderMethod]=pdf">' . $LANG->getLL('pdf') . '</a>
 						/<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $row['uid'] . '&formhandler[renderMethod]=csv">' . $LANG->getLL('csv') . '</a>';
@@ -697,6 +703,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 		$markers = array();
 		$markers['###URL###'] = $_SERVER['PHP_SELF'];
+		$markers['###UID###'] = $this->id;
 		$markers['###LLL:filter###'] = $LANG->getLL('filter');
 		$markers['###LLL:pid_label###'] = $LANG->getLL('pid_label');
 		$markers['###LLL:cal###'] = $LANG->getLL('cal');
@@ -751,10 +758,16 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$code = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###FUNCTION_AREA###');
 		$markers = array();
 		$markers['###URL###'] = $_SERVER['PHP_SELF'];
+		
 		$markers['###EXPORT_FIELDS_MARKER###'] = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###EXPORT_FIELDS###');
+		
 		$markers['###DELETE_FIELDS_MARKER###'] = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###DELETE_FIELDS###');
 		$markers['###SELECTION_BOX_MARKER###'] = $this->getSelectionBox();
-		return Tx_Formhandler_StaticFuncs::substituteMarkerArray($code, $markers);
+		
+		$content = Tx_Formhandler_StaticFuncs::substituteMarkerArray($code, $markers);
+		$markers = array();
+		$markers['###UID###'] = $this->id;
+		return Tx_Formhandler_StaticFuncs::substituteMarkerArray($content, $markers);
 	}
 
 	/**
@@ -821,13 +834,14 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			}
 			$rowCode = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###LIST_TABLE_ROW###');
 			$markers = array();
+			$markers['###UID###'] = $this->id;
 			$markers['###ROW_STYLE###'] = $style;
 			$markers['###PID###'] = $record['pid'];
 			$markers['###SUBMISSION_DATE###'] = date('Y/m/d H:i', $record['crdate']);
 			$markers['###IP###'] = $record['ip'];
-			$markers['###DETAIL_LINK###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $record['uid'] . '"><img ' . t3lib_iconWorks::skinImg('../../../../../../typo3/', 'gfx/zoom.gif') . '/></a>';
-			$markers['###EXPORT_LINKS###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $record['uid'] . '&formhandler[renderMethod]=pdf">PDF</a>
-						/<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $record['uid'] . '&formhandler[renderMethod]=csv">CSV</a>';
+			$markers['###DETAIL_LINK###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->id . '&formhandler[detailId]=' . $record['uid'] . '"><img ' . t3lib_iconWorks::skinImg('../../../../../../typo3/', 'gfx/zoom.gif') . '/></a>';
+			$markers['###EXPORT_LINKS###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->id . '&formhandler[detailId]=' . $record['uid'] . '&formhandler[renderMethod]=pdf">PDF</a>
+						/<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->id . '&formhandler[detailId]=' . $record['uid'] . '&formhandler[renderMethod]=csv">CSV</a>';
 			$checkbox = '<input type="checkbox" name="formhandler[markedUids][]" value="' . $record['uid'] . '" ';
 			if(isset($params['markedUids']) && is_array($params['markedUids']) && in_array($record['uid'], $params['markedUids'])) {
 				$checkbox .= 'checked="checked"';
@@ -841,6 +855,9 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		//add Export as option
 		$table .= Tx_Formhandler_StaticFuncs::substituteMarkerArray($tableCode, $tableMarkers);
 		$table .= Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###EXPORT_FIELDS###');
+		$markers = array();
+		$markers['###UID###'] = $this->id;
+		$table = Tx_Formhandler_StaticFuncs::substituteMarkerArray($table, $markers);
 		$table = $this->addCSS($table);
 		return Tx_Formhandler_StaticFuncs::removeUnfilledMarkers($table);
 	}

@@ -15,6 +15,7 @@
 
 ###CLEAR_LOGS###
 <form action="###URL###" method="post"> 
+			<input type="hidden" name="id" value="###UID###" />
 			<table>
 				<tr class="bgColor2">
 					<td>###LLL:table###</td>
@@ -42,6 +43,7 @@
 <form id="formhandler_module_form" action="###URL###" method="post">
 	<input type="hidden" name="formhandler[csvFormat]" value="###CSV_FORMAT###" />
 	<input type="hidden" name="formhandler[renderMethod]" value="###RENDER_METHOD###" />
+	<input type="hidden" name="id" value="###UID###" />
 	###SELECTED_RECORDS###
 	<table>
 	###EXPORTFIELDS###
@@ -69,6 +71,7 @@
 ###HIDDEN_FIELDS###
 <input type="hidden" name="formhandler[csvFormat]" value="###KEY###" />
 <input type="hidden" name="formhandler[renderMethod]" value="csv" />
+<input type="hidden" name="id" value="###UID###" />
 <input type="submit" value="###LLL:export###" />
 </form>
 </td>
@@ -135,6 +138,7 @@
 
 ###FILTER_FORM###
 	<form action="###URL###" method="post">
+	<input type="hidden" name="id" value="###UID###" />
 	<div class="filter">
 		<h2>###LLL:filter###</h2>
 		<table>
@@ -169,6 +173,7 @@
 
 ###DELETE_FIELDS###
 <div class="delete_fields">
+	<input type="hidden" name="id" value="###UID###" />
 	<input type="submit" value="Delete selected" name="formhandler[delete]" />
 </div>
 ###DELETE_FIELDS###
@@ -223,6 +228,7 @@
 
 ###EXPORT_FIELDS###
 Export selected as: 
+<input type="hidden" name="id" value="###UID###" />
 <input type="submit" value="PDF" name="formhandler[renderMethod]" />
 <input type="submit" value="CSV" name="formhandler[renderMethod]" />
 

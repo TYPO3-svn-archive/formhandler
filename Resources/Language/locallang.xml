@@ -3,6 +3,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="title">Formhandler</label>
+			<label index="no_id">Please select a page first!</label>
 			<label index="function1">Log overview</label>
 			<label index="function2">Clear logs</label>
 			<label index="function3">Function #3</label>
@@ -44,6 +45,7 @@
 		</languageKey>
 		<languageKey index="en" type="array">
 			<label index="title">Formhandler</label>
+			<label index="no_id">Please select a page first!</label>
 			<label index="function1">Log overview</label>
 			<label index="function2">Clear logs</label>
 			<label index="function3">Function #3</label>
@@ -85,6 +87,7 @@
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="title">Formhandler</label>
+			<label index="no_id">Bitte wählen Sie eine Seite aus!</label>
 			<label index="function1">Log-Übersicht</label>
 			<label index="function2">Logs leeren</label>
 			<label index="function3">Function #3</label>

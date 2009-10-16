@@ -51,6 +51,10 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 		$this->configuration = $configuration;
 
 	}
+	
+	public function setId($id) {
+		$this->id = $id;
+	}
 
 	/**
 	 * init method to load translation data and set log table.
@@ -110,6 +114,7 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 		$code = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###CLEAR_LOGS###');
 		$markers = array();
 		$markers['###URL###'] = $_SERVER['PHP_SELF'];
+		$markers['###UID###'] = $this->id;
 		$markers['###LLL:table###'] = $LANG->getLL('table');
 		$markers['###LLL:total_rows###'] = $LANG->getLL('total_rows');
 		

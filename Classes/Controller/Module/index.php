@@ -151,6 +151,7 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 			$this->content.=$this->doc->header($LANG->getLL('title'));
 			$this->content.=$this->doc->spacer(5);
+			$this->content.=$LANG->getLL('no_id');
 			$this->content.=$this->doc->spacer(10);
 		}
 	}
@@ -172,13 +173,16 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function moduleContent()	{
+		
+		
+		
 		switch((string)$this->MOD_SETTINGS['function'])	{
 			case 1:
 				// Render content:
 				$componentManager = Tx_GimmeFive_Component_Manager::getInstance();
 				$controllerClass = 'Tx_Formhandler_Controller_Backend';
 				$controller = $componentManager->getComponent($controllerClass);
-				
+				$controller->setId($this->id);
 				$content = $controller->process();
 				$this->content .= $this->doc->section('', $content, 0, 1);
 				break;
@@ -187,7 +191,7 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 				$componentManager = Tx_GimmeFive_Component_Manager::getInstance();
 				$controllerClass = 'Tx_Formhandler_Controller_BackendClearLogs';
 				$controller = $componentManager->getComponent($controllerClass);
-	
+				$controller->setId($this->id);
 				$content = $controller->process();
 				$this->content .= $this->doc->section('', $content, 0, 1);
 				break;
