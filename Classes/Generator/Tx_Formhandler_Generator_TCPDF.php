@@ -82,7 +82,7 @@ class Tx_Formhandler_Generator_TCPDF {
 				$addedOneRecord = true;
 				$this->pdf->AliasNbPages();
 				$this->pdf->AddPage();
-				$this->pdf->SetFont('Freesans', '', 12);
+				$this->pdf->SetFont('Helvetica', '', 12);
 				$standardWidth = 100;
 				$nameWidth = 70;
 				$valueWidth = 70;
@@ -155,7 +155,7 @@ class Tx_Formhandler_Generator_TCPDF {
 		if(!$addedOneRecord) {
 			$this->pdf->AliasNbPages();
 			$this->pdf->AddPage();
-			$this->pdf->SetFont('Freesans', '', 12);
+			$this->pdf->SetFont('Helvetica', '', 12);
 			$this->pdf->Cell(300, 100, 'No valid records found! Try to select more fields to export!', 0, 0, 'L');
 		}
 		
@@ -179,7 +179,7 @@ class Tx_Formhandler_Generator_TCPDF {
 	function generateFrontendPDF($gp, $langFile, $exportFields = array(), $file = '', $returns = false) {
 		$this->pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
 		$this->pdf->AddPage();
-		$this->pdf->SetFont('Freesans', '', 12);
+		$this->pdf->SetFont('Helvetica', '', 12);
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_PDF');
 		session_start();
 		$suffix = $_SESSION['formhandlerSettings']['templateSuffix'];
