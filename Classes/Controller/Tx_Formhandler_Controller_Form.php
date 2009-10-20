@@ -494,6 +494,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 									$ext = substr($name, strpos($name, '.'));
 									$suffix = 1;
 
+									$filename = str_replace(' ', '_', $filename);
+									
 									//build file name
 									$uploadedFileName = $filename . $ext;
 
