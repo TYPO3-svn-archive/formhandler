@@ -36,6 +36,7 @@ class Tx_GimmeFive_Component_Manager {
 
 	protected $componentObjects = array(); // the object cache
 	protected $componentConfigurations = array(); // the configuration cache
+	protected $tsConf; // TypoScript config
 	
 		
 	public static function getInstance() {
@@ -46,10 +47,29 @@ class Tx_GimmeFive_Component_Manager {
     }
 
 	protected function __construct() {
+		$this->loadTypoScriptConfig();
 		spl_autoload_register(array($this, 'loadClass'));
 	}
 
     private function __clone() {}
+    
+	/**
+     * Loads the TypoScript config/setup for the formhandler on the current page.
+     */
+    private function loadTypoScriptConfig() {
+    	$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
+		if(!$GLOBALS['TSFE']->sys_page) {
+			$GLOBALS['TSFE']->sys_page = $sysPageObj;
+		}
+		$rootLine = $sysPageObj->getRootLine($GLOBALS['TSFE']->id);
+		$TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
+		$TSObj->tt_track = 0;
+		$TSObj->init();
+		$TSObj->runThroughTemplates($rootLine);
+		$TSObj->generateConfig();
+		$conf = $TSObj->setup['plugin.']['Tx_Formhandler.']['settings.'];
+		$this->tsConf = $conf;
+    }
    	
 	/**
 	 * Returns a component object from the cache. If there is no object stored already, a new one is created and stored in the cache.
@@ -334,22 +354,8 @@ class Tx_GimmeFive_Component_Manager {
 			// TODO The $classFiles should be cached by package key
 			$this->classFiles = $this->buildArrayOfClassFiles($classNameParts[1]);
 			
-			$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
-	
-			if(!$GLOBALS['TSFE']->sys_page) {
-				$GLOBALS['TSFE']->sys_page = $sysPageObj;
-			}
-			
-			$rootLine = $sysPageObj->getRootLine($GLOBALS['TSFE']->id);
-			$TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
-			$TSObj->tt_track = 0;
-			$TSObj->init();
-			$TSObj->runThroughTemplates($rootLine);
-			$TSObj->generateConfig();
-			$conf = $TSObj->setup['plugin.']['Tx_Formhandler.']['settings.'];
-			
-			if(is_array($conf['additionalIncludePaths.'])) {
-				foreach($conf['additionalIncludePaths.'] as $dir) {
+			if(is_array($this->tsConf['additionalIncludePaths.'])) {
+				foreach($this->tsConf['additionalIncludePaths.'] as $dir) {
 					
 					$temp = array();
 					$temp = $this->buildArrayOfClassFiles($dir);
