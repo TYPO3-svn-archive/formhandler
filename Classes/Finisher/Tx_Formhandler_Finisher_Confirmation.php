@@ -68,7 +68,7 @@ class Tx_Formhandler_Finisher_Confirmation extends Tx_Formhandler_AbstractFinish
 			}
 		}
 		
-		$view->setSettings($this->settings);
+		$view->setSettings($_SESSION['formhandlerSettings']['settings']);
 		return $view->render($this->gp, array());
 	}
 	
