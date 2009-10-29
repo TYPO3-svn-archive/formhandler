@@ -795,18 +795,18 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	protected function fillErrorMarkers(&$errors) {
 		$markers = array();
 		$singleWrap = $this->settings['singleErrorTemplate.']['singleWrap'];
+		
 		foreach($errors as $field => $types) {
 			$errorMessages = array();
 			$clearErrorMessages = array();
-			if(strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':error_' . $field))) > 0) {
-				$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':error_' . $field));
-				if($errorMessage) {
-					if(strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
-						$errorMessage = str_replace('|', $errorMessage, $singleWrap);
-					}
-
-					$errorMessages[] = $errorMessage;
+			$temp = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'error_' . $field);
+			if($temp > 0) {
+				$errorMessage = $temp;
+				if(strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
+					$errorMessage = str_replace('|', $errorMessage, $singleWrap);
 				}
+
+				$errorMessages[] = $errorMessage;
 			}
 			if(!is_array($types)) {
 				$types = array($types);
@@ -885,12 +885,14 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillTypoScriptMarkers() {
 		$markers = array();
-		foreach($this->settings['markers.'] as $name => $options) {
-			if(!strstr($name, '.')) {
-				if(!strcmp($options,'USER') || !strcmp($options,'USER_INT')) {
-					$this->settings['markers.'][$name . '.']['gp'] = $this->gp;
-				} 
-				$markers['###' . $name . '###'] = $this->cObj->cObjGetSingle($this->settings['markers.'][$name], $this->settings['markers.'][$name . '.']);
+		if(is_array($this->settings['markers.'])) {
+			foreach($this->settings['markers.'] as $name => $options) {
+				if(!strstr($name, '.')) {
+					if(!strcmp($options,'USER') || !strcmp($options,'USER_INT')) {
+						$this->settings['markers.'][$name . '.']['gp'] = $this->gp;
+					} 
+					$markers['###' . $name . '###'] = $this->cObj->cObjGetSingle($this->settings['markers.'][$name], $this->settings['markers.'][$name . '.']);
+				}
 			}
 		}
 
