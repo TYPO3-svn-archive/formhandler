@@ -1,0 +1,275 @@
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+---------------------------- Version 0.9.4 -----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+r25987 | reinhardfuehricht | 2009-10-29 14:09:07 +0100 (Don, 29. Okt 2009) | 1 line
+
+FIX: Bug #5170 - Markers in Confirmation Template would not be replaced
+------------------------------------------------------------------------
+r25736 | reinhardfuehricht | 2009-10-22 11:45:12 +0200 (Don, 22. Okt 2009) | 1 line
+
+Performance fix. Thanks to Michael Grundkötter
+------------------------------------------------------------------------
+r25685 | reinhardfuehricht | 2009-10-20 17:45:51 +0200 (Die, 20. Okt 2009) | 1 line
+
+Replace spaces in filenames of uploaded files with underscores
+------------------------------------------------------------------------
+r25610 | reinhardfuehricht | 2009-10-20 11:04:54 +0200 (Die, 20. Okt 2009) | 1 line
+
+Changed font from Freesans to Helvetica
+------------------------------------------------------------------------
+r25430 | reinhardfuehricht | 2009-10-16 10:55:32 +0200 (Fre, 16. Okt 2009) | 1 line
+
+Fixed blank screen for editors in backend module
+------------------------------------------------------------------------
+r25428 | reinhardfuehricht | 2009-10-16 10:04:37 +0200 (Fre, 16. Okt 2009) | 1 line
+
+Fixed bug in Time error check. Thanks to Victor Livakovsky
+------------------------------------------------------------------------
+r25077 | reinhardfuehricht | 2009-10-05 10:57:02 +0200 (Mon, 05. Okt 2009) | 2 lines
+
+FIX: Typo in Generator_WebkitPdf
+UPDATE: TS setup in examples
+------------------------------------------------------------------------
+r24922 | reinhardfuehricht | 2009-09-30 14:38:28 +0200 (Mit, 30. Sep 2009) | 1 line
+
+UPDATE: ext_icon.gif
+------------------------------------------------------------------------
+r24904 | reinhardfuehricht | 2009-09-30 11:37:44 +0200 (Mit, 30. Sep 2009) | 1 line
+
+Added buildpath and project to svn:ignore
+------------------------------------------------------------------------
+r24857 | reinhardfuehricht | 2009-09-28 11:36:08 +0200 (Mon, 28. Sep 2009) | 24 lines
+
+WARNING: Big update!
+
+- ADD: Use a master template to predefine form fields
+- ADD: Enter multiple language files in TypoScript
+- ADD: Use your own mailer for Finisher_Mail
+- ADD: New way of handling PDF and CSV generation
+- REMOVE: Generator_PDF and Generator_TCPDF
+- CHANGE: All components inherit from AbstractComponent
+- Some more minor changes and fixes.
+
+Finisher_Confirmation TypoScript has changed:
+
+config {
+  returns = 1
+  actions {
+    pdf {
+      class = Generator_WebkitPdf
+      config.pid = 23
+    }
+    csv.class = Generator_CSV
+  }
+}
+
+Please forgive any error and bugs since this is a major architecture change!
+------------------------------------------------------------------------
+r24704 | reinhardfuehricht | 2009-09-22 17:02:12 +0200 (Die, 22. Sep 2009) | 1 line
+
+Corrected mistake in one of the Screenshots as suggested by Christian Opitz.
+------------------------------------------------------------------------
+r24681 | reinhardfuehricht | 2009-09-22 11:22:10 +0200 (Die, 22. Sep 2009) | 1 line
+
+Fixed bug in some error checks.
+------------------------------------------------------------------------
+r24240 | reinhardfuehricht | 2009-09-10 11:32:48 +0200 (Don, 10. Sep 2009) | 1 line
+
+ADD: Enter a default is_error message for all fields.
+------------------------------------------------------------------------
+r24239 | reinhardfuehricht | 2009-09-10 11:17:47 +0200 (Don, 10. Sep 2009) | 1 line
+
+Fixed broken sending of HTML emails
+------------------------------------------------------------------------
+r24235 | reinhardfuehricht | 2009-09-10 11:01:34 +0200 (Don, 10. Sep 2009) | 1 line
+
+FIX #4522
+------------------------------------------------------------------------
+r24234 | reinhardfuehricht | 2009-09-10 10:56:35 +0200 (Don, 10. Sep 2009) | 1 line
+
+Temporary bugfix for fatal error when reading language file
+------------------------------------------------------------------------
+r23976 | reinhardfuehricht | 2009-09-03 18:01:24 +0200 (Don, 03. Sep 2009) | 1 line
+
+Specify master template to predefine HTMl code for form fields
+------------------------------------------------------------------------
+r23973 | reinhardfuehricht | 2009-09-03 17:09:08 +0200 (Don, 03. Sep 2009) | 1 line
+
+New PreProcessor to load GET/POST params.
+------------------------------------------------------------------------
+r23972 | reinhardfuehricht | 2009-09-03 17:08:39 +0200 (Don, 03. Sep 2009) | 1 line
+
+Removed Interceptor_RemoveXSS
+------------------------------------------------------------------------
+r23971 | reinhardfuehricht | 2009-09-03 15:31:59 +0200 (Don, 03. Sep 2009) | 1 line
+
+I messed around with the trunk. Trying to revert again.
+------------------------------------------------------------------------
+r23956 | reinhardfuehricht | 2009-09-03 10:06:13 +0200 (Don, 03. Sep 2009) | 1 line
+
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+---------------------------- Version 0.9.3 -----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+r23954 | reinhardfuehricht | 2009-09-03 09:42:56 +0200 (Don, 03. Sep 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r23905 | reinhardfuehricht | 2009-09-01 14:06:50 +0200 (Die, 01. Sep 2009) | 1 line
+
+ADD: uploadFolder can now be any cObj
+------------------------------------------------------------------------
+r23822 | reinhardfuehricht | 2009-08-31 21:44:32 +0200 (Mon, 31. Aug 2009) | 1 line
+
+Reverting some changes
+------------------------------------------------------------------------
+r23820 | reinhardfuehricht | 2009-08-31 21:38:21 +0200 (Mon, 31. Aug 2009) | 1 line
+
+Set email headers according to content
+------------------------------------------------------------------------
+r23796 | reinhardfuehricht | 2009-08-31 15:31:31 +0200 (Mon, 31. Aug 2009) | 2 lines
+
+ADD: require_once to prevent fatal error
+
+------------------------------------------------------------------------
+r23789 | reinhardfuehricht | 2009-08-31 12:13:44 +0200 (Mon, 31. Aug 2009) | 1 line
+
+Updated debug messages
+------------------------------------------------------------------------
+r23782 | reinhardfuehricht | 2009-08-31 11:01:07 +0200 (Mon, 31. Aug 2009) | 1 line
+
+Formhandler uses it's own mailer class now which extends t3lib_htmlMail
+------------------------------------------------------------------------
+r23712 | reinhardfuehricht | 2009-08-27 10:40:42 +0200 (Don, 27. Aug 2009) | 1 line
+
+FIX: initInterceptors were only called the first time the form is shown.
+------------------------------------------------------------------------
+r23673 | reinhardfuehricht | 2009-08-26 16:18:17 +0200 (Mit, 26. Aug 2009) | 1 line
+
+ADD: New settings to add additional include paths. You can create your own components, save them somewhere in fileadmin and enter the path in TypoScript. The component manager will search in typo3conf/ext/*/Classes and in the paths entered in TypoScript for classes.
+------------------------------------------------------------------------
+r23671 | reinhardfuehricht | 2009-08-26 15:11:18 +0200 (Mit, 26. Aug 2009) | 1 line
+
+FIX: Small bug with usage of strpos
+------------------------------------------------------------------------
+r23619 | reinhardfuehricht | 2009-08-24 14:14:29 +0200 (Mon, 24. Aug 2009) | 2 lines
+
+ADD: feature to send cc and bcc mails
+ADD: improved debug output
+------------------------------------------------------------------------
+r23543 | reinhardfuehricht | 2009-08-21 11:03:39 +0200 (Fre, 21. Aug 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r23542 | reinhardfuehricht | 2009-08-21 10:35:01 +0200 (Fre, 21. Aug 2009) | 1 line
+
+FIX: Bug in ISSET-marker substitution
+------------------------------------------------------------------------
+r23525 | reinhardfuehricht | 2009-08-20 16:36:16 +0200 (Don, 20. Aug 2009) | 1 line
+
+FIX: wrong usage of strpos in StaticFuncs
+------------------------------------------------------------------------
+r23322 | reinhardfuehricht | 2009-08-12 19:48:51 +0200 (Mit, 12. Aug 2009) | 1 line
+
+Fixed typo in Finisher_DB to make postProcessing work.
+------------------------------------------------------------------------
+r23309 | reinhardfuehricht | 2009-08-12 17:05:33 +0200 (Mit, 12. Aug 2009) | 1 line
+
+Removed debug output
+------------------------------------------------------------------------
+r23307 | reinhardfuehricht | 2009-08-12 16:34:30 +0200 (Mit, 12. Aug 2009) | 2 lines
+
+Finally fixed issue #4219.
+###value_[fieldname]### markers didn't work with arrays in email templates
+------------------------------------------------------------------------
+r23292 | reinhardfuehricht | 2009-08-12 14:27:50 +0200 (Mit, 12. Aug 2009) | 1 line
+
+Fixed bug in File_MinCount
+------------------------------------------------------------------------
+r23290 | reinhardfuehricht | 2009-08-12 13:54:43 +0200 (Mit, 12. Aug 2009) | 1 line
+
+FIX: added fillSelectedMarkers() call to View_Mail and View_Confirmation
+------------------------------------------------------------------------
+r23289 | reinhardfuehricht | 2009-08-12 13:54:05 +0200 (Mit, 12. Aug 2009) | 1 line
+
+Fixed wrong usage of getTypoLink_URL in various classes and moved doRedirect() methode into Staticfuncs
+------------------------------------------------------------------------
+r23243 | reinhardfuehricht | 2009-08-11 11:20:55 +0200 (Die, 11. Aug 2009) | 10 lines
+
+- ADD: Feature #4137
+Save data into more than one DB table.
+
+New settings for Finisher_DB:
+special = inserted_uid
+special.table = ...
+
+To access uid values of previously inserted records by other Finisher_DB calls.
+
+- Some manual updates
+------------------------------------------------------------------------
+r23236 | reinhardfuehricht | 2009-08-10 18:38:27 +0200 (Mon, 10. Aug 2009) | 2 lines
+
+ADD: Feature #4196
+Check templateSuffix in TEMPLATE_DF too.
+------------------------------------------------------------------------
+r23215 | reinhardfuehricht | 2009-08-10 08:43:45 +0200 (Mon, 10. Aug 2009) | 2 lines
+
+FIX: Bug #4189
+Typo in minCount marker for files.
+------------------------------------------------------------------------
+r23131 | reinhardfuehricht | 2009-08-06 17:07:49 +0200 (Don, 06. Aug 2009) | 1 line
+
+ADD: Feature #4014. New Finisher_GenerateAuthCode to generate a unique token for usage in newsletter registration emails and so on.
+------------------------------------------------------------------------
+r23077 | reinhardfuehricht | 2009-08-04 09:43:20 +0200 (Die, 04. Aug 2009) | 2 lines
+
+- Added section 'How to user your own controller' to manual to close issue #4003,
+- Updated ext_emconf with new version number.
+------------------------------------------------------------------------
+r23076 | reinhardfuehricht | 2009-08-04 09:04:10 +0200 (Die, 04. Aug 2009) | 3 lines
+
+- Minor changes in View_PDF,
+- Fixed typo in examples,
+- Set version back to 0.9.0 since we are still beta.
+------------------------------------------------------------------------
+r22854 | reinhardfuehricht | 2009-07-28 20:15:27 +0200 (Die, 28. Jul 2009) | 6 lines
+
+Added Feature #4008: Return path for emails can now be set in TypoScript.
+
+Additional code changes:
+
+- Reading of template file and language file is now in StaticFuncs.
+
+------------------------------------------------------------------------
+r22817 | reinhardfuehricht | 2009-07-27 18:35:58 +0200 (Mon, 27. Jul 2009) | 1 line
+
+Fixed #4007: Validators isInDBTable and isNotInDBTable ignore additionalWhere
+------------------------------------------------------------------------
+r22816 | reinhardfuehricht | 2009-07-27 18:34:06 +0200 (Mon, 27. Jul 2009) | 1 line
+
+Fixed #4009: customRemovalText can now be a cObject
+------------------------------------------------------------------------
+r22614 | fabien_u | 2009-07-21 22:43:47 +0200 (Die, 21. Jul 2009) | 1 line
+
+Added Subversion tag: Id
+------------------------------------------------------------------------
+r22586 | fabien_u | 2009-07-21 17:59:55 +0200 (Die, 21. Jul 2009) | 1 line
+
+Documentation updated with Formhandler
+------------------------------------------------------------------------
+r22577 | fabien_u | 2009-07-21 16:22:11 +0200 (Die, 21. Jul 2009) | 1 line
+
+First Upload. Mailformplus MVC is becoming Formhandler
+------------------------------------------------------------------------
+r22555 | www | 2009-07-21 10:04:52 +0200 (Die, 21. Jul 2009) | 1 line
+
+Initializing project formhandler (4/4)
+------------------------------------------------------------------------
