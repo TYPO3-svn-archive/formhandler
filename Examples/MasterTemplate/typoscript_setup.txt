@@ -112,7 +112,7 @@ plugin.Tx_Formhandler.settings.predef.mastertemplate_example {
 		2.config {
 			limitMailsToUser = 5
 			admin {
-				to_email = rf@typoheads.at
+				to_email = email@host.com
 				to_name = Some Admin
 				subject = SingleStep Request
 				sender_email = email
