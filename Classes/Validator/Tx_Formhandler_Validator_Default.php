@@ -57,8 +57,12 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 		if($flexformValue) {
 			$fields = t3lib_div::trimExplode(',', $flexformValue);
 			foreach($fields as $field) {
-				$this->settings['fieldConf.'][$field.'.']['errorCheck.'] = array();
-				$this->settings['fieldConf.'][$field.'.']['errorCheck.']['1'] = 'required';
+				if(!is_array($this->settings['fieldConf.'][$field.'.']['errorCheck.'])) {
+					$this->settings['fieldConf.'][$field.'.']['errorCheck.'] = array();
+				}
+				if(!array_search('required', $this->settings['fieldConf.'][$field.'.']['errorCheck.'])) {
+					array_push($this->settings['fieldConf.'][$field.'.']['errorCheck.'], 'required');
+				}
 			}
 		}
 
