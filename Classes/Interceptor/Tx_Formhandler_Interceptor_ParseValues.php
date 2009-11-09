@@ -32,7 +32,7 @@ class Tx_Formhandler_Interceptor_ParseValues extends Tx_Formhandler_AbstractInte
 	public function process() {
 
 		//parse as float
-		$fields = t3lib_div::trimExplode(',', $settings['parseFloatFields'], true);
+		$fields = t3lib_div::trimExplode(',', $this->settings['parseFloatFields'], true);
 		$this->parseFloats($fields);
 		
 		return $this->gp;
