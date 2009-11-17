@@ -50,6 +50,7 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 	protected function storeUserGPinSession() {
 		foreach ($this->gp as $key => $value) {
 			$GLOBALS['TSFE']->fe_user->setKey('ses', $key, $value);
+			$GLOBALS['TSFE']->fe_user->storeSessionData();
 		}
 	}
 
