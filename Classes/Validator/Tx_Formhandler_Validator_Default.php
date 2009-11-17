@@ -125,7 +125,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				}
 
 				$checkFailed = '';
-				if(!isset($disableErrorCheckFields) || !in_array($name, $disableErrorCheckFields)) {
+				if(!isset($disableErrorCheckFields) || (!in_array($name, $disableErrorCheckFields) && !in_array('all', $disableErrorCheckFields))) {
 						
 					//foreach error checks
 					foreach($errorChecks as $check) {
