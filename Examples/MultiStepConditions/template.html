@@ -21,6 +21,15 @@
 			<div class="clear"></div>
 		</div>
 		<div class="row">
+			
+			<select name="formhandler[test]">
+				<option value="0">Hallo0</option>
+				<option value="1">Hallo1</option>
+				<option value="2">Hallo2</option>
+			</select>
+			<div class="clear"></div>
+		</div>
+		<div class="row">
 			###error_email###
 			<label for="email">###LLL:email### ###required_email###</label>
 			<input type="text" name="formhandler[email]" id="email" value="###value_email###"/>
@@ -76,7 +85,6 @@
 		</div>
 		
 <!-- ###FORM_ENDBLOCK### begin -->
-		###ADDITIONAL_MULTISTEP###
 	</fieldset>
 </form>
 </div>
@@ -86,7 +94,9 @@
 <!-- ###TEMPLATE_FORM2### begin -->
 
 ###FORM_STARTBLOCK###
+		
 		<div class="row">
+		
 			###error_street###
 			<label for="street">###LLL:street### ###required_street###</label>
 			<input type="text" name="formhandler[street]" id="street" value="###value_street###"/>

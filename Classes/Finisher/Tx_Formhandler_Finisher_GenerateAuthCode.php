@@ -30,7 +30,10 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		$firstInsertInfo = array_shift($this->gp['saveDB']);
+		$firstInsertInfo = array();
+		if(is_array($this->gp)) {
+			$firstInsertInfo = array_shift($this->gp['saveDB']);
+		}
 		$table = $firstInsertInfo['table'];
 		$uid = $firstInsertInfo['uid'];
 		if($table && $uid) {

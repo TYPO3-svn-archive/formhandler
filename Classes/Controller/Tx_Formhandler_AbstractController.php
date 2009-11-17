@@ -106,11 +106,11 @@ abstract class Tx_Formhandler_AbstractController implements Tx_Formhandler_Contr
 	 * Sets the internal attribute "langFile"
 	 *
 	 * @author Reinhard Führicht <rf@typoheads.at>
-	 * @param string $langFile
+	 * @param array $langFiles
 	 * @return void
 	 */
-	public function setLangFile($langFile) {
-		$this->langFile = $langFile;
+	public function setLangFiles($langFiles) {
+		$this->langFiles = $langFiles;
 	}
 
 	/**

@@ -114,6 +114,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$this->fillStartEndBlock();
 		}
 		
+		if(intval($this->settings['fillValueMarkersBeforeLangMarkers']) === 1) {
+			
+			//fill value_[fieldname] markers
+			$this->fillValueMarkers();
+		}
+		
 		//fill LLL:[language_key] markers
 		$this->fillLangMarkers();
 
@@ -128,8 +134,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		//fill default markers
 		$this->fillDefaultMarkers();
 
-		//fill value_[fieldname] markers
-		$this->fillValueMarkers();
+		if(intval($this->settings['fillValueMarkersBeforeLangMarkers']) !== 1) {
+			
+			//fill value_[fieldname] markers
+			$this->fillValueMarkers();
+		}
 
 		//fill selected_[fieldname]_value markers and checked_[fieldname]_value markers
 		$this->fillSelectedMarkers();
@@ -333,41 +342,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	}
 
 	/**
-	 * Adds the values stored in $_SESSION as hidden fields in marker ###ADDITIONAL_MULTISTEP###.
-	 *
-	 * Needed in conditional forms.
-	 *
-	 * @param	array	&$markers The markers to put the new one into
-	 * @return 	void
-	 */
-	protected function addHiddenFields(&$markers) {
-		session_start();
-		$hiddenFields = '';
-
-		if(is_array($_SESSION['formhandlerValues'])) {
-			foreach($_SESSION['formhandlerValues'] as $step => $params) {
-				if($step != $_SESSION['formhandlerSettings']['currentStep']) {
-					foreach($params as $key=>$value) {
-						$name = $key;
-						if($_SESSION['formhandlerSettings']['formValuesPrefix']) {
-							$name = $_SESSION['formhandlerSettings']['formValuesPrefix'] . '[' . $key . ']';
-						}
-						if(is_array($value)) {
-							foreach($value as $k => $v) {
-
-								$hiddenFields .= '<input type="hidden" name="' . $name . '[]" value="' . $v . '" />';
-							}
-						} else {
-							$hiddenFields .= '<input type="hidden" name="'.$name.'" value="'.$value.'" />';
-						}
-					}
-				}
-			}
-		}
-		$markers['###ADDITIONAL_MULTISTEP###'] = $hiddenFields;
-	}
-
-	/**
 	 * Substitutes markers
 	 * 		###selected_[fieldname]_[value]###
 	 * 		###checked_[fieldname]_[value]###
@@ -377,6 +351,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillSelectedMarkers() {
 		$markers = array();
+		
 		if (is_array($this->gp)) {
 			foreach($this->gp as $k => $v) {
 				if (is_array($v)) {
@@ -458,8 +433,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			str_replace('#step#', ($_SESSION['formhandlerSettings']['currentStep'] - 1), $name),
 			str_replace('#step#', ($_SESSION['formhandlerSettings']['currentStep'] + 1), $name)
 		);
-
-		$this->addHiddenFields($markers);
 		$this->fillCaptchaMarkers($markers);
 		$this->fillFEUserMarkers($markers);
 		$this->fillFileMarkers($markers);
@@ -757,16 +730,16 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				} else {
 					$errorMessage = $this->settings['isErrorMarker.'][$field];
 				}
-			} elseif(strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error_' . $field))) > 0) {
-				$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error_' . $field));
+			} elseif(strlen($temp = trim(Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'is_error_' . $field))) > 0) {
+				$errorMessage = $temp;
 			} elseif($this->settings['isErrorMarker.']['default']) {
 				if($this->settings['isErrorMarker.']['default.']) {
 					$errorMessage = $this->cObj->cObjGetSingle($this->settings['isErrorMarker.']['default'], $this->settings['isErrorMarker.']['default.']);
 				} else {
 					$errorMessage = $this->settings['isErrorMarker.']['default'];
 				}
-			} elseif (strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error_default'))) > 0) {
-				$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error_default'));
+			} elseif(strlen($temp = trim(Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'is_error_default'))) > 0) {
+				$errorMessage = $temp;
 			} 
 			$markers['###is_error_' . $field . '###'] = $errorMessage;
 		}
@@ -776,8 +749,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			} else {
 				$errorMessage = $this->settings['isErrorMarker.']['global'];
 			}
-		} elseif (strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error'))) > 0) {
-			$errorMessage = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':is_error'));
+		} elseif(strlen($temp = trim(Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'is_error'))) > 0) {
+			$errorMessage = $temp;
 		}
 		$markers['###is_error###'] = $errorMessage;
 
@@ -851,7 +824,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				$errorMessage = '<a name="' . $field . '">' . $errorMessage . '</a>';
 
 			}
-			$langMarkers = Tx_Formhandler_StaticFuncs::getFilledLangMarkers($errorMessage, $this->langFile);
+			$langMarkers = Tx_Formhandler_StaticFuncs::getFilledLangMarkers($errorMessage, $this->langFiles);
 			$errorMessage = $this->cObj->substituteMarkerArray($errorMessage, $langMarkers);
 			$markers['###error_' . $field . '###'] = $errorMessage;
 			$markers['###ERROR_' . strtoupper($field) . '###'] = $errorMessage;
@@ -955,7 +928,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		
 		if (is_array($this->langFiles)) {
 			$aLLMarkerList = array();
-			preg_match_all('/###LLL:.+?###/Ssm', $this->template, $aLLMarkerList);
+			preg_match_all('/###LLL:[^#]+?###/Ssm', $this->template, $aLLMarkerList);
 			foreach($aLLMarkerList[0] as $LLMarker){
 				
 				$llKey = substr($LLMarker, 7, (strlen($LLMarker) - 10));
@@ -1031,11 +1004,28 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		//if not the first step, show back button
 		if ($currentStep > 1) {
 			//check if label for specific step
-			$buttonvalue = $GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':' . 'prev_' . $currentStep) ? $GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':' . "prev_" . $currentStep) : $GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':' . 'prev');
+			$buttonvalue = '';
+			foreach($this->langFiles as $langFile) {
+				$temp = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':prev_' . $currentStep));
+				if(strlen($temp) > 0) {
+					$message = $temp;
+				} else {
+					$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':prev'));
+				}
+			}
+			$buttonvalue = $message;
 			$buttons .= '<input type="submit" name="'.$buttonNameBack.'" value="' . trim($buttonvalue) . '" class="button_prev" style="margin-right:10px;" />';
 		}
-
-		$buttonvalue = $GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':' . 'next_' . $currentStep) ? $GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':' . 'next_' . $currentStep) : $GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':' .'next');
+		$buttonvalue = '';
+		foreach($this->langFiles as $langFile) {
+			$temp = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':next_' . $currentStep));
+			if(strlen($temp) > 0) {
+				$message = $temp;
+			} else {
+				$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':next'));
+			}
+		}
+		$buttonvalue = $message;
 		$buttons .= '<input type="submit" name="' . $buttonNameFwd . '" value="' . trim($buttonvalue) . '" class="button_next" />';
 
 		$content .= '<span id="stepsFormButtons">' . $buttons . '</span>';

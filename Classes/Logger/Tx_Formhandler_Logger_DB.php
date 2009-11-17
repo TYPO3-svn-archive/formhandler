@@ -45,7 +45,7 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		ksort($this->gp);
 		$keys = array_keys($this->gp);
 		$serialized = serialize($this->gp);
-		$hash = hash("md5",serialize($keys));
+		$hash = md5(serialize($keys));
 		$fields['params'] = $serialized;
 		$fields['key_hash'] = $hash;
 		
@@ -57,6 +57,9 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 
 		//query the database
 		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $fields);
+		$insertedUID = $GLOBALS['TYPO3_DB']->sql_insert_id();
+		$GLOBALS['TSFE']->fe_user->setKey('ses', 'inserted_uid', $insertedUID);
+		$GLOBALS['TSFE']->fe_user->storeSessionData();
 		if(!$settings['nodebug']) {
 			Tx_Formhandler_StaticFuncs::debugMessage('logging', $table, implode(',', $fields));
 			if(strlen($GLOBALS['TYPO3_DB']->sql_error()) > 0) {

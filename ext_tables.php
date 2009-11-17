@@ -69,27 +69,9 @@ if (TYPO3_MODE == 'BE')   {
 
 	t3lib_extMgm::addModule('web', 'txformhandlermoduleM1', '', t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Controller/Module/');
 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_formhandler_wizicon'] = t3lib_extMgm::extPath($_EXTKEY) . 'Resources/PHP/class.tx_formhandler_wizicon.php';
-} elseif($GLOBALS['TSFE']->id) {
-
-	$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
-	
-	if(!$GLOBALS['TSFE']->sys_page) {
-		$GLOBALS['TSFE']->sys_page = $sysPageObj;
-	}
-	
-	$rootLine = $sysPageObj->getRootLine($GLOBALS['TSFE']->id);
-	$TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
-	$TSObj->tt_track = 0;
-	$TSObj->init();
-	$TSObj->runThroughTemplates($rootLine);
-	$TSObj->generateConfig();
-	if(!$TSObj->setup['plugin.']['Tx_Formhandler.']['userFunc']) {
-		t3lib_div::debug('No static template found! Make sure to include "Settings (formhandler)" in your TypoScript template!');
-	}
-
 }
 
-t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/Settings/', 'Settings');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/Settings/', 'Example Configuration');
 t3lib_extMgm::addPlugin(array('Formhandler', $_EXTKEY . '_pi1'), 'list_type');
 t3lib_extMgm::addPlugin(array('Formhandler Listing', $_EXTKEY . '_pi2'), 'list_type');
 ?>

@@ -47,8 +47,8 @@ class Tx_Formhandler_View_Confirmation extends Tx_Formhandler_View_Form {
 		$markers['###PRINT_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $params);
 		unset($params['type']);
 		
-		if($this->settings['actions.']) {
-			foreach($this->settings['actions.'] as $action=>$options) {
+		if($this->componentSettings['actions.']) {
+			foreach($this->componentSettings['actions.'] as $action=>$options) {
 				$sanitizedAction = str_replace('.', '', $action);
 				$class = $options['class'];
 				if($class) {

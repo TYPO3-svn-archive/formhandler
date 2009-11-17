@@ -26,7 +26,7 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
  * @package	Tx_Formhandler
  * @subpackage	Controller
  */
-class tx_Formhandler_Dispatcher extends tslib_pibase {
+class Tx_Formhandler_Dispatcher extends tslib_pibase {
 
 	/**
 	 * Adds JavaScript for xajax and registers callable methods.
@@ -116,7 +116,7 @@ class tx_Formhandler_Dispatcher extends tslib_pibase {
 			$controller->setTemplateFile($templateFile);
 		}
 		if(strlen($langFile) > 0) {
-			$controller->setLangFile($langFile);
+			$controller->setLangFiles(array($langFile));
 		}
 		if(strlen($predef) > 0) {
 			$controller->setPredefined($predef);

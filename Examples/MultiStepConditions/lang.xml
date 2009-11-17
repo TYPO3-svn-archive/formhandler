@@ -2,6 +2,9 @@
 <T3locallang>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="0">Hallo0Trans</label>
+			<label index="1">Hallo1Trans</label>
+			<label index="2">Hallo2Trans</label>
 			<label index="picture">Picture</label>
 			<label index="legend">Personal Information</label>
 			<label index="firstname">Firstname</label>

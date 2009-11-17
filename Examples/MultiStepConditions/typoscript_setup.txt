@@ -1,12 +1,20 @@
 ##### CONDITION #####
-[globalVar = GP:formhandler|contact_via=phone]
-plugin.Tx_Formhandler.settings.predef.multistep_conditions_example.2 {
-	templateSuffix = _phone
-	validators >
-	validators.1.class = Tx_Formhandler_Validator_Default
-	validators.1.config.fieldConf.phone.errorCheck.1 = required
+plugin.Tx_Formhandler.settings.predef.multistep_conditions_example.1 {
+	if.1 {
+		conditions {
+			OR1 {
+				AND1 = contact_via=phone
+			}
+		}
+		isTrue {
+			2 {
+				templateSuffix = _phone
+				validators.1.config.fieldConf.phone.errorCheck.1 = required
+				validators.1.config.disableErrorCheckFields = street
+			}
+		}
+	}
 }
-[global]
 
 ##### STEP 1 CONFIGURATION #####
 plugin.Tx_Formhandler.settings.predef.multistep_conditions_example.1 {
