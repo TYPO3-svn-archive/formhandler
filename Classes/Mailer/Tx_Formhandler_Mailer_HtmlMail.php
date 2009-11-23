@@ -37,10 +37,10 @@ class Tx_Formhandler_Mailer_HtmlMail extends Tx_Formhandler_AbstractMailer imple
 	}
 	
 	public function setHTML($html) {
-		$this->emailObj->setHtml($html);
+		$this->emailObj->setHtml($this->emailObj->encodeMsg($html));
 	}
 	public function setPlain($plain) {
-		$this->emailObj->setPlain($plain);
+		$this->emailObj->setPlain($this->emailObj->encodeMsg($plain));
 	}
 	
 	public function setSubject($value) {
