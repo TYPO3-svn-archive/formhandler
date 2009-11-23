@@ -117,7 +117,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 				}
 				$info = array(
 					'table' => $this->table,
-					'uid' => $this->gp['inserted_uid']
+					'uid' => $this->gp['inserted_uid'],
+					'uidField' => $this->key
 				);
 				array_push($this->gp['saveDB'], $info);
 			}	
@@ -171,10 +172,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		} else {
 				
 			//check if uid of record to update is in GP
-			$uid =$this->gp['uid'];
-			if(!$uid) {
-				$uid = $this->gp[$this->key];
-			}
+			$uid = $this->gp[$this->key];
 			if($uid) {
 				$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
 				Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
