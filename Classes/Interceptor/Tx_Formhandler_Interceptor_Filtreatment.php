@@ -54,7 +54,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 		foreach ($values as $key => $value) {
 			if(is_array($value)) {
 				$sanitizedArray[$key] = $this->sanitizeValues($value);
-			} elseif(!empty($value)) {
+			} elseif(strlen(trim($value)) > 0)  {
 				
 				$value = str_replace("\t", '', $value);
 				$isUTF8 = true;
@@ -71,6 +71,8 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 				if(!$isUTF8) {
 					$value = utf8_decode($value);
 				}
+				$sanitizedArray[$key] = $value;
+			} else {
 				$sanitizedArray[$key] = $value;
 			}
 		}
