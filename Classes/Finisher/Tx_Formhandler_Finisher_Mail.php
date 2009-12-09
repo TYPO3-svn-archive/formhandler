@@ -95,7 +95,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_Mail');
 		$view->setLangFiles(Tx_Formhandler_Globals::$langFiles);
 		$view->setPredefined($this->predefined);
-		
+		$view->setComponentSettings($this->settings);
 		$templateCode = Tx_Formhandler_Globals::$templateCode;
 		$view->setTemplate($templateCode, ('EMAIL_' . strtoupper($mode) . '_' . strtoupper($suffix) . $this->settings['templateSuffix']));
 		if(!$view->hasTemplate()) {
@@ -106,36 +106,6 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		}
 		
 		return $view->render($this->gp, array('mode' => $suffix));
-	}
-
-	/**
-	 * Sanitizes E-mail markers by processing the 'checkBinaryCrLf' setting in TypoScript
-	 *
-	 * @param array &$markers The E-mail markers
-	 * @return void
-	 */
-	protected function sanitizeMarkers(&$markers) {
-		$checkBinaryCrLf = $this->settings['checkBinaryCrLf'];
-		if ($checkBinaryCrLf != '') {
-			$markersToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
-			foreach($markersToCheck as $idx => $val) {
-				if(substr($val,0,3) != '###') {
-					$val = '###' . $markersToCheck[$idx];
-				}
-
-				if(substr($val,-3) != '###') {
-					$val .= '###';
-				}
-				$iStr = $markers[$val];
-				$iStr = str_replace (chr(13), '<br />', $iStr);
-				$iStr = str_replace ('\\', '', $iStr);
-				$markers[$val] = $iStr;
-
-			}
-		}
-		foreach($markers as $field => &$value) {
-			$value = nl2br($value);
-		}
 	}
 
 	/**
