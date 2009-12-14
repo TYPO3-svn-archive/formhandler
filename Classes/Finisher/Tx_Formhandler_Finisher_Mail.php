@@ -351,6 +351,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		if(isset($this->emailSettings[$type][$key])) {
 			$parsed = $this->parseSettingValue($this->emailSettings[$type][$key]);
 		} else if(isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
+			$settings[$key . '.']['gp'] = $this->gp;
 			$parsed = $this->cObj->cObjGetSingle($settings[$key], $settings[$key . '.']);
 		} else {
 			$parsed = $this->parseSettingValue($settings[$key]);

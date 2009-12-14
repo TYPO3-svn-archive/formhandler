@@ -587,7 +587,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 										$minCount = $fieldSettings['errorCheck.'][$key.'.']['minCount'];
 										$markers['###' . $replacedFieldname . '_minCount###'] = $minCount;
 										break;
-									case 'required':
+									case 'required':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathguard':
 										$requiredSign = '*';
 										if(isset($settings['requiredSign'])) {
 											$requiredSign = $settings['requiredSign'];

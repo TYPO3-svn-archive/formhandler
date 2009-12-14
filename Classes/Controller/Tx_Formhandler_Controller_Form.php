@@ -921,6 +921,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if(isset($this->settings[$step . '.']) && is_array($this->settings[$step . '.'])) {
 			$this->settings = array_merge($this->settings, $this->settings[$step . '.']);
 		}
+		
+		session_start();
+		$_SESSION['formhandlerSettings']['settings'] = $this->settings;
 	}
 
 	protected function getStepInformation() {
