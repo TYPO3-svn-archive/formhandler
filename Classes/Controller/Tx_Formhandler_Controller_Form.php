@@ -310,9 +310,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						Tx_Formhandler_StaticFuncs::debugBeginSection('form_finished');
 						Tx_Formhandler_StaticFuncs::debugEndSection();
 						
-						$this->mergeGPWithSession();
-						
-						
+						if(!$this->submittedOK) {
+							Tx_Formhandler_StaticFuncs::debugBeginSection('store_gp');
+							$this->storeGPinSession();
+							$this->mergeGPWithSession();
+							Tx_Formhandler_StaticFuncs::debugEndSection();
+						}
 						
 						//run save interceptors
 						if(!$this->submittedOK) {
@@ -817,17 +820,18 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$this->mergeGPWithSession(FALSE, $this->currentStep);
 		//}
 		
-		//set submitted
-		$this->submitted = $this->isFormSubmitted();
-
 		$this->submittedOK = $_SESSION['submitted_ok'];
 		
 		if(!$this->submittedOK) {
 			$this->submittedOK = t3lib_div::_GP('submitted_ok');
 		}
 		
+		//set submitted
+		$this->submitted = $this->isFormSubmitted();
+		
 		//not submitted
-		if(!$this->submitted) {
+		$dontReset = t3lib_div::_GP('dontReset');
+		if(!$this->submitted && intval($dontReset) !== 1) {
 			$this->reset();
 		}
 
@@ -856,7 +860,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	
 	protected function isFormSubmitted() {
 		$submitted = $this->gp['submitted'];
-		if($submitted) {
+		if($submitted && !$this->submittedOK) {
 			$found = FALSE;
 			foreach($this->gp as $key=>$value) {
 				if(substr($key, 0, 5) === 'step-') {

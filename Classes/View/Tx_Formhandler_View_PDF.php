@@ -49,14 +49,15 @@ class Tx_Formhandler_View_PDF extends Tx_Formhandler_View_Form {
 	 * @return void
 	 */
 	protected function sanitizeMarkers() {
-		$checkBinaryCrLf = $this->settings['checkBinaryCrLf'];
-		if ($checkBinaryCrLf != '') {
+		$componentSettings = $this->getComponentSettings();
+		$checkBinaryCrLf = $componentSettings['checkBinaryCrLf'];
+		if ($checkBinaryCrLf !== '') {
 			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
-			foreach($paramsToCheck as &$val) {
-				if(!is_array($val)) {
-					$val = str_replace (chr(13), '<br />', $val);
-					$val = str_replace ('\\', '', $val);
-					$val = nl2br($val);
+			foreach($paramsToCheck as &$field) {
+				if(!is_array($field)) {
+					$this->gp[$field] = str_replace (chr(13), '<br />', $this->gp[$field]);
+					$this->gp[$field] = str_replace ('\\', '', $this->gp[$field]);
+					$this->gp[$field] = nl2br($this->gp[$field]);
 				}
 			}
 		}
