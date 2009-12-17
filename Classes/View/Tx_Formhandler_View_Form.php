@@ -266,7 +266,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$flags = array();
 		$nowrite = false;
 		$out = array();
-		foreach(split(chr(10), $this->template) as $line){
+		foreach(explode(chr(10), $this->template) as $line){
 
 			// works only on it's own line
 			$pattern = '/###isset_+([^#]*)_*###/i';
