@@ -246,7 +246,8 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				//sum up all params for selection view
 				$allParams = array_merge($allParams, $row['params']);
 			}
-
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			
 			//if fields were chosen in selection view, export the records using the selected fields
 			if(isset($gp['exportParams'])) {
 				$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_TCPDF');
@@ -309,7 +310,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				}
 				$records[] = $row;
 			}
-			
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$availableFormatsCount = count($availableFormats);
 		
 			//only one format found
@@ -565,7 +566,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		//if UID was valid
 		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$viewCode = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###DETAIL_VIEW###');
 
 			//unserialize params
@@ -648,6 +649,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				$records[$count] = $row;
 				$count++;
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $records;
 	}
