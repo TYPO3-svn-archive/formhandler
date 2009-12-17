@@ -50,6 +50,7 @@ class Tx_Formhandler_Finisher_Confirmation extends Tx_Formhandler_AbstractFinish
 		
 		$action = $this->gp['action'];
 		if($action) {
+			
 			$this->processAction($action);
 		}
 

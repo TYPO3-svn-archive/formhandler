@@ -44,7 +44,7 @@ class tx_formhandler_pi1 extends tslib_pibase {
 	 */
 	public function main($content,$conf)	{
 		$dispatcher = new Tx_Formhandler_Dispatcher();
-		
+		$dispatcher->cObj = &$this->cObj;
 		return $dispatcher->main($content, $conf);
 	}
 }

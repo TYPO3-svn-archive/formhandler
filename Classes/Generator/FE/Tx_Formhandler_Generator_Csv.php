@@ -42,7 +42,7 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 		} else {
 			$linkGP['action'] = 'csv';
 		}
-		
+		$linkGP['no_cache'] = 1;
 		return $this->cObj->getTypolink('CSV', $GLOBALS['TSFE']->id, $linkGP);
 	}
 }
