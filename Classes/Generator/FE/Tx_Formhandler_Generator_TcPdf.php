@@ -10,10 +10,27 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 	public function process() {
 
 		$this->pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
+		
 		$this->pdf->AddPage();
-		$this->pdf->SetFont('Freesans', '', 12);
+		$this->pdf->SetFont('Helvetica', '', 12);
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_PDF');
 		
+		$this->filename = FALSE;
+		if(intval($this->settings['storeInTempFile']) === 1) {
+			$this->outputPath = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
+			if($this->settings['customTempOutputPath']) {
+				$this->outputPath .= Tx_Formhandler_StaticFuncs::sanitizePath($this->settings['customTempOutputPath']);
+			} else {
+				$this->outputPath .= '/typo3temp/';
+			}
+			$this->filename = $this->outputPath . $this->settings['filePrefix'] . Tx_Formhandler_StaticFuncs::generateHash() . '.pdf';		
+			$this->filenameOnly = basename($this->filename);
+			if($this->settings['staticFileName'] && $this->settings['staticFileName.']) {
+				$this->filenameOnly = $this->cObj->cObjGetSingle($this->settings['staticFileName'], $this->settings['staticFileName.']);
+			} elseif($this->settings['staticFileName']) {
+				$this->filenameOnly = $this->settings['staticFileName'];
+			}
+		}
 		
 		$this->formhandlerSettings = Tx_Formhandler_Globals::$settings;
 		
@@ -32,21 +49,21 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 		$view->setComponentSettings($this->settings);
 		$content = $view->render($this->gp, array());
 		
-		$pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
+		$this->pdf->writeHTML($content);
+		$returns = $this->settings['returnFileName'];
 		
-		$pdf->writeHTML(stripslashes($content), true, 0);
-
-		if(strlen($file) > 0) {
-			$pdf->Output($file, 'F');
-			$pdf->Close();
-			$downloadpath = $file;
+		if($this->filename !== FALSE) {
+			$this->pdf->Output($this->filename, 'F');
+			
+			$downloadpath = $this->filename;
 			if($returns) {
 				return $downloadpath;
 			}
 			
 			header('Location: ' . $downloadpath);
 		} else {
-			$pdf->Output('formhandler.pdf','D');
+			$this->pdf->Output('formhandler.pdf','I');
+			
 		}
 	}
 	

@@ -39,7 +39,7 @@ class Tx_Formhandler_Template_PDF extends FPDF {
 	public function Header() {
 	  
 		//Arial bold 15
-		$this->SetFont('Arial', 'B', 15);
+		$this->SetFont('Helvetica', 'B', 15);
 	  
 		
 		//Title
@@ -60,7 +60,7 @@ class Tx_Formhandler_Template_PDF extends FPDF {
 		$this->SetY(-15);
 	  
 		//Arial italic 8
-		$this->SetFont('Arial', 'I', 8);
+		$this->SetFont('Helvetica', 'I', 8);
 	    
 		$text = $this->getLL('footer_text');
 		$text = sprintf($text,date('d.m.Y H:i:s', time()));

@@ -317,6 +317,15 @@ class Tx_Formhandler_StaticFuncs {
 		}
 		return $path;
 	}
+	
+	static public function generateHash(){
+		$result = '';
+		$charPool = '0123456789abcdefghijklmnopqrstuvwxyz';
+		for($p = 0; $p < 15; $p++) {
+			$result .= $charPool[mt_rand(0, strlen($charPool) - 1)];
+		}
+		return sha1(md5(sha1($result)));
+	}
 
 	/**
 	 * Converts an absolute path into a relative path from TYPO3 root directory.

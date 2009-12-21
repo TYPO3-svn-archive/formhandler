@@ -49,8 +49,7 @@ class Tx_Formhandler_Template_TCPDF extends TCPDF {
 		//Position at 1.5 cm from bottom
 		$this->SetY(-15);
 	  
-		//Arial italic 8
-		$this->SetFont('Freesans', 'I', 8);
+		$this->SetFont('Helvetica', 'I', 8);
 	    
 		$text = $this->getLL('footer_text');
 		$text = sprintf($text,date('d.m.Y H:i:s', time()));
