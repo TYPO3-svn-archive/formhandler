@@ -200,7 +200,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						if($fieldName) {
 							$fieldName = substr($fieldName,1);
 							$markers = array(
-								'###fieldname###' => $fieldName
+								'###fieldname###' => $fieldName,
+								'###formValuesPrefix###' => Tx_Formhandler_Globals::$formValuesPrefix
 							);
 							$replacedCode = $this->cObj->substituteMarkerArray($code, $markers);
 							
