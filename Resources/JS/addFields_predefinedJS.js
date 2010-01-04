@@ -1,12 +1,12 @@
 /*
  * Adds onchange listener on the drop down menu "predefined".
  * If the event is fired and old value was ".default", then empty some fields.
- * 
+ *
  * $Id: addFields_predefinedJS.js 20791 2009-05-28 07:53:36Z reinhardfuehricht $
  */
 
 Event.observe(window, 'load', function() {
-	
+
 	var requiredFieldsDefault = 'firstname, lastname, email';
 	var langFileDefault = 'EXT:formhandler/Examples/Default/lang.xml';
 	var templateFileDefault = 'EXT:formhandler/Examples/Default/template.html';
@@ -41,10 +41,10 @@ Event.observe(window, 'load', function() {
 				break;
 		}
 	});
-	
+
 	// Detect whether static file is loaded
 	if (predefined.options.length <= 1) {
-		alert('Error: Static Typoscript is not loaded.\n1. Close this record without saving it.\n2. Open the main template, on the root page. \n3. Click on tab "Includes". \n4. Select mailfromplus from box "Include static (from extensions)."\n5.Then you can reopen this record.')
+		alert('Error: Static Typoscript is not loaded.\n1. Close this record without saving it.\n2. Open the main template, on the root page. \n3. Click on tab "Includes". \n4. Select "Example Configuration (formhandler)" from box "Include static (from extensions)."\n5.Then you can reopen this record.')
 		return;
 	}
 
@@ -87,7 +87,7 @@ Event.observe(window, 'load', function() {
 			}
 		}
 	}
-	
+
 	// Handles the even change
 	Event.observe(predefined, 'change', function(){
 		if (this.value != 'default.') {

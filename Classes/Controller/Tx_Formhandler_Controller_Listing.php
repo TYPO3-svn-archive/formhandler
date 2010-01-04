@@ -217,7 +217,7 @@ class Tx_Formhandler_Controller_Listing extends Tx_Formhandler_AbstractControlle
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
 	protected function initializeController($value = '') {
-		$this->piVars = t3lib_div::GParrayMerged($this->configuration->getPrefixedPackageKey());
+		//$this->piVars = t3lib_div::GParrayMerged($this->configuration->getPrefixedPackageKey());
 	}
 
 }

@@ -37,7 +37,7 @@
 			<label index="wizard_pi2.title">Formhandler Liste</label>
 			<label index="tt_content.list_type_pi1">Formhandler</label>
 			<label index="tt_content.list_type_pi2">Formhandler Liste</label>
-			<label index="tx_formhandler_main">mailformplus</label>
+			<label index="tx_formhandler_main">Formhandler</label>
 			<label index="tx_formhandler_main.email_to">sende die Formularfelder an folgende Email</label>
 			<label index="tx_formhandler_main.email_subject">Betreff der Email</label>
 			<label index="tx_formhandler_main.email_sender">Absende-Emailadresse</label>
