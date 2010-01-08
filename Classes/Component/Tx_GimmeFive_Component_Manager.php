@@ -354,8 +354,11 @@ class Tx_GimmeFive_Component_Manager {
 	private function loadClass($className) {		
 		$classNameParts = explode('_', $className,3);
 		if ($classNameParts[0] === self::PACKAGE_PREFIX) {
-			// TODO The $classFiles should be cached by package key
-			$this->classFiles = $this->buildArrayOfClassFiles($classNameParts[1]);
+		
+			// Caches the $classFiles
+			if ($this->classFiles === NULL) {
+				$this->classFiles = $this->buildArrayOfClassFiles($classNameParts[1]);
+			}
 			
 			if(is_array($this->tsConf['additionalIncludePaths.'])) {
 				foreach($this->tsConf['additionalIncludePaths.'] as $dir) {
