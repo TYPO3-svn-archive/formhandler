@@ -326,6 +326,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						}
 						
 						//run loggers
+						$this->addLoggerDB();
 						$output = $this->runClasses($this->settings['loggers.']);
 						if(strlen($output) > 0) {
 							return $output;
@@ -447,6 +448,33 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 				//unset on the previous position
 				unset($this->settings['finishers.'][$key]);
+			}
+		}
+	}
+	
+/**
+	 * Adds the Logger_DB
+	 *
+	 * @return void
+	 */
+	protected function addLoggerDB(){
+		
+		if(!isset($this->settings['loggers.']) && !is_array($this->settings['loggers.'])) {
+
+			//add Logger_DB to the end of logger array
+			$this->settings['loggers.'][] = array('class' => 'Tx_Formhandler_Logger_DB');
+			
+		} else {
+			
+			foreach($this->settings['loggers.'] as $logger) {
+				$found = FALSE;
+				if(strpos('Logger_DB', $logger['class']) !== FALSE) {
+					$found = TRUE;
+				}
+				if(!$found) {
+					//add Logger_DB to the end of logger array
+					$this->settings['loggers.'][] = array('class' => 'Tx_Formhandler_Finisher_StoreGP');
+				}
 			}
 		}
 	}
