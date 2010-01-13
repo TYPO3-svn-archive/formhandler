@@ -45,7 +45,7 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 	public function process() {
 		$isSpam = $this->doCheck();
 		if($isSpam) {
-			$this->log();
+			$this->log(TRUE);
 			if($this->settings['redirectPage']) {
 				Tx_Formhandler_Staticfuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl']);
 				return 'Lousy spammer!';
@@ -99,15 +99,5 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 		return $spam;
 	}
 	
-	/**
-	 * Logs to the database. Records will be marked red in backend module.
-	 *
-	 * @return void
-	 */
-	protected function log() {
-		$logger = $this->componentManager->getComponent('Tx_Formhandler_Logger_DB');
-		$logger->init($this->gp, array('markAsSpam' => 1));
- 		$logger->process();
-	}
 }
 ?>

@@ -24,5 +24,25 @@
  */
 abstract class Tx_Formhandler_AbstractInterceptor extends Tx_Formhandler_AbstractComponent {
 	
+	protected function log($markAsSpam = FALSE) {
+		$classesArray = $this->settings['loggers.'];
+		if(isset($classesArray) && is_array($classesArray)) {
+			foreach($classesArray as $tsConfig) {
+				if(isset($tsConfig['class'])) {
+					$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
+					Tx_Formhandler_StaticFuncs::debugBeginSection('calling_class', $className);
+	
+					$obj = $this->componentManager->getComponent($className);
+					if($markAsSpam) {
+						$tsConfig['config.']['markAsSpam'] = 1;
+					}
+					$obj->init($this->gp, $tsConfig['config.']);
+					$obj->process();
+					Tx_Formhandler_StaticFuncs::debugEndSection();
+				}
+			}
+		}
+	}
+	
 }
 ?>

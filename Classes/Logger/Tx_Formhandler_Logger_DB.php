@@ -26,8 +26,6 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 	/**
 	 * Logs the given values.
 	 *
-	 * @param array $gp The current GET/POST parameters
-	 * @param array $settings The settings for the logger
 	 * @return void
 	 */
 	public function process() {

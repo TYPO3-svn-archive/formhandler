@@ -51,38 +51,35 @@
 class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInterceptor {
 
 	/**
-	 * The table where the reports are logged
-	 *
-	 * @access protected
-	 * @var string
-	 */
-	protected $reportTable = 'tx_formhandler_reportlog';
-
-	/**
 	 * The table where the form submissions are logged
 	 *
 	 * @access protected
 	 * @var string
 	 */
 	protected $logTable = 'tx_formhandler_log';
-
+	
 	/**
 	 * The main method called by the controller
 	 *
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
+		
 		$ipTimebaseValue = $this->settings['ip.']['timebase.']['value'];
 		$ipTimebaseUnit = $this->settings['ip.']['timebase.']['unit'];
 		$ipMaxValue = $this->settings['ip.']['threshold'];
 
-		$this->check($ipTimebaseValue, $ipTimebaseUnit, $ipMaxValue, true);
+		if($ipTimebaseValue && $ipTimebaseUnit && $ipMaxValue) {
+			$this->check($ipTimebaseValue, $ipTimebaseUnit, $ipMaxValue, TRUE);
+		}
 
 		$globalTimebaseValue = $this->settings['global.']['timebase.']['value'];
 		$globalTimebaseUnit = $this->settings['global.']['timebase.']['unit'];
 		$globalMaxValue = $this->settings['global.']['threshold'];
-
-		$this->check($globalTimebaseValue, $globalTimebaseUnit, $globalMaxValue, true);
+		
+		if($globalTimebaseValue && $globalTimebaseUnit && $globalMaxValue) {
+			$this->check($globalTimebaseValue, $globalTimebaseUnit, $globalMaxValue, TRUE);
+		}
 
 		return $this->gp;
 	}
@@ -96,7 +93,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	 * @param boolean add IP address to where clause
 	 * @return void
 	 */
-	private function check($value, $unit, $maxValue, $addIPToWhere = false) {
+	private function check($value, $unit, $maxValue, $addIPToWhere = TRUE) {
 		$timestamp = Tx_Formhandler_StaticFuncs::getTimestamp($value, $unit);
 		$where = 'crdate >= ' . $timestamp;
 		if($addIPToWhere) {
@@ -105,7 +102,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,ip,crdate,params', $this->logTable, $where);
 
 		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) >= $maxValue) {
-
+			$this->log(TRUE);
 			$message = 'You are not allowed to send more mails because form got submitted too many times ';
 			if($addIPToWhere) {
 				$message .= 'by your IP address ';
@@ -117,7 +114,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 				}
 				$intervalValue = $this->settings['report.']['interval.']['value'];
 				$intervalUnit = $this->settings['report.']['interval.']['unit'];
-				$send = true;
+				$send = TRUE;
 				if($intervalUnit && $intervalValue) {
 					$intervalTstamp = Tx_Formhandler_StaticFuncs::getTimestamp($intervalValue, $intervalUnit);
 					$where = 'pid=' . $GLOBALS['TSFE']->id . ' AND crdate>' . $intervalTstamp;
@@ -128,7 +125,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 					$res_log = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $this->reportTable, $where);
 
 					if($res_log && $GLOBALS['TYPO3_DB']->sql_num_rows($res_log) > 0) {
-						$send = false;
+						$send = FALSE;
 					}
 				}
 				if($send) {
@@ -142,7 +139,6 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			t3lib_div::devLog('IP blocker caught possible spamming on page ' . $GLOBALS['TSFE']->id . '!', 'formhandler', 2, unserialize($row['params']));
 			if($this->settings['redirectPage']) {
 				Tx_Formhandler_StaticFuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl']);
 				Tx_Formhandler_StaticFuncs::debugMessage('redirect_failed');
@@ -218,15 +214,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 
 			}
 		}
-		$dbParams = array();
-		$dbParams['pid'] = $GLOBALS['TSFE']->id;
-		if($type == 'ip') {
-			$dbParams['ip'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
-		}
-		$tstamp = time();
-		$dbParams['tstamp'] = $tstamp;
-		$dbParams['crdate'] = $tstamp;
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery($this->reportTable, $dbParams);
+		
 	}
 
 }
