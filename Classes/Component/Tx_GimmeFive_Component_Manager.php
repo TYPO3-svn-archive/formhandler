@@ -362,7 +362,7 @@ class Tx_GimmeFive_Component_Manager {
 		if ($classNameParts[0] === self::PACKAGE_PREFIX) {
 		
 			// Caches the $classFiles
-			if ($this->classFiles === NULL) {
+			if ($this->classFiles === NULL || empty($this->classFiles)) {
 				$this->classFiles = $this->buildArrayOfClassFiles($classNameParts[1]);
 			}
 			
