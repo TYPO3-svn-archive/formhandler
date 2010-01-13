@@ -48,6 +48,7 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 			$this->log();
 			if($this->settings['redirectPage']) {
 				Tx_Formhandler_Staticfuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl']);
+				return 'Lousy spammer!';
 			} else {
 				$view = $this->componentManager->getComponent('Tx_Formhandler_View_AntiSpam');
 				$view->setLangFiles(Tx_Formhandler_Globals::$langFiles);
@@ -105,7 +106,8 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 	 */
 	protected function log() {
 		$logger = $this->componentManager->getComponent('Tx_Formhandler_Logger_DB');
-		$logger->log($this->gp, array('markAsSpam' => 1));
+		$logger->init($this->gp, array('markAsSpam' => 1));
+ 		$logger->process();
 	}
 }
 ?>

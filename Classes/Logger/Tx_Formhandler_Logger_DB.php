@@ -36,7 +36,7 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		$table = "tx_formhandler_log";
 
 		$fields['ip'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
-		if(isset($settings['disableIPlog']) && intval($settings['disableIPlog']) == 1) {
+		if(isset($this->settings['disableIPlog']) && intval($this->settings['disableIPlog']) == 1) {
 			$fields['ip'] = NULL;
 		}
 		$fields['tstamp'] = time();
@@ -49,7 +49,7 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		$fields['params'] = $serialized;
 		$fields['key_hash'] = $hash;
 		
-		if(intval($settings['markAsSpam']) == 1) {
+		if(intval($this->settings['markAsSpam']) == 1) {
 			$fields['is_spam'] = 1;
 		}
 
@@ -60,7 +60,7 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		$insertedUID = $GLOBALS['TYPO3_DB']->sql_insert_id();
 		$GLOBALS['TSFE']->fe_user->setKey('ses', 'inserted_uid', $insertedUID);
 		$GLOBALS['TSFE']->fe_user->storeSessionData();
-		if(!$settings['nodebug']) {
+		if(!$this->settings['nodebug']) {
 			Tx_Formhandler_StaticFuncs::debugMessage('logging', $table, implode(',', $fields));
 			if(strlen($GLOBALS['TYPO3_DB']->sql_error()) > 0) {
 				Tx_Formhandler_StaticFuncs::debugMessage('error', $GLOBALS['TYPO3_DB']->sql_error());
