@@ -80,6 +80,12 @@ class Tx_GimmeFive_Component_Manager {
 	 * @author adapted for TYPO3v4 by Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getComponent($componentName) {
+		
+		//Avoid component manager creating multiple instances of itself:
+		if (get_class($this) == $componentName) {
+			return $this;
+		}
+		
 		if(!is_array($this->classFiles)) {
 			$this->classFiles = array();
 		}
