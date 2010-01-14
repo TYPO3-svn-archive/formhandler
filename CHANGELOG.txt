@@ -1,4 +1,185 @@
 ------------------------------------------------------------------------
+r28848 | reinhardfuehricht | 2010-01-14 18:09:44 +0100 (Don, 14. Jän 2010) | 1 Zeile
+
+- UPDATE: Updated TER version. Version number raised to 0.9.5
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+---------------------------- Version 0.9.5 -----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+r28847 | reinhardfuehricht | 2010-01-14 17:58:10 +0100 (Don, 14. Jän 2010) | 1 Zeile
+
+-UPDATE: According to #6019, now multiple master templates can be assigned. The same syntax is valid for translation files. Check manual for details.
+------------------------------------------------------------------------
+r28823 | reinhardfuehricht | 2010-01-14 09:35:11 +0100 (Don, 14. Jän 2010) | 1 Zeile
+
+-UPDATE: manual updates because of the removed error checks.
+------------------------------------------------------------------------
+r28822 | reinhardfuehricht | 2010-01-14 09:33:45 +0100 (Don, 14. Jän 2010) | 3 Zeilen
+
+-UPDATE: replaced all occurrences of "split" with explode
+-UPDATE: replaced all occurrences of "ereg", "eregi" and "ereg_replace" with according "preg_*"
+-REMOVE: error checks "ereg" and "eregi"
+------------------------------------------------------------------------
+r28812 | reinhardfuehricht | 2010-01-13 17:58:00 +0100 (Mit, 13. Jän 2010) | 3 Zeilen
+
+-UPDATE: Interceptor_AntiSpamFormTime and Interceptor_IPBlocking now have the TypoScript setting "loggers" to specify logging just like in the global configuration.
+-ADD: Logger_DevLog
+-UPDATE: Manual updated
+------------------------------------------------------------------------
+r28809 | reinhardfuehricht | 2010-01-13 17:36:47 +0100 (Mit, 13. Jän 2010) | 1 Zeile
+
+-UPDATE: Logger_DB is now added by Controller_Form automatically. So every form submission is logged, no matter what.
+------------------------------------------------------------------------
+r28808 | reinhardfuehricht | 2010-01-13 17:35:21 +0100 (Mit, 13. Jän 2010) | 1 Zeile
+
+-FIX: Component Manager did not work in Backend.
+------------------------------------------------------------------------
+r28806 | reinhardfuehricht | 2010-01-13 17:12:13 +0100 (Mit, 13. Jän 2010) | 1 Zeile
+
+- UPDATE: Removed 1 occurrence of "Interceptor_RemoveXSS" in manual
+------------------------------------------------------------------------
+r28802 | reinhardfuehricht | 2010-01-13 15:35:38 +0100 (Mit, 13. Jän 2010) | 1 Zeile
+
+-UPDATE #4781: Avoid that component manager instantiates itself.
+------------------------------------------------------------------------
+r28801 | reinhardfuehricht | 2010-01-13 15:27:19 +0100 (Mit, 13. Jän 2010) | 1 Zeile
+
+- UPDATE #6000: bugfixes.
+------------------------------------------------------------------------
+r28545 | fabien_u | 2010-01-08 13:48:38 +0100 (Fre, 08. Jän 2010) | 1 Zeile
+
+[BUG] Avoid unnecessary recursion loading by caching the classFiles. Should have a positive impact on performance.
+------------------------------------------------------------------------
+r28375 | erep | 2010-01-04 21:44:16 +0100 (Mon, 04. Jän 2010) | 1 Zeile
+
+- FIX: turn into uncached plugin again 
+------------------------------------------------------------------------
+r28348 | erep | 2010-01-04 15:25:29 +0100 (Mon, 04. Jän 2010) | 2 Zeilen
+
+- UPDATE: Removed GPArrayMerged() call which caused log message in TYPO3v4.3
+- UPDATE: Removed old th_mailfromplus/mailformplusplus labels
+------------------------------------------------------------------------
+r27958 | reinhardfuehricht | 2009-12-22 15:07:05 +0100 (Die, 22. Dez 2009) | 1 Zeile
+
+- ADD: New Marker ###formValuesPrefix### available in master template. This way master template now is suitable for different prefixes, therefore for different forms.
+------------------------------------------------------------------------
+r27923 | reinhardfuehricht | 2009-12-21 20:18:39 +0100 (Mon, 21. Dez 2009) | 2 Zeilen
+
+- UPDATE: Generator_TcPdf can be used in Finisher_Mail now too
+- UPDATE: Removed GPArrayMerged() call which caused log message in TYPO3v4.3
+------------------------------------------------------------------------
+r27811 | reinhardfuehricht | 2009-12-17 19:38:28 +0100 (Don, 17. Dez 2009) | 1 Zeile
+
+- ADD: added some free_result calls for Controller_Backend
+------------------------------------------------------------------------
+r27810 | reinhardfuehricht | 2009-12-17 19:36:31 +0100 (Don, 17. Dez 2009) | 2 Zeilen
+
+- ADD: Generator_TcPdf for frontend PDF generation
+- FIX: various issues in generators for Finisher_Confirmation
+------------------------------------------------------------------------
+r27791 | reinhardfuehricht | 2009-12-17 10:30:47 +0100 (Don, 17. Dez 2009) | 1 Zeile
+
+- UPDATE: Replaced deprecated split() with explode()
+------------------------------------------------------------------------
+r27790 | reinhardfuehricht | 2009-12-17 10:28:42 +0100 (Don, 17. Dez 2009) | 2 Zeilen
+
+- FIX: Changes for TYPO3v4.3
+- FIX: Bug in Generator_Csv
+------------------------------------------------------------------------
+r27708 | reinhardfuehricht | 2009-12-15 10:22:07 +0100 (Die, 15. Dez 2009) | 1 Zeile
+
+- UPDATE: Converted all files to unix linebreaks according to issue #5473
+------------------------------------------------------------------------
+r27682 | reinhardfuehricht | 2009-12-14 16:14:01 +0100 (Mon, 14. Dez 2009) | 3 Zeilen
+
+- FIX: Fill required-marker for captcha checks too.
+- FIX: hand GET/POST vars to userFuncs in $conf['gp']
+- FIX: store settings in session, after merging them with specific settings for a step.
+------------------------------------------------------------------------
+r27499 | reinhardfuehricht | 2009-12-09 10:33:35 +0100 (Mit, 09. Dez 2009) | 1 Zeile
+
+- ADD: Feature #5476
+------------------------------------------------------------------------
+r27495 | reinhardfuehricht | 2009-12-09 09:56:51 +0100 (Mit, 09. Dez 2009) | 1 Zeile
+
+- FIX: #5629
+------------------------------------------------------------------------
+r27493 | reinhardfuehricht | 2009-12-09 09:46:05 +0100 (Mit, 09. Dez 2009) | 1 Zeile
+
+- FIX: Made checkBinaryCrLf work again (Bug #5567)
+------------------------------------------------------------------------
+r27318 | reinhardfuehricht | 2009-12-04 11:05:24 +0100 (Fre, 04. Dez 2009) | 1 Zeile
+
+FIX: Bug #5526
+------------------------------------------------------------------------
+r27317 | reinhardfuehricht | 2009-12-04 10:52:14 +0100 (Fre, 04. Dez 2009) | 1 Zeile
+
+- FIX: Corrected error in the manual as requested in Task #5573
+------------------------------------------------------------------------
+r26832 | reinhardfuehricht | 2009-11-23 16:30:49 +0100 (Mon, 23. Nov 2009) | 1 Zeile
+
+FIX: Bug #5282 - thanks to Caspar Stuebs for the patch
+------------------------------------------------------------------------
+r26831 | reinhardfuehricht | 2009-11-23 16:28:25 +0100 (Mon, 23. Nov 2009) | 1 Zeile
+
+FIX: Bug #5472 - thanks to Caspar Stuebs for the patch
+------------------------------------------------------------------------
+r26633 | reinhardfuehricht | 2009-11-17 15:30:39 +0100 (Die, 17. Nov 2009) | 1 Zeile
+
+ADD: Feature: disableErrorCheckFields = all
+------------------------------------------------------------------------
+r26628 | reinhardfuehricht | 2009-11-17 13:53:16 +0100 (Die, 17. Nov 2009) | 11 Zeilen
+
+Another big update (your TypoScript may need):
+
+- Conditional multistep forms rewritten:
+	No more TS conditions!
+	Marker ###ADDIOTNAL_MULTISTEP### must not be used anymore!
+	Please check the manual for details.
+	
+- No more static template needed
+- Many bugfixes concerning language files, error checks and multistep handling
+	
+	
+------------------------------------------------------------------------
+r26621 | reinhardfuehricht | 2009-11-17 10:35:47 +0100 (Die, 17. Nov 2009) | 1 Zeile
+
+FIX: #5164 Store session data after setting the values in Finisher_StoreGP
+------------------------------------------------------------------------
+r26307 | reinhardfuehricht | 2009-11-09 12:44:22 +0100 (Mon, 09. Nov 2009) | 1 Zeile
+
+FIX: #5289
+------------------------------------------------------------------------
+r26101 | reinhardfuehricht | 2009-11-02 20:13:01 +0100 (Mon, 02. Nov 2009) | 1 Zeile
+
+FIX: Bug #5193 - Validations got overwritten by Flexform settings.
+------------------------------------------------------------------------
+r26003 | reinhardfuehricht | 2009-10-29 18:47:15 +0100 (Don, 29. Okt 2009) | 1 Zeile
+
+UPDATE: Released new version in TER. Version number corrected here to 0.9.4
+------------------------------------------------------------------------
+r26000 | reinhardfuehricht | 2009-10-29 18:41:17 +0100 (Don, 29. Okt 2009) | 2 Zeilen
+
+UPDATE: Some fixes in fillErrorMarkers() in View_Form
+UPDATE: Cleared Generator_PdfGenerator. This component acutally does nothing at the moment.
+------------------------------------------------------------------------
+r25999 | reinhardfuehricht | 2009-10-29 18:40:00 +0100 (Don, 29. Okt 2009) | 1 Zeile
+
+ADD: New file CHANGELOG.txt
+------------------------------------------------------------------------
+r25995 | reinhardfuehricht | 2009-10-29 18:03:46 +0100 (Don, 29. Okt 2009) | 1 Zeile
+
+UPDATE: Corrected version number to match the one in TER
+------------------------------------------------------------------------
+r25994 | reinhardfuehricht | 2009-10-29 18:02:46 +0100 (Don, 29. Okt 2009) | 1 Zeile
+
+UPDATE: Corrected some mistakes in the examples
+------------------------------------------------------------------------
 r26003 | reinhardfuehricht | 2009-10-29 18:47:15 +0100 (Don, 29. Okt 2009) | 1 line
 
 UPDATE: Released new version in TER. Version number corrected here to 0.9.4
