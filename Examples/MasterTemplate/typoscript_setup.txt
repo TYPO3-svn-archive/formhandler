@@ -5,7 +5,14 @@ plugin.Tx_Formhandler.settings.predef.mastertemplate_example {
 	debug = 0
 	addErrorAnchors = 1
 	templateFile = EXT:formhandler/Examples/MasterTemplate/template.html
+	
+	# single master template
 	masterTemplateFile = EXT:formhandler/Examples/MasterTemplate/master_template.html
+	
+	#multiple master templates
+	#masterTemplateFile.1 = EXT:formhandler/Examples/MasterTemplate/master_template.html
+	#masterTemplateFile.2 = fileadmin/templates/ext/formhandler/mymastemplate.html
+	
 	langFile.1 = EXT:formhandler/Examples/MasterTemplate/lang.xml
 	stylesheetFile = EXT:formhandler/Examples/MasterTemplate/styles.css
 	formValuesPrefix = formhandler

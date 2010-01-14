@@ -100,11 +100,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		}
 		
 		//set language file
-		if(!$this->masterTemplate) {
-			$this->readMasterTemplate();
+		if(!$this->masterTemplates) {
+			$this->readMasterTemplates();
 		}
 		
-		if($this->masterTemplate) {
+		if(!empty($this->masterTemplates)) {
 			$this->replaceMarkersFromMaster();
 		}
 		
@@ -163,61 +163,74 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 *
 	 * @return void
 	 */
-	protected function readMasterTemplate() {
-		if(is_array($this->settings['masterTemplateFile.'])) {
-			$this->masterTemplate = $this->cObj->cObjGetSingle($this->settings['masterTemplateFile'], $this->settings['masterTemplateFile.']);
-		} else {
-			$this->masterTemplate = Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($this->settings['masterTemplateFile']);
+	protected function readMasterTemplates() {
+		$this->masterTemplates = array();
+		if(isset($this->settings['masterTemplateFile']) && !isset($this->settings['masterTemplateFile.'])) {
+			array_push($this->masterTemplates, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($this->settings['masterTemplateFile']));
+		} elseif(isset($this->settings['masterTemplateFile']) && isset($this->settings['masterTemplateFile.'])) {
+			array_push($this->masterTemplates, $this->cObj->cObjGetSingle($this->settings['masterTemplateFile'], $this->settings['masterTemplateFile.']));
+		} elseif(isset($this->settings['masterTemplateFile.']) && is_array($this->settings['masterTemplateFile.'])) {
+			foreach($this->settings['masterTemplateFile.'] as $key => $masterTemplate) {
+				if(FALSE === strpos($key, '.')) {
+					if(is_array($this->settings['masterTemplateFile.'][$key . '.'])) {
+						array_push($this->masterTemplates, $this->cObj->cObjGetSingle($masterTemplate, $this->settings['masterTemplateFile.'][$key . '.']));
+					} else {
+						array_push($this->masterTemplates, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($masterTemplate));
+					}
+				}
+			}
 		}
 	}
 	
 	protected function replaceMarkersFromMaster() {
-		$masterTemplateCode = t3lib_div::getURL($this->masterTemplate);
-		$matches = array();
-		preg_match_all('/###field_(.*)###/', $masterTemplateCode, $matches);
-		
-		if(!empty($matches[0])) {
-			$subparts = array_unique($matches[0]);
+		$fieldMarkers = array();
+		foreach($this->masterTemplates as $masterTemplate) {
+			$masterTemplateCode = t3lib_div::getURL($masterTemplate);
+			$matches = array();
+			preg_match_all('/###field_(.*)###/', $masterTemplateCode, $matches);
 			
-			$subpartsCodes = array();
-			if(is_array($subparts)) {
-				foreach($subparts as $subpart) {
-					$subpartKey = str_replace('#', '', $subpart);
-					$subpartsCodes[$subpartKey] = $this->cObj->getSubpart($masterTemplateCode, $subpart);
+			if(!empty($matches[0])) {
+				$subparts = array_unique($matches[0]);
+				
+				$subpartsCodes = array();
+				if(is_array($subparts)) {
+					foreach($subparts as $subpart) {
+						$subpartKey = str_replace('#', '', $subpart);
+						$subpartsCodes[$subpartKey] = $this->cObj->getSubpart($masterTemplateCode, $subpart);
+					}
+					
 				}
 				
-			}
-			
-			$fieldMarkers = array();
-			foreach($subpartsCodes as $subpart=>$code) {
-				$matchesSlave = array();
-				preg_match_all('/###' . $subpart . '(.*)###/', $this->template, $matchesSlave);
-				if(!empty($matchesSlave[0])) {
-					foreach($matchesSlave[0] as $key=>$markerName) {
-						
-						$fieldName = $matchesSlave[1][$key];
-						
-						if($fieldName) {
-							$fieldName = substr($fieldName,1);
-							$markers = array(
-								'###fieldname###' => $fieldName,
-								'###formValuesPrefix###' => Tx_Formhandler_Globals::$formValuesPrefix
-							);
-							$replacedCode = $this->cObj->substituteMarkerArray($code, $markers);
+				foreach($subpartsCodes as $subpart=>$code) {
+					$matchesSlave = array();
+					preg_match_all('/###' . $subpart . '(.*)###/', $this->template, $matchesSlave);
+					if(!empty($matchesSlave[0])) {
+						foreach($matchesSlave[0] as $key=>$markerName) {
 							
+							$fieldName = $matchesSlave[1][$key];
 							
+							if($fieldName) {
+								$fieldName = substr($fieldName,1);
+								$markers = array(
+									'###fieldname###' => $fieldName,
+									'###formValuesPrefix###' => Tx_Formhandler_Globals::$formValuesPrefix
+								);
+								$replacedCode = $this->cObj->substituteMarkerArray($code, $markers);
+								
+								
+								
+								 
+							} else {
+								$replacedCode = $code;
+							}
 							
-							 
-						} else {
-							$replacedCode = $code;
+							$fieldMarkers[$markerName] = $replacedCode;
 						}
-						
-						$fieldMarkers[$markerName] = $replacedCode;
 					}
 				}
 			}
-			$this->template = $this->cObj->substituteMarkerArray($this->template, $fieldMarkers);
 		}
+		$this->template = $this->cObj->substituteMarkerArray($this->template, $fieldMarkers);
 	}
 
 	/**

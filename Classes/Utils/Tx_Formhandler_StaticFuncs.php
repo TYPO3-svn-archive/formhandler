@@ -153,14 +153,23 @@ class Tx_Formhandler_StaticFuncs {
 		//language file was not set in flexform, search TypoScript for setting
 		if(!$langFiles) {
 			$langFiles = array();
-			if($settings['langFile.']) {
-				foreach($settings['langFile.'] as $langFile) {
-					$langFiles[] = $langFile;
+			if(isset($settings['langFile']) && !isset($settings['langFile.'])) {
+				array_push($langFiles, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($settings['langFile']));
+			} elseif(isset($settings['langFile']) && isset($settings['langFile.'])) {
+				array_push($langFiles, Tx_Formhandler_Globals::$cObj->cObjGetSingle($settings['langFile'], $settings['langFile.']));
+			} elseif(isset($settings['langFile.']) && is_array($settings['langFile.'])) {
+				foreach($settings['langFile.'] as $key => $langFile) {
+					if(FALSE === strpos($key, '.')) {
+						if(is_array($settings['langFile.'][$key . '.'])) {
+							array_push($langFiles, Tx_Formhandler_Globals::$cObj->cObjGetSingle($langFile, $settings['langFile.'][$key . '.']));
+						} else {
+							array_push($langFiles, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($langFile));
+						}
+					}
 				}
-			} elseif($settings['langFile']) {
-				$langFiles[] = $settings['langFile'];
 			}
 		}
+		
 		foreach($langFiles as &$langFile) {
 			$langFile = Tx_Formhandler_StaticFuncs::convertToRelativePath($langFile);
 		}
