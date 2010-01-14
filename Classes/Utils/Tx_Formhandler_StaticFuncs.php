@@ -390,21 +390,19 @@ class Tx_Formhandler_StaticFuncs {
 	static public function getFilledValueMarkers(&$gp) {
 		if (isset($gp) && is_array($gp)) {
 			foreach($gp as $k=>$v) {
-				if (!ereg('EMAIL_', $k)) {
-					if (is_array($v)) {
-						$v = implode(',', $v);
-					}
-					$v = trim($v);
-					if (strlen($v) > 0) {
-						if(get_magic_quotes_gpc()) {
-							$markers['###value_'.$k.'###'] = stripslashes(self::reverse_htmlspecialchars($v));
-						} else {
-							$markers['###value_'.$k.'###'] = self::reverse_htmlspecialchars($v);
-						}
+				if (is_array($v)) {
+					$v = implode(',', $v);
+				}
+				$v = trim($v);
+				if (strlen($v) > 0) {
+					if(get_magic_quotes_gpc()) {
+						$markers['###value_'.$k.'###'] = stripslashes(self::reverse_htmlspecialchars($v));
 					} else {
-						$markers['###value_'.$k.'###'] = '';
+						$markers['###value_'.$k.'###'] = self::reverse_htmlspecialchars($v);
 					}
-				} //if end
+				} else {
+					$markers['###value_'.$k.'###'] = '';
+				}
 			} // foreach end
 		} // if end
 		return $markers;
@@ -421,7 +419,7 @@ class Tx_Formhandler_StaticFuncs {
 	static public function reverse_htmlspecialchars($mixed) {
 		$htmltable = get_html_translation_table(HTML_ENTITIES);
 		foreach($htmltable as $key => $value) {
-			$mixed = ereg_replace(addslashes($value), $key, $mixed);
+			$mixed = preg_replace('/' . addslashes($value) . '/', $key, $mixed);
 		}
 		return $mixed;
 	}

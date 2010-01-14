@@ -887,26 +887,23 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers = array();
 		if (is_array($this->gp)) {
 			foreach($this->gp as $k => $v) {
-				if (!ereg('EMAIL_', $k)) {
-					
-					if (is_array($v)) {
-						$v = implode(',', $v);
-					}
-					$v = trim($v);
-					if ($v != '') {
-						if(get_magic_quotes_gpc()) {
-							$markers['###value_' . $k . '###'] = stripslashes(Tx_Formhandler_StaticFuncs::reverse_htmlspecialchars($v));
-						} else {
-							$markers['###value_' . $k . '###'] = Tx_Formhandler_StaticFuncs::reverse_htmlspecialchars($v);
-						}
+				if (is_array($v)) {
+					$v = implode(',', $v);
+				}
+				$v = trim($v);
+				if ($v != '') {
+					if(get_magic_quotes_gpc()) {
+						$markers['###value_' . $k . '###'] = stripslashes(Tx_Formhandler_StaticFuncs::reverse_htmlspecialchars($v));
 					} else {
-						$markers['###value_' . $k . '###'] = '';
+						$markers['###value_' . $k . '###'] = Tx_Formhandler_StaticFuncs::reverse_htmlspecialchars($v);
 					}
-				
-					$markers['###' . $k . '###'] = $markers['###value_' . $k . '###'];
-					$markers['###' . strtoupper($k) . '###'] = $markers['###value_' . $k . '###'];
-					$markers['###' . (strtoupper('VALUE_' . $k)) . '###'] = $markers['###value_' . $k . '###'];
-				} //if end
+				} else {
+					$markers['###value_' . $k . '###'] = '';
+				}
+			
+				$markers['###' . $k . '###'] = $markers['###value_' . $k . '###'];
+				$markers['###' . strtoupper($k) . '###'] = $markers['###value_' . $k . '###'];
+				$markers['###' . (strtoupper('VALUE_' . $k)) . '###'] = $markers['###value_' . $k . '###'];
 			} // foreach end
 		} // if end
 		

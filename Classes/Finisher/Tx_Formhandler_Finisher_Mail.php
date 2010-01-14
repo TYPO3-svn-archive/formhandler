@@ -273,7 +273,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		foreach($mailSettings['to_email'] as $mailto) {
 			$sent = FALSE;
 			if($count < $max) {
-				if (strstr($mailto, '@') && !eregi("\r", $mailto) && !eregi("\n", $mailto)) {
+				if (strstr($mailto, '@') && !preg_match("/\r/i", $mailto) && !preg_match("/\n/i", $mailto)) {
 					
 					if($doSend) {
 						

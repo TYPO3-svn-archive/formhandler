@@ -37,7 +37,7 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 		if(isset($gp[$name]) && !empty($gp[$name])) {
 			# find out separator
 			$pattern = $check['params']['pattern'];
-			eregi('^[d|m|y]*(.)[d|m|y]*', $pattern, $res);
+			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
 			$sep = $res[1];
 	
 			# normalisation of format

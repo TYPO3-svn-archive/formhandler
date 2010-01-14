@@ -38,7 +38,7 @@ class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date
 			$min = $check['params']['min'];
 			$max = $check['params']['max'];
 			$pattern = $check['params']['pattern'];
-			eregi('^[d|m|y]*(.)[d|m|y]*', $pattern, $res);
+			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
 			$sep = $res[1];
 	
 			// normalisation of format

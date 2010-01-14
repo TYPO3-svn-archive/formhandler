@@ -36,7 +36,7 @@ class Tx_Formhandler_ErrorCheck_Time extends Tx_Formhandler_AbstractErrorCheck {
 		
 		if(isset($gp[$name]) && !empty($gp[$name])) {
 			$pattern = $check['params']['pattern'];
-			eregi('^[h|m]*(.)[h|m]*', $pattern, $res);
+			preg_match('/^[h|m]*(.)[h|m]*/i', $pattern, $res);
 			$sep = $res[1];
 			$timeCheck = t3lib_div::trimExplode($sep, $gp[$name]);
 			if (is_array($timeCheck)) {

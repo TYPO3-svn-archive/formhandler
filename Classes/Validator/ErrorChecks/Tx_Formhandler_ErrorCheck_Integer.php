@@ -34,8 +34,7 @@ class Tx_Formhandler_ErrorCheck_Integer extends Tx_Formhandler_AbstractErrorChec
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 		if(isset($gp[$name]) && !empty($gp[$name])) {
-			$ereg = '^-{0,1}[0-9]+$';
-			$valid = ereg($ereg, $gp[$name]);
+			$valid = preg_match('/^-{0,1}[0-9]+$/', $gp[$name]);
 			if(!$valid) {
 				$checkFailed = $this->getCheckFailed($check);
 			}
