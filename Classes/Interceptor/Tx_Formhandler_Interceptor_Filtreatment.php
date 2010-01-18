@@ -30,6 +30,35 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 	 */
 	public function process() {
 		
+		$this->removeChars = array('<', '>', '"', "'");
+		
+		//search for a global setting for character removal
+		$globalSetting = $this->settings['fieldConf.']['global.'];
+		if($globalSetting['removeChars']) {
+			$sep = ',';
+			
+			//user set custom rules via cObject
+			$cObjSettings = $globalSetting['removeChars.'];
+			if(is_array($cObjSettings)) {
+				$list = $this->cObj->cObjGetSingle($globalSetting['removeChars'], $cObjSettings);
+				
+				//user set custom seperator
+				if($globalSetting['seperator']) {
+					$sep = $globalSetting['seperator'];
+				}
+				
+			} else {
+				
+				//user entered a comma seperated list
+				$list = $globalSetting;
+			}
+			$this->removeChars = t3lib_div::trimExplode($sep, $list);
+		} elseif(intval($globalSetting['removeChars.']['disable']) === 1) {
+			
+			//user disabled removal globally
+			$this->removeChars = array();
+		}
+		
 		$this->gp = $this->sanitizeValues($this->gp);
 		
 		return $this->gp;
@@ -56,7 +85,42 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 				$sanitizedArray[$key] = $this->sanitizeValues($value);
 			} elseif(strlen(trim($value)) > 0)  {
 				
+				$removeChars = $this->removeChars;
+				
+				//search for a specific setting for this field
+				$fieldSetting = $this->settings['fieldConf.'][$key . '.'];
+				if($fieldSetting['removeChars']) {
+					$sep = ',';
+					
+					//user set custom rules via cObject
+					$cObjSettings = $fieldSetting['removeChars.'];
+					if(is_array($cObjSettings)) {
+						$list = $this->cObj->cObjGetSingle($fieldSetting['removeChars'], $cObjSettings);
+						
+						
+						//user set custom seperator
+						if($fieldSetting['seperator']) {
+							$sep = $fieldSetting['seperator'];
+						}
+						
+					} else {
+						
+						//user entered a comma seperated list
+						$list = $fieldSetting;
+					}
+					$removeChars = t3lib_div::trimExplode($sep, $list);
+				} elseif(intval($fieldSetting['removeChars.']['disable']) === 1) {
+					
+					//user disabled removal for this field
+					$removeChars = array();
+				}
+		
 				$value = str_replace("\t", '', $value);
+				
+				foreach($removeChars as $char) {
+					$value = str_replace($char, ' ', $value);
+				}
+				
 				$isUTF8 = true;
 				if(!$this->isUTF8($value)) {
 					$isUTF8 = false;

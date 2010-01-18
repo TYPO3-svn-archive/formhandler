@@ -180,6 +180,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->init();
 		
 		
+		
 		//not submitted
 		if(!$this->submitted) {
 			$this->loadSettingsForStep($this->currentStep);
@@ -195,6 +196,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 			
 			//run init interceptors
+			$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
 			$output = $this->runClasses($this->settings['initInterceptors.']);
 			if(strlen($output) > 0) {
 				return $output;
@@ -259,6 +261,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				}
 				
 				//run init interceptors
+				$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
 				$output = $this->runClasses($this->settings['initInterceptors.']);
 				if(strlen($output) > 0) {
 					return $output;
@@ -326,7 +329,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						}
 						
 						//run loggers
-						$this->addLoggerDB();
+						$this->addFormhandlerClass($this->settings['loggers.'], 'Logger_DB');
 						$output = $this->runClasses($this->settings['loggers.']);
 						if(strlen($output) > 0) {
 							return $output;
@@ -391,7 +394,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						if($this->currentStep >= $this->lastStep) {
 							Tx_Formhandler_StaticFuncs::debugBeginSection('store_gp');
 							$this->storeGPinSession();
-							$this->mergeGPWithSession();
+							$this->mergeGPWithSession(FALSE, $this->currentStep);
 							Tx_Formhandler_StaticFuncs::debugEndSection();
 						}
 						
@@ -452,29 +455,30 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 	}
 	
-/**
+	/**
 	 * Adds the Logger_DB
 	 *
 	 * @return void
 	 */
-	protected function addLoggerDB(){
+	protected function addFormhandlerClass(&$classesArray, $className){
 		
-		if(!isset($this->settings['loggers.']) && !is_array($this->settings['loggers.'])) {
+		if(!isset($classesArray) && !is_array($classesArray)) {
 
-			//add Logger_DB to the end of logger array
-			$this->settings['loggers.'][] = array('class' => 'Tx_Formhandler_Logger_DB');
+			//add class to the end of the array
+			$classesArray[] = array('class' => $className);
 			
 		} else {
 			
-			foreach($this->settings['loggers.'] as $logger) {
+			foreach($classesArray as $classOptions) {
 				$found = FALSE;
-				if(strpos('Logger_DB', $logger['class']) !== FALSE) {
+				if(strpos($className, $classOptions['class']) !== FALSE) {
 					$found = TRUE;
 				}
-				if(!$found) {
-					//add Logger_DB to the end of logger array
-					$this->settings['loggers.'][] = array('class' => 'Tx_Formhandler_Finisher_StoreGP');
-				}
+				
+			}
+			if(!$found) {
+				//add class to the end of the array
+				$classesArray[] = array('class' => $className);
 			}
 		}
 	}
