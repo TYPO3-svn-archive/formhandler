@@ -1002,7 +1002,7 @@ class formhandler_htmlmail {
 			$len = strcspn($textpieces[$i],chr(32).chr(9).chr(13).chr(10));
 			if (trim(substr($textstr,-1)) == '' && $len) {
 				$lastChar = substr($textpieces[$i],$len-1,1);
-				if (!preg_match("[A-Za-z0-9\/#]",$lastChar)) {
+				if (!preg_match("/[A-Za-z0-9\/#]/",$lastChar)) {
 					// Included "\/" 3/12
 					$len--;
 				}
@@ -1041,11 +1041,11 @@ class formhandler_htmlmail {
 
 		foreach($items as $key => $part) {
 			$sub = substr($part, 0, 200);
-			if (preg_match("cid:part[^ \"']*",$sub,$reg)) {
+			if (preg_match("/cid:part[^ \"']*/",$sub,$reg)) {
 					// The position of the string
 				$thePos = strpos($part,$reg[0]);
 					// Finds the id of the media...
-				preg_match("cid:part([^\.]*).*",$sub,$reg2);
+				preg_match("/cid:part([^\.]*).*/",$sub,$reg2);
 				$theSubStr = $this->theParts['html']['media'][intval($reg2[1])]['absRef'];
 				if ($thePos && $theSubStr) {
 					// ... and substitutes the javaScript rollover image with this instead
