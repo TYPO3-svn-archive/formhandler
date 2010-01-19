@@ -1081,7 +1081,7 @@ class formhandler_htmlmail {
 	 * @return	string		the encoded string
 	 */
 	public function makeBase64($inputstr) {
-		return chunk_explode(base64_encode($inputstr));
+		return chunk_split(base64_encode($inputstr));
 	}
 
 
@@ -1223,7 +1223,7 @@ class formhandler_htmlmail {
 	 */
 	public function split_fileref($fileref) {
 		$info = array();
-		if (preg_match("(.*/)(.*)$", $fileref, $reg)) {
+		if (preg_match("/(.*\/)(.*)$/", $fileref, $reg)) {
 			$info['path'] = $reg[1];
 			$info['file'] = $reg[2];
 		} else	{
@@ -1231,7 +1231,7 @@ class formhandler_htmlmail {
 			$info['file'] = $fileref;
 		}
 		$reg = '';
-		if (preg_match("(.*)\.([^\.]*$)", $info['file'], $reg)) {
+		if (preg_match("/(.*)\.([^\.]*$)/", $info['file'], $reg)) {
 			$info['filebody'] = $reg[1];
 			$info['fileext'] = strtolower($reg[2]);
 			$info['realFileext'] = $reg[2];
@@ -1251,7 +1251,7 @@ class formhandler_htmlmail {
 	 */
 	public function extParseUrl($path) {
 		$res = parse_url($path);
-		preg_match("(.*/)([^/]*)$", $res['path'], $reg);
+		preg_match("/(.*/)([^/]*)$/", $res['path'], $reg);
 		$res['filepath'] = $reg[1];
 		$res['filename'] = $reg[2];
 		return $res;
