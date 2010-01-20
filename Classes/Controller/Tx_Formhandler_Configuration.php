@@ -46,6 +46,9 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	 */
 	public function __construct() {
 		$this->setup = $GLOBALS['TSFE']->tmpl->setup['plugin.'][$this->getPrefixedPackageKey() . '.'];
+		if(is_array(Tx_Formhandler_Globals::$overrideSettings)) {
+			$this->setup = t3lib_div::array_merge_recursive_overrule($this->setup, Tx_Formhandler_Globals::$overrideSettings);
+		}
 	}
 
 	/**

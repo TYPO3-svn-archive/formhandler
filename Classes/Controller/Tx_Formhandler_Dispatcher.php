@@ -75,6 +75,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
 
 		Tx_Formhandler_Globals::$cObj = $this->cObj;
+		Tx_Formhandler_Globals::$overrideSettings = $setup;
 
 		//handle AJAX stuff
 		$this->handleAjax();
