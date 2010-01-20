@@ -54,6 +54,12 @@ if (TYPO3_MODE == 'BE')   {
 		$GLOBALS['BE_USER']->checkCLIuser();
 		$GLOBALS['BE_USER']->backendCheckLogin(); 
 		$GLOBALS['BE_USER']->fetchGroupData();
+		
+		// set proper be configuration
+ 		$GLOBALS['BE_USER']->warningEmail = $TYPO3_CONF_VARS['BE']['warning_email_addr'];
+ 		$GLOBALS['BE_USER']->lockIP = $TYPO3_CONF_VARS['BE']['lockIP'];
+ 		$GLOBALS['BE_USER']->auth_timeout_field = intval($TYPO3_CONF_VARS['BE']['sessionTimeout']);
+ 		$GLOBALS['BE_USER']->OS = TYPO3_OS;
 	}
 	
 	$file = 'FILE:EXT:' . $_EXTKEY . '/Resources/XML/flexform_ds.xml';
