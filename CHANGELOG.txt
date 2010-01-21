@@ -1,4 +1,46 @@
 ------------------------------------------------------------------------
+------------------------------------------------------------------------
+---------------------------- Version 0.9.6 -----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+r29109 | reinhardfuehricht | 2010-01-20 18:33:27 +0100 (Mit, 20. Jän 2010) | 1 Zeile
+
+- FIX #6134: Set backend configuration properly
+------------------------------------------------------------------------
+r29104 | reinhardfuehricht | 2010-01-20 15:15:50 +0100 (Mit, 20. Jän 2010) | 1 Zeile
+
+- UPDATE: Make it possible to call Formhandler via a USER cObject and pass settings.
+------------------------------------------------------------------------
+r29051 | reinhardfuehricht | 2010-01-19 16:17:57 +0100 (Die, 19. Jän 2010) | 1 Zeile
+
+- ADD #6103: New feature to disable components and whole component array via TypoScript
+------------------------------------------------------------------------
+r29049 | reinhardfuehricht | 2010-01-19 15:34:40 +0100 (Die, 19. Jän 2010) | 1 Zeile
+
+- FIX: Additional changes related to #6100
+------------------------------------------------------------------------
+r29048 | reinhardfuehricht | 2010-01-19 15:24:26 +0100 (Die, 19. Jän 2010) | 1 Zeile
+
+- FIX #6100: Adding attachment to email resulted in various errors
+------------------------------------------------------------------------
+r29003 | reinhardfuehricht | 2010-01-18 21:06:04 +0100 (Mon, 18. Jän 2010) | 1 Zeile
+
+- UPDATE: additional documentation update
+------------------------------------------------------------------------
+r29002 | reinhardfuehricht | 2010-01-18 21:03:42 +0100 (Mon, 18. Jän 2010) | 1 Zeile
+
+- ADD: New feature #6086: removal of specific characters or words with Interceptor_Filtreatment
+------------------------------------------------------------------------
+r28850 | reinhardfuehricht | 2010-01-14 19:34:55 +0100 (Don, 14. Jän 2010) | 1 Zeile
+
+- UPDATE: Multistep examples lacked checkBoxFields and radioButtonsFields settings
+------------------------------------------------------------------------
+r28849 | reinhardfuehricht | 2010-01-14 18:11:03 +0100 (Don, 14. Jän 2010) | 1 Zeile
+
+- UPDATE: Added all changes since release of 0.9.4 to the changelog
+------------------------------------------------------------------------
 r28848 | reinhardfuehricht | 2010-01-14 18:09:44 +0100 (Don, 14. Jän 2010) | 1 Zeile
 
 - UPDATE: Updated TER version. Version number raised to 0.9.5
