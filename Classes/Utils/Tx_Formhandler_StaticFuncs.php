@@ -197,23 +197,26 @@ class Tx_Formhandler_StaticFuncs {
 	 * @param boolean $correctRedirectUrl replace &amp; with & in URL 
 	 * @return void
 	 */
-	static public function doRedirect($redirect, $correctRedirectUrl) {
+	static public function doRedirect($redirect, $correctRedirectUrl, $additionalParams = array()) {
 	
-		//if redirect_page was page id
-		if (is_numeric($redirect)) {
-
-			// these parameters have to be added to the redirect url
-			$addparams = array();
-			if (t3lib_div::_GP('L')) {
-				$addparams['L'] = t3lib_div::_GP('L');
-			}
-
-			$url = Tx_Formhandler_Globals::$cObj->getTypoLink_URL($redirect, $addparams);
-
-			//else it may be a full URL
-		} else {
-			$url = $redirect;
+		// these parameters have to be added to the redirect url
+		$addparams = array();
+		if (t3lib_div::_GP('L')) {
+			$addparams['L'] = t3lib_div::_GP('L');
 		}
+
+		if(is_array($additionalParams)) {
+			foreach($additionalParams as $param=>$value) {
+				if(FALSE === strpos($param, '.')) {
+					if(is_array($additionalParams[$param . '.'])) {
+						$value = Tx_Formhandler_Globals::$cObj->cObjGetSingle($value, $additionalParams[$param . '.']);
+					}
+					$addparams[$param] = $value;
+				}
+			}	
+		}
+
+		$url = Tx_Formhandler_Globals::$cObj->getTypoLink_URL($redirect, $addparams);
 
 		//correct the URL by replacing &amp;
 		session_start();
