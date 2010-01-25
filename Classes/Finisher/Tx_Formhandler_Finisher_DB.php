@@ -190,10 +190,6 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	 */
 	public function init($gp, $settings) {
 		parent::init($gp, $settings);
-		
-		//make cObj instance
-		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
-		$this->cObj->setCurrentVal($GLOBALS['TSFE']->id);
 
 		//set table
 		$this->table = $this->settings['table'];
