@@ -30,9 +30,9 @@
 require_once(PATH_tslib . 'class.tslib_pibase.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Controller/Tx_Formhandler_Dispatcher.php');
 
-class tx_formhandler_pi1 extends tslib_pibase {
-	var $prefixId = 'tx_formhandler_pi1';
-	var $scriptRelPath = 'pi1/class.tx_formhandler_pi1.php';	
+class tx_formhandler_pi2 extends tslib_pibase {
+	var $prefixId = 'tx_formhandler_pi2';
+	var $scriptRelPath = 'pi1/class.tx_formhandler_pi2.php';	
 	var $extKey = 'formhandler';	
 	
 	/**
@@ -49,8 +49,8 @@ class tx_formhandler_pi1 extends tslib_pibase {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/formhandler/pi1/class.tx_formhandler_pi1.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/formhandler/pi1/class.tx_formhandler_pi1.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/formhandler/pi2/class.tx_formhandler_pi2.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/formhandler/pi2/class.tx_formhandler_pi2.php']);
 }
 
 ?>

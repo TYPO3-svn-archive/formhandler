@@ -46,20 +46,24 @@ class Tx_Formhandler_View_Listing extends Tx_Formhandler_AbstractView {
 		$this->settings = $settings;
 
 		$subpart = $this->subparts['item'];
-
 		$this->getMapping();
 		$markers = array();
-		foreach($this->model as $key => $row) {
+		if(!empty($this->model)) {
+			foreach($this->model as $key => $row) {
 
-			$markers = $this->getValueMarkers($row);
-			$this->fillDefaultMarkers($markers, $row);
-			$markerArray['###LIST###'] .= $this->cObj->substituteMarkerArray($subpart, $markers);
-		}
-		$content = $this->cObj->substituteMarkerArray($this->template, $markerArray);
-		if($this->gp['detailId']) {
-			$markerArray = $markers;
-			$this->fillDefaultMarkers($markerArray);
-			$content = $this->cObj->substituteMarkerArray($content, $markerArray);
+				$markers = $this->getValueMarkers($row);
+
+				$this->fillDefaultMarkers($markers, $row);
+				$markerArray['###LIST###'] .= $this->cObj->substituteMarkerArray($subpart, $markers);
+			}
+
+			if(isset($this->gp['detailId'])) {
+
+				$markerArray = $markers;
+				$this->fillDefaultMarkers($markerArray);
+			}
+
+			$content = $this->cObj->substituteMarkerArray($this->template, $markerArray);
 		}
 
 		//remove markers that were not substituted
@@ -116,11 +120,10 @@ class Tx_Formhandler_View_Listing extends Tx_Formhandler_AbstractView {
 	 */
 	protected function getValueMarkers(&$row) {
 		$markers = array();
+
 		foreach($row as $field => $value) {
-			if(strcmp('uid', $field)) {
 				$mapping = $this->mapping[$field];
 				$markers['###value_' . $mapping . '###'] = $value;
-			}
 		}
 		return $markers;
 	}

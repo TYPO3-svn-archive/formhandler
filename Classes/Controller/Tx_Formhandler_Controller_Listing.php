@@ -174,10 +174,12 @@ class Tx_Formhandler_Controller_Listing extends Tx_Formhandler_AbstractControlle
 		//buid items array
 		$listItems = array();
 		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				if(!$this->gp['detailId']) {
+			while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+
+				if(!isset($this->gp['detailId'])) {
 					array_push($listItems, $row);
-				} elseif($row['uid'] == $this->gp['detailId']) {
+				} elseif(intval($row['uid']) === intval($this->gp['detailId'])) {
+
 					array_push($listItems, $row);
 				}
 			}
@@ -187,7 +189,7 @@ class Tx_Formhandler_Controller_Listing extends Tx_Formhandler_AbstractControlle
 
 		//render view
 		$view->setModel($listItems);
-		return $view->render(array(), array());
+		return $view->render($this->gp, array());
 
 
 	}

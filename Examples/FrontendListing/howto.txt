@@ -14,4 +14,4 @@
 
 6. Save and view the page.
 
-NOTE: This will only work if the submitted form data was logged into tx_formhandler_log
+NOTE: You have to adjust the settings and configure your log table and mapping.
