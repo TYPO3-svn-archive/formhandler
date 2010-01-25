@@ -787,7 +787,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$errorMessages = array();
 			$clearErrorMessages = array();
 			$temp = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'error_' . $field);
-			if($temp > 0) {
+			if(strlen($temp) > 0) {
 				$errorMessage = $temp;
 				if(strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
 					$errorMessage = str_replace('|', $errorMessage, $singleWrap);
