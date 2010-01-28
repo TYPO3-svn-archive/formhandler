@@ -99,7 +99,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$this->langFiles = Tx_Formhandler_Globals::$langFiles;
 		}
 		
-		//set language file
+		//read master template
 		if(!$this->masterTemplates) {
 			$this->readMasterTemplates();
 		}
@@ -187,7 +187,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		foreach($this->masterTemplates as $masterTemplate) {
 			$masterTemplateCode = t3lib_div::getURL($masterTemplate);
 			$matches = array();
-			preg_match_all('/###field_(.*)###/', $masterTemplateCode, $matches);
+			preg_match_all('/###(field|master)_(.*)###/', $masterTemplateCode, $matches);
 			
 			if(!empty($matches[0])) {
 				$subparts = array_unique($matches[0]);

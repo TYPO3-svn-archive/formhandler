@@ -54,6 +54,15 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 			$this->sanitizeMarkers();
 		}
 		
+		//read master template
+		if(!$this->masterTemplates) {
+			$this->readMasterTemplates();
+		}
+		
+		if(!empty($this->masterTemplates)) {
+			$this->replaceMarkersFromMaster();
+		}
+		
 		//substitute ISSET markers
 		$this->substituteIssetSubparts();
 
