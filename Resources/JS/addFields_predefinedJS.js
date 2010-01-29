@@ -42,12 +42,6 @@ Event.observe(window, 'load', function() {
 		}
 	});
 
-	// Detect whether static file is loaded
-	if (predefined.options.length <= 1) {
-		alert('Error: Static Typoscript is not loaded.\n1. Close this record without saving it.\n2. Open the main template, on the root page. \n3. Click on tab "Includes". \n4. Select "Example Configuration (formhandler)" from box "Include static (from extensions)."\n5.Then you can reopen this record.')
-		return;
-	}
-
 	// Searches <input> reference
 	elements = $$('#' + flexformBoxId + ' input');
 	if (elements.length == 0) {
