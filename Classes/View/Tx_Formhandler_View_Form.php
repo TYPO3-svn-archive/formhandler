@@ -108,6 +108,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$this->replaceMarkersFromMaster();
 		}
 		
+		$this->substituteHasTranslationSubparts();
+		
 		if(!$this->gp['submitted']) {
 			$this->storeStartEndBlock();
 		} elseif($_SESSION['formhandlerSettings']['currentStep'] != 1) {
@@ -269,6 +271,28 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		}
 		return $return;
 	}
+	
+	protected function substituteHasTranslationSubparts() {
+		preg_match_all('/###has_translation_([^#]*)###/msi', $this->template, $matches);
+		if(is_array($matches[0])) {
+			
+			$subparts = array_unique($matches[0]);
+			$fields = array_unique($matches[1]);
+			$subpartArray = array();
+			foreach($subparts as $key => $subpart) {
+				$content = $this->cObj->getSubpart($this->template, $subpart);
+				$translation = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, $fields[$key]);
+
+				if(strlen($translation) === 0) {
+					$content = '';
+
+				}
+				$this->template = $this->cObj->substituteSubpart($this->template, $subpart, $content);
+			}
+			
+		}
+
+	}
 
 	/**
 	 * Use or remove subparts with ISSET_[fieldname] patterns (thx to Stephan Bauer <stephan_bauer(at)gmx.de>)
@@ -276,7 +300,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @author  Stephan Bauer <stephan_bauer(at)gmx.de>
 	 * @return	string		substituted HTML content
 	 */
-	protected function substituteIssetSubparts(){
+	protected function substituteIssetSubparts() {
 		$flags = array();
 		$nowrite = false;
 		$out = array();
