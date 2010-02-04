@@ -227,14 +227,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 								$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 								Tx_Formhandler_StaticFuncs::debugBeginSection('calling_finisher', $className);
 								$finisher = $this->componentManager->getComponent($className);
-								if(!$tsConfig['config.']['templateFile']) {
-									$tsConfig['config.']['templateFile'] = $this->templateFile;
-								}
-								if(!$tsConfig['config.']['langFile']) {
-									$tsConfig['config.']['langFile'] = $this->langFile;
-								}
-								$tsConfig['config.']['formValuesPrefix'] = $this->settings['formValuesPrefix'];
-								$tsConfig['config.']['templateSuffix'] = $this->settings['templateSuffix'];
+								$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 								$finisher->init($this->gp, $tsConfig['config.']);
 								Tx_Formhandler_StaticFuncs::debugEndSection();
 								return $finisher->process();
@@ -285,6 +278,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 								$merged = array_merge($userSetting,$autoSetting);
 								$tsConfig['config.']['restrictErrorChecks'] = implode(',', $merged);
 							}
+							$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 							$validator->init($this->gp,$tsConfig['config.']);
 							$res = $validator->validate($this->errors);
 							array_push($valid,$res);
@@ -356,15 +350,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 									$finisher = $this->componentManager->getComponent($className);
 									
 									Tx_Formhandler_StaticFuncs::debugBeginSection('calling_finisher', $className);
-									if(!$tsConfig['config.']['templateFile']) {
-										$tsConfig['config.']['templateFile'] = $this->templateFile;
-									}
-									if(!$tsConfig['config.']['langFile']) {
-										$tsConfig['config.']['langFile'] = $this->langFile;
-									}
-									$tsConfig['config.']['formValuesPrefix'] = $this->settings['formValuesPrefix'];
-									$tsConfig['config.']['templateSuffix'] = $this->settings['templateSuffix'];
 									
+									$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 									
 									//check if the form was finished before. This flag is set by the Finisher_Confirmation
 									if(!$this->submittedOK) {
@@ -432,6 +419,18 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 		}
 
+	}
+	
+	protected function addDefaultComponentConfig($conf) {
+		if(!$conf['templateFile']) {
+			$conf['templateFile'] = $this->templateFile;
+		}
+		if(!$conf['langFiles']) {
+			$conf['langFiles'] = $this->langFiles;
+		}
+		$conf['formValuesPrefix'] = $this->settings['formValuesPrefix'];
+		$conf['templateSuffix'] = $this->settings['templateSuffix'];
+		return $conf;
 	}
 
 	/**
@@ -1040,10 +1039,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					Tx_Formhandler_StaticFuncs::debugBeginSection('calling_class', $className);
 	
 					$obj = $this->componentManager->getComponent($className);
-					$tsConfig['config.']['templateFile'] = $this->settings['templateFile'];
-					$tsConfig['config.']['langFile'] = $this->settings['langFile'];
-					$tsConfig['config.']['formValuesPrefix'] = $this->settings['formValuesPrefix'];
-					$tsConfig['config.']['templateSuffix'] = $this->settings['templateSuffix'];
+					$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 					$obj->init($this->gp, $tsConfig['config.']);
 					$return = $obj->process();
 					Tx_Formhandler_StaticFuncs::debugEndSection();
