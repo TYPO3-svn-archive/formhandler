@@ -13,6 +13,7 @@
 			<label index="check_skipped">Skipped error check "%s"!</label>
 			<label index="cleaning_temp_files">Cleaning temporary files in folder "%s"!</label>
 			<label index="cleared_session">Form is called the first time, cleared params in $_SESSION</label>
+			<label index="combined">Combined %s = %s!</label>
 			<label index="condition">Condition was evaluated as %s : $s!</label>
 			<label index="copy_file">Copying file "%s" to "%s"!</label>
 			<label index="current_files">The current uploaded files are:</label>
@@ -48,6 +49,7 @@
 			<label index="store_gp">Storing GP in session!</label>
 			<label index="subparts_missing">Subparts in template missing! Found: %s</label>
 			<label index="total_steps">Highest step subpart found in template file (number of steps): %s</label>
+			<label index="translated">Translated %s = %s!</label>
 			<label index="using_controller">Using controller "%s"</label>
 			<label index="using_prefix">Using prefix for form values: "%s"</label>
 			<label index="using_subpart">Using subpart "%s"!</label>
