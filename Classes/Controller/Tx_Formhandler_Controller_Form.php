@@ -89,7 +89,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	
 	/**
 	 * Flag indicating if the form was already submitted in last step.
-	 * If TRUE no loggers, saveInterceptors or finishers will be called except Finisher_Confirmation
+	 * If TRUE no loggers, saveInterceptors or finishers will be called except Finisher_SubmittedOK
 	 *
 	 * @access protected
 	 * @var boolean
@@ -223,7 +223,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						if(isset($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
 							$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 							$finisher = $this->componentManager->getComponent($className);
-							if($finisher instanceof Tx_Formhandler_Finisher_Confirmation) {
+							if($finisher instanceof Tx_Formhandler_Finisher_SubmittedOK) {
 								$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 								Tx_Formhandler_StaticFuncs::debugBeginSection('calling_finisher', $className);
 								$finisher = $this->componentManager->getComponent($className);
@@ -353,12 +353,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 									
 									$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 									
-									//check if the form was finished before. This flag is set by the Finisher_Confirmation
+									//check if the form was finished before. This flag is set by the Finisher_SubmittedOK
 									if(!$this->submittedOK) {
 	
 										$finisher->init($this->gp,$tsConfig['config.']);
 	
-										//if the finisher returns HTML (e.g. Tx_Formhandler_Finisher_Confirmation)
+										//if the finisher returns HTML (e.g. Tx_Formhandler_Finisher_SubmittedOK)
 										if($tsConfig['config.']['returns']) {
 											Tx_Formhandler_StaticFuncs::debugEndSection();
 											return $finisher->process();
@@ -369,8 +369,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 										}
 										
 									
-									//if the form was finished before, only show the output of the Tx_Formhandler_Finisher_Confirmation
-									} elseif($finisher instanceof Tx_Formhandler_Finisher_Confirmation) {
+									//if the form was finished before, only show the output of the Tx_Formhandler_Finisher_SubmittedOK
+									} elseif($finisher instanceof Tx_Formhandler_Finisher_SubmittedOK) {
 									
 										$finisher->init($this->gp, $tsConfig['config.']);
 										Tx_Formhandler_StaticFuncs::debugEndSection();
@@ -442,7 +442,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//add Finisher_StoreGP to the end of Finisher array
 		$this->settings['finishers.'][] = array('class' => 'Tx_Formhandler_Finisher_StoreGP');
 
-		//search for Finisher_Confirmation (finishers with config.returns), put them at the very end
+		//search for Finisher_SubmittedOK (finishers with config.returns), put them at the very end
 		foreach($this->settings['finishers.'] as $key => $tsConfig) {
 
 			$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);

@@ -165,14 +165,14 @@ class Tx_Formhandler_Generator_TCPDF {
 	}
 
 	/**
-	 * Function to generate a PDF file from submitted form values. This function is called by Tx_Formhandler_Finisher_Confirmation and Tx_Formhandler_Finisher_Mail
+	 * Function to generate a PDF file from submitted form values. This function is called by Tx_Formhandler_Finisher_SubmittedOK and Tx_Formhandler_Finisher_Mail
 	 *
 	 * @param array $gp The values to export
 	 * @param string $langFile The translation file configured in TypoScript of Formhandler
 	 * @param array $exportFields A list of fields to export. If not set all fields are exported
 	 * @param string $file A filename to save the PDF in. If not set, the PDF will be rendered directly to screen
 	 * @param boolean $returns If set, the PDF will be rendered into the given file, if not set, the PDF will be rendered into the file and afterwards directly to screen
-	 * @see Tx_Formhandler_Finisher_Confirmation::process()
+	 * @see Tx_Formhandler_Finisher_SubmittedOK::process()
 	 * @see Tx_Formhandler_Finisher_Mail::parseMailSettings()
 	 * @return void|filename
 	 */

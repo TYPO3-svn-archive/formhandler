@@ -21,7 +21,7 @@
  * @package	Tx_Formhandler
  * @subpackage	View
  */
-class Tx_Formhandler_View_Confirmation extends Tx_Formhandler_View_Form {
+class Tx_Formhandler_View_SubmittedOK extends Tx_Formhandler_View_Form {
 
 	/**
 	 * This function fills the default markers:

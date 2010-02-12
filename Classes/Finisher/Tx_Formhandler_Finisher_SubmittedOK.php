@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id$
+ * $Id: Tx_Formhandler_Finisher_Confirmation.php 27790 2009-12-17 09:28:42Z reinhardfuehricht $
  *                                                                        */
 
 /**
@@ -22,12 +22,12 @@
  *
  * A sample configuration looks like this:
  * <code>
- * finishers.3.class = Tx_Formhandler_Finisher_Confirmation
+ * finishers.3.class = Tx_Formhandler_Finisher_SubmittedOK
  * finishers.3.config.returns = 1
- * finishers.3.config.pdf.class = Tx_Formhandler_Generator_PDF
+ * finishers.3.config.pdf.class = Tx_Formhandler_Generator_TcPdf
  * finishers.3.config.pdf.exportFields = firstname,lastname,interests,pid,ip,submission_date
  * finishers.3.config.pdf.export2File = 1
- * finishers.3.config.csv.class = Tx_Formhandler_Generator_CSV
+ * finishers.3.config.csv.class = Tx_Formhandler_Generator_Csv
  * finishers.3.config.csv.exportFields = firstname,lastname,interests
  * </code>
  *
@@ -35,7 +35,7 @@
  * @package	Tx_Formhandler
  * @subpackage	Finisher
  */
-class Tx_Formhandler_Finisher_Confirmation extends Tx_Formhandler_AbstractFinisher {
+class Tx_Formhandler_Finisher_SubmittedOK extends Tx_Formhandler_AbstractFinisher {
 
 	/**
 	 * The main method called by the controller
@@ -58,14 +58,14 @@ class Tx_Formhandler_Finisher_Confirmation extends Tx_Formhandler_AbstractFinish
 		$this->templateFile = Tx_Formhandler_Globals::$templateCode;
 		
 		//set view
-		$view = $this->componentManager->getComponent('Tx_Formhandler_View_Confirmation');
+		$view = $this->componentManager->getComponent('Tx_Formhandler_View_SubmittedOK');
 			
 		//show TEMPLATE_CONFIRMATION
-		$view->setTemplate($this->templateFile, ('CONFIRMATION' . $this->settings['templateSuffix']));
+		$view->setTemplate($this->templateFile, ('SUBMITTEDOK' . $this->settings['templateSuffix']));
 		if(!$view->hasTemplate()) {
-			$view->setTemplate($this->templateFile, 'CONFIRMATION');
+			$view->setTemplate($this->templateFile, 'SUBMITTEDOK');
 			if(!$view->hasTemplate()) {
-				Tx_Formhandler_StaticFuncs::debugMessage('no_confirmation_template');
+				Tx_Formhandler_StaticFuncs::debugMessage('no_submittedok_template');
 			}
 		}
 		

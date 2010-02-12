@@ -184,7 +184,7 @@ plugin.Tx_Formhandler.settings.predef.multistep_conditions_example {
 				}
 		 	}
 		}
-		3.class = Tx_Formhandler_Finisher_Confirmation
+		3.class = Tx_Formhandler_Finisher_SubmittedOK
 		3.config {
 			returns = 1
 			actions {

@@ -99,11 +99,11 @@ class Tx_Formhandler_Generator_CSV {
 	}
 
 	/**
-	 * Function to generate a CSV file from submitted form values. This function is called by Tx_Formhandler_Finisher_Confirmation
+	 * Function to generate a CSV file from submitted form values. This function is called by Tx_Formhandler_Finisher_SubmittedOK
 	 *
 	 * @param array $params The values to export to CSV
 	 * @param array $exportParams A list of fields to export. If not set all fields are exported
-	 * @see Tx_Formhandler_Finisher_Confirmation::process()
+	 * @see Tx_Formhandler_Finisher_SubmittedOK::process()
 	 * @return void
 	 */
 	public function generateFrontendCSV($params, $exportParams = array()) {
