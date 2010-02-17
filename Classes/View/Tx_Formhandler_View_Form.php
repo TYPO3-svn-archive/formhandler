@@ -245,12 +245,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	protected function markersCountAsSet($conditionValue) {
 
 		// Find first || or && or !
-		$pattern = '/(_*([a-zA-Z0-9\-]+)_*(\|\||&&)_*([^_]+)_*)|(_*(!)_*([a-zA-Z0-9\-]+))/';
+		$var = '[a-zA-Z0-9\-\|\[\]:]+';
+		$pattern = "/(_*($var)_*(\|\||&&)_*([^_]+)_*)|(_*(!)_*($var))/";
 
-		session_start();
 		// recurse if there are more
 		if( preg_match($pattern, $conditionValue, $matches) ){
-			$isset = isset($this->gp[$matches[2]]);
+			$isset = $this->keyIsset($matches[2]);
 			if($matches[3] == '||' && $isset) {
 				$return = true;
 			} elseif($matches[3] == '||' && !$isset) {
@@ -260,16 +260,50 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			} elseif($matches[3] == '&&' && !$isset) {
 				$return = false;
 			} elseif($matches[6] == '!' && !$isset) {
-				return !(isset($this->gp[$matches[7]]) && $this->gp[$matches[7]] != '');
+				$return = !$this->keyIsset($matches[7]);
 			} elseif($_SESSION['formhandlerSettings']['debugMode'] == 1) {
 				Tx_Formhandler_StaticFuncs::debugMessage('invalid_isset', $matches[2]);
 			}
 		} else {
 
 			// end of recursion
-			$return = isset($this->gp[$conditionValue]) && ($this->gp[$conditionValue] != '');
+			$return = $this->keyIsset($conditionValue);
 		}
 		return $return;
+	}
+
+	/**
+	 * Checks if a key in $this->gp exists. To find nested keys you can select them so:
+	 * 
+	 * <code title="Example isset markers for nested keys">
+	 * <!-- ISSET_myarray:level1|level2 -->
+	 * <!-- ISSET_myarray|level1|level2 -->
+	 * <!-- ISSET_myarray[level1][level2]-->
+	 * </code>
+	 * 
+	 * @param string the key/it's path
+	 * @return boolean
+	 */
+	protected function keyIsset($key)
+	{
+		$key = str_replace(array(':','[',']'), array('|','|',''), $key);
+		
+		if (!strpos($key, '|'))
+		{
+			return !empty($this->gp[$key]);
+		}
+		
+		$keys = explode('|', $key);
+		
+		$tmp = $this->gp[array_shift($keys)];
+		foreach ($keys as $key) {
+			if (empty($tmp[$key])) {
+				return false;
+			}else{
+				$tmp = $tmp[$key];
+			}
+		}
+		return true;
 	}
 	
 	protected function substituteHasTranslationSubparts() {
