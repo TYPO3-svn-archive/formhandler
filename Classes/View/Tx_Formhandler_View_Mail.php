@@ -100,7 +100,7 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
 			foreach($paramsToCheck as &$field) {
 				if(!is_array($field)) {
-					$this->gp[$field] = str_replace (chr(13), '<br />', $this->gp[$field]);
+					$this->gp[$field] = str_replace (chr(13), '', $this->gp[$field]);
 					$this->gp[$field] = str_replace ('\\', '', $this->gp[$field]);
 					$this->gp[$field] = nl2br($this->gp[$field]);
 				}
