@@ -726,10 +726,14 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$isConfigOk = FALSE;
 			if (is_array($this->settings[$component . '.'])) {
 				foreach ($this->settings[$component . '.'] as $finisher) {
-					if ($finisher['class'] == $componentName) {
+					if (    $finisher['class'] == $componentName
+                            || is_subclass_of($finisher['class'], $componentName)) {
+
 						$isConfigOk = TRUE;
 						break;
-					} elseif ($finisher['class'] == (str_replace('Tx_Formhandler_', '', $componentName))) {
+					} elseif (  $finisher['class'] == (str_replace('Tx_Formhandler_', '', $componentName))
+                                || is_subclass_of('Tx_Formhandler_' . $finisher['class'], $componentName)) {
+
 						$isConfigOk = TRUE;
 						break;
 					}
