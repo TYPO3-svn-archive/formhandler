@@ -262,6 +262,14 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 					}
 				}
 
+                if($options['nullIfEmpty'] && strlen($this->gp[$options['mapping']]) == 0) {
+                    unset($queryFields[$fieldname]);
+                }
+
+                if($options['zeroIfEmpty'] && strlen($this->gp[$options['mapping']]) == 0) {
+                    $queryFields[$fieldname] = 0;
+                }
+
 				//process array handling
 				if(isset($this->gp[$options['mapping']]) && is_array($this->gp[$options['mapping']])) {
 					$seperator = ',';
