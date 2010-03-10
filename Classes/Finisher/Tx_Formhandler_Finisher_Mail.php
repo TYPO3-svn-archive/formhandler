@@ -394,9 +394,10 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			$files = t3lib_div::trimExplode(',', $settings[$key]);
 			$parsed = array();
 			session_start();
+			$sessionFiles = Tx_Formhandler_Session::get('files');
 			foreach($files as $file) {
-				if(isset($_SESSION['formhandlerFiles'][$file])) {
-					foreach($_SESSION['formhandlerFiles'][$file] as $uploadedFile) {
+				if(isset($sessionFiles[$file])) {
+					foreach($sessionFiles[$file] as $uploadedFile) {
 						array_push($parsed,$uploadedFile['uploaded_path'] . $uploadedFile['uploaded_name']);
 					}
 				} else {

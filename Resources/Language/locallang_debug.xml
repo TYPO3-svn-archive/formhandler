@@ -12,7 +12,7 @@
 			<label index="check_not_found">Error check "%s" not found!</label>
 			<label index="check_skipped">Skipped error check "%s"!</label>
 			<label index="cleaning_temp_files">Cleaning temporary files in folder "%s"!</label>
-			<label index="cleared_session">Form is called the first time, cleared params in $_SESSION</label>
+			<label index="cleared_session">Form is called the first time, cleared params in session</label>
 			<label index="combined">Combined %s = %s!</label>
 			<label index="condition">Condition was evaluated as %s : $s!</label>
 			<label index="copy_file">Copying file "%s" to "%s"!</label>
@@ -66,7 +66,7 @@
 			<label index="check_not_found">Error check "%s" nicht gefunden!</label>
 			<label index="check_skipped">Error check "%s" übersprungen!</label>
 			<label index="cleaning_temp_files">Lösche temporäre Dateien in "%s"!</label>
-			<label index="cleared_session">Form wird zum ersten Mal aufgerufen, leere Parameter in $_SESSION</label>
+			<label index="cleared_session">Form wird zum ersten Mal aufgerufen, leere Parameter in der Session</label>
 			<label index="condition">Bedingung wurde ausgewertet als %s : $s!</label>
 			<label index="copy_file">Kopiere Datei "%s" nach "%s"!</label>
 			<label index="current_files">Aktuell hochgeladene Dateien:</label>
@@ -116,7 +116,7 @@
 			<label index="calling_logger">Appel du logger "%s"</label>
 			<label index="calling_validator">Appel du validator "%s"</label>
 			<label index="cleaning_temp_files">Nettoyage des fichiers temporaires dans le dossier "%s"!</label>
-			<label index="cleared_session">Le formulaire est appaelé pour la première fois, les paramètres ont été supprimés $_SESSION</label>
+			<label index="cleared_session">Le formulaire est appaelé pour la première fois, les paramètres ont été supprimés session</label>
 			<label index="check_not_found">TRANSLATE: Error check "%s" not found!</label>
 			<label index="check_skipped">TRANSLATE: Skipped error check "%s"!</label>
 			<label index="condition">La condition a été évaluée à %s : $s!</label>

@@ -15,10 +15,10 @@
  *                                                                        */
 
 /**
- * A finisher showing the content of ###TEMPLATE_CONFIRMATION### replacing all common Formhandler markers
+ * A finisher showing the content of ###TEMPLATE_SUBMITTEDOK### replacing all common Formhandler markers
  * plus ###PRINT_LINK###, ###PDF_LINK### and ###CSV_LINK###.
  *
- * The finisher sets a flag in $_SESSION, so that Formhandler will only call this finisher and nothing else if the user reloads the page.
+ * The finisher sets a flag in session, so that Formhandler will only call this finisher and nothing else if the user reloads the page.
  *
  * A sample configuration looks like this:
  * <code>
@@ -46,7 +46,7 @@ class Tx_Formhandler_Finisher_SubmittedOK extends Tx_Formhandler_AbstractFinishe
 		
 		//set session value to prevent another validation or finisher circle. Formhandler will call only this Finisher if the user reloads the page.
 		session_start();
-		$_SESSION['submitted_ok'] = 1;
+		Tx_Formhandler_Session::set('submittedOK', TRUE);
 		
 		$action = $this->gp['action'];
 		if($action) {
@@ -60,7 +60,7 @@ class Tx_Formhandler_Finisher_SubmittedOK extends Tx_Formhandler_AbstractFinishe
 		//set view
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_SubmittedOK');
 			
-		//show TEMPLATE_CONFIRMATION
+		//show TEMPLATE_SUBMITTEDOK
 		$view->setTemplate($this->templateFile, ('SUBMITTEDOK' . $this->settings['templateSuffix']));
 		if(!$view->hasTemplate()) {
 			$view->setTemplate($this->templateFile, 'SUBMITTEDOK');
@@ -69,7 +69,7 @@ class Tx_Formhandler_Finisher_SubmittedOK extends Tx_Formhandler_AbstractFinishe
 			}
 		}
 		
-		$view->setSettings($_SESSION['formhandlerSettings']['settings']);
+		$view->setSettings(Tx_Formhandler_Session::get('settings'));
 		$view->setComponentSettings($this->settings);
 		return $view->render($this->gp, array());
 	}

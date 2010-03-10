@@ -56,7 +56,9 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 				$combinedString .= $this->gp[$field] . $seperator;
 			}
 		}
-		$combinedString = substr($combinedString, 0, (strlen($combinedString) - 1));
+		if($combinedString) {
+			$combinedString = substr($combinedString, 0, (strlen($combinedString) - 1));
+		}
 		return $combinedString; 
 	}
 

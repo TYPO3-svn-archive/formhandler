@@ -15,7 +15,7 @@
  *                                                                        */
 
 /**
- * This finisher stores GP to session for further use in other plugins and update $_SESSION 
+ * This finisher stores GP to session for further use in other plugins and update session 
  * to not loose changes in gp made by other finishers (e.g. insert_id from Finisher_DB)
  * Automaically called if plugin.Tx_Formhandler.settings.predef.example.storeGP = 1 is set
  * No further configuration.
@@ -36,7 +36,7 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 		//store in Session for further use by other plugins
 		$this->storeUserGPinSession();
 
-		//update $_SESSION['formhandlerValues']
+		//update values in session
 		$this->updateSession();
 
 		return $this->gp;
@@ -64,13 +64,17 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 		session_start();
 
 		//reset session
-		unset($_SESSION['formhandlerValues']);
-
+		Tx_Formhandler_Session::set('values', array());
+		
+		$newValues = array();
+		
 		//set the variables in session
 		//no need to seperate steps in finishers, so simply store to step 1
 		foreach($this->gp as $key => $value) {
-			$_SESSION['formhandlerValues'][1][$key] = $value;
+			$newValues[1][$key] = $value;
 		}
+		
+		Tx_Formhandler_Session::set('values', $newValues);
 	}
 
 }

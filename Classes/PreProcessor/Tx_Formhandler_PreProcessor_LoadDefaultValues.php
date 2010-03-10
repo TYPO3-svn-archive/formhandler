@@ -101,15 +101,16 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 		session_start();
 
 		if (is_array($settings) && $step) {
+			$values = Tx_Formhandler_Session::get('values');
 			foreach (array_keys($settings) as $fN) {
 				$fN = preg_replace('/\.$/', '', $fN);
-				if (!isset($_SESSION['formhandlerValues'][$step][$fN])) {
+				if (!isset($values[$step][$fN])) {
 					if($settings[$fN . '.']['defaultValue'] && $settings[$fN . '.']['defaultValue.']) {
-						$_SESSION['formhandlerValues'][$step][$fN] =  $this->cObj->cObjGetSingle($settings[$fN . '.']['defaultValue'],$settings[$fN.'.']['defaultValue.']);
+						$values[$step][$fN] =  $this->cObj->cObjGetSingle($settings[$fN . '.']['defaultValue'], $settings[$fN . '.']['defaultValue.']);
 					} elseif($settings[$fN . '.']['defaultValue.']) {
-						$_SESSION['formhandlerValues'][$step][$fN] =  $this->cObj->TEXT($settings[$fN . '.']['defaultValue.']);
+						$values[$step][$fN] =  $this->cObj->TEXT($settings[$fN . '.']['defaultValue.']);
 					} elseif ($settings[$fN . '.']['defaultValue'] || $settings[$fN . '.']['defaultValue'] == 0) {
-						$_SESSION['formhandlerValues'][$step][$fN] =  $settings[$fN . '.']['defaultValue'];
+						$values[$step][$fN] =  $settings[$fN . '.']['defaultValue'];
 					}
 						
 				}

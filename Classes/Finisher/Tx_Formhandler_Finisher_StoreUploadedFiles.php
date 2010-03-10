@@ -80,8 +80,9 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 		$uploadPath = Tx_Formhandler_StaticFuncs::getDocumentRoot() . $newFolder;
 	
 		session_start();
-		if(isset($_SESSION['formhandlerFiles']) && is_array($_SESSION['formhandlerFiles']) && strlen($newFolder) > 0 ) {
-			foreach($_SESSION['formhandlerFiles'] as $field => $files) {
+		$sessionFiles = Tx_Formhandler_Session::get('files');
+		if(is_array($sessionFiles) && !empty($sessionFiles) && strlen($newFolder) > 0 ) {
+			foreach($sessionFiles as $field => $files) {
 				$this->gp[$field] = array();
 				foreach($files as $key => $file) {
 					if($file['uploaded_path'] != $uploadPath) {
@@ -91,10 +92,10 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 						copy(($file['uploaded_path'] . $file['uploaded_name']), ($uploadPath . $newFilename));
 						unlink(($file['uploaded_path'] . $file['uploaded_name']));
 	
-						$_SESSION['formhandlerFiles'][$field][$key]['uploaded_path'] = $uploadPath;
-						$_SESSION['formhandlerFiles'][$field][$key]['uploaded_name'] = $newFilename;
-						$_SESSION['formhandlerFiles'][$field][$key]['uploaded_folder'] = $newFolder;
-						$_SESSION['formhandlerFiles'][$field][$key]['uploaded_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $newFolder . $newFilename;
+						$sessionFiles[$field][$key]['uploaded_path'] = $uploadPath;
+						$sessionFiles[$field][$key]['uploaded_name'] = $newFilename;
+						$sessionFiles[$field][$key]['uploaded_folder'] = $newFolder;
+						$sessionFiles[$field][$key]['uploaded_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $newFolder . $newFilename;
 						if(!is_array($this->gp[$field])) {
 							$this->gp[$field] = array();
 						}
@@ -102,6 +103,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 					}
 				}
 			}
+			Tx_Formhandler_Session::set('files', $sessionFiles);
 		}
 	}
 

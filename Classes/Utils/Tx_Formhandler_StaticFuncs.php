@@ -444,8 +444,8 @@ class Tx_Formhandler_StaticFuncs {
 	 * @static
 	 */
 	static public function debugBeginSection($key) {
-		session_start();
-		if($_SESSION['formhandlerSettings']['debugMode']) {
+		$isDebug = Tx_Formhandler_Session::get('debug');
+		if($isDebug) {
 			$message = Tx_Formhandler_Messages::getDebugMessage($key);
 			if(strlen($message) == 0) {
 				$message = Tx_Formhandler_Messages::formatDebugHeader($key);
@@ -473,8 +473,8 @@ class Tx_Formhandler_StaticFuncs {
 	 * @static
 	 */
 	static public function debugEndSection() {
-		session_start();
-		if($_SESSION['formhandlerSettings']['debugMode']) {
+		$isDebug = Tx_Formhandler_Session::get('debug');
+		if($isDebug) {
 			print '</div>' . "\n";
 		}
 	}
@@ -488,7 +488,8 @@ class Tx_Formhandler_StaticFuncs {
 	 */
 	static public function debugMessage($key) {
 		session_start();
-		if($_SESSION['formhandlerSettings']['debugMode']) {
+		$isDebug = Tx_Formhandler_Session::get('debug');
+		if($isDebug) {
 			$message = Tx_Formhandler_Messages::getDebugMessage($key);
 			if(strlen($message) == 0) {
 				$message = Tx_Formhandler_Messages::formatDebugMessage($key);
@@ -500,7 +501,9 @@ class Tx_Formhandler_StaticFuncs {
 					if(is_bool($args[count($args) - 1])) {
 						array_pop($args);
 					}
-					$message = vsprintf($message, $args);
+					if(count($args) > 0) {
+						$message = vsprintf($message, $args);
+					}
 				}
 				$message = Tx_Formhandler_Messages::formatDebugMessage($message);
 				print $message;
@@ -541,8 +544,8 @@ class Tx_Formhandler_StaticFuncs {
 		if(!is_array($arr)) {
 			$arr = array();
 		}
-		session_start();
-		if($_SESSION['formhandlerSettings']['debugMode']) {
+		$isDebug = Tx_Formhandler_Session::get('debug');
+		if($isDebug) {
 				t3lib_div::print_array($arr);
 				print '<br />';
 		}
@@ -635,12 +638,13 @@ class Tx_Formhandler_StaticFuncs {
 		$uploadFolder = '/uploads/formhandler/tmp/';
 
 		//if temp upload folder set in TypoScript, take that setting
-		if($_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder']) {
-			$uploadFolder = $_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder'];
-			if($_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder.']) {
+		$sessions = Tx_Formhandler_Session::get('settings');
+		if($sessions['files.']['uploadFolder']) {
+			$uploadFolder = $sessions['files.']['uploadFolder'];
+			if($sessions['files.']['uploadFolder.']) {
 				$uploadFolder = Tx_Formhandler_StaticFuncs::$cObj->cObjGetSingle(
-					$_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder'], 
-					$_SESSION['formhandlerSettings']['settings']['files.']['uploadFolder.']
+					$sessions['files.']['uploadFolder'], 
+					$sessions['files.']['uploadFolder.']
 				);
 			}
 			$uploadFolder = Tx_Formhandler_StaticFuncs::sanitizePath($uploadFolder);

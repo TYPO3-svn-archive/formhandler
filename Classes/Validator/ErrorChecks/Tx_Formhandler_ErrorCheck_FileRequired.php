@@ -33,14 +33,14 @@ class Tx_Formhandler_ErrorCheck_FileRequired extends Tx_Formhandler_AbstractErro
 	 */
 	public function check(&$check,$name,&$gp) {
 		$checkFailed = '';
-		session_start();
+		$files = Tx_Formhandler_Session::get('files');
 		$found = false;
 		foreach($_FILES as $sthg => &$files) {
 			if(strlen($files['name'][$name]) > 0) {
 				$found = true;
 			}
 		}
-		if(!$found && count($_SESSION['formhandlerFiles'][$name]) == 0) {
+		if(!$found && count($files[$name]) == 0) {
 			$checkFailed = $this->getCheckFailed($check);
 		}
 		return $checkFailed;

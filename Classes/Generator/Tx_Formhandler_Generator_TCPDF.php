@@ -181,8 +181,8 @@ class Tx_Formhandler_Generator_TCPDF {
 		$this->pdf->AddPage();
 		$this->pdf->SetFont('Helvetica', '', 12);
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_PDF');
-		session_start();
-		$suffix = $_SESSION['formhandlerSettings']['templateSuffix'];
+		
+		$suffix = Tx_Formhandler_Session::get('templateSuffix');
 		if($suffix) {
 			$view->setTemplate($this->templateCode, 'PDF' . $suffix);
 		}

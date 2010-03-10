@@ -280,7 +280,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 				}
 
 				//process uploaded files
-				if(isset($_SESSION['formhandlerFiles'][$fieldname]) && is_array($_SESSION['formhandlerFiles'][$fieldname])) {
+				$files = Tx_Formhandler_Session::get('files');
+				if(isset($files[$fieldname]) && is_array($files[$fieldname])) {
 					$queryFields[$fieldname] = $this->getFileList($fieldname);				
 				}
 
@@ -328,7 +329,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function getFileList($fieldname){
 		$filenames = array();
-		foreach ($_SESSION['formhandlerFiles'][$fieldname] as $file) {
+		$files = Tx_Formhandler_Session::get('files');
+		foreach ($files[$fieldname] as $file) {
 			array_push($filenames, $file['uploaded_name']);
 		}
 		return implode(',', $filenames);
