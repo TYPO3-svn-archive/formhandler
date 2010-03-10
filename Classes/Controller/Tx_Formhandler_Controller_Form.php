@@ -799,10 +799,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		$this->settings = $this->getSettings();
 		
-		Tx_Formhandler_Globals::$formValuesPrefix = $this->settings['formValuesPrefix'];
-		if($this->settings['formValuesPrefix']) {
-			$this->formValuesPrefix = $this->settings['formValuesPrefix'];
+		$this->formValuesPrefix = $this->settings['formValuesPrefix'];
+		if(is_array($this->settings['formValuesPrefix.'])) {
+			$this->formValuesPrefix = $this->cObj->cObjGetSingle($this->settings['formValuesPrefix'], $this->settings['formValuesPrefix.']);
 		}
+		Tx_Formhandler_Globals::$formValuesPrefix = $this->formValuesPrefix;
 
 		//set debug mode
 		$this->debugMode = ($this->settings['debug'] == '1') ? TRUE : FALSE;
