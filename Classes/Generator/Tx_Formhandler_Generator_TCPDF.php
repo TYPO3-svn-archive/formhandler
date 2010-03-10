@@ -63,23 +63,23 @@ class Tx_Formhandler_Generator_TCPDF {
 		
 		//init pdf object
 		$this->pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
-		$addedOneRecord = false;
+		$addedOneRecord = FALSE;
 
 		//for all records,
 		//check if the record is valid.
 		//a valid record has at least one param to export
 		//if no valid record is found render an error message in pdf file
 		foreach($records as $data) {
-			$valid = false;
+			$valid = FALSE;
 			if(isset($data['params']) && is_array($data['params'])) {
 				foreach($data['params'] as $key => $value) {
 					if(count($exportFields) == 0 || in_array($key, $exportFields)) {
-						$valid = true;
+						$valid = TRUE;
 					}
 				}
 			}
 			if($valid) {
-				$addedOneRecord = true;
+				$addedOneRecord = TRUE;
 				$this->pdf->AliasNbPages();
 				$this->pdf->AddPage();
 				$this->pdf->SetFont('Helvetica', '', 12);
@@ -104,11 +104,11 @@ class Tx_Formhandler_Generator_TCPDF {
 				$this->pdf->SetLineWidth(.3);
 				$this->pdf->Cell($feedWidth);
 				$this->pdf->SetFillColor(255, 255, 255);
-				$this->pdf->Cell($nameWidth, '6', 'Name', 'B', 0, 'C', true);
-				$this->pdf->Cell($valueWidth, '6', 'Value', 'B', 0, 'C', true);
+				$this->pdf->Cell($nameWidth, '6', 'Name', 'B', 0, 'C', TRUE);
+				$this->pdf->Cell($valueWidth, '6', 'Value', 'B', 0, 'C', TRUE);
 				$this->pdf->Ln();
 				$this->pdf->SetFillColor(200, 200, 200);
-				$fill = false;
+				$fill = FALSE;
 				
 				foreach($exportFields as $key => $field) {
 					
@@ -176,7 +176,7 @@ class Tx_Formhandler_Generator_TCPDF {
 	 * @see Tx_Formhandler_Finisher_Mail::parseMailSettings()
 	 * @return void|filename
 	 */
-	function generateFrontendPDF($gp, $langFile, $exportFields = array(), $file = '', $returns = false) {
+	function generateFrontendPDF($gp, $langFile, $exportFields = array(), $file = '', $returns = FALSE) {
 		$this->pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
 		$this->pdf->AddPage();
 		$this->pdf->SetFont('Helvetica', '', 12);
@@ -199,7 +199,7 @@ class Tx_Formhandler_Generator_TCPDF {
 		
 		$pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
 		
-		$pdf->writeHTML(stripslashes($content), true, 0);
+		$pdf->writeHTML(stripslashes($content), TRUE, 0);
 
 		if(strlen($file) > 0) {
 			$pdf->Output($file, 'F');

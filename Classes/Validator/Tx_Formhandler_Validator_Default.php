@@ -77,9 +77,9 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 	 */
 	public function validate(&$errors) {
 
-		//no config? validation returns true
+		//no config? validation returns TRUE
 		if(!is_array($this->settings['fieldConf.'])) {
-			return true;
+			return TRUE;
 		}
 
 		$disableErrorCheckFields = array();

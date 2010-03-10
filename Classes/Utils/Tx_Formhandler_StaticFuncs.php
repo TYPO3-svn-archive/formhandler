@@ -302,7 +302,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return string formatted date
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
-	static public function dateToTimestamp($date,$end = false) {
+	static public function dateToTimestamp($date,$end = FALSE) {
 		$dateArr = t3lib_div::trimExplode('.', $date);
 		if($end) {
 			return mktime(23, 59, 59, $dateArr[1], $dateArr[0], $dateArr[2]);

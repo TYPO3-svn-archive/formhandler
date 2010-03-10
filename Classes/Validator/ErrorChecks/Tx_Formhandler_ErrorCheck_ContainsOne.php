@@ -40,10 +40,10 @@ class Tx_Formhandler_ErrorCheck_ContainsOne extends Tx_Formhandler_AbstractError
 			if(!is_array($checkValue)) {
 				$checkValue = t3lib_div::trimExplode(',', $checkValue);
 			}
-			$found = false;
+			$found = FALSE;
 			foreach($checkValue as $word) {
 				if(stristr($formValue, $word) && !$found) {
-					$found = true;
+					$found = TRUE;
 				}
 			}
 			if(!$found) {

@@ -40,7 +40,7 @@ class Tx_Formhandler_ErrorCheck_ContainsNone extends Tx_Formhandler_AbstractErro
 			if(!is_array($checkValue)) {
 				$checkValue = t3lib_div::trimExplode(',', $checkValue);
 			}
-			$found = false;
+			$found = FALSE;
 			foreach($checkValue as $word) {
 				if(stristr($formValue, $word) && !$found) {
 	
@@ -48,7 +48,7 @@ class Tx_Formhandler_ErrorCheck_ContainsNone extends Tx_Formhandler_AbstractErro
 					$check['params']['words'] = implode(',', $checkValue);
 					unset($check['params']['words.']);
 					$checkFailed = $this->getCheckFailed($check);
-					$found = true;
+					$found = TRUE;
 				}
 			}
 		}

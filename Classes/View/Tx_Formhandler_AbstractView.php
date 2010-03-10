@@ -223,7 +223,7 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	}
 	
 	/**
-	 * Returns false if the view doesn't have template code.
+	 * Returns FALSE if the view doesn't have template code.
 	 *
 	 * @return boolean
 	 */

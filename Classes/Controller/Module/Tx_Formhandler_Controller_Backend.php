@@ -234,7 +234,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$allParams = array();
 
 			//loop through records
-			while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+			while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 
 				//unserialize params and save the array
 				$row['params'] = unserialize($row['params']);
@@ -298,7 +298,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$availableFormats = array();
 
 			//loop through records
-			while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+			while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 
 				//unserialize the params array
 				$row['params'] = unserialize($row['params']);
@@ -645,7 +645,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		//if records found
 		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 			$count = 0;
-			while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+			while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 				$records[$count] = $row;
 				$count++;
 			}
@@ -679,7 +679,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 		//only records submitted before given timestamp
 		if(strlen(trim($params['enddateFilter'])) > 0) {
-			$tstamp = Tx_Formhandler_StaticFuncs::dateToTimestamp($params['enddateFilter'], true);
+			$tstamp = Tx_Formhandler_StaticFuncs::dateToTimestamp($params['enddateFilter'], TRUE);
 			$where[] = 'crdate <= ' . $tstamp;
 		}
 

@@ -252,13 +252,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if( preg_match($pattern, $conditionValue, $matches) ){
 			$isset = $this->keyIsset($matches[2]);
 			if($matches[3] == '||' && $isset) {
-				$return = true;
+				$return = TRUE;
 			} elseif($matches[3] == '||' && !$isset) {
 				$return = $this->markersCountAsSet($matches[4]);
 			} elseif($matches[3] == '&&' && $isset) {
 				$return = $this->markersCountAsSet($matches[4]);
 			} elseif($matches[3] == '&&' && !$isset) {
-				$return = false;
+				$return = FALSE;
 			} elseif($matches[6] == '!' && !$isset) {
 				$return = !$this->keyIsset($matches[7]);
 			} elseif(Tx_Formhandler_Session::get('debug')) {
@@ -298,12 +298,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$tmp = $this->gp[array_shift($keys)];
 		foreach ($keys as $key) {
 			if (empty($tmp[$key])) {
-				return false;
+				return FALSE;
 			}else{
 				$tmp = $tmp[$key];
 			}
 		}
-		return true;
+		return TRUE;
 	}
 	
 	protected function substituteHasTranslationSubparts() {
@@ -336,7 +336,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function substituteIssetSubparts() {
 		$flags = array();
-		$nowrite = false;
+		$nowrite = FALSE;
 		$out = array();
 		foreach(explode(chr(10), $this->template) as $line){
 
@@ -347,7 +347,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			if(preg_match($pattern, $line, $matches)) {
 				//print_r($matches);
 				if(!$flags[$matches[1]]) { // set
-					$flags[$matches[1]] = true;
+					$flags[$matches[1]] = TRUE;
 					//print $matches[1].'<br />';
 					// set nowrite flag if required until the next ISSET_xyz
 					// (only if not already set by envelop)
@@ -355,7 +355,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$nowrite = $matches[1];
 					}
 				} else { // close it
-					$flags[$matches[1]] = false;
+					$flags[$matches[1]] = FALSE;
 					if($nowrite == $matches[1]) {
 						$nowrite = 0;
 					}
@@ -688,7 +688,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				foreach($files as $fileInfo) {
 					$filename = $fileInfo['name'];
 					$thumb = '';
-					if($settings['singleFileMarkerTemplate.']['showThumbnails'] == '1') {
+					if(intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 1) {
 						$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
 					}
@@ -717,13 +717,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$wrappedFilename = $filename;
 						$wrappedThumb = $thumb;
 					}
-					if($settings['singleFileMarkerTemplate.']['showThumbnails'] == '1') {
+					if(intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 1) {
 						$markers['###' . $field . '_uploadedFiles###'] .= $wrappedThumb;
 					} else {
 						$markers['###' . $field . '_uploadedFiles###'] .= $wrappedFilename;
 					}
 					$filename = $fileInfo['name'];
-					if($settings['totalFilesMarkerTemplate.']['showThumbnails'] == '1') {
+					if(intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1) {
 						$imgConf['image.'] = $settings['totalFilesMarkerTemplate.']['image.'];
 						if(!$imgconf['image.']) {
 							$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
@@ -740,7 +740,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$wrappedThumb = $thumb;
 					}
 				
-					if($settings['totalFilesMarkerTemplate.']['showThumbnails'] == '1') {
+					if(intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1) {
 						$markers['###total_uploadedFiles###'] .= $wrappedThumb;
 					} else {
 						$markers['###total_uploadedFiles###'] .= $wrappedFilename;

@@ -85,7 +85,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	}
 
 	/**
-	 * Checks if the form got submitted too often and throws Exception if true.
+	 * Checks if the form got submitted too often and throws Exception if TRUE.
 	 *
 	 * @param int Timebase value
 	 * @param string Timebase unit (seconds|minutes|hours|days)
@@ -203,14 +203,14 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 			$sent = $emailObj->send($mailto);
 			if($sent) {
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_sent', $mailto);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', $emailObj->from_email, false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject, false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', $message, false);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', $emailObj->from_email, FALSE);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject, FALSE);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', $message, FALSE);
 			} else {
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_not_sent', $mailto);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', $emailObj->from_email, false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject, false);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', $message, false);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', $emailObj->from_email, FALSE);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject, FALSE);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', $message, FALSE);
 
 			}
 		}

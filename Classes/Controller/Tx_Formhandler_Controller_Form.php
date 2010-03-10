@@ -260,7 +260,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 				//run validation
 				$this->errors = array();
-				$valid = array(true);
+				$valid = array(TRUE);
 				if(	isset($this->settings['validators.']) && 
 					is_array($this->settings['validators.']) && 
 					intval($this->settings['validators.']['disable']) !== 1) {
@@ -545,12 +545,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					//for all file names
 					foreach($files['name'] as $field => $name) {
 						if(!isset($this->errors[$field])) {
-							$exists = false;
+							$exists = FALSE;
 							if(is_array($sessionFiles[$field])) {
 								foreach($sessionFiles[$field] as $fileOptions) {
 
 									if($fileOptions['name'] == $name) {
-										$exists = true;
+										$exists = TRUE;
 									}
 								}
 							}
@@ -805,7 +805,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		Tx_Formhandler_Globals::$formValuesPrefix = $this->formValuesPrefix;
 
 		//set debug mode
-		$this->debugMode = ($this->settings['debug'] == '1') ? TRUE : FALSE;
+		$this->debugMode = (intval($this->settings['debug']) === 1) ? TRUE : FALSE;
 		Tx_Formhandler_Session::set('debug', $this->debugMode);
 		Tx_Formhandler_StaticFuncs::debugBeginSection('init_values');
 		$this->loadGP();
@@ -830,7 +830,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		Tx_Formhandler_Globals::$settings = $this->settings;
 
 		//set debug mode again cause it may have changed in specific step settings
-		$this->debugMode = ($this->settings['debug'] == '1') ? TRUE : FALSE;
+		$this->debugMode = (intval($this->settings['debug']) === 1) ? TRUE : FALSE;
 		Tx_Formhandler_Session::set('debug', $this->debugMode);
 		
 		Tx_Formhandler_StaticFuncs::debugMessage('using_prefix', $this->formValuesPrefix);
@@ -1075,7 +1075,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	}
 
 	/**
-	 * Find out if submitted form was valid. If one of the values in the given array $valid is false the submission was not valid.
+	 * Find out if submitted form was valid. If one of the values in the given array $valid is FALSE the submission was not valid.
 	 *
 	 * @param $validArr Array with the return values of each validator
 	 * @return boolean
@@ -1087,7 +1087,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if(is_array($validArr)) {
 			foreach($validArr as $item) {
 				if(!$item) {
-					$valid = false;
+					$valid = FALSE;
 				}
 			}
 		}

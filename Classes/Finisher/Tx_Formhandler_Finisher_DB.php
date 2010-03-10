@@ -201,13 +201,13 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		//set primary key field
 		$this->key = $this->settings['key'];
 		if(!$this->key) {
-			$this->key = "uid";
+			$this->key = 'uid';
 		}
 
 		//check whether to update or to insert a record
-		$this->doUpdate = false;
+		$this->doUpdate = FALSE;
 		if($this->settings['updateInsteadOfInsert']) {
-			$this->doUpdate = true;
+			$this->doUpdate = TRUE;
 		}
 	}
 

@@ -116,10 +116,10 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function sendMail($type) {
 		
-		$doSend = true;
-		if($this->settings[$type]['disable'] == '1') {
+		$doSend = TRUE;
+		if(intval($this->settings[$type]['disable']) === 1) {
 			Tx_Formhandler_StaticFuncs::debugMessage('mail_disabled', $type);
-			$doSend = false;
+			$doSend = FALSE;
 		} 
 		
 		$mailSettings = $this->settings[$type];

@@ -120,11 +120,8 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 					$value = str_replace($char, ' ', $value);
 				}
 				
-				$isUTF8 = true;
-				if(!$this->isUTF8($value)) {
-					$isUTF8 = false;
-				}
-
+				$isUTF8 = $this->isUTF8($value);
+				
 				if(!$isUTF8) {
 					$value = utf8_encode($value);
 				}
@@ -158,7 +155,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 			$c = ord($str[$i]);
 			if($c > 128){
 				if(($c >= 254)) {
-					return false;
+					return FALSE;
 				} elseif($c >= 252) {
 					$bits = 6;
 				} elseif($c >= 248) {
@@ -170,22 +167,22 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 				} elseif($c >= 192) {
 					$bits = 2;
 				} else {
-					return false;
+					return FALSE;
 				}
 				if(($i + $bits) > $len) {
-					return false;
+					return FALSE;
 				}
 				while($bits > 1) {
 					$i++;
 					$b = ord($str[$i]);
 					if($b < 128 || $b > 191) {
-						return false;
+						return FALSE;
 					}
 					$bits--;
 				}
 			}
 		}
-		return true;
+		return TRUE;
 	}
 
 }
