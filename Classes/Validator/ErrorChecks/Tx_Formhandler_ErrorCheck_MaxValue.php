@@ -35,9 +35,9 @@ class Tx_Formhandler_ErrorCheck_MaxValue extends Tx_Formhandler_AbstractErrorChe
 		$checkFailed = '';
 		$max = $check['params']['value'];
 		if(	isset($gp[$name]) &&
-		!empty($gp[$name]) &&
-		!empty($max) &&
-		(!t3lib_div::testInt($gp[$name]) || intVal($gp[$name]) > $max)) {
+			intval($gp[$name]) >= 0 &&
+			intval($max) >= 0 &&
+			(!t3lib_div::testInt($gp[$name]) || intVal($gp[$name]) > $max)) {
 				
 			$checkFailed = $this->getCheckFailed($check);
 		}

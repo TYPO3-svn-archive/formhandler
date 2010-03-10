@@ -34,7 +34,7 @@ class Tx_Formhandler_ErrorCheck_Time extends Tx_Formhandler_AbstractErrorCheck {
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 		
-		if(isset($gp[$name]) && !empty($gp[$name])) {
+		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			$pattern = $check['params']['pattern'];
 			preg_match('/^[h|m]*(.)[h|m]*/i', $pattern, $res);
 			$sep = $res[1];

@@ -35,7 +35,7 @@ class Tx_Formhandler_ErrorCheck_NotDefaultValue extends Tx_Formhandler_AbstractE
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		if(isset($gp[$name]) && !empty($gp[$name])) {
+		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			$defaultValue = $check['params']['defaultValue'];
 			if(is_array($check['params']['defaultValue.'])) {
 				$defaultValue = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'defaultValue');

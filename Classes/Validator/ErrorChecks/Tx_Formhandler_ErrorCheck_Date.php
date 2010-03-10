@@ -34,7 +34,7 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 
-		if(isset($gp[$name]) && !empty($gp[$name])) {
+		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			# find out separator
 			$pattern = $check['params']['pattern'];
 			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
@@ -48,13 +48,13 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 			$pos2 = strpos($pattern, 'm');
 			$pos3 = strpos($pattern, 'y');
 			$dateCheck = t3lib_div::trimExplode($sep, $gp[$name]);
-			if(sizeof($dateCheck) != 3) {
+			if(sizeof($dateCheck) !== 3) {
 				$checkFailed = $this->getCheckFailed($check);
-			} elseif(intval($dateCheck[0]) == 0 || intval($dateCheck[1]) == 0 || intval($dateCheck[2]) == 0) {
+			} elseif(intval($dateCheck[0]) === 0 || intval($dateCheck[1]) === 0 || intval($dateCheck[2]) === 0) {
 				$checkFailed = $this->getCheckFailed($check);
 			} elseif(!checkdate($dateCheck[$pos2], $dateCheck[$pos1], $dateCheck[$pos3])) {
 				$checkFailed = $this->getCheckFailed($check);
-			} elseif(strlen($dateCheck[$pos3]) != 4) {
+			} elseif(strlen($dateCheck[$pos3]) !== 4) {
 				$checkFailed = $this->getCheckFailed($check);
 			}
 		}

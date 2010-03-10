@@ -34,7 +34,7 @@ class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 
-		if(isset($gp[$name]) && !empty($gp[$name])) {
+		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			$min = $check['params']['min'];
 			$max = $check['params']['max'];
 			$pattern = $check['params']['pattern'];

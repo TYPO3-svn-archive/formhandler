@@ -34,7 +34,7 @@ class Tx_Formhandler_ErrorCheck_IsInDBTable extends Tx_Formhandler_AbstractError
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 		
-		if(isset($gp[$name]) && !empty($gp[$name])) {
+		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			$checkTable = $check['params']['table'];
 			$checkField = $check['params']['field'];
 			$additionalWhere = $check['params']['additionalWhere'];

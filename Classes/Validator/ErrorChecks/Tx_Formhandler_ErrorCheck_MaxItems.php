@@ -33,9 +33,9 @@ class Tx_Formhandler_ErrorCheck_MaxItems extends Tx_Formhandler_AbstractErrorChe
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		$value = $check['params']['value'];
 		
-		if(isset($gp[$name]) && !empty($gp[$name])) {
+		if(isset($gp[$name])) {
+			$value = $check['params']['value'];
 			if(is_array($gp[$name])) {
 				if(count($gp[$name]) > $value) {
 					$checkFailed = $this->getCheckFailed($check);

@@ -34,7 +34,7 @@ class Tx_Formhandler_ErrorCheck_Email extends Tx_Formhandler_AbstractErrorCheck 
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 		
-		if(isset($gp[$name]) && !empty($gp[$name])) {
+		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			$valid = t3lib_div::validEmail($gp[$name]);
 			if(!$valid) {
 				$checkFailed = $this->getCheckFailed($check);

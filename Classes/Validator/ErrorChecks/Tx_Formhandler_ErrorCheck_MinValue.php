@@ -35,9 +35,9 @@ class Tx_Formhandler_ErrorCheck_MinValue extends Tx_Formhandler_AbstractErrorChe
 		$checkFailed = '';
 		$min = $check['params']['value'];
 		if(	isset($gp[$name]) &&
-		!empty($gp[$name]) &&
-		!empty($min) &&
-		(!t3lib_div::testInt($gp[$name]) || intVal($gp[$name]) < $min)) {
+			intval($gp[$name]) >= 0 &&
+			intval($min) >= 0 &&
+			(!t3lib_div::testInt($gp[$name]) || intVal($gp[$name]) < $min)) {
 				
 			$checkFailed = $this->getCheckFailed($check);
 		}
