@@ -464,6 +464,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers['###timestamp###'] = $markers['###TIMESTAMP###'];
 		$markers['###abs_url###'] = $markers['###ABS_URL###'];
 		
+		$markers['###formValuesPrefix###'] = Tx_Formhandler_Globals::$formValuesPrefix;
+		
 		if($this->gp['generated_authCode']) {
 			$markers['###auth_code###'] = $this->gp['generated_authCode'];
 		}
