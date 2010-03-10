@@ -122,7 +122,7 @@ class Tx_Formhandler_StaticFuncs {
 		if(!$templateFile) {
 			$templateFile = $settings['templateFile'];
 			if(isset($settings['templateFile.']) && is_array($settings['templateFile.'])) {
-				$templateFile = Tx_Formhandler_StaticFuncs::$cObj->cObjGetSingle($settings['templateFile'], $settings['templateFile.']);
+				$templateFile = Tx_Formhandler_StaticFuncs::getSingle($settings, 'templateFile');
 			} else {
 				$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
 				$templateFile = t3lib_div::getURL($templateFile);
@@ -156,12 +156,12 @@ class Tx_Formhandler_StaticFuncs {
 			if(isset($settings['langFile']) && !isset($settings['langFile.'])) {
 				array_push($langFiles, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($settings['langFile']));
 			} elseif(isset($settings['langFile']) && isset($settings['langFile.'])) {
-				array_push($langFiles, Tx_Formhandler_Globals::$cObj->cObjGetSingle($settings['langFile'], $settings['langFile.']));
+				array_push($langFiles, Tx_Formhandler_Globals::getSingle($settings, 'langFile'));
 			} elseif(isset($settings['langFile.']) && is_array($settings['langFile.'])) {
 				foreach($settings['langFile.'] as $key => $langFile) {
 					if(FALSE === strpos($key, '.')) {
 						if(is_array($settings['langFile.'][$key . '.'])) {
-							array_push($langFiles, Tx_Formhandler_Globals::$cObj->cObjGetSingle($langFile, $settings['langFile.'][$key . '.']));
+							array_push($langFiles, Tx_Formhandler_Globals::getSingle($settings['langFile.'], $key));
 						} else {
 							array_push($langFiles, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($langFile));
 						}
@@ -190,6 +190,17 @@ class Tx_Formhandler_StaticFuncs {
 		return $message;
 	}
 	
+	static public function getSingle($arr, $key) {
+		if(!isset($arr[$key . '.'])) {
+			return $arr[$key];
+		}
+		
+		if(!isset($arr[$key . '.']['sanitize'])) {
+			$arr[$key . '.']['sanitize'] = 1;
+		}
+		return Tx_Formhandler_Globals::$cObj->cObjGetSingle($arr[$key], $arr[$key . '.']);
+	}
+	
 	/**
 	 * Redirects to a specified page or URL.
 	 *
@@ -209,7 +220,7 @@ class Tx_Formhandler_StaticFuncs {
 			foreach($additionalParams as $param=>$value) {
 				if(FALSE === strpos($param, '.')) {
 					if(is_array($additionalParams[$param . '.'])) {
-						$value = Tx_Formhandler_Globals::$cObj->cObjGetSingle($value, $additionalParams[$param . '.']);
+						$value = Tx_Formhandler_StaticFuncs::getSingle($additionalParams, $param);
 					}
 					$addparams[$param] = $value;
 				}
@@ -642,10 +653,7 @@ class Tx_Formhandler_StaticFuncs {
 		if($sessions['files.']['uploadFolder']) {
 			$uploadFolder = $sessions['files.']['uploadFolder'];
 			if($sessions['files.']['uploadFolder.']) {
-				$uploadFolder = Tx_Formhandler_StaticFuncs::$cObj->cObjGetSingle(
-					$sessions['files.']['uploadFolder'], 
-					$sessions['files.']['uploadFolder.']
-				);
+				$uploadFolder = Tx_Formhandler_StaticFuncs::getSingle($sessions['files.'], 'uploadFolder');
 			}
 			$uploadFolder = Tx_Formhandler_StaticFuncs::sanitizePath($uploadFolder);
 		}

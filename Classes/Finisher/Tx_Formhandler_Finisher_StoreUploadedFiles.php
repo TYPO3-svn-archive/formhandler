@@ -141,11 +141,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 
 					} elseif(isset($this->settings['schemeMarkers.'][$markerName . '.'])) {
 
-						//pass gp to the plugin 
-						if(!strcmp($options,'USER') || !strcmp($options,'USER_INT')) {
-							$this->settings['schemeMarkers.'][$markerName . '.']['gp'] = $this->gp;
-						}
-						$value = $this->cObj->cObjGetSingle($this->settings['schemeMarkers.'][$markerName], $this->settings['schemeMarkers.'][$markerName . '.']);
+						$value = Tx_Formhandler_StaticFuncs::getSingle($this->settings['schemeMarkers.'], $markerName);
 					}
 					$newFilename = str_replace('[' . $markerName . ']', $value, $newFilename);
 				}

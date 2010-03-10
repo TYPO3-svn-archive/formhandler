@@ -107,6 +107,7 @@ class Tx_Formhandler_Controller_Listing extends Tx_Formhandler_AbstractControlle
 	 */
 	public function process() {
 		$this->gp = t3lib_div::_GP('formhandler');
+		Tx_Formhandler_Globals::$gp = $this->gp;
 
 		//read settings
 		$settings = $this->configuration->getSettings();
@@ -135,7 +136,7 @@ class Tx_Formhandler_Controller_Listing extends Tx_Formhandler_AbstractControlle
 		//set template file
 		$templateFile = $settings['templateFile'];
 		if(isset($settings['templateFile.']) && is_array($settings['templateFile.'])) {
-			$this->templateFile = $this->cObj->cObjGetSingle($settings['templateFile'], $settings['templateFile.']);
+			$this->templateFile = Tx_Formhandler_StaticFuncs::getSingle($settings, 'templateFile');
 		} else {
 			$this->templateFile = t3lib_div::getURL(Tx_Formhandler_StaticFuncs::resolvePath($templateFile));
 		}

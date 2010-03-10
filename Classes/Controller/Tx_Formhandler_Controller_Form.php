@@ -363,6 +363,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 										} else {
 												
 											$this->gp = $finisher->process();
+											Tx_Formhandler_Globals::$gp = $this->gp;
 											Tx_Formhandler_StaticFuncs::debugEndSection();
 										}
 										
@@ -666,6 +667,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		Tx_Formhandler_Session::set('startblock', NULL);
 		Tx_Formhandler_Session::set('endblock', NULL);
 		$this->gp = array();
+		Tx_Formhandler_Globals::$gp = $this->gp;
 		Tx_Formhandler_StaticFuncs::debugMessage('cleared_session');
 	}
 
@@ -799,10 +801,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		$this->settings = $this->getSettings();
 		
-		$this->formValuesPrefix = $this->settings['formValuesPrefix'];
-		if(is_array($this->settings['formValuesPrefix.'])) {
-			$this->formValuesPrefix = $this->cObj->cObjGetSingle($this->settings['formValuesPrefix'], $this->settings['formValuesPrefix.']);
-		}
+		$this->formValuesPrefix = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'formValuesPrefix');
 		Tx_Formhandler_Globals::$formValuesPrefix = $this->formValuesPrefix;
 
 		//set debug mode
@@ -884,6 +883,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->view->setLangFiles($this->langFiles);
 		$this->view->setSettings($this->settings);
 		$this->setViewSubpart($this->currentStep);
+		
+		Tx_Formhandler_Globals::$gp = $this->gp;
 	}
 
 	protected function loadGP() {
@@ -1044,6 +1045,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						
 						//return value is an array. Treat it as the probably modified get/post parameters
 						$this->gp = $return;
+						Tx_Formhandler_Globals::$gp = $this->gp;
 					} else {
 						
 						//return value is no array. treat this return value as output.

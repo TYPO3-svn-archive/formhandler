@@ -36,7 +36,7 @@ class Tx_Formhandler_ErrorCheck_Equals extends Tx_Formhandler_AbstractErrorCheck
 		$formValue = trim($gp[$name]);
 		
 		if(isset($gp[$name]) && !empty($formValue)) {
-			$checkValue = $this->getCheckValue($check['params']['word'], $check['params']['word.']);
+			$checkValue = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'word');
 			if(strcasecmp($formValue, $checkValue)) {
 					
 					//remove userfunc settings

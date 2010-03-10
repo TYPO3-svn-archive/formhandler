@@ -40,7 +40,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 			//user set custom rules via cObject
 			$cObjSettings = $globalSetting['removeChars.'];
 			if(is_array($cObjSettings)) {
-				$list = $this->cObj->cObjGetSingle($globalSetting['removeChars'], $cObjSettings);
+				$list = Tx_Formhandler_StaticFuncs::getSingle($globalSetting, 'removeChars');
 				
 				//user set custom seperator
 				if($globalSetting['seperator']) {
@@ -95,8 +95,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 					//user set custom rules via cObject
 					$cObjSettings = $fieldSetting['removeChars.'];
 					if(is_array($cObjSettings)) {
-						$list = $this->cObj->cObjGetSingle($fieldSetting['removeChars'], $cObjSettings);
-						
+						$list = Tx_Formhandler_StaticFuncs::getSingle($fieldSetting, 'removeChars');
 						
 						//user set custom seperator
 						if($fieldSetting['seperator']) {

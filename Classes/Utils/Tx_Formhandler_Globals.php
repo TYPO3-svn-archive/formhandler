@@ -13,6 +13,8 @@ class Tx_Formhandler_Globals {
 	static public $cObj;
 	
 	static public $overrideSettings;
+	
+	static public $gp;
 }
 
 ?>

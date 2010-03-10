@@ -55,21 +55,6 @@ abstract class Tx_Formhandler_AbstractErrorCheck extends Tx_Formhandler_Abstract
 		}
 		return $checkFailed;
 	}
-	
-	/**
-	 * Parses the parameter given to the error check and performs getSingle if necessary.
-	 *
-	 * @param string $obj A value string or TypoScript object
-	 * @param array $params If TypoScript object, this is the parameter array
-	 * @return string The parsed value
-	 */
-	protected function getCheckValue($obj, $params) {
-		$checkValue = $obj;
-		if(is_array($params)) {
-			$checkValue = $this->cObj->cObjGetSingle($obj, $params);
-		}
-		return $checkValue;
-	}
 
 }
 ?>

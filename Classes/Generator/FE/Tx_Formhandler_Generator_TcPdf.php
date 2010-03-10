@@ -26,7 +26,7 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 			$this->filename = $this->outputPath . $this->settings['filePrefix'] . Tx_Formhandler_StaticFuncs::generateHash() . '.pdf';		
 			$this->filenameOnly = basename($this->filename);
 			if($this->settings['staticFileName'] && $this->settings['staticFileName.']) {
-				$this->filenameOnly = $this->cObj->cObjGetSingle($this->settings['staticFileName'], $this->settings['staticFileName.']);
+				$this->filenameOnly = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'staticFileName');
 			} elseif($this->settings['staticFileName']) {
 				$this->filenameOnly = $this->settings['staticFileName'];
 			}

@@ -77,7 +77,7 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 
 				if (!isset($this->gp[$fN])) {
 					if($settings[$fN . '.']['defaultValue'] && $settings[$fN . '.']['defaultValue.']) {
-						$this->gp[$fN] = $this->cObj->cObjGetSingle($settings[$fN . '.']['defaultValue'],$settings[$fN . '.']['defaultValue.']);
+						$this->gp[$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings[$fN . '.'], 'defaultValue');
 					} elseif($settings[$fN . '.']['defaultValue.']) {
 						$this->gp[$fN] = $this->cObj->TEXT($settings[$fN . '.']['defaultValue.']);
 					} elseif ($settings[$fN . '.']['defaultValue'] || $settings[$fN . '.']['defaultValue'] == 0) {
@@ -106,7 +106,7 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 				$fN = preg_replace('/\.$/', '', $fN);
 				if (!isset($values[$step][$fN])) {
 					if($settings[$fN . '.']['defaultValue'] && $settings[$fN . '.']['defaultValue.']) {
-						$values[$step][$fN] =  $this->cObj->cObjGetSingle($settings[$fN . '.']['defaultValue'], $settings[$fN . '.']['defaultValue.']);
+						$values[$step][$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings[$fN . '.'], 'defaultValue');
 					} elseif($settings[$fN . '.']['defaultValue.']) {
 						$values[$step][$fN] =  $this->cObj->TEXT($settings[$fN . '.']['defaultValue.']);
 					} elseif ($settings[$fN . '.']['defaultValue'] || $settings[$fN . '.']['defaultValue'] == 0) {

@@ -170,12 +170,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if(isset($this->settings['masterTemplateFile']) && !isset($this->settings['masterTemplateFile.'])) {
 			array_push($this->masterTemplates, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($this->settings['masterTemplateFile']));
 		} elseif(isset($this->settings['masterTemplateFile']) && isset($this->settings['masterTemplateFile.'])) {
-			array_push($this->masterTemplates, $this->cObj->cObjGetSingle($this->settings['masterTemplateFile'], $this->settings['masterTemplateFile.']));
+			array_push($this->masterTemplates, Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'masterTemplateFile'));
 		} elseif(isset($this->settings['masterTemplateFile.']) && is_array($this->settings['masterTemplateFile.'])) {
 			foreach($this->settings['masterTemplateFile.'] as $key => $masterTemplate) {
 				if(FALSE === strpos($key, '.')) {
 					if(is_array($this->settings['masterTemplateFile.'][$key . '.'])) {
-						array_push($this->masterTemplates, $this->cObj->cObjGetSingle($masterTemplate, $this->settings['masterTemplateFile.'][$key . '.']));
+						array_push($this->masterTemplates, Tx_Formhandler_StaticFuncs::getSingle($this->settings['masterTemplateFile.'], $key));
 					} else {
 						array_push($this->masterTemplates, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($masterTemplate));
 					}
@@ -696,7 +696,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$text = 'X';
 						if($settings['files.']['customRemovalText']) {
 							if($settings['files.']['customRemovalText.']) {
-								$text = $this->cObj->cObjGetSingle($settings['files.']['customRemovalText'], $settings['files.']['customRemovalText.']);
+								$text = Tx_Formhandler_StaticFuncs::getSingle($settings['files.'], 'customRemovalText');
 							} else {
 								$text = $settings['files.']['customRemovalText'];
 							}
@@ -804,7 +804,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				
 			if($this->settings['isErrorMarker.'][$field]) {
 				if($this->settings['isErrorMarker.'][$field . '.']) {
-					$errorMessage = $this->cObj->cObjGetSingle($this->settings['isErrorMarker.'][$field], $this->settings['isErrorMarker.'][$field . '.']);
+					$errorMessage = Tx_Formhandler_StaticFuncs::getSingle($this->settings['isErrorMarker.'], $field);
 				} else {
 					$errorMessage = $this->settings['isErrorMarker.'][$field];
 				}
@@ -812,7 +812,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				$errorMessage = $temp;
 			} elseif($this->settings['isErrorMarker.']['default']) {
 				if($this->settings['isErrorMarker.']['default.']) {
-					$errorMessage = $this->cObj->cObjGetSingle($this->settings['isErrorMarker.']['default'], $this->settings['isErrorMarker.']['default.']);
+					$errorMessage = Tx_Formhandler_StaticFuncs::getSingle($this->settings['isErrorMarker.'], 'default');
 				} else {
 					$errorMessage = $this->settings['isErrorMarker.']['default'];
 				}
@@ -823,7 +823,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		}
 		if($this->settings['isErrorMarker.']['global']) {
 			if($this->settings['isErrorMarker.']['global.']) {
-				$errorMessage = $this->cObj->cObjGetSingle($this->settings['isErrorMarker.']['global'], $this->settings['isErrorMarker.']['global.']);
+				$errorMessage = Tx_Formhandler_StaticFuncs::getSingle($this->settings['isErrorMarker.'], 'global');
 			} else {
 				$errorMessage = $this->settings['isErrorMarker.']['global'];
 			}
@@ -939,10 +939,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if(is_array($this->settings['markers.'])) {
 			foreach($this->settings['markers.'] as $name => $options) {
 				if(!strstr($name, '.')) {
-					if(!strcmp($options,'USER') || !strcmp($options,'USER_INT')) {
-						$this->settings['markers.'][$name . '.']['gp'] = $this->gp;
-					} 
-					$markers['###' . $name . '###'] = $this->cObj->cObjGetSingle($this->settings['markers.'][$name], $this->settings['markers.'][$name . '.']);
+					$markers['###' . $name . '###'] = Tx_Formhandler_StaticFuncs::getSingle($this->settings['markers.'], $name);
 				}
 			}
 		}

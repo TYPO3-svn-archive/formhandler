@@ -236,17 +236,17 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 				$fieldValue = $this->gp[$mapping];
 				
 				if($options['mapping.']) {
-					$fieldValue = $this->cObj->cObjGetSingle($options['mapping'], $options['mapping.']);
+					$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'mapping');
 				}
 
 				//pre process the field value. e.g. to format a date
 				if(is_array($options['preProcessing.'])) {
 					$options['preProcessing.']['value'] = $fieldValue;
-					$fieldValue = $this->cObj->cObjGetSingle($options['preProcessing'], $options['preProcessing.']);
+					$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'preProcessing');
 				}
 
 				if($options['mapping.']) {
-					$queryFields[$fieldname] = $this->cObj->cObjGetSingle($options['mapping'], $options['mapping.']);
+					$queryFields[$fieldname] = Tx_Formhandler_StaticFuncs::getSingle($options, 'mapping');
 				} else {
 					$queryFields[$fieldname] = $fieldValue;
 				}
@@ -256,7 +256,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 						
 					//if given settings is a TypoScript object
 					if(isset($options['ifIsEmpty.']) && is_array($options['ifIsEmpty.'])) {
-						$queryFields[$fieldname] = $this->cObj->cObjGetSingle($options['ifIsEmpty'], $options['ifIsEmpty.']);
+						$queryFields[$fieldname] = Tx_Formhandler_StaticFuncs::getSingle($options, 'ifIsEmpty');
 					} else {
 						$queryFields[$fieldname] = $options['ifIsEmpty'];
 					}
@@ -316,7 +316,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			//post process the field value after formhandler did it's magic.
 			if(is_array($options['postProcessing.'])) {
 				$options['postProcessing.']['value'] = $queryFields[$fieldname];
-				$queryFields[$fieldname] = $this->cObj->cObjGetSingle($options['postProcessing'], $options['postProcessing.']);
+				$queryFields[$fieldname] = Tx_Formhandler_StaticFuncs::getSingle($options, 'postProcessing');
 			}
 		}
 		return $queryFields;
