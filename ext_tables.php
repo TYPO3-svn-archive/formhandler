@@ -46,7 +46,7 @@ if (TYPO3_MODE == 'BE')   {
 	// Add flexform field to plugin options
 	$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi1'] = 'pi_flexform';
 	
-	if(!is_object($GLOBALS['BE_USER'])) {
+	if(!is_object($GLOBALS['BE_USER']) || !$GLOBALS['BE_USER']->checkCLIuser()) {
 		$GLOBALS['BE_USER'] = t3lib_div::makeInstance('t3lib_beUserAuth');
 		
 		// New backend user object
