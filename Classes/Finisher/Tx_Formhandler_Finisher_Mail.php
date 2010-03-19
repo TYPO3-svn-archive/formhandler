@@ -518,6 +518,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @return array The parsed email settings
 	 */
 	private function parseEmailSettingsByType($currentSettings, $type, $optionsToParse = array()) {
+		
 		$typeLower = strtolower($type);
 		$typeUpper = strtoupper($type);
 		$section = 'sEMAIL' . $typeUpper;
@@ -561,11 +562,11 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 							$generatorClass = $currentSettings['attachPDF.']['class'];
 							if($generatorClass) {
 								
-							
 								$generatorClass = Tx_Formhandler_StaticFuncs::prepareClassName($generatorClass);
 								$generator = $this->componentManager->getComponent($generatorClass);
 								$generator->init($this->gp, $currentSettings['attachPDF.']['config.']);
 								$file = $generator->process();
+								
 								unset($currentSettings['attachPDF.']);
 								$emailSettings['attachPDF'] = $file;
 							}

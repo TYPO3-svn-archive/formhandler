@@ -33,7 +33,11 @@ class Tx_Formhandler_ErrorCheck_Required extends Tx_Formhandler_AbstractErrorChe
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		if(strlen(trim($gp[$name])) == 0) {
+		if(is_array($gp[$name])) {
+			if(empty($gp[$name])) {
+				$checkFailed = $this->getCheckFailed($check);
+			}
+		} elseif(!isset($gp[$name]) || strlen(trim($gp[$name])) == 0) {
 			$checkFailed = $this->getCheckFailed($check);
 		}
 		return $checkFailed;

@@ -958,34 +958,38 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return void
 	 */
 	protected function fillValueMarkers() {
-		$markers = array();
-		if (is_array($this->gp)) {
-			foreach($this->gp as $k => $v) {
-				if (is_array($v)) {
-					$v = implode(',', $v);
-				}
-				$v = trim($v);
-				if ($v != '') {
-					if(get_magic_quotes_gpc()) {
-						$markers['###value_' . $k . '###'] = stripslashes(Tx_Formhandler_StaticFuncs::reverse_htmlspecialchars($v));
-					} else {
-						$markers['###value_' . $k . '###'] = Tx_Formhandler_StaticFuncs::reverse_htmlspecialchars($v);
-					}
-				} else {
-					$markers['###value_' . $k . '###'] = '';
-				}
-			
-				$markers['###' . $k . '###'] = $markers['###value_' . $k . '###'];
-				$markers['###' . strtoupper($k) . '###'] = $markers['###value_' . $k . '###'];
-				$markers['###' . (strtoupper('VALUE_' . $k)) . '###'] = $markers['###value_' . $k . '###'];
-			} // foreach end
-		} // if end
+		$markers = $this->getValueMarkers($this->gp);
 		
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
 
 		//remove remaining VALUE_-markers
 		//needed for nested markers like ###LLL:tx_myextension_table.field1.i.###value_field1###### to avoid wrong marker removal if field1 isn't set
 		$this->template = preg_replace('/###value_.*?###/i', '', $this->template);
+	}
+	
+	protected function getValueMarkers($values, $level = 0, $prefix = 'value_') {
+		
+		$markers = array();
+		
+		if (is_array($values)) {
+			foreach($values as $k => $v) {
+				$currPrefix = $prefix;
+				if($level === 0) {
+					$currPrefix .= $k;
+				} else {
+					$currPrefix .= '|' . $k;
+				}
+				if (is_array($v)) {
+					$level = $level + 1;
+					$markers = array_merge($markers, $this->getValueMarkers($v, $level, $currPrefix));
+					$v = implode(',', $v);
+				}
+				$v = trim($v);
+				$markers['###' . $currPrefix . '###'] = $v;
+				$markers['###' . strtoupper($currPrefix) . '###'] = $v;
+			}
+		}
+		return $markers;
 	}
 
 	/**

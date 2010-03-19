@@ -4260,7 +4260,7 @@ if (!class_exists('TCPDF', false)) {
 					$type = 'jpeg';
 				}
 				$mqr = get_magic_quotes_runtime();
-				set_magic_quotes_runtime(0);
+				//set_magic_quotes_runtime(0);
 				// Specific image handlers
 				$mtd = '_parse'.$type;
 				// GD image handler function
@@ -4306,7 +4306,7 @@ if (!class_exists('TCPDF', false)) {
 					//If false, we cannot process image
 					return;
 				}
-				set_magic_quotes_runtime($mqr);
+				//set_magic_quotes_runtime($mqr);
 				if ($ismask) {
 					// force grayscale
 					$info['cs'] = 'DeviceGray';
@@ -5433,7 +5433,7 @@ if (!class_exists('TCPDF', false)) {
 				$this->_out('endobj');
 			}
 			$mqr = get_magic_quotes_runtime();
-			set_magic_quotes_runtime(0);
+			//set_magic_quotes_runtime(0);
 			foreach ($this->FontFiles as $file => $info) {
 				// search and get font file to embedd
 				$fontdir = $info['fontdir'];
@@ -5476,7 +5476,7 @@ if (!class_exists('TCPDF', false)) {
 					$this->_out('endobj');
 				}
 			}
-			set_magic_quotes_runtime($mqr);
+			//set_magic_quotes_runtime($mqr);
 			foreach ($this->fontkeys as $k) {
 				//Font objects
 				$this->setFontSubBuffer($k, 'n', $this->n + 1);
