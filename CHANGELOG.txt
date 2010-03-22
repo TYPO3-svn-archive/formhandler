@@ -1,5 +1,132 @@
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+---------------------------- Version 0.9.7 -----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+r31319 | reinhardfuehricht | 2010-03-22 13:28:19 +0100 (Mon, 22. Mär 2010) | 1 Zeile
+
+- UPDATE: Manual updated
+------------------------------------------------------------------------
+r31246 | reinhardfuehricht | 2010-03-19 12:54:25 +0100 (Fre, 19. Mär 2010) | 3 Zeilen
+
+- FIX: Generator_TcPdf Bugs
+- FIX: Error check "required" did not work with checkboxes
+- UPDATE: Access arrays in value markers with: ###value_key|sub|sub###
+------------------------------------------------------------------------
+r30988 | reinhardfuehricht | 2010-03-10 19:39:42 +0100 (Mit, 10. Mär 2010) | 1 Zeile
+
+- FIX #6435: BE user check
+------------------------------------------------------------------------
+r30986 | reinhardfuehricht | 2010-03-10 19:34:49 +0100 (Mit, 10. Mär 2010) | 2 Zeilen
+
+- UPDATE: Just a little code styling.
+------------------------------------------------------------------------
+r30983 | reinhardfuehricht | 2010-03-10 19:24:18 +0100 (Mit, 10. Mär 2010) | 1 Zeile
+
+- FIX #6278: Error check for non-zero value
+------------------------------------------------------------------------
+r30981 | reinhardfuehricht | 2010-03-10 19:06:41 +0100 (Mit, 10. Mär 2010) | 2 Zeilen
+
+- ADD: Access sanitized GET/POST values in formhandler TS setup
+- UPDATE: Refactored rendering of cObjects in formhandler. Noew has central getSingle method in StaticFuncs
+------------------------------------------------------------------------
+r30974 | reinhardfuehricht | 2010-03-10 18:42:04 +0100 (Mit, 10. Mär 2010) | 1 Zeile
+
+- ADD: formValuesPrefix can be a cObject now
+------------------------------------------------------------------------
+r30972 | reinhardfuehricht | 2010-03-10 18:41:01 +0100 (Mit, 10. Mär 2010) | 2 Zeilen
+
+- ADD: new marker ###formValuesPrefix### can be used globally
+
+------------------------------------------------------------------------
+r30971 | reinhardfuehricht | 2010-03-10 18:39:58 +0100 (Mit, 10. Mär 2010) | 1 Zeile
+
+- UPDATE: Session handling massively refactored
+------------------------------------------------------------------------
+r30766 | reinhardfuehricht | 2010-03-04 17:45:47 +0100 (Don, 04. Mär 2010) | 1 Zeile
+
+- FIX: Validate configuration: Look not only for Finisher_Redirect and Finisher_Mail, but also for subclasses.
+------------------------------------------------------------------------
+r30750 | reinhardfuehricht | 2010-03-04 12:07:40 +0100 (Don, 04. Mär 2010) | 1 Zeile
+
+- FIX #6569: checkBinaryCrLf produces too many breaks in HTML Mails
+------------------------------------------------------------------------
+r30749 | reinhardfuehricht | 2010-03-04 11:19:46 +0100 (Don, 04. Mär 2010) | 1 Zeile
+
+- ADD #4444: PDF Generator with type=123
+------------------------------------------------------------------------
+r30747 | reinhardfuehricht | 2010-03-04 10:41:49 +0100 (Don, 04. Mär 2010) | 1 Zeile
+
+- ADD #6566: If field is empty put an 'NULL' or zero into mapped table column
+------------------------------------------------------------------------
+r30746 | reinhardfuehricht | 2010-03-04 10:23:55 +0100 (Don, 04. Mär 2010) | 1 Zeile
+
+- ADD #6499: No TCA entry for log table
+------------------------------------------------------------------------
+r30098 | metti | 2010-02-17 10:44:35 +0100 (Mit, 17. Feb 2010) | 1 Zeile
+
+ADD: Isset-check for arrays (refs #6473)
+------------------------------------------------------------------------
+r29965 | reinhardfuehricht | 2010-02-12 12:50:30 +0100 (Fre, 12. Feb 2010) | 1 Zeile
+
+- UPDATE #5236: Finisher_Confirmation got renamed to Finisher_SubmittedOK to be less confusing!
+------------------------------------------------------------------------
+r29881 | reinhardfuehricht | 2010-02-09 18:42:08 +0100 (Die, 09. Feb 2010) | 1 Zeile
+
+- UPDATE #6349: Interceptor to modify GET/POST values
+------------------------------------------------------------------------
+r29866 | reinhardfuehricht | 2010-02-09 15:43:48 +0100 (Die, 09. Feb 2010) | 1 Zeile
+
+- FIX: fixed header issue in tcpdf occurring in backend
+------------------------------------------------------------------------
+r29675 | reinhardfuehricht | 2010-02-04 17:30:45 +0100 (Don, 04. Feb 2010) | 1 Zeile
+
+- UPDATE: All components will get the language files put in $this->settings['langFiles']
+------------------------------------------------------------------------
+r29674 | reinhardfuehricht | 2010-02-04 17:19:44 +0100 (Don, 04. Feb 2010) | 1 Zeile
+
+- FIX #6321: impossible error check for float values
+------------------------------------------------------------------------
+r29467 | reinhardfuehricht | 2010-01-29 14:52:35 +0100 (Fre, 29. Jän 2010) | 1 Zeile
+
+- FIX #5134: No static template found! message with multipage setups
+------------------------------------------------------------------------
+r29465 | reinhardfuehricht | 2010-01-29 14:50:50 +0100 (Fre, 29. Jän 2010) | 1 Zeile
+
+- ADD #6281: Check if a translation exists
+------------------------------------------------------------------------
+r29422 | reinhardfuehricht | 2010-01-28 10:57:03 +0100 (Don, 28. Jän 2010) | 1 Zeile
+
+- ADD #6243: Master template functions also for E-Mails
+------------------------------------------------------------------------
+r29421 | reinhardfuehricht | 2010-01-28 10:46:05 +0100 (Don, 28. Jän 2010) | 1 Zeile
+
+- UPDATE: Raised version number to 0.9.6
+------------------------------------------------------------------------
+r29330 | reinhardfuehricht | 2010-01-25 20:45:41 +0100 (Mon, 25. Jän 2010) | 1 Zeile
+
+- FIX: Broken FE-Listing is working again.
+------------------------------------------------------------------------
+r29284 | reinhardfuehricht | 2010-01-25 10:13:52 +0100 (Mon, 25. Jän 2010) | 1 Zeile
+
+- ADD #6172: Redirect Finisher should support current page language
+------------------------------------------------------------------------
+r29283 | reinhardfuehricht | 2010-01-25 09:28:50 +0100 (Mon, 25. Jän 2010) | 1 Zeile
+
+- FIX #6164: Empty data of cObj in Tx_Formhandler_Finisher_DB
+------------------------------------------------------------------------
+r29282 | reinhardfuehricht | 2010-01-25 09:26:30 +0100 (Mon, 25. Jän 2010) | 1 Zeile
+
+- FIX #6168: Error Message for captcha not shown
+------------------------------------------------------------------------
+r29182 | reinhardfuehricht | 2010-01-21 20:05:15 +0100 (Don, 21. Jän 2010) | 1 Zeile
+
+- UPDATE: Changelog updated
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 ---------------------------- Version 0.9.6 -----------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
