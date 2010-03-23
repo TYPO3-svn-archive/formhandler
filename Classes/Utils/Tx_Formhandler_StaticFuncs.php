@@ -236,7 +236,8 @@ class Tx_Formhandler_StaticFuncs {
 		}
 
 		if($url) {
-			header("Location: ".t3lib_div::locationHeaderUrl($url));
+			header("Status: 200");
+			header("Location: " . t3lib_div::locationHeaderUrl($url));
 		}
 	}
 
