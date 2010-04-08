@@ -703,7 +703,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 									case 'required':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathguard':
 										$requiredSign = '*';
 										if(isset($settings['requiredSign'])) {
-											$requiredSign = $settings['requiredSign'];
+											$requiredSign = Tx_Formhandler_StaticFuncs::getSingle($settings, 'requiredSign');
 										}
 										$markers['###required_' . $replacedFieldname . '###'] = $requiredSign;
 										break;
@@ -797,7 +797,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		
 		$requiredSign = '*';
 		if(isset($settings['requiredSign'])) {
-			$requiredSign = $settings['requiredSign'];
+			$requiredSign = Tx_Formhandler_StaticFuncs::getSingle($settings, 'requiredSign');
 		}
 		$markers['###required###'] = $requiredSign;
 		$markers['###REQUIRED###'] = $markers['###required###'];
