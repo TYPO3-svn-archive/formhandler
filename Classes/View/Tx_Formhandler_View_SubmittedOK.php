@@ -34,8 +34,8 @@ class Tx_Formhandler_View_SubmittedOK extends Tx_Formhandler_View_Form {
 	 */
 	protected function fillDefaultMarkers() {
 		parent::fillDefaultMarkers();
-		if($this->settings['formValuesPrefix']) {
-			$params[$this->settings['formValuesPrefix']] = $this->gp;
+		if(Tx_Formhandler_Globals::$formValuesPrefix) {
+			$params[Tx_Formhandler_Globals::$formValuesPrefix] = $this->gp;
 		} else {
 			$params = $this->gp;
 		}

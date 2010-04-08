@@ -31,7 +31,7 @@ class Tx_Formhandler_PreProcessor_LoadGetPost extends Tx_Formhandler_AbstractPre
 	public function process() {
 
 		
-		$this->formValuesPrefix = $this->settings['formValuesPrefix'];
+		$this->formValuesPrefix = Tx_Formhandler_Globals::$formValuesPrefix;
 		
 		$loadedGP = $this->loadGP();
 		

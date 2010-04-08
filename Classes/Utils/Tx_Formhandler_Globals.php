@@ -4,6 +4,8 @@ class Tx_Formhandler_Globals {
 	
 	static public $templateCode;
 	
+	static public $templateSuffix;
+	
 	static public $langFiles;
 	
 	static public $formValuesPrefix;
@@ -15,6 +17,8 @@ class Tx_Formhandler_Globals {
 	static public $overrideSettings;
 	
 	static public $gp;
+	
+	static public $randomID;
 }
 
 ?>

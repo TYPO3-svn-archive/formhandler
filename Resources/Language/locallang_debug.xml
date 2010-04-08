@@ -12,7 +12,9 @@
 			<label index="check_not_found">Error check "%s" not found!</label>
 			<label index="check_skipped">Skipped error check "%s"!</label>
 			<label index="cleaning_temp_files">Cleaning temporary files in folder "%s"!</label>
-			<label index="cleared_session">Form is called the first time, cleared params in session</label>
+			<label index="clear_steps">Clearing steps after form is finished:</label>
+			<label index="cleared_session">Cleared params in session</label>
+			<label index="cleared_steps">Cleared steps:</label>
 			<label index="combined">Combined %s = %s!</label>
 			<label index="condition">Condition was evaluated as %s : $s!</label>
 			<label index="copy_file">Copying file "%s" to "%s"!</label>
@@ -27,6 +29,8 @@
 			<label index="form_finished">Form is finished!</label>
 			<label index="init_values">Initial values</label>
 			<label index="invalid_isset">"Invalid format of ISSET Marker. Hint: %s</label>
+			<label index="last_step">Last step was: %s</label>
+			<label index="finished_step">Last step in form is: %s</label>
 			<label index="logging">Logging into table "%s" values: %s!</label>
 			<label index="mail_bcc">BCC: %s</label>
 			<label index="mail_cc">CC: %s</label>
@@ -66,7 +70,7 @@
 			<label index="check_not_found">Error check "%s" nicht gefunden!</label>
 			<label index="check_skipped">Error check "%s" übersprungen!</label>
 			<label index="cleaning_temp_files">Lösche temporäre Dateien in "%s"!</label>
-			<label index="cleared_session">Form wird zum ersten Mal aufgerufen, leere Parameter in der Session</label>
+			<label index="cleared_session">Leere Parameter in der Session</label>
 			<label index="condition">Bedingung wurde ausgewertet als %s : $s!</label>
 			<label index="copy_file">Kopiere Datei "%s" nach "%s"!</label>
 			<label index="current_files">Aktuell hochgeladene Dateien:</label>
@@ -116,7 +120,7 @@
 			<label index="calling_logger">Appel du logger "%s"</label>
 			<label index="calling_validator">Appel du validator "%s"</label>
 			<label index="cleaning_temp_files">Nettoyage des fichiers temporaires dans le dossier "%s"!</label>
-			<label index="cleared_session">Le formulaire est appaelé pour la première fois, les paramètres ont été supprimés session</label>
+			<label index="cleared_session">Les paramètres ont été supprimés session</label>
 			<label index="check_not_found">TRANSLATE: Error check "%s" not found!</label>
 			<label index="check_skipped">TRANSLATE: Skipped error check "%s"!</label>
 			<label index="condition">La condition a été évaluée à %s : $s!</label>

@@ -29,7 +29,7 @@ class Tx_Formhandler_Interceptor_TranslateFields extends Tx_Formhandler_Abstract
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		$this->langFiles = $this->settings['langFiles'];
+		$this->langFiles = Tx_Formhandler_Globals::$langFiles;
 		if(is_array($this->settings['translateFields.'])) {
 			foreach($this->settings['translateFields.'] as $newField=>$options) {
 				$newField = str_replace('.', '', $newField);

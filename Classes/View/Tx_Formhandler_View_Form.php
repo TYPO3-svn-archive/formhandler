@@ -99,6 +99,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$this->langFiles = Tx_Formhandler_Globals::$langFiles;
 		}
 		
+			//fill Typoscript markers
+		if(is_array($this->settings['markers.'])) {
+			$this->fillTypoScriptMarkers();
+		}
+		
 		//read master template
 		if(!$this->masterTemplates) {
 			$this->readMasterTemplates();
@@ -108,11 +113,16 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$this->replaceMarkersFromMaster();
 		}
 		
+		//fill Typoscript markers
+		if(is_array($this->settings['markers.'])) {
+			$this->fillTypoScriptMarkers();
+		}
+		
 		$this->substituteHasTranslationSubparts();
 		
 		if(!$this->gp['submitted']) {
 			$this->storeStartEndBlock();
-		} elseif(Tx_Formhandler_Session::get('currentStep') != 1) {
+		} elseif(intval(Tx_Formhandler_Session::get('currentStep')) !== 1) {
 			$this->fillStartEndBlock();
 		}
 		
@@ -127,11 +137,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		//substitute ISSET markers
 		$this->substituteIssetSubparts();
-
-		//fill Typoscript markers
-		if(is_array($this->settings['markers.'])) {
-			$this->fillTypoScriptMarkers();
-		}
 
 		//fill default markers
 		$this->fillDefaultMarkers();
@@ -345,10 +350,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 			// set for odd ISSET_xyz, else reset
 			if(preg_match($pattern, $line, $matches)) {
-				//print_r($matches);
 				if(!$flags[$matches[1]]) { // set
 					$flags[$matches[1]] = TRUE;
-					//print $matches[1].'<br />';
+
 					// set nowrite flag if required until the next ISSET_xyz
 					// (only if not already set by envelop)
 					if((!$this->markersCountAsSet($matches[1])) && (!$nowrite)) {
@@ -459,10 +463,29 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers = array();
 		$markers['###REL_URL###'] = $path;
 		$markers['###TIMESTAMP###'] = time();
+		$markers['###RANDOM_ID###'] = Tx_Formhandler_Globals::$randomID;
 		$markers['###ABS_URL###'] = t3lib_div::locationHeaderUrl('') . $path;
 		$markers['###rel_url###'] = $markers['###REL_URL###'];
 		$markers['###timestamp###'] = $markers['###TIMESTAMP###'];
 		$markers['###abs_url###'] = $markers['###ABS_URL###'];
+		
+		$name = 'submitted';
+		if(Tx_Formhandler_Globals::$formValuesPrefix) {
+			$name = Tx_Formhandler_Globals::$formValuesPrefix . '[submitted]';
+		}
+		$markers['###HIDDEN_FIELDS###'] = '
+			<input type="hidden" name="no_cache" value="1" />
+			<input type="hidden" name="id" value="' . $GLOBALS['TSFE']->id . '" />
+			<input type="hidden" name="' . $name . '" value="1" />
+		';
+		
+		$name = 'randomID';
+		if(Tx_Formhandler_Globals::$formValuesPrefix) {
+			$name = Tx_Formhandler_Globals::$formValuesPrefix . '[randomID]';
+		}
+		$markers['###HIDDEN_FIELDS###'] .= '
+			<input type="hidden" name="' . $name . '" value="' . Tx_Formhandler_Globals::$randomID . '" />
+		';
 		
 		$markers['###formValuesPrefix###'] = Tx_Formhandler_Globals::$formValuesPrefix;
 		
@@ -489,31 +512,45 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		
 		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
 		if($prefix) {
-			$name = $prefix . '[' . $name . '#step#]';
+			$name = $prefix . '[' . $name . '#step#-#action#]';
 		} else {
-			$name = $name . '#step#';
+			$name = $name . '#step#-#action#';
 		}
 
 		// submit name for next page
-		$markers['###submit_nextStep###'] = ' name="' . str_replace('#step#', (Tx_Formhandler_Session::get('currentStep') + 1), $name) . '" ';
+		$nextName = ' name="' . str_replace('#action#', 'next', $name) . '" ';
+		$nextName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') + 1, $nextName);
+		$markers['###submit_nextStep###'] = $nextName;
 
 		// submit name for previous page
-		$markers['###submit_prevStep###'] = ' name="' . str_replace('#step#', (Tx_Formhandler_Session::get('currentStep') - 1), $name) . '" ';
+		$prevName = ' name="' . str_replace('#action#', 'prev', $name) . '" ';
+		$prevName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') - 1, $prevName);
+		$markers['###submit_prevStep###'] = $prevName;
 
 		// submit name for reloading the same page/step
-		$markers['###submit_reload###'] = ' name="' . str_replace('#step#',(Tx_Formhandler_Session::get('currentStep')), $name) . '" ';
+		$reloadName = ' name="' . str_replace('#action#', 'reload', $name) . '" ';
+		$reloadName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep'), $reloadName);
+		$markers['###submit_reload###'] = $reloadName;
 
 		// step bar
+		$prevName = str_replace('#action#', 'prev', $name);
+		$prevName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') - 1, $prevName);
+		$nextName = str_replace('#action#', 'next', $name);
+		$nextName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') + 1, $nextName);
 		$markers['###step_bar###'] = $this->createStepBar(
 			Tx_Formhandler_Session::get('currentStep'),
 			Tx_Formhandler_Session::get('totalSteps'),
-			str_replace('#step#', (Tx_Formhandler_Session::get('currentStep') - 1), $name),
-			str_replace('#step#', (Tx_Formhandler_Session::get('currentStep') + 1), $name)
+			$prevName,
+			$nextName
 		);
 		$this->fillCaptchaMarkers($markers);
 		$this->fillFEUserMarkers($markers);
 		$this->fillFileMarkers($markers);
 
+		if(!preg_match('/###HIDDEN_FIELDS###/', $this->template)) {
+			$this->template = str_replace('</form>', $markers['###HIDDEN_FIELDS###'] . '</form>', $this->template);
+		}
+		
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
 	}
 
@@ -525,9 +562,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillCaptchaMarkers(&$markers) {
 		global $LANG;
-		#print "asd";
+
 		if (t3lib_extMgm::isLoaded('captcha')){
-			
 			$markers['###CAPTCHA###'] = '<img src="' . t3lib_extMgm::siteRelPath('captcha') . 'captcha/captcha.php" alt="" />';
 			$markers['###captcha###'] = $markers['###CAPTCHA###'];
 		}
@@ -1054,7 +1090,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$errorbgcolor = '#dd7777';
 		$errornrcolor = t3lib_div::modifyHTMLcolor($errorbgcolor, 30, 30, 30);
 		
-		$classprefix = $this->settings['formValuesPrefix'] . '_stepbar';
+		$classprefix = Tx_Formhandler_Globals::$formValuesPrefix . '_stepbar';
 		
 		$css = array();
 		$css[] = '.' . $classprefix . ' { background:'  . $bgcolor . '; padding:4px;}';
