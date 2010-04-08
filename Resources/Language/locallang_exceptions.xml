@@ -10,6 +10,25 @@
 			<label index="no_table">No table configured for %s!</label>
 			<label index="no_template">No template file found!</label>
 			<label index="no_template_file">No template file found!</label>
+			<label index="classesarray_error"><![CDATA[
+				There is an error in your TypoScript setup! Make sure your setup for initInterceptors, finishers, validators, ... looks like this:<br />
+				<br /><pre>
+finishers {
+	1 {
+		class = Finisher_Mail
+		config {
+		
+		}
+	}
+	2 {
+		class = Finisher_Xyz
+		config {
+		
+		}
+	}
+}
+				</pre>
+			]]></label>
 			<label index="spam_detected">Your request seems to be a spamming attempt, so it was blocked! This may have been a mistake by the system. Please try again!</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
@@ -32,6 +51,25 @@
 			<label index="no_table">Keine Tabelle konfiguriert für %s!</label>
 			<label index="no_template_file">Keine Templatedatei gefunden!</label>
 			<label index="no_template">Keine Templatedatei gefunden!</label>
+			<label index="classesarray_error"><![CDATA[
+				Fehler im TypoScript Setup! Stellen Sie sicher, dass Ihr Setup für initInterceptors, finishers, validators, ... diesem Schema entspricht:<br />
+				<br /><pre>
+finishers {
+	1 {
+		class = Finisher_Mail
+		config {
+		
+		}
+	}
+	2 {
+		class = Finisher_Xyz
+		config {
+		
+		}
+	}
+}
+				</pre>
+			]]></label>
 			<label index="spam_detected">Ihre Anfrage wurde als Spamversuch erkannt und deshalb geblockt! Falls dies ein Fehler des Systems war, versuchen Sie es bitte erneut!</label>
 		</languageKey>
 	</data>

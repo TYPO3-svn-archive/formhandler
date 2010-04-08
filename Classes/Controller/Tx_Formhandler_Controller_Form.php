@@ -218,7 +218,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				if(isset($this->settings['finishers.']) && is_array($this->settings['finishers.']) && intval($this->settings['finishers.']['disable']) !== 1) {
 
 					foreach($this->settings['finishers.'] as $tsConfig) {
-						if(isset($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
+						if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
 							$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 							$finisher = $this->componentManager->getComponent($className);
 							if($finisher instanceof Tx_Formhandler_Finisher_SubmittedOK) {
@@ -230,6 +230,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 								Tx_Formhandler_StaticFuncs::debugEndSection();
 								return $finisher->process();
 							}
+						}  else {
+							Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
 						}
 					}
 				}
@@ -266,7 +268,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					intval($this->settings['validators.']['disable']) !== 1) {
 						
 					foreach($this->settings['validators.'] as $tsConfig) {
-						if($tsConfig['class'] && intval($tsConfig['disable']) !== 1) {
+						if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
 							$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 							Tx_Formhandler_StaticFuncs::debugBeginSection('calling_validator',  $className);
 							$validator = $this->componentManager->getComponent($className);
@@ -281,6 +283,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							$res = $validator->validate($this->errors);
 							array_push($valid, $res);
 							Tx_Formhandler_StaticFuncs::debugEndSection();
+						}  else {
+							Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
 						}
 					}
 				}
@@ -346,7 +350,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							}
 
 							foreach($this->settings['finishers.'] as $tsConfig) {
-								if(isset($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
+								if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
 									$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 									$finisher = $this->componentManager->getComponent($className);
 									
@@ -380,6 +384,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 										Tx_Formhandler_StaticFuncs::debugEndSection();
 										return $finisher->process();
 									}
+								} else {
+									Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
 								}
 							}
 							Tx_Formhandler_Session::set('submitted_ok', 1);
@@ -1091,8 +1097,10 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	protected function runClasses($classesArray) {
 		$output = '';
 		if(isset($classesArray) && is_array($classesArray) && intval($classesArray['disable']) !== 1) {
+			
 			foreach($classesArray as $tsConfig) {
-				if(isset($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
+				if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
+					
 					$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 					Tx_Formhandler_StaticFuncs::debugBeginSection('calling_class', $className);
 	
@@ -1111,6 +1119,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						//return value is no array. treat this return value as output.
 						return $return;
 					}
+				} else {
+					Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
 				}
 			}
 		}
