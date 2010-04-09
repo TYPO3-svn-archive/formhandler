@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id: Tx_Formhandler_Finisher_Confirmation.php 27790 2009-12-17 09:28:42Z reinhardfuehricht $
+ * $Id: Tx_Formhandler_Finisher_SubmittedOK.php 27790 2009-12-17 09:28:42Z reinhardfuehricht $
  *                                                                        */
 
 /**

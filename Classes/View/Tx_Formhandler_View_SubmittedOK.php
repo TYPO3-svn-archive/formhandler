@@ -15,7 +15,7 @@
  *                                                                        */
 
 /**
- * A view for Finisher_Confirmation used by Formhandler
+ * A view for Finisher_SubmittedOK used by Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @package	Tx_Formhandler

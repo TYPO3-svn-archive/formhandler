@@ -56,7 +56,7 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 
 	/**
 	 * Stores $this->gp parameters in SESSION
-	 * actually only needed for finisher_confirmation
+	 * actually only needed for finisher_submittedok
 	 *
 	 * @return void
 	 */
