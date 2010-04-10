@@ -77,6 +77,7 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 		$pattern = str_replace('M', 'm', $pattern);
 		$pattern = str_replace('YYYY', 'y', $pattern);
 		$pattern = str_replace('YY', 'y', $pattern);
+		$pattern = str_replace('Y', 'y', $pattern);
 		return $pattern;
 	}
 }
