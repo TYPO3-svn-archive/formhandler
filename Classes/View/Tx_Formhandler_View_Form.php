@@ -959,7 +959,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if(strlen($totalWrap) > 0 && strstr($totalWrap, '|')) {
 			$markers['###ERROR###'] = str_replace('|', $markers['###ERROR###'], $totalWrap);
 		}
-		$langMarkers = Tx_Formhandler_StaticFuncs::getFilledLangMarkers($markers['###ERROR###'], $this->langFile);
+		$langMarkers = Tx_Formhandler_StaticFuncs::getFilledLangMarkers($markers['###ERROR###'], $this->langFiles);
 		$markers['###ERROR###'] = $this->cObj->substituteMarkerArray($markers['###ERROR###'], $langMarkers);
 		$markers['###error###'] = $markers['###ERROR###'];
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);

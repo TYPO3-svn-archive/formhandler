@@ -40,7 +40,8 @@ class Tx_Formhandler_View_SubmittedOK extends Tx_Formhandler_View_Form {
 			$params = $this->gp;
 		}
 		$params['type'] = 98;
-		$label = trim($GLOBALS['TSFE']->sL('LLL:' . $this->langFile . ':print'));
+		$label = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'print');
+		
 		if(strlen($label) == 0) {
 			$label = 'print';
 		}
