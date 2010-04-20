@@ -668,7 +668,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		//parse validation settings
 		if(is_array($settings['validators.'])) {
 			foreach($settings['validators.'] as $key => $validatorSettings) {
-				if(is_array($validatorSettings['config.']['fieldConf.'])) {
+				if(is_array($validatorSettings['config.']) && is_array($validatorSettings['config.']['fieldConf.'])) {
 					foreach($validatorSettings['config.']['fieldConf.'] as $fieldname => $fieldSettings) {
 						$replacedFieldname = str_replace('.', '', $fieldname);
 						if(is_array($fieldSettings['errorCheck.'])) {
