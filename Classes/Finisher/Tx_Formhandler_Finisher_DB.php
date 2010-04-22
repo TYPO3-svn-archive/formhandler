@@ -218,7 +218,6 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function parseFields() {
 		$queryFields = array();
-		session_start();		
 
 		//parse mapping
 		foreach($this->settings['fields.'] as $fieldname => $options) {

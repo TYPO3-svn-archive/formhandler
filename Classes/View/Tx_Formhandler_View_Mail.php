@@ -31,10 +31,7 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 	 * @return string content
 	 */
 	public function render($gp, $errors) {
-
 		
-		session_start();
-
 		//set GET/POST parameters
 		$this->gp = array();
 		$this->gp = $gp;

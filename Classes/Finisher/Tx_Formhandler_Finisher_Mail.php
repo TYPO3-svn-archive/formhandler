@@ -393,7 +393,6 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		} elseif($settings[$key]) {
 			$files = t3lib_div::trimExplode(',', $settings[$key]);
 			$parsed = array();
-			session_start();
 			$sessionFiles = Tx_Formhandler_Session::get('files');
 			foreach($files as $file) {
 				if(isset($sessionFiles[$file])) {

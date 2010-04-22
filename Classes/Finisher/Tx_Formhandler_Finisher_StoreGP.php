@@ -61,8 +61,6 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 	 * @return void
 	 */
 	protected function updateSession() {
-		session_start();
-
 		//reset session
 		Tx_Formhandler_Session::set('values', array());
 		

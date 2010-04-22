@@ -510,7 +510,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
 	protected function processFiles() {
-		session_start();
 		
 		$sessionFiles = Tx_Formhandler_Session::get('files');
 		$tempFiles = $sessionFiles;
@@ -844,8 +843,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	}
 
 	protected function init() {
-		session_start();
-		
+
 		$this->settings = $this->getSettings();
 		
 		$this->formValuesPrefix = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'formValuesPrefix');
@@ -1066,7 +1064,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
 	protected function mergeGPWithSession($overruleGP = TRUE, $maxStep = 0) {
-		session_start();
 		if(!is_array($this->gp)) {
 			$this->gp = array();
 		}

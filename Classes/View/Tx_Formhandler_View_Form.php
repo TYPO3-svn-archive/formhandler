@@ -401,7 +401,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return void
 	 */
 	protected function fillStartEndBlock() {
-		session_start();
 		$markers = array (
 			'###FORM_STARTBLOCK###' => Tx_Formhandler_Session::get('startblock'),
 			'###FORM_ENDBLOCK###' => Tx_Formhandler_Session::get('endblock')
@@ -639,7 +638,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return void
 	 */
 	protected function fillFileMarkers(&$markers) {
-		session_start();
 		$settings = $this->parseSettings();
 
 		$flexformValue = Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], 'required_fields', 'sMISC');

@@ -34,7 +34,6 @@ class Tx_Formhandler_View_PDF extends Tx_Formhandler_View_Form {
 	 */
 	public function render($gp, $errors) {
 		$this->gp = $gp;
-		session_start();
 		$this->settings = $this->parseSettings();
 		
 		$this->sanitizeMarkers();

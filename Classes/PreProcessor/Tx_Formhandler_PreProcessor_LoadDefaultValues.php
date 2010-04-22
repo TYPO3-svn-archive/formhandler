@@ -98,8 +98,6 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 	 */
 	private function loadDefaultValuesToSession($settings, $step){
 
-		session_start();
-
 		if (is_array($settings) && $step) {
 			$values = Tx_Formhandler_Session::get('values');
 			foreach (array_keys($settings) as $fN) {

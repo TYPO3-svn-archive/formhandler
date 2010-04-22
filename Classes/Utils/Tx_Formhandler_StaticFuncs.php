@@ -230,7 +230,6 @@ class Tx_Formhandler_StaticFuncs {
 		$url = Tx_Formhandler_Globals::$cObj->getTypoLink_URL($redirect, $addparams);
 
 		//correct the URL by replacing &amp;
-		session_start();
 		if ($correctRedirectUrl) {
 			$url = str_replace('&amp;', '&', $url);
 		}
@@ -499,7 +498,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @static
 	 */
 	static public function debugMessage($key) {
-		session_start();
+
 		$isDebug = Tx_Formhandler_Session::get('debug');
 		if($isDebug) {
 			$message = Tx_Formhandler_Messages::getDebugMessage($key);
