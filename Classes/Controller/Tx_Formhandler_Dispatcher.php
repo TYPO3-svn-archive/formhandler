@@ -72,16 +72,34 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 	public function main($content, $setup) {
 
 		$this->pi_USER_INT_obj = 1;
-		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+		
 
-		Tx_Formhandler_Globals::$cObj = $this->cObj;
-		Tx_Formhandler_Globals::$overrideSettings = $setup;
-
-		//handle AJAX stuff
-		$this->handleAjax();
-
+		
+		
 		//init flexform
 		$this->pi_initPIflexForm();
+		
+		/*
+		 * Parse values from flexform:
+		 * - Template file
+		 * - Translation file
+		 * - Predefined form
+		 * - E-mail settings
+		 * - Required fields
+		 * - Redirect page
+		 */
+		$templateFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'template_file', 'sDEF');
+		$langFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'lang_file', 'sDEF');
+		$predef = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'predefined', 'sDEF');
+		
+		require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+		Tx_Formhandler_Globals::$predef = $predef;
+		Tx_Formhandler_Globals::$cObj = $this->cObj;
+		Tx_Formhandler_Globals::$overrideSettings = $setup;
+		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+		
+		//handle AJAX stuff
+		$this->handleAjax();
 
 		/*
 		 * set controller:
@@ -97,18 +115,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 		$controller = Tx_Formhandler_StaticFuncs::prepareClassName($controller);
 		$controller = $this->componentManager->getComponent($controller);
 
-		/*
-		 * Parse values from flexform:
-		 * - Template file
-		 * - Translation file
-		 * - Predefined form
-		 * - E-mail settings
-		 * - Required fields
-		 * - Redirect page
-		 */
-		$templateFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'template_file', 'sDEF');
-		$langFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'lang_file', 'sDEF');
-		$predef = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'predefined', 'sDEF');
+		
 
 		if (isset($content)) {
 			$controller->setContent($this->componentManager->getComponent('Tx_Formhandler_Content', $content));

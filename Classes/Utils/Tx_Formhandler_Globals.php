@@ -19,6 +19,8 @@ class Tx_Formhandler_Globals {
 	static public $gp;
 	
 	static public $randomID;
+	
+	static public $predef;
 }
 
 ?>

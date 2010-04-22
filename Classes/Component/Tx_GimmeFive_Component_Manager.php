@@ -68,6 +68,12 @@ class Tx_GimmeFive_Component_Manager {
 		$TSObj->runThroughTemplates($rootLine);
 		$TSObj->generateConfig();
 		$conf = $TSObj->setup['plugin.']['Tx_Formhandler.']['settings.'];
+		
+	
+		if(Tx_Formhandler_Globals::$predef && is_array($conf['predef.'][Tx_Formhandler_Globals::$predef])) {
+			$conf = $conf['predef.'][Tx_Formhandler_Globals::$predef];
+		}
+
 		$this->tsConf = $conf;
     }
    	
@@ -365,6 +371,7 @@ class Tx_GimmeFive_Component_Manager {
 			if ($this->classFiles === NULL || empty($this->classFiles)) {
 				$this->classFiles = $this->buildArrayOfClassFiles($classNameParts[1]);
 			}
+			
 			
 			if(is_array($this->tsConf['additionalIncludePaths.'])) {
 				foreach($this->tsConf['additionalIncludePaths.'] as $dir) {
