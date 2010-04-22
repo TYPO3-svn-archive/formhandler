@@ -511,6 +511,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 */
 	protected function processFiles() {
 		session_start();
+		
+		$sessionFiles = Tx_Formhandler_Session::get('files');
+		$tempFiles = $sessionFiles;
 
 		//if files were uploaded
 		if(isset($_FILES) && is_array($_FILES) && !empty($_FILES)) {
@@ -555,8 +558,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			*	 )
 			*)
 			*/
-			$sessionFiles = Tx_Formhandler_Session::get('files');
-			$tempFiles = $sessionFiles;
 			foreach($_FILES as $sthg => &$files) {
 
 				//if a file was uploaded
