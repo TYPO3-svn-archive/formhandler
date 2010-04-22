@@ -88,14 +88,6 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	protected $subparts;
 
 	/**
-	 * The Typolink configuration for this view
-	 *
-	 * @access protected
-	 * @var array
-	 */
-	protected $typolinkConf;
-
-	/**
 	 * The template code
 	 *
 	 * @access protected
@@ -141,9 +133,6 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		$this->cObj = Tx_Formhandler_Globals::$cObj;
-		$this->typolinkConf['parameter.']['current'] = 1;
-		$this->typolinkConf['additionalParams'] = $this->cObj->stdWrap($typolinkConf['additionalParams'], $typolinkConf['additionalParams.']);
-		unset($this->typolinkConf['additionalParams.']);
 
 		$this->pi_loadLL();
 		$this->initializeView();
