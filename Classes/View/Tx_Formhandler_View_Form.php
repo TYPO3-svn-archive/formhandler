@@ -1014,9 +1014,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					$currPrefix .= '|' . $k;
 				}
 				if (is_array($v)) {
-					$level = $level + 1;
+					$level++;
 					$markers = array_merge($markers, $this->getValueMarkers($v, $level, $currPrefix));
 					$v = implode(',', $v);
+					$level--;
 				}
 				$v = trim($v);
 				$markers['###' . $currPrefix . '###'] = $v;
