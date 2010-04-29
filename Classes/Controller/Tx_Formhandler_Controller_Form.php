@@ -936,8 +936,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$this->reset();
 		}
 
-		// set stylesheet file
-		$this->setStyleSheet();
+		// set stylesheet file(s)
+		$this->addCSS();
+		
+		// add JavaScript file(s)
+		$this->addJS();
 		
 		Tx_Formhandler_StaticFuncs::debugBeginSection('current_session_params');
 		Tx_Formhandler_StaticFuncs::debugArray(Tx_Formhandler_Session::get('values'));
@@ -1126,19 +1129,52 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	}
 
 	/**
-	 * Read stylesheet file set in TypoScript. If set add to header data
+	 * Read stylesheet file(s) set in TypoScript. If set add to header data
 	 *
-	 * @param $settings The formhandler settings
 	 * @return void
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
-	protected function setStyleSheet() {
-		$stylesheetFile = $this->settings['stylesheetFile'];
-		if (strlen($stylesheetFile) > 0) {
-
+	protected function addCSS() {
+		$stylesheetFile = $this->settings['cssFile'];
+		$cssFiles = array();
+		if($this->settings['cssFile.']) {
+			foreach($this->settings['cssFile.'] as $file) {
+				$cssFiles[] = $file;
+			}
+		} elseif (strlen($stylesheetFile) > 0) {
+			$cssFiles[] = $stylesheetFile;
+		}
+		
+		foreach($cssFiles as $file) {
+			
 			// set stylesheet
 			$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
-				'<link rel="stylesheet" href="' . Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($stylesheetFile) . '" type="text/css" media="screen" />';
+				'<link rel="stylesheet" href="' . Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($file) . '" type="text/css" media="screen" />';
+		}
+	}
+	
+	/**
+	 * Read JavaScript file(s) set in TypoScript. If set add to header data
+	 *
+	 * @return void
+	 * @author	Reinhard Führicht <rf@typoheads.at>
+	 */
+	protected function addJS() {
+		$jsFile = $this->settings['jsFile'];
+		$jsFiles = array();
+		if($this->settings['jsFile.']) {
+			foreach($this->settings['jsFile.'] as $file) {
+				$jsFiles[] = $file;
+			}
+		} elseif (strlen($jsFile) > 0) {
+			$jsFiles[] = $jsFile;
+		}
+		
+		foreach($jsFiles as $file) {
+			
+			// set stylesheet
+			$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
+				'<script type="text/javascript" src="' . Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($file) . '"></script>';
 		}
 	}
 
