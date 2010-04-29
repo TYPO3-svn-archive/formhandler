@@ -59,6 +59,11 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 		
 		$url = Tx_Formhandler_StaticFuncs::getHostname() . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $linkGP);
 		
+		$config = $this->readWebkitPdfConf();
+		$text = 'Save as PDF';
+		if($config['linkText']) {
+			$text = Tx_Formhandler_StaticFuncs::getSingle($config, 'linkText');
+		}
 		
 		$params = array(
 			'tx_webkitpdf_pi1' => array(
@@ -70,7 +75,7 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 			'submitted_ok' => 1
 		);
 		
-		return $this->cObj->getTypolink('PDF', $this->settings['pid'], $params);
+		return $this->cObj->getTypolink($text, $this->settings['pid'], $params);
 	}
 }
 
