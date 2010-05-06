@@ -113,8 +113,10 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 						
 				}
 			}
+			 Tx_Formhandler_Session::set('values', $values);
+			
 		}
-
+		
 	}
 }
 
