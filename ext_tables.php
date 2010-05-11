@@ -46,29 +46,7 @@ if (TYPO3_MODE == 'BE')   {
 	// Add flexform field to plugin options
 	$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi1'] = 'pi_flexform';
 	
-	if(!is_object($GLOBALS['BE_USER']) || !$GLOBALS['BE_USER']->checkCLIuser()) {
-		$GLOBALS['BE_USER'] = t3lib_div::makeInstance('t3lib_beUserAuth');
-		
-		// New backend user object
-		$GLOBALS['BE_USER']->start(); // Object is initialized
-		$GLOBALS['BE_USER']->checkCLIuser();
-		$GLOBALS['BE_USER']->backendCheckLogin(); 
-		$GLOBALS['BE_USER']->fetchGroupData();
-		
-		// set proper be configuration
- 		$GLOBALS['BE_USER']->warningEmail = $TYPO3_CONF_VARS['BE']['warning_email_addr'];
- 		$GLOBALS['BE_USER']->lockIP = $TYPO3_CONF_VARS['BE']['lockIP'];
- 		$GLOBALS['BE_USER']->auth_timeout_field = intval($TYPO3_CONF_VARS['BE']['sessionTimeout']);
- 		$GLOBALS['BE_USER']->OS = TYPO3_OS;
-	}
-	
 	$file = 'FILE:EXT:' . $_EXTKEY . '/Resources/XML/flexform_ds.xml';
-
-	$tsConfig = t3lib_BEfunc::getModTSconfig(0, 'plugin.Tx_Formhandler');
-	$tsConfig = $tsConfig['properties'];
-	if($tsConfig['flexformFile']) {
-		$file = $tsConfig['flexformFile'];
-	}
 	
 	// Add flexform DataStructure
 	t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi1', $file);
