@@ -6,7 +6,7 @@ plugin.Tx_Formhandler.settings.predef.singlestep_example {
 	addErrorAnchors = 1
 	templateFile = EXT:formhandler/Examples/SingleStep/template.html
 	langFile.1 = EXT:formhandler/Examples/SingleStep/lang.xml
-	stylesheetFile = EXT:formhandler/Examples/SingleStep/styles.css
+	cssFile.1 = EXT:formhandler/Examples/SingleStep/styles.css
 	formValuesPrefix = formhandler
 
 	# HTML wrapping by validation error

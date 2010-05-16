@@ -14,7 +14,7 @@ plugin.Tx_Formhandler.settings.predef.mastertemplate_example {
 	#masterTemplateFile.2 = fileadmin/templates/ext/formhandler/mymastemplate.html
 	
 	langFile.1 = EXT:formhandler/Examples/MasterTemplate/lang.xml
-	stylesheetFile = EXT:formhandler/Examples/MasterTemplate/styles.css
+	cssFile.1 = EXT:formhandler/Examples/MasterTemplate/styles.css
 	formValuesPrefix = formhandler
 
 	# HTML wrapping by validation error

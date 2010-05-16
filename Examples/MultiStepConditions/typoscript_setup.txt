@@ -84,7 +84,7 @@ plugin.Tx_Formhandler.settings.predef.multistep_conditions_example {
 	addErrorAnchors = 1
 	templateFile = EXT:formhandler/Examples/MultiStepConditions/template.html
 	langFile.1 = EXT:formhandler/Examples/MultiStepConditions/lang.xml
-	stylesheetFile = EXT:formhandler/Examples/MultiStepConditions/styles.css
+	cssFile.1 = EXT:formhandler/Examples/MultiStepConditions/styles.css
 	formValuesPrefix = formhandler
 
 	# HTML wrapping by validation error
