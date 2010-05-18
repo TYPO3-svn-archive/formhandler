@@ -1151,7 +1151,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		//add default css to page
 		if($this->settings['useDefaultStepBarStyles']){
 			$css = implode("\n", $css);
-			$GLOBALS['TSFE']->additionalHeaderData[$this->extKey . '_' . $classprefix] .= TSpagegen::inline2TempFile($css, 'css');
+//			$GLOBALS['TSFE']->setCSS($this->extKey . '_' . $classprefix, $css);
+			$css = TSpagegen::inline2TempFile($css, 'css');
+			if (version_compare(TYPO3_version, '4.3.0') >= 0) {
+				$css = '<link rel="stylesheet" type="text/css" href="' . htmlspecialchars($css) . '" />';
+			}
+			$GLOBALS['TSFE']->additionalHeaderData[$this->extKey . '_' . $classprefix] .= $css;
 		}
 
 		return $content;
