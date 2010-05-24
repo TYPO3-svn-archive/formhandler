@@ -56,8 +56,8 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		//query the database
 		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $fields);
 		$insertedUID = $GLOBALS['TYPO3_DB']->sql_insert_id();
-		$GLOBALS['TSFE']->fe_user->setKey('ses', 'inserted_uid', $insertedUID);
-		$GLOBALS['TSFE']->fe_user->storeSessionData();
+		$lastId = Tx_Formhandler_Session::set('inserted_uid', $insertedUID);
+
 		if(!$this->settings['nodebug']) {
 			Tx_Formhandler_StaticFuncs::debugMessage('logging', $table, implode(',', $fields));
 			if(strlen($GLOBALS['TYPO3_DB']->sql_error()) > 0) {
