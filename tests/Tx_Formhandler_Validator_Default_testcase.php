@@ -12,7 +12,8 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
 
 /**
  * Test for the Component "Tx_Formhandler_Logger_DB" of the extension 'formhandler'
@@ -41,6 +42,7 @@ class Tx_Formhandler_Validator_Default_testcase extends tx_phpunit_testcase {
 	protected function setUp() {
 		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
 		$this->validator = $this->componentManager->getComponent("Tx_Formhandler_Validator_Default");
+		$GLOBALS['TSFE']->initFEuser();
 	}
 
 	protected function tearDown() {
@@ -63,7 +65,7 @@ class Tx_Formhandler_Validator_Default_testcase extends tx_phpunit_testcase {
 		$errors = array();
 
 		// Loads configuration
-		$this->validator->loadConfig($fakeGP, $fakeSettings);
+		$this->validator->init($fakeGP, $fakeSettings);
 
 		// Tests filled out fields
 		t3lib_div::debug($fakeGP['lastname'], $this->message);
@@ -72,7 +74,7 @@ class Tx_Formhandler_Validator_Default_testcase extends tx_phpunit_testcase {
 		// Tests *not* filled out fields
 		$fakeGP['lastname'] = "";
 		t3lib_div::debug(' ', $this->message);
-		$this->validator->loadConfig($fakeGP, $fakeSettings);
+		$this->validator->init($fakeGP, $fakeSettings);
 		$this->assertFalse($this->validator->validate($errors));
 	}
 
@@ -88,12 +90,12 @@ class Tx_Formhandler_Validator_Default_testcase extends tx_phpunit_testcase {
 		$errors = array();
 
 		// Loads configuration and tests
-		$this->validator->loadConfig($fakeGP, $fakeSettings);
+		$this->validator->init($fakeGP, $fakeSettings);
 		t3lib_div::debug($fakeGP['customField'], $this->message);
 		$this->assertTrue($this->validator->validate($errors));
 
 		$fakeGP['customField'] = array('Sports','Music', 'Science', 'Cars');
-		$this->validator->loadConfig($fakeGP, $fakeSettings);
+		$this->validator->init($fakeGP, $fakeSettings);
 		t3lib_div::debug($fakeGP['customField'], $this->message);
 		$this->assertFalse($this->validator->validate($errors));
 	}
@@ -110,7 +112,7 @@ class Tx_Formhandler_Validator_Default_testcase extends tx_phpunit_testcase {
 		$errors = array();
 
 		// Loads configuration
-		$this->validator->loadConfig($fakeGP, $fakeSettings);
+		$this->validator->init($fakeGP, $fakeSettings);
 
 		//valid email
 		t3lib_div::debug($fakeGP['email'], $this->message);
@@ -126,7 +128,7 @@ class Tx_Formhandler_Validator_Default_testcase extends tx_phpunit_testcase {
 
 		foreach ($values as $value) {
 			$fakeGP['email'] = $value;
-			$this->validator->loadConfig($fakeGP, $fakeSettings);
+			$this->validator->init($fakeGP, $fakeSettings);
 			$this->validator->validate($errors);
 			t3lib_div::debug($value, $this->message);
 			$this->assertFalse($this->validator->validate($errors));
