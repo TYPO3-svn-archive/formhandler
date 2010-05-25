@@ -113,6 +113,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$this->replaceMarkersFromMaster();
 		}
 		
+		if(Tx_Formhandler_Globals::$ajaxHandler) {
+			$markers = array();
+			Tx_Formhandler_Globals::$ajaxHandler->fillAjaxMarkers($markers);
+			$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
+		}
+		
 		//fill Typoscript markers
 		if(is_array($this->settings['markers.'])) {
 			$this->fillTypoScriptMarkers();
@@ -487,6 +493,30 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			<input type="hidden" name="' . $name . '" value="' . Tx_Formhandler_Globals::$randomID . '" />
 		';
 		
+		$name = 'removeFile';
+		if(Tx_Formhandler_Globals::$formValuesPrefix) {
+			$name = Tx_Formhandler_Globals::$formValuesPrefix . '[removeFile]';
+		}
+		$markers['###HIDDEN_FIELDS###'] .= '
+			<input type="hidden" id="' . Tx_Formhandler_Globals::$randomID . '-removeFile" name="' . $name . '" value="" />
+		';
+		
+		$name = 'removeFileField';
+		if(Tx_Formhandler_Globals::$formValuesPrefix) {
+			$name = Tx_Formhandler_Globals::$formValuesPrefix . '[removeFileField]';
+		}
+		$markers['###HIDDEN_FIELDS###'] .= '
+			<input type="hidden" id="' . Tx_Formhandler_Globals::$randomID . '-removeFileField" name="' . $name . '" value="" />
+		';
+		
+		$name = 'submitField';
+		if(Tx_Formhandler_Globals::$formValuesPrefix) {
+			$name = Tx_Formhandler_Globals::$formValuesPrefix . '[submitField]';
+		}
+		$markers['###HIDDEN_FIELDS###'] .= '
+			<input type="hidden" id="' . Tx_Formhandler_Globals::$randomID . '-submitField" name="' . $name . '" value="" />
+		';
+		
 		$markers['###formValuesPrefix###'] = Tx_Formhandler_Globals::$formValuesPrefix;
 		
 		if($this->gp['generated_authCode']) {
@@ -727,24 +757,49 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
 					}
+					$text = 'X';
+					if($settings['files.']['customRemovalText']) {
+						if($settings['files.']['customRemovalText.']) {
+							$text = Tx_Formhandler_StaticFuncs::getSingle($settings['files.'], 'customRemovalText');
+						} else {
+							$text = $settings['files.']['customRemovalText'];
+ 						}
+					}
+					$link = '';
 					if(t3lib_extMgm::isLoaded('xajax') && $settings['files.']['enableAjaxFileRemoval']) {
-						$text = 'X';
-						if($settings['files.']['customRemovalText']) {
-							if($settings['files.']['customRemovalText.']) {
-								$text = Tx_Formhandler_StaticFuncs::getSingle($settings['files.'], 'customRemovalText');
-							} else {
-								$text = $settings['files.']['customRemovalText'];
-							}
+						$link= '<a 
+ 								href="javascript:void(0)" 
+ 								class="formhandler_removelink" 
+ 								onclick="xajax_' . $this->prefixId . '_removeUploadedFile(\'' . $field . '\',\'' . $fileInfo['uploaded_name'] . '\')"
+ 								>' . $text . '</a>';
+					} elseif($settings['files.']['enableFileRemoval']) {
+						$submitName = 'step-' . Tx_Formhandler_Session::get('currentStep') . '-reload';
+						if(Tx_Formhandler_Globals::$formValuesPrefix) {
+							$submitName = Tx_Formhandler_Globals::$formValuesPrefix . '[' . $submitName . ']';
+						}
+						$onClick = "
+							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-removeFile').value='" . $fileInfo['uploaded_name'] . "';
+							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-removeFileField').value='" . $field . "';
+							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-submitField').name='" . $submitName . "';
+							
+						";
+						
+						if(Tx_Formhandler_Globals::$formID) {
+							$onClick .= 'document.getElementById("example-form").submit();';
+						} else {
+							$onClick .= 'document.forms[0].submit();';
 						}
 						
-						$link= '<a 
-								href="javascript:void(0)" 
+						$onClick .= 'return false;';
+						
+						$link = '<a 
+								href="#" 
 								class="formhandler_removelink" 
-								onclick="xajax_' . $this->prefixId . '_removeUploadedFile(\'' . $field . '\',\'' . $fileInfo['uploaded_name'] . '\')"
+								onclick="' . str_replace("\n", '', $onClick) . '"
 								>' . $text . '</a>';
-						$filename .= $link;
-						$thumb .= $link;
-					}
+ 					}
+					$filename .= $link;
+					$thumb .= $link;
 					if(strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
 						$wrappedFilename = str_replace('|', $filename, $singleWrap);
 						$wrappedThumb = str_replace('|', $thumb, $singleWrap);
@@ -908,7 +963,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 					//try to load specific error message with key like error_fieldname_integer
 				$errorMessage = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'error_' . $field . '_' . $type);
-				if(strlen($errorMessage) == 0) {
+				if(strlen($errorMessage) === 0) {
 					$type = strtolower($type);
 					$errorMessage = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'error_' . $field . '_' . $type);
 				}
@@ -1079,7 +1134,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @param	string	$buttonNameFwd name attribute of the forward button
 	 * @return 	string	HTML code
 	 */
-	protected function createStepBar($currentStep,$lastStep,$buttonNameBack ="",$buttonNameFwd ="") {
+	protected function createStepBar($currentStep, $lastStep, $buttonNameBack = '', $buttonNameFwd = '') {
 
 		//colors
 		$bgcolor = '#EAEAEA';
@@ -1097,7 +1152,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$css[] = '.' . $classprefix . '_error { background: ' . $errorbgcolor . ';}';
 		$css[] = '.' . $classprefix . '_steps { margin-left:50px; margin-right:25px; vertical-align:middle; font-family:Verdana,Arial,Helvetica; font-size:22px; font-weight:bold; }';
 		$css[] = '.' . $classprefix . '_steps span { color:'.$nrcolor.'; margin-left:5px; margin-right:5px; }';
-		$css[] = '.' . $classprefix . '_error .' . $classprefix . '_steps span { color:'.$errornrcolor.'; margin-left:5px; margin-right:5px; }';
+		$css[] = '.' . $classprefix . '_error .' . $classprefix . '_steps span { color:' . $errornrcolor . '; margin-left:5px; margin-right:5px; }';
 		$css[] = '.' . $classprefix . '_steps .' . $classprefix . '_currentstep { color:  #000;}';
 		$css[] = '#stepsFormButtons { margin-left:25px;vertical-align:middle;}';
 
@@ -1126,7 +1181,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				}
 			}
 			$buttonvalue = $message;
-			$buttons .= '<input type="submit" name="'.$buttonNameBack.'" value="' . trim($buttonvalue) . '" class="button_prev" style="margin-right:10px;" />';
+			$buttons .= '<input type="submit" name="' . $buttonNameBack . '" value="' . trim($buttonvalue) . '" class="button_prev" style="margin-right:10px;" />';
 		}
 		$buttonvalue = '';
 		foreach($this->langFiles as $langFile) {

@@ -49,6 +49,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			$this->xajax->setCharEncoding('utf-8');
 			#$this->xajax->setWrapperPrefix($this->prefixId);
 				
+			$this->xajax->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 			$this->xajax->registerFunction(array($this->prefixId . '_removeUploadedFile', &$view, 'removeUploadedFile'));
 			
 			// Do you wnat messages in the status bar?

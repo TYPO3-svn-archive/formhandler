@@ -21,6 +21,10 @@ class Tx_Formhandler_Globals {
 	static public $randomID;
 	
 	static public $predef;
+	
+	static public $formID;
+	
+	static public $ajaxHandler;
 }
 
 ?>

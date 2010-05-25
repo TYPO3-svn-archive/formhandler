@@ -178,6 +178,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	public function process() {
 		
 		$this->init();
+		
+		$this->processFileRemoval();
 
 		//not submitted
 		if(!$this->submitted) {
@@ -498,6 +500,30 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				//add class to the end of the array
 				$classesArray[] = array('class' => $className);
 			}
+		}
+	}
+	
+	protected function processFileRemoval() {
+		
+		if($this->gp['removeFile']) {
+			$filename = $this->gp['removeFile'];
+			$fieldname = $this->gp['removeFileField'];
+			$sessionFiles = Tx_Formhandler_Session::get('files');
+			if(is_array($sessionFiles)) {
+				foreach($sessionFiles as $field => $files) {
+	
+					if(!strcmp($field, $fieldname)) {
+						foreach($files as $key=>&$fileInfo) {
+							if(!strcmp($fileInfo['uploaded_name'], $filename)) {
+								unset($sessionFiles[$field][$key]);
+							}
+						}
+					}
+				}
+			}
+			unset($this->gp['removeFile']);
+			unset($this->gp['removeFileField']);
+			Tx_Formhandler_Session::set('files', $sessionFiles);
 		}
 	}
 
@@ -847,6 +873,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->settings = $this->getSettings();
 		
 		$this->formValuesPrefix = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'formValuesPrefix');
+		Tx_Formhandler_Globals::$formID = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'formID');
 		Tx_Formhandler_Globals::$formValuesPrefix = $this->formValuesPrefix;
 
 		//set debug mode
@@ -864,6 +891,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 		
 		Tx_Formhandler_Globals::$randomID = $randomID;
+		session_start();
+		$_SESSION['randomID'] = $randomID;
 		$this->parseConditions();
 		$this->getStepInformation();
 		
@@ -953,6 +982,19 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->setViewSubpart($this->currentStep);
 		
 		Tx_Formhandler_Globals::$gp = $this->gp;
+		
+		//init ajax
+		$ajaxHandler = $this->settings['ajax.']['class'];
+		if(!$ajaxHandler) {
+			$ajaxHandler = 'Tx_Formhandler_AjaxHandler_JQuery';
+		}
+		Tx_Formhandler_StaticFuncs::debugMessage('using_ajax', $ajaxHandler);
+		$ajaxHandler = Tx_Formhandler_StaticFuncs::prepareClassName($ajaxHandler);
+		$ajaxHandler = $this->componentManager->getComponent($ajaxHandler);
+		Tx_Formhandler_Globals::$ajaxHandler = $ajaxHandler;
+		
+		$ajaxHandler->init($this->settings['ajax.']['config.']);
+		$ajaxHandler->initAjax();
 
 	}
 
