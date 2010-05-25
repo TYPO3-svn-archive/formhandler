@@ -155,8 +155,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		//fill error_[fieldname] markers
 		if(!empty($errors)) {
-			$this->fillErrorMarkers($errors);
 			$this->fillIsErrorMarkers($errors);
+			$this->fillErrorMarkers($errors);
+			
 		}
 
 		//remove markers that were not substituted
