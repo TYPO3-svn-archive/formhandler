@@ -557,7 +557,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			*	 )
 			*)
 			*/
-			foreach($_FILES as $sthg => &$files) {
+			foreach($_FILES as $sthg => $files) {
 
 				//if a file was uploaded
 				if(isset($files['name']) && is_array($files['name'])) {
