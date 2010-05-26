@@ -785,7 +785,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						";
 						
 						if(Tx_Formhandler_Globals::$formID) {
-							$onClick .= 'document.getElementById("example-form").submit();';
+							$onClick .= "document.getElementById('" . Tx_Formhandler_Globals::$formID . "').submit();";
 						} else {
 							$onClick .= 'document.forms[0].submit();';
 						}
@@ -793,9 +793,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$onClick .= 'return false;';
 						
 						$link = '<a 
-								href="#" 
+								href="javascript:void(0)" 
 								class="formhandler_removelink" 
-								onclick="' . str_replace("\n", '', $onClick) . '"
+								onclick="' . str_replace(array("\n", '	'), '', $onClick) . '"
 								>' . $text . '</a>';
  					}
 					$filename .= $link;
