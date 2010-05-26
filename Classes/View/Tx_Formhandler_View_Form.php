@@ -753,7 +753,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				foreach($files as $fileInfo) {
 					$filename = $fileInfo['name'];
 					$thumb = '';
-					if(intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 1) {
+					if(intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 1 || intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 2) {
 						$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
 					}
@@ -798,22 +798,25 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 								onclick="' . str_replace(array("\n", '	'), '', $onClick) . '"
 								>' . $text . '</a>';
  					}
-					$filename .= $link;
-					$thumb .= $link;
+
 					if(strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
-						$wrappedFilename = str_replace('|', $filename, $singleWrap);
-						$wrappedThumb = str_replace('|', $thumb, $singleWrap);
+						$wrappedFilename = str_replace('|', $filename . $link, $singleWrap);
+						$wrappedThumb = str_replace('|', $thumb . $link, $singleWrap);
+						$wrappedThumbFilename = str_replace('|', $thumb . ' ' . $filename . $link, $singleWrap);
 					} else {
-						$wrappedFilename = $filename;
-						$wrappedThumb = $thumb;
+						$wrappedFilename = $filename . $link;
+						$wrappedThumb = $thumb . $link;
+						$wrappedThumbFilename = $thumb . ' ' . $filename . $link;
 					}
 					if(intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 1) {
 						$markers['###' . $field . '_uploadedFiles###'] .= $wrappedThumb;
+					} elseif(intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 2) {
+						$markers['###' . $field . '_uploadedFiles###'] .= $wrappedThumbFilename;
 					} else {
 						$markers['###' . $field . '_uploadedFiles###'] .= $wrappedFilename;
 					}
 					$filename = $fileInfo['name'];
-					if(intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1) {
+					if(intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1 || intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 2) {
 						$imgConf['image.'] = $settings['totalFilesMarkerTemplate.']['image.'];
 						if(!$imgconf['image.']) {
 							$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
@@ -822,16 +825,19 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						
 					}
 					if(strlen($totalMarkerSingleWrap) > 0 && strstr($totalMarkerSingleWrap, '|')) {
-
-						$wrappedFilename = str_replace('|', $filename, $totalMarkerSingleWrap);
-						$wrappedThumb = str_replace('|', $thumb, $totalMarkerSingleWrap);
+						$wrappedFilename = str_replace('|', $filename . $link, $totalMarkerSingleWrap);
+						$wrappedThumb = str_replace('|', $thumb . $link, $totalMarkerSingleWrap);
+						$wrappedThumbFilename = str_replace('|', $thumb . ' ' . $filename . $link, $totalMarkerSingleWrap);
 					} else {
-						$wrappedFilename = $filename;
-						$wrappedThumb = $thumb;
+						$wrappedFilename = $filename . $link;
+						$wrappedThumb = $thumb . $link;
+						$wrappedThumbFilename = $thumb . $filename . $link;
 					}
 				
 					if(intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1) {
 						$markers['###total_uploadedFiles###'] .= $wrappedThumb;
+					} elseif(intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 2) {
+						$markers['###total_uploadedFiles###'] .= wrappedThumbFilename;
 					} else {
 						$markers['###total_uploadedFiles###'] .= $wrappedFilename;
 					}
