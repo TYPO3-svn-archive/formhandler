@@ -73,64 +73,60 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 	public function main($content, $setup) {
 
 		$this->pi_USER_INT_obj = 1;
-		
-
-		
-		
-		//init flexform
-		$this->pi_initPIflexForm();
-		
-		/*
-		 * Parse values from flexform:
-		 * - Template file
-		 * - Translation file
-		 * - Predefined form
-		 * - E-mail settings
-		 * - Required fields
-		 * - Redirect page
-		 */
-		$templateFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'template_file', 'sDEF');
-		$langFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'lang_file', 'sDEF');
-		$predef = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'predefined', 'sDEF');
-		
-		require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-		Tx_Formhandler_Globals::$predef = $predef;
-		Tx_Formhandler_Globals::$cObj = $this->cObj;
-		Tx_Formhandler_Globals::$overrideSettings = $setup;
-		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
-		
-		//handle AJAX stuff
-		$this->handleAjax();
-
-		/*
-		 * set controller:
-		 * 1. Default controller
-		 * 2. TypoScript
-		 */
-		$controller = 'Tx_Formhandler_Controller_Form';
-		if($setup['controller']) {
-			$controller = $setup['controller'];
-		}
-		
-		//Tx_Formhandler_StaticFuncs::debugMessage('using_controller', $controller);
-		$controller = Tx_Formhandler_StaticFuncs::prepareClassName($controller);
-		$controller = $this->componentManager->getComponent($controller);
-
-		
-
-		if (isset($content)) {
-			$controller->setContent($this->componentManager->getComponent('Tx_Formhandler_Content', $content));
-		}
-		if(strlen($templateFile) > 0) {
-			$controller->setTemplateFile($templateFile);
-		}
-		if(strlen($langFile) > 0) {
-			$controller->setLangFiles(array($langFile));
-		}
-		if(strlen($predef) > 0) {
-			$controller->setPredefined($predef);
-		}
 		try {
+
+			//init flexform
+			$this->pi_initPIflexForm();
+			
+			/*
+			 * Parse values from flexform:
+			 * - Template file
+			 * - Translation file
+			 * - Predefined form
+			 * - E-mail settings
+			 * - Required fields
+			 * - Redirect page
+			 */
+			$templateFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'template_file', 'sDEF');
+			$langFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'lang_file', 'sDEF');
+			$predef = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'predefined', 'sDEF');
+			
+			require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+			Tx_Formhandler_Globals::$predef = $predef;
+			Tx_Formhandler_Globals::$cObj = $this->cObj;
+			Tx_Formhandler_Globals::$overrideSettings = $setup;
+			$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+			
+			//handle AJAX stuff
+			$this->handleAjax();
+	
+			/*
+			 * set controller:
+			 * 1. Default controller
+			 * 2. TypoScript
+			 */
+			$controller = 'Tx_Formhandler_Controller_Form';
+			if($setup['controller']) {
+				$controller = $setup['controller'];
+			}
+			
+			//Tx_Formhandler_StaticFuncs::debugMessage('using_controller', $controller);
+			$controller = Tx_Formhandler_StaticFuncs::prepareClassName($controller);
+			$controller = $this->componentManager->getComponent($controller);
+	
+			if (isset($content)) {
+				$controller->setContent($this->componentManager->getComponent('Tx_Formhandler_Content', $content));
+			}
+			if(strlen($templateFile) > 0) {
+				$controller->setTemplateFile($templateFile);
+			}
+			if(strlen($langFile) > 0) {
+				$controller->setLangFiles(array($langFile));
+			}
+			if(strlen($predef) > 0) {
+				$controller->setPredefined($predef);
+			}
+		
 			$result = $controller->process();
 		} catch(Exception $e) {
 			$result = '<div style="color:red; font-weight: bold">Caught exception: ' . $e->getMessage() . '</div>';
