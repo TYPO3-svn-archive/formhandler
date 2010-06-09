@@ -608,7 +608,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if (t3lib_extMgm::isLoaded('sr_freecap')){
 			require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
 			$this->freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
-			$markers = array_merge($markers,$this->freeCap->makeCaptcha());
+			$markers = array_merge($markers, $this->freeCap->makeCaptcha());
 		}
 		if (t3lib_extMgm::isLoaded('jm_recaptcha')) {
 			require_once(t3lib_extMgm::extPath('jm_recaptcha') . 'class.tx_jmrecaptcha.php');
