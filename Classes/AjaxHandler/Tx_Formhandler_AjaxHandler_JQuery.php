@@ -24,14 +24,17 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 				if(is_array($validatorSettings['config.']['fieldConf.'])) {
 					foreach($validatorSettings['config.']['fieldConf.'] as $fieldname => $fieldSettings) {
 						$replacedFieldname = str_replace('.', '', $fieldname);
-						
+						$fieldname = $replacedFieldname;
+						if(Tx_Formhandler_Globals::$formValuesPrefix) {
+							$fieldname = Tx_Formhandler_Globals::$formValuesPrefix . '[' . $fieldname . ']';
+						}
 						$markers['###validate_' . $replacedFieldname . '###'] = '
 							<span class="loading" id="loading_' . $replacedFieldname . '" style="display:none">' . $loadingImg . '</span>
 							<span id="result_' . $replacedFieldname . '">' . str_replace('###fieldname###', $replacedFieldname, $initial) . '</span>
 							<script type="text/javascript">
 							
 								$(document).ready(function() {
-									$("*[name*=' . $replacedFieldname . ']").blur(function() {
+									$("*[name=\'' . $fieldname . '\']").blur(function() {
 										var fieldVal = $(this).val();
 										if($(this).attr("type") == "radio" || $(this).attr("type") == "checkbox") {
 											if($(this).attr("checked") == "") {
