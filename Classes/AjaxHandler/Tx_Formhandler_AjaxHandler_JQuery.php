@@ -35,7 +35,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 							
 								$(document).ready(function() {
 									$("*[name=\'' . $fieldname . '\']").blur(function() {
-										var fieldVal = $(this).val();
+										var fieldVal = escape($(this).val());
 										if($(this).attr("type") == "radio" || $(this).attr("type") == "checkbox") {
 											if($(this).attr("checked") == "") {
 												fieldVal = "";
