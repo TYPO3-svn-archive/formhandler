@@ -325,6 +325,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						
 						//run save interceptors
 						if(!$this->submittedOK) {
+							$this->addFormhandlerClass($this->settings['saveInterceptors.'], 'Interceptor_Filtreatment');
 							$output = $this->runClasses($this->settings['saveInterceptors.']);
 							if(strlen($output) > 0) {
 								return $output;
