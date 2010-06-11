@@ -39,8 +39,8 @@
  * finishers.1.config.fields.header.if_is_empty = None given
  * finishers.1.config.fields.bodytext.mapping = interests
  *
- * #if form field is an array, implode using this seperator. Default: ,
- * finishers.1.config.fields.bodytext.seperator = ,
+ * #if form field is an array, implode using this separator. Default: ,
+ * finishers.1.config.fields.bodytext.separator = ,
  *
  * #add static values for some fields
  * finishers.1.config.fields.hidden = 1
@@ -271,11 +271,11 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 				//process array handling
 				if(isset($this->gp[$options['mapping']]) && is_array($this->gp[$options['mapping']])) {
-					$seperator = ',';
-					if($options['seperator']) {
-						$seperator = $options['seperator'];
+					$separator = ',';
+					if($options['separator']) {
+						$separator = $options['separator'];
 					}
-					$queryFields[$fieldname] = implode($seperator, $this->gp[$options['mapping']]);
+					$queryFields[$fieldname] = implode($separator, $this->gp[$options['mapping']]);
 				}
 
 				//process uploaded files

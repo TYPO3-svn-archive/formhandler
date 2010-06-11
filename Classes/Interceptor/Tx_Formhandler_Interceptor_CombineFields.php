@@ -42,10 +42,10 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 	}
 	
 	protected function combineFields($options) {
-		if(!isset($options['seperator'])) {
-			$seperator = ' ';
+		if(!isset($options['separator'])) {
+			$separator = ' ';
 		} else {
-			$seperator = $options['seperator'];
+			$separator = $options['separator'];
 		}
 		$fieldsArr = $options['fields.'];
 		
@@ -53,7 +53,7 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 		foreach($fieldsArr as $field) {
 			if(	intval($options['hideEmptyValues']) === 0 || 
 					(intval($options['hideEmptyValues']) === 1 && isset($this->gp[$field]) && strlen($this->gp[$field]) > 0)) {
-				$combinedString .= $this->gp[$field] . $seperator;
+				$combinedString .= $this->gp[$field] . $separator;
 			}
 		}
 		if($combinedString) {

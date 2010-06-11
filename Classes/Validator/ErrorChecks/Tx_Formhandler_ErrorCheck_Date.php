@@ -65,7 +65,7 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 	 * Internal method to normalize a specified date pattern for internal use
 	 *
 	 * @param string $pattern The pattern
-	 * @param string $sep The seperator character
+	 * @param string $sep The separator character
 	 * @return string The normalized pattern
 	 */
 	protected function normalizeDatePattern($pattern,$sep) {

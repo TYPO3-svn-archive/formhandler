@@ -123,7 +123,7 @@ plugin.Tx_Formhandler.settings.predef.multistep_example {
 					}
 					bodytext {
 						mapping = subject
-						seperator = ,
+						separator = ,
 					}
 					hidden = 1
 					pid = 39
