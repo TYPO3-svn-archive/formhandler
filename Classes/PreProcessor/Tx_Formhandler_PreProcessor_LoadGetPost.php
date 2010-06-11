@@ -34,8 +34,7 @@ class Tx_Formhandler_PreProcessor_LoadGetPost extends Tx_Formhandler_AbstractPre
 		$this->formValuesPrefix = Tx_Formhandler_Globals::$formValuesPrefix;
 		
 		$loadedGP = $this->loadGP();
-		
-		$this->gp = array_merge($loadedGP, $gp);
+		$this->gp = array_merge($loadedGP, $this->gp);
 		
 		
 		return $this->gp;
