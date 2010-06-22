@@ -36,7 +36,7 @@ class Tx_Formhandler_ErrorCheck_MaxLength extends Tx_Formhandler_AbstractErrorCh
 		$max = $check['params']['value'];
 		if(	isset($gp[$name]) &&
 			strlen(trim($gp[$name])) > 0 &&
-			intval($min) > 0 &&
+			intval($max) > 0 &&
 			strlen(trim($gp[$name])) > $max) {
 
 			$checkFailed = $this->getCheckFailed($check);
