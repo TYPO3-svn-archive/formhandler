@@ -103,33 +103,18 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 				
 			//insert query
 			if(!$this->doUpdate) {
-				foreach($queryFields as $dbfield=>$value) {
-					$fields[$dbfield] = $value;
-					if(!is_numeric($value)) {
-						$fields[$dbfield] = "'" . $value . "'";
-					}
-				}
-				$sql = 'INSERT INTO ' . $this->table . ' (' . (implode(',', array_keys($fields))) . ') VALUES (' . (implode(',', $fields)) . ')';
+					
+				$query = $GLOBALS['TYPO3_DB']->INSERTquery($this->table, $queryFields);
+				Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
 
 				//update query
 			} else {
 
 				//check if uid of record to update is in GP
-				$uid = $this->gp['uid'];
-				if(!$uid) {
-					$uid = $this->gp[$this->key];
-				}
+				$uid = $this->gp[$this->key];
 				if($uid) {
-					$fields = array();
-					foreach($queryFields as $dbfield => $value) {
-						if(is_numeric($value)) {
-							$fields[] = $dbfield . '=' . $value;
-						} else {
-							$fields[] = $dbfield . "='" . $value . "'";
-						}
-					}
-					$fields = implode(',', $fields);
-					$sql = 'UPDATE ' . $this->table . ' SET (' . $fields . ') WHERE ' . $this->key . '=' . $uid;
+					$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
+					Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
 				} else {
 					Tx_Formhandler_StaticFuncs::debugMessage('no_update_possible');
 				}
@@ -148,7 +133,7 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 			}
 				
 			//insert data
-			$conn->Execute($sql);
+			$conn->Execute($query);
 				
 			//close connection
 			$conn->Close();
