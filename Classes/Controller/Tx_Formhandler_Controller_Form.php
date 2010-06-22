@@ -220,17 +220,19 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				if(isset($this->settings['finishers.']) && is_array($this->settings['finishers.']) && intval($this->settings['finishers.']['disable']) !== 1) {
 
 					foreach($this->settings['finishers.'] as $tsConfig) {
-						if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
-							$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
-							$finisher = $this->componentManager->getComponent($className);
-							if($finisher instanceof Tx_Formhandler_Finisher_SubmittedOK) {
+						if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
+							if(intval($tsConfig['disable']) !== 1) {
 								$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
-								Tx_Formhandler_StaticFuncs::debugBeginSection('calling_finisher', $className);
 								$finisher = $this->componentManager->getComponent($className);
-								$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
-								$finisher->init($this->gp, $tsConfig['config.']);
-								Tx_Formhandler_StaticFuncs::debugEndSection();
-								return $finisher->process();
+								if($finisher instanceof Tx_Formhandler_Finisher_SubmittedOK) {
+									$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
+									Tx_Formhandler_StaticFuncs::debugBeginSection('calling_finisher', $className);
+									$finisher = $this->componentManager->getComponent($className);
+									$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
+									$finisher->init($this->gp, $tsConfig['config.']);
+									Tx_Formhandler_StaticFuncs::debugEndSection();
+									return $finisher->process();
+								}
 							}
 						}  else {
 							Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
@@ -270,21 +272,23 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					intval($this->settings['validators.']['disable']) !== 1) {
 						
 					foreach($this->settings['validators.'] as $tsConfig) {
-						if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
-							$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
-							Tx_Formhandler_StaticFuncs::debugBeginSection('calling_validator',  $className);
-							$validator = $this->componentManager->getComponent($className);
-							if($this->currentStep == $this->lastStep) {
-								$userSetting = t3lib_div::trimExplode(',', $tsConfig['config.']['restrictErrorChecks']);
-								$autoSetting = array('fileAllowedTypes','fileRequired','fileMaxCount','fileMinCount','fileMaxSize','fileMinSize');
-								$merged = array_merge($userSetting,$autoSetting);
-								$tsConfig['config.']['restrictErrorChecks'] = implode(',', $merged);
+						if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
+							if(intval($tsConfig['disable']) !== 1) {
+								$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
+								Tx_Formhandler_StaticFuncs::debugBeginSection('calling_validator',  $className);
+								$validator = $this->componentManager->getComponent($className);
+								if($this->currentStep == $this->lastStep) {
+									$userSetting = t3lib_div::trimExplode(',', $tsConfig['config.']['restrictErrorChecks']);
+									$autoSetting = array('fileAllowedTypes','fileRequired','fileMaxCount','fileMinCount','fileMaxSize','fileMinSize');
+									$merged = array_merge($userSetting,$autoSetting);
+									$tsConfig['config.']['restrictErrorChecks'] = implode(',', $merged);
+								}
+								$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
+								$validator->init($this->gp,$tsConfig['config.']);
+								$res = $validator->validate($this->errors);
+								array_push($valid, $res);
+								Tx_Formhandler_StaticFuncs::debugEndSection();
 							}
-							$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
-							$validator->init($this->gp,$tsConfig['config.']);
-							$res = $validator->validate($this->errors);
-							array_push($valid, $res);
-							Tx_Formhandler_StaticFuncs::debugEndSection();
 						}  else {
 							Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
 						}
@@ -353,39 +357,41 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							}
 
 							foreach($this->settings['finishers.'] as $tsConfig) {
-								if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
-									$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
-									$finisher = $this->componentManager->getComponent($className);
-									
-									Tx_Formhandler_StaticFuncs::debugBeginSection('calling_finisher', $className);
-									
-									$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
-									
-									//check if the form was finished before. This flag is set by the Finisher_SubmittedOK
-									if(!$this->submittedOK) {
+								if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
+									if(intval($tsConfig['disable']) !== 1) {
+										$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
+										$finisher = $this->componentManager->getComponent($className);
+										
+										Tx_Formhandler_StaticFuncs::debugBeginSection('calling_finisher', $className);
+										
+										$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
+										
+										//check if the form was finished before. This flag is set by the Finisher_SubmittedOK
+										if(!$this->submittedOK) {
+														
+											$finisher->init($this->gp,$tsConfig['config.']);
+											
+											$this->storeGPinSession();
+											$this->mergeGPWithSession(FALSE, $this->currentStep);
+											
+											//if the finisher returns HTML (e.g. Tx_Formhandler_Finisher_SubmittedOK)
+											if($tsConfig['config.']['returns']) {
+												Tx_Formhandler_StaticFuncs::debugEndSection();
+												return $finisher->process();
+											} else {
 													
-										$finisher->init($this->gp,$tsConfig['config.']);
+												$this->gp = $finisher->process();
+												Tx_Formhandler_Globals::$gp = $this->gp;
+												Tx_Formhandler_StaticFuncs::debugEndSection();
+											}
 										
-										$this->storeGPinSession();
-										$this->mergeGPWithSession(FALSE, $this->currentStep);
+										//if the form was finished before, only show the output of the Tx_Formhandler_Finisher_SubmittedOK
+										} elseif($finisher instanceof Tx_Formhandler_Finisher_SubmittedOK) {
 										
-										//if the finisher returns HTML (e.g. Tx_Formhandler_Finisher_SubmittedOK)
-										if($tsConfig['config.']['returns']) {
+											$finisher->init($this->gp, $tsConfig['config.']);
 											Tx_Formhandler_StaticFuncs::debugEndSection();
 											return $finisher->process();
-										} else {
-												
-											$this->gp = $finisher->process();
-											Tx_Formhandler_Globals::$gp = $this->gp;
-											Tx_Formhandler_StaticFuncs::debugEndSection();
 										}
-									
-									//if the form was finished before, only show the output of the Tx_Formhandler_Finisher_SubmittedOK
-									} elseif($finisher instanceof Tx_Formhandler_Finisher_SubmittedOK) {
-									
-										$finisher->init($this->gp, $tsConfig['config.']);
-										Tx_Formhandler_StaticFuncs::debugEndSection();
-										return $finisher->process();
 									}
 								} else {
 									Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
@@ -1143,25 +1149,27 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if(isset($classesArray) && is_array($classesArray) && intval($classesArray['disable']) !== 1) {
 			
 			foreach($classesArray as $tsConfig) {
-				if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
+				if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
+					if(intval($tsConfig['disable']) !== 1) {
 					
-					$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
-					Tx_Formhandler_StaticFuncs::debugBeginSection('calling_class', $className);
-	
-					$obj = $this->componentManager->getComponent($className);
-					$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
-					$obj->init($this->gp, $tsConfig['config.']);
-					$return = $obj->process();
-					Tx_Formhandler_StaticFuncs::debugEndSection();
-					if(is_array($return)) {
-						
-						//return value is an array. Treat it as the probably modified get/post parameters
-						$this->gp = $return;
-						Tx_Formhandler_Globals::$gp = $this->gp;
-					} else {
-						
-						//return value is no array. treat this return value as output.
-						return $return;
+						$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
+						Tx_Formhandler_StaticFuncs::debugBeginSection('calling_class', $className);
+		
+						$obj = $this->componentManager->getComponent($className);
+						$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
+						$obj->init($this->gp, $tsConfig['config.']);
+						$return = $obj->process();
+						Tx_Formhandler_StaticFuncs::debugEndSection();
+						if(is_array($return)) {
+							
+							//return value is an array. Treat it as the probably modified get/post parameters
+							$this->gp = $return;
+							Tx_Formhandler_Globals::$gp = $this->gp;
+						} else {
+							
+							//return value is no array. treat this return value as output.
+							return $return;
+						}
 					}
 				} else {
 					Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
