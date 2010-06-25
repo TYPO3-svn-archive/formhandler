@@ -1034,7 +1034,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers = array();
 		if(is_array($this->settings['markers.'])) {
 			foreach($this->settings['markers.'] as $name => $options) {
-				if(!strstr($name, '.')) {
+				if(!strstr($name, '.') && strstr($this->template, '###' . $name . '###')) {
 					$markers['###' . $name . '###'] = Tx_Formhandler_StaticFuncs::getSingle($this->settings['markers.'], $name);
 				}
 			}
