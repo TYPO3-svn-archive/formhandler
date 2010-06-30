@@ -9,9 +9,9 @@ class Tx_Formhandler_Utils_AjaxValidate {
 		$this->init();
 
 		if($this->fieldname) {
-			session_start();
-		
-			Tx_Formhandler_Globals::$randomID = $_SESSION['randomID'];
+			$randomID = t3lib_div::_GP('randomID');
+			Tx_Formhandler_Globals::$randomID = $randomID;
+			
 			$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
 		
 			$validator = $this->componentManager->getComponent('Tx_Formhandler_Validator_Ajax');

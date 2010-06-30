@@ -179,6 +179,22 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		$this->init();
 		
+		//put file names into $this->gp
+		$sessionFiles = Tx_Formhandler_Session::get('files');
+		foreach($sessionFiles as $fieldname => $files) {
+			$fileNames = array();
+			if(is_array($files)) {
+				foreach($files as $fileInfo) {
+					$fileName = $fileInfo['uploaded_name'];
+					if(!$fileName) {
+						$fileName = $fileInfo['name'];
+					}
+					$fileNames[] = $fileName;
+				}
+			}
+			$this->gp[$fieldname] = implode(',', $fileNames);
+		}
+		
 		$this->processFileRemoval();
 
 		//not submitted
@@ -520,12 +536,23 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				foreach($sessionFiles as $field => $files) {
 	
 					if(!strcmp($field, $fieldname)) {
-						foreach($files as $key=>&$fileInfo) {
-							if(!strcmp($fileInfo['uploaded_name'], $filename)) {
-								unset($sessionFiles[$field][$key]);
+						$found = FALSE;
+ 						foreach($files as $key=>&$fileInfo) {
+ 							if(!strcmp($fileInfo['uploaded_name'], $filename)) {
+								$found = TRUE;
+ 								unset($sessionFiles[$field][$key]);
+ 							}
+ 						}
+						if(!$found) {
+							foreach($files as $key=>&$fileInfo) {
+								if(!strcmp($fileInfo['name'], $filename)) {
+									$found = TRUE;
+									unset($sessionFiles[$field][$key]);
+								}
 							}
 						}
-					}
+ 					}
+					
 				}
 			}
 			unset($this->gp['removeFile']);

@@ -47,13 +47,24 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if(is_array($sessionFiles)) {
 			foreach($sessionFiles as $field => $files) {
 
-				if(!strcmp($field,$fieldname)) {
-					foreach($files as $key=>&$fileInfo) {
-						if(!strcmp($fileInfo['uploaded_name'], $filename)) {
-							unset($sessionFiles[$field][$key]);
+				if(!strcmp($field, $fieldname)) {
+					$found = FALSE;
+ 					foreach($files as $key=>&$fileInfo) {
+ 						if(!strcmp($fileInfo['uploaded_name'], $filename)) {
+							$found = TRUE;
+ 							unset($sessionFiles[$field][$key]);
+ 						}
+ 					}
+					if(!$found) {
+						foreach($files as $key=>&$fileInfo) {
+							if(!strcmp($fileInfo['name'], $filename)) {
+								$found = TRUE;
+								unset($sessionFiles[$field][$key]);
+							}
 						}
 					}
-				}
+ 				}
+				
 			}
 		}
 		
@@ -766,11 +777,15 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
  						}
 					}
 					$link = '';
+					$uploadedFileName = $fileInfo['uploaded_name'];
+					if(!$uploadedFileName) {
+						$uploadedFileName = $fileInfo['name'];
+					}				
 					if(t3lib_extMgm::isLoaded('xajax') && $settings['files.']['enableAjaxFileRemoval']) {
 						$link= '<a 
  								href="javascript:void(0)" 
  								class="formhandler_removelink" 
- 								onclick="xajax_' . $this->prefixId . '_removeUploadedFile(\'' . $field . '\',\'' . $fileInfo['uploaded_name'] . '\')"
+ 								onclick="xajax_' . $this->prefixId . '_removeUploadedFile(\'' . $field . '\',\'' . $uploadedFileName . '\')"
  								>' . $text . '</a>';
 					} elseif($settings['files.']['enableFileRemoval']) {
 						$submitName = 'step-' . Tx_Formhandler_Session::get('currentStep') . '-reload';
@@ -778,7 +793,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 							$submitName = Tx_Formhandler_Globals::$formValuesPrefix . '[' . $submitName . ']';
 						}
 						$onClick = "
-							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-removeFile').value='" . $fileInfo['uploaded_name'] . "';
+							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-removeFile').value='" . $uploadedFileName . "';
 							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-removeFileField').value='" . $field . "';
 							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-submitField').name='" . $submitName . "';
 							
@@ -815,7 +830,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					} else {
 						$markers['###' . $field . '_uploadedFiles###'] .= $wrappedFilename;
 					}
-					$filename = $fileInfo['name'];
+					$uploadedFileName = $fileInfo['name'];
+					if(!$uploadedFileName) {
+						$uploadedFileName = $fileInfo['uploaded_name'];
+					}
 					if(intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1 || intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 2) {
 						$imgConf['image.'] = $settings['totalFilesMarkerTemplate.']['image.'];
 						if(!$imgconf['image.']) {

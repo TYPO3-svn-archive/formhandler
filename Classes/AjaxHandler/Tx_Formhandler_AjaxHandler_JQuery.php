@@ -43,7 +43,8 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 										}
 										$("#loading_' . $replacedFieldname . '").show();
 										$("#result_' . $replacedFieldname . '").hide();
-										$("#result_' . $replacedFieldname . '").load("/index.php?id=' . $GLOBALS['TSFE']->id . '&eID=formhandler&field=' . $replacedFieldname . '&value=" + fieldVal ,
+										var url = "/index.php?id=' . $GLOBALS['TSFE']->id . '&eID=formhandler&randomID=' . Tx_Formhandler_Globals::$gp . 'field=' . $replacedFieldname . '&value=" + fieldVal;
+										$("#result_' . $replacedFieldname . '").load(url,
 										function() {
 										
 											$("#loading_' . $replacedFieldname . '").hide();
