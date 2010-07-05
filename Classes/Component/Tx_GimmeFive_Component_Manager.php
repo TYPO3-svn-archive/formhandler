@@ -57,7 +57,7 @@ class Tx_GimmeFive_Component_Manager {
      * Loads the TypoScript config/setup for the formhandler on the current page.
      */
     private function loadTypoScriptConfig() {
-    	if(!Tx_Formhandler_Globals::$overrideSettings) {
+    	if(!is_array(Tx_Formhandler_Globals::$overrideSettings['settings.'])) {
 	  		$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
 			if(!$GLOBALS['TSFE']->sys_page) {
 				$GLOBALS['TSFE']->sys_page = $sysPageObj;
