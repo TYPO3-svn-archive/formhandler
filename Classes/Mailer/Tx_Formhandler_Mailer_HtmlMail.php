@@ -58,11 +58,19 @@ class Tx_Formhandler_Mailer_HtmlMail extends Tx_Formhandler_AbstractMailer imple
 	}
 	
 	public function addCc($email, $name) {
-		$this->emailObj->recipient_copy[] = $name . '<' . $email . '>';
+		if($name) {
+			$this->emailObj->recipient_copy[] = $name . ' <' . $email . '>';
+		} else {
+			$this->emailObj->recipient_copy[] = $email;
+		}
 	}
 	
 	public function addBcc($email, $name) {
-		$this->emailObj->recipient_blindcopy[] = $name . '<' . $email . '>';
+		if($name) {
+			$this->emailObj->recipient_blindcopy[] = $name . ' <' . $email . '>';
+		} else {
+			$this->emailObj->recipient_blindcopy[] = $email;
+		}
 	}
 	public function setReturnPath($value) {
 		$this->emailObj->returnPath = $value;
@@ -89,11 +97,11 @@ class Tx_Formhandler_Mailer_HtmlMail extends Tx_Formhandler_AbstractMailer imple
 	}
 	
 	public function getSender() {
-		return $this->emailObj->from_name . '<' . $this->emailObj->from_email . '>';
+		return $this->emailObj->from_name . ' <' . $this->emailObj->from_email . '>';
 	}
 	
 	public function getReplyTo() {
-		return $this->emailObj->replyto_name . '<' . $this->emailObj->replyto_email . '>';
+		return $this->emailObj->replyto_name . ' <' . $this->emailObj->replyto_email . '>';
 	}
 	
 	public function getCc() {

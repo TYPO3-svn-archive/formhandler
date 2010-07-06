@@ -371,11 +371,12 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	private function parseList($settings, $type, $key) {
 		if(isset($this->emailSettings[$type][$key])) {
 			$parsed = $this->explodeList($this->emailSettings[$type][$key]);
-		} else if(isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
+		} elseif(isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
 			$parsed = Tx_Formhandler_StaticFuncs::getSingle($settings, $key);
 		} else {
 			$parsed = $this->explodeList($settings[$key]);
 		}
+		
 		return $parsed;
 	}
 
