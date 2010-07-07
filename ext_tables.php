@@ -59,7 +59,6 @@ t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/Settings/', 'Example Config
 t3lib_extMgm::addPlugin(array('Formhandler', $_EXTKEY . '_pi1'), 'list_type');
 t3lib_extMgm::addPlugin(array('Formhandler Listing', $_EXTKEY . '_pi2'), 'list_type');
 
-
 $TCA['tx_formhandler_log'] = array (
     'ctrl' => array (
 		'title' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log',
@@ -71,5 +70,6 @@ $TCA['tx_formhandler_log'] = array (
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php'
 	)
 );
+t3lib_extMgm::allowTableOnStandardPages('tx_formhandler_log');
 
 ?>
