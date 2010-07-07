@@ -181,6 +181,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		//put file names into $this->gp
 		$sessionFiles = Tx_Formhandler_Session::get('files');
+		if(!is_array($sessionFiles)) {
+			$sessionFiles = array();
+		}
 		foreach($sessionFiles as $fieldname => $files) {
 			$fileNames = array();
 			if(is_array($files)) {
