@@ -61,9 +61,9 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 				// first look for TS-setting 'authCodePage', second look for redirect_page-setting, third use actual page
 				$authCodePage = ''; 
 				if(isset($this->settings['authCodePage'])) {
-					$this->settings['authCodePage'];
+					$authCodePage = $this->settings['authCodePage'];
 				} else {
-					Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], 'redirect_page', 'sMISC');
+					$authCodePage = Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], 'redirect_page', 'sMISC');
 				}
 				if(!$authCodePage) {
 					$authCodePage = $GLOBALS['TSFE']->id;
