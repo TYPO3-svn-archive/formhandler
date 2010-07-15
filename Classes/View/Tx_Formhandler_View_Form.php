@@ -212,7 +212,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		foreach($this->masterTemplates as $masterTemplate) {
 			$masterTemplateCode = t3lib_div::getURL($masterTemplate);
 			$matches = array();
-			preg_match_all('/###(field|master)_(.*)###/', $masterTemplateCode, $matches);
+			preg_match_all('/###(field|master)_([^#]*)###/', $masterTemplateCode, $matches);
 			
 			if(!empty($matches[0])) {
 				$subparts = array_unique($matches[0]);
@@ -228,7 +228,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				
 				foreach($subpartsCodes as $subpart=>$code) {
 					$matchesSlave = array();
-					preg_match_all('/###' . $subpart . '(.*)###/', $this->template, $matchesSlave);
+					preg_match_all('/###' . $subpart . '([^#]*)###/', $this->template, $matchesSlave);
 					if(!empty($matchesSlave[0])) {
 						foreach($matchesSlave[0] as $key=>$markerName) {
 							
