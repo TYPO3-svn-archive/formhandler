@@ -45,12 +45,14 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->setup = $GLOBALS['TSFE']->tmpl->setup['plugin.'][$this->getPrefixedPackageKey() . '.'];
-		if(!is_array($this->setup)) {
-			Tx_Formhandler_StaticFuncs::throwException('missing_config');
-		}
-		if(is_array(Tx_Formhandler_Globals::$overrideSettings)) {
-			$this->setup = t3lib_div::array_merge_recursive_overrule($this->setup, Tx_Formhandler_Globals::$overrideSettings);
+		if(TYPO3_MODE === 'FE') {
+			$this->setup = $GLOBALS['TSFE']->tmpl->setup['plugin.'][$this->getPrefixedPackageKey() . '.'];
+			if(!is_array($this->setup)) {
+				Tx_Formhandler_StaticFuncs::throwException('missing_config');
+			}
+			if(is_array(Tx_Formhandler_Globals::$overrideSettings)) {
+				$this->setup = t3lib_div::array_merge_recursive_overrule($this->setup, Tx_Formhandler_Globals::$overrideSettings);
+			}
 		}
 	}
 
