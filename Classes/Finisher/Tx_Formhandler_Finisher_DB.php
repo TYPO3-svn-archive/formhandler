@@ -145,6 +145,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 				// Replace conditions
 				$condition = str_replace($fieldName, $value, $condition);
+			} else {
+                $condition = str_replace($fieldName, 'FALSE', $condition);
 			}
 		}
 		return $condition;
