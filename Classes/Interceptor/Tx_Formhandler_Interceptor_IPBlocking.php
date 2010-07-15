@@ -126,6 +126,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 
 					if($res_log && $GLOBALS['TYPO3_DB']->sql_num_rows($res_log) > 0) {
 						$send = FALSE;
+						$GLOBALS['TYPO3_DB']->sql_free_result($res_log);
 					}
 				}
 				if($send) {
@@ -137,6 +138,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 				} else {
 					Tx_Formhandler_StaticFuncs::debugMessage('alert_mail_not_sent');
 				}
+				
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if($this->settings['redirectPage']) {
