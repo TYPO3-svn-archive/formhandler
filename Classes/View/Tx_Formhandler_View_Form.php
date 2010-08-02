@@ -509,7 +509,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$name = Tx_Formhandler_Globals::$formValuesPrefix . '[removeFile]';
 		}
 		$markers['###HIDDEN_FIELDS###'] .= '
-			<input type="hidden" id="' . Tx_Formhandler_Globals::$randomID . '-removeFile" name="' . $name . '" value="" />
+			<input type="hidden" id="removeFile-' . Tx_Formhandler_Globals::$randomID . '" name="' . $name . '" value="" />
 		';
 		
 		$name = 'removeFileField';
@@ -517,7 +517,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$name = Tx_Formhandler_Globals::$formValuesPrefix . '[removeFileField]';
 		}
 		$markers['###HIDDEN_FIELDS###'] .= '
-			<input type="hidden" id="' . Tx_Formhandler_Globals::$randomID . '-removeFileField" name="' . $name . '" value="" />
+			<input type="hidden" id="removeFileField-' . Tx_Formhandler_Globals::$randomID . '" name="' . $name . '" value="" />
 		';
 		
 		$name = 'submitField';
@@ -525,7 +525,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$name = Tx_Formhandler_Globals::$formValuesPrefix . '[submitField]';
 		}
 		$markers['###HIDDEN_FIELDS###'] .= '
-			<input type="hidden" id="' . Tx_Formhandler_Globals::$randomID . '-submitField" name="' . $name . '" value="" />
+			<input type="hidden" id="submitField-' . Tx_Formhandler_Globals::$randomID . '" name="' . $name . '" value="" />
 		';
 		
 		$markers['###formValuesPrefix###'] = Tx_Formhandler_Globals::$formValuesPrefix;
@@ -793,9 +793,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 							$submitName = Tx_Formhandler_Globals::$formValuesPrefix . '[' . $submitName . ']';
 						}
 						$onClick = "
-							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-removeFile').value='" . $uploadedFileName . "';
-							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-removeFileField').value='" . $field . "';
-							document.getElementById('" . Tx_Formhandler_Globals::$randomID . "-submitField').name='" . $submitName . "';
+							document.getElementById('removeFile-" . Tx_Formhandler_Globals::$randomID . "').value='" . $uploadedFileName . "';
+							document.getElementById('removeFileField-" . Tx_Formhandler_Globals::$randomID . "').value='" . $field . "';
+							document.getElementById('submitField-" . Tx_Formhandler_Globals::$randomID . "').name='" . $submitName . "';
 							
 						";
 						
