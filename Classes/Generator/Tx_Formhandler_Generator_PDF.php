@@ -142,8 +142,8 @@ class Tx_Formhandler_Generator_PDF {
 			$this->pdf->SetFont('Arial', '', 12);
 			$this->pdf->Cell(300, 100, 'No valid records found! Try to select more fields to export!', 0, 0, 'L');
 		}
-		$this->pdf->Output();
-
+		$this->pdf->Output('formhandler.pdf','I');
+		exit;
 	}
 
 	/**

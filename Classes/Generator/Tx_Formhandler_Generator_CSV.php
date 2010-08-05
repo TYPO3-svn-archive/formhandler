@@ -64,6 +64,7 @@ class Tx_Formhandler_Generator_CSV {
 		//require class for $this->csv
 		require_once('../../../Resources/PHP/csv.lib.php');
 		$data = array();
+		$dataSorted = array();
 
 		//build data array
 		foreach($records as $record) {
@@ -86,6 +87,13 @@ class Tx_Formhandler_Generator_CSV {
 				}
 			}
 		}
+		
+		// sort data
+		$dataSorted = array();
+		foreach($data as $array) {
+			$dataSorted[] = $this->sortArrayByArray($array, $exportParams);
+		}
+		$data = $dataSorted;
 
 		//init csv object
 		$this->csv = new export2CSV(',', "\n");
@@ -131,6 +139,17 @@ class Tx_Formhandler_Generator_CSV {
 		header('Content-Disposition: attachment; filename=formhandler.csv');
 		echo $this->csv;
 		die();
+	}
+	
+	private function sortArrayByArray($array, $orderArray) {
+		$ordered = array();
+		foreach($orderArray as $key) {
+			if(array_key_exists($key, $array)) {
+					$ordered[$key] = $array[$key];
+					unset($array[$key]);
+			}
+		}
+		return $ordered + $array;
 	}
 }
 ?>

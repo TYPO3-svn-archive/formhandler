@@ -133,18 +133,48 @@
 		}	
 	  }	
 	}
+
+	function confirmDelete() {
+			return confirm("###LLL:delete_question###");
+	}
+		
+	function pidSelectAll() {
+	  var pidFilter = document.getElementById("pidFilter");
+	  pidFilter.value = "*"	  
+	}
+	
+	function selectLimit(which) {
+		if (which > 0) {
+			var howMuch = document.getElementById("howMuch");
+			for (i = 0; i < howMuch.length; i++) {
+				if (howMuch.options[i].value == which) {
+					howMuch.options[i].selected = true;
+				}
+			}
+		}	
+		window.onload=function(){
+			selectLimit(###HOW_MUCH_JS###);
+		}
+	}
 </script>
 ###JS_CODE###
 
 ###FILTER_FORM###
-	<form action="###URL###" method="post">
+	<form action="###URL###" name="filter_form" method="post">
 	<input type="hidden" name="id" value="###UID###" />
 	<div class="filter">
 		<h2>###LLL:filter###</h2>
 		<table>
 			<tr>
 				<td class="label">###LLL:pid_label###</td>
-				<td><input type="text" name="formhandler[pidFilter]" value="###value_pidFilter###"/></td>
+				<td>
+					<input type="text" id="pidFilter" name="formhandler[pidFilter]" value="###UID###"/>
+					###PID_FILTER_ALL###
+				</td>
+			</tr>
+			<tr>
+				<td class="label">###LLL:ip_address###</td>
+				<td><input type="text" name="formhandler[ipFilter]" value="###IP###"/></td>
 			</tr>
 			<tr>
 				<td class="label">###LLL:startdate###</td>
@@ -162,6 +192,22 @@
 
 			</tr>
 			<tr>
+				<td class="label">###LLL:pagination_how_much###</td>
+				<td>
+					<select id="howMuch" name="formhandler[howmuch]" size="1">
+						<option value="10" ###selected_howmuch_10###>10 ###LLL:pagination_entries###</option>
+						<option value="20" ###selected_howmuch_20###>20 ###LLL:pagination_entries###</option>
+						<option value="50" ###selected_howmuch_50###>50 ###LLL:pagination_entries###</option>
+						<option value="100" ###selected_howmuch_100###>100 ###LLL:pagination_entries###</option>
+						<option value="500" ###selected_howmuch_500###>500 ###LLL:pagination_entries###</option>
+						<option value="1000" ###selected_howmuch_1000###>1000 ###LLL:pagination_entries###</option>
+						<option value="2500" ###selected_howmuch_2500###>2500 ###LLL:pagination_entries###</option>
+						<option value="5000" ###selected_howmuch_5000###>5000 ###LLL:pagination_entries###</option>
+						<option value="1000000" ###selected_howmuch_1000000###>###LLL:pagination_all_entries###</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td><input type="submit" value="###LLL:filter###" /></td>
 				<td>&nbsp;</td>
 			</tr>
@@ -174,16 +220,26 @@
 ###DELETE_FIELDS###
 <div class="delete_fields">
 	<input type="hidden" name="id" value="###UID###" />
-	<input type="submit" value="Delete selected" name="formhandler[delete]" />
+	<input type="submit" onclick=" return confirmDelete();" value="###LLL:delete_selected###" name="formhandler[delete]" />
 </div>
 ###DELETE_FIELDS###
 
 ###FUNCTION_AREA###
 <form id="formhandler_module_form" action="###URL###" method="post">
 <div>
-###EXPORT_FIELDS_MARKER###
-###DELETE_FIELDS_MARKER###
-###SELECTION_BOX_MARKER###
+<div class="ui-helper-clearfix">
+	###EXPORT_FIELDS_MARKER###
+	###DELETE_FIELDS_MARKER###
+</div>
+<hr />
+<div class="ui-helper-clearfix">
+	###SELECTION_BOX_MARKER###
+	<div class="which_block">
+		###WHICH_ENTRIES_MARKER###
+		<br />
+		###WHICH_PAGES_MARKER###
+	</div>
+</div>
 <div class="clear"></div>
 </div>
 
@@ -210,6 +266,10 @@
 
 </table>
 </div>
+<div class="browsebox ui-helper-clearfix">
+	<strong class="label">###LLL:ENTRIES###</strong>
+	###WHICH_PAGEBROWSER###
+</div>
 ###LIST_TABLE###
 
 ###LIST_TABLE_ROW###
@@ -227,43 +287,39 @@
 ###LIST_TABLE_ROW###
 
 ###EXPORT_FIELDS###
-Export selected as: 
-<input type="hidden" name="id" value="###UID###" />
-<input type="submit" value="PDF" name="formhandler[renderMethod]" />
-<input type="submit" value="CSV" name="formhandler[renderMethod]" />
-
+<div class="export_fields">
+	Export selected as: 
+	<input type="hidden" name="id" value="###UID###" />
+	<input type="submit" value="PDF" name="formhandler[renderMethod]" />
+	<input type="submit" value="CSV" name="formhandler[renderMethod]" />
+</div>
 ###EXPORT_FIELDS###
 
 
 ###DETAIL_VIEW###
 <div id="formhandler">
-	<div>
+	<div class="ui-helper-clearfix">
 		<div class="detailLabel"><h4>###LLL:page_id###</h4></div>
 		<div class="detailValue">###PID###</div>
-		<div class="clear"></div>
 	</div>
-	<div>
+	<div class="ui-helper-clearfix">
 		<div class="detailLabel"><h4>###LLL:crdate###</h4></div>
 		<div class="detailValue">###CRDATE###</div>
-		<div class="clear"></div>
 	</div>
-	<div>
+	<div class="ui-helper-clearfix">
 		<div class="detailLabel"><h4>###LLL:ip_address###</h4></div>
 		<div class="detailValue">###IP###</div>
-		<div class="clear"></div>
 	</div>
-	<div>
-		<div class="detailLabel"><h4>###LLL:params###</h4></div>
-		<div class="clear"></div>
+	<div class="ui-helper-clearfix">
+		<div class="detailLabel ui-helper-clearfix"><h4>###LLL:params###</h4></div>
 		<div class="params_table">
 			###PARAMS###
 		</div>
 	</div>
 	<hr />
-	<div>
+	<div class="ui-helper-clearfix">
 		<div class="detailLabel"><h4>###LLL:export_as###</h4></div>
 		<div class="detailValue">###EXPORT_LINKS###</div>
-		<div class="clear"></div>
 	</div>
 	<div class="back_link">
 		###BACK_LINK###

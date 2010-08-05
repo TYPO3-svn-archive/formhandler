@@ -160,7 +160,7 @@ class Tx_Formhandler_Generator_TCPDF {
 		}
 		
 		$this->pdf->Output('formhandler.pdf','D');
-		
+		exit;
 
 	}
 

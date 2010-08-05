@@ -12,6 +12,8 @@
  * Public License for more details.                                       *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Controller/Module/class.tx_formhandler_mod1_pagination.php');
+
 /**
  * Controller for Backend Module of Formhandler
  *
@@ -92,6 +94,10 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	public function setId($id) {
 		$this->id = $id;
 	}
+	
+	public function getId() {
+		return $this->id;
+	}
 
 	/**
 	 * init method to load translation data and set log table.
@@ -104,6 +110,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		global $LANG;
 		$LANG->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');
 		$this->logTable = 'tx_formhandler_log';
+		$this->pageBrowser = new tx_formhandler_mod1_pagination($this->countRecords(), $this);
 	}
 
 	/**
@@ -127,6 +134,8 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 			//delete records
 			$this->deleteRecords($params['markedUids']);
+			
+			
 
 			//select all records
 			$records = $this->fetchRecords();
@@ -147,6 +156,8 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 				//show index table
 			} else {
+				
+				$this->pageBrowser = new tx_formhandler_mod1_pagination($this->countRecords(), $this);
 
 				//select all records
 				$records = $this->fetchRecords();
@@ -200,7 +211,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
 	protected function deleteRecords($uids) {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->logTable, ('uid IN (' . implode(',', $uids) . ')'));
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->logTable, ('uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList(implode(',', $uids)) . ')'));
 	}
 
 	/**
@@ -247,9 +258,18 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				$allParams = array_merge($allParams, $row['params']);
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1'); 
+			$configParams = array();
 			
-			//if fields were chosen in selection view, export the records using the selected fields
-			if(isset($gp['exportParams'])) {
+			// check if TSconfig filter is set
+			if (strlen($tsconfig['properties']['config.']['csv']) > 0) {
+				$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['pdf'], 1);
+				$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_TCPDF');
+				$generator->generateModulePDF($records, $configParams);	
+			} elseif(isset($gp['exportParams'])) {
+				
+				//if fields were chosen in selection view, export the records using the selected fields
+				
 				$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_TCPDF');
 				$generator->generateModulePDF($records, $gp['exportParams']);
 				
@@ -315,9 +335,17 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		
 			//only one format found
 			if($availableFormatsCount === 1) {
-				
-				//if fields were chosen in the selection view, perform the export
-				if(isset($params['exportParams'])) {
+				$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1'); 
+				$configParams = array();
+				// check if TSconfig filter is set
+				if ($tsconfig['properties']['config.']['csv'] != "") {
+					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
+					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
+					$generator->generateModuleCSV($records, $configParams);	
+				} elseif(isset($params['exportParams'])) {
+					
+					//if fields were chosen in the selection view, perform the export
+					
 					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
 					$generator->generateModuleCSV($records, $params['exportParams']);
 
@@ -493,7 +521,14 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
 	protected function getSelectionJS() {
-		return Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###JS_CODE###');
+		global $LANG;
+		$content = "";		
+		$code = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###JS_CODE###');	
+		$markers = array();
+		$markers['###HOW_MUCH_JS###'] = ($this->pageBrowser) ? intval($this->pageBrowser->getMaxResPerPage()) : 0;
+		$markers['###LLL:delete_question###'] = $LANG->getLL('delete_question');
+		$content = Tx_Formhandler_StaticFuncs::substituteMarkerArray($code, $markers);
+		return $content;
 	}
 
 	/**
@@ -640,7 +675,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$where = $this->buildWhereClause();
 
 		//select the records
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params,is_spam', $this->logTable, $where, '', 'crdate DESC');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params,is_spam', $this->logTable, $where, '', 'crdate DESC', $this->pageBrowser->getSqlLimitClause());
 
 		//if records found
 		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
@@ -652,6 +687,21 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $records;
+	}
+	
+	protected function countRecords() {
+		//build WHERE clause
+		$where = $this->buildWhereClause();		
+
+		//select the records
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COUNT(*)', $this->logTable, $where, '', 'crdate DESC');
+		$count = 0;
+		if ($res) {		   
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);		
+			$count = $row[0]; 
+		}
+		return $count;
 	}
 
 	/**
@@ -665,11 +715,44 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		//init gp params
 		$params = t3lib_div::_GP('formhandler');
 		$where = array();
-
-		//if only records of a specific PID should be shown
-		if(strlen(trim($params['pidFilter'])) > 0) {
-			$where[] = 'pid IN (' . $params['pidFilter'] . ')';
+		
+		// Get tsconfig from current page
+		if ($this->id) {
+			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'tx_formhandler_mod1'); 
 		}
+		$pidFilter = '';
+		
+		if(strlen(trim($params['pidFilter'])) > 0) {
+			$pidFilter = $params['pidFilter'];
+ 		}
+
+		if(strlen(trim($params['pidFilter'])) > 0 && trim($params['pidFilter']) != "*") {
+			$pids = t3lib_div::trimExplode(',', $params['pidFilter'], 1);
+			$pid_search = array();
+			// check is page shall be accessed by current BE user
+			foreach($pids as $pid) {
+				if (t3lib_BEfunc::readPageAccess(intval($pid))) $pid_search[] = intval($pid);
+			}
+			// check if there's a valid pid left
+			$this->pidFilter = (empty($pid_search)) ? 0 : implode(",", $pid_search);
+			$where[] = 'pid IN (' . $this->pidFilter . ')';
+		// show all entries (admin only)
+		} else if (trim($params['pidFilter']) == "*" && $GLOBALS['BE_USER']->user['admin']) {
+			$this->pidFilter = "*";
+		// show clicked page (is always accessable)
+		} else {		
+			$where[] = 'pid = ' . $this->id;
+			$this->pidFilter = $this->id;
+		}	
+		
+		if(trim($params['ipFilter']) > 0) {
+			$ips = t3lib_div::trimExplode(',', $params['ipFilter'], 1);
+			$ip_search = array();
+			foreach($ips as $value) {
+				$ip_search[] = "'" . htmlspecialchars($value) . "'";
+			}
+			$where[] = 'ip IN (' . implode(",", $ip_search) . ')';
+ 		}
 
 		//only records submitted after given timestamp
 		if(strlen(trim($params['startdateFilter'])) > 0) {
@@ -701,16 +784,34 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		//init gp params
 		$params = t3lib_div::_GP('formhandler');
 
-		$filter = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###FILTER_FORM###');
+		$filter = '';
+		$filter .= $this->getSelectionJS();
+		$filter .= Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###FILTER_FORM###');
 
 		$markers = array();
-		$markers['###URL###'] = $_SERVER['PHP_SELF'];
-		$markers['###UID###'] = $this->id;
-		$markers['###LLL:filter###'] = $LANG->getLL('filter');
-		$markers['###LLL:pid_label###'] = $LANG->getLL('pid_label');
-		$markers['###LLL:cal###'] = $LANG->getLL('cal');
-		$markers['###LLL:startdate###'] = $LANG->getLL('startdate');
-		$markers['###LLL:enddate###'] = $LANG->getLL('enddate');
+		$markers['###URL###'] = 			$_SERVER['PHP_SELF'];
+		$markers['###UID###'] = 			$this->pidFilter;
+		$markers['###IP###'] = 				htmlspecialchars($params['ipFilter']);
+		$markers['###value_startdate###'] = htmlspecialchars($params['startdateFilter']);
+		$markers['###value_enddate###'] = 	htmlspecialchars($params['enddateFilter']);
+		$markers['###selected_howmuch_' . $params['howmuch'] . '###'] = 'selected="selected"';	
+		
+		// display show all function
+		if ($GLOBALS['BE_USER']->user['admin']) {
+			$markers['###PID_FILTER_ALL###'] = '<input type="button" onclick="pidSelectAll()" id="pidFilter_all" value="' . $LANG->getLL('select_all') . '"/>';		
+		} else {
+			$markers['###PID_FILTER_ALL###'] = '';		
+		}
+		
+		$markers['###LLL:filter###'] = 					$LANG->getLL('filter');
+		$markers['###LLL:pid_label###'] = 				$LANG->getLL('pid_label');
+		$markers['###LLL:ip_address###'] = 				$LANG->getLL('ip_address');
+		$markers['###LLL:pagination_how_much###'] = 	$LANG->getLL('pagination_how_much');
+		$markers['###LLL:pagination_entries###'] = 		$LANG->getLL('pagination_entries');
+		$markers['###LLL:pagination_all_entries###'] = 	$LANG->getLL('pagination_all_entries');
+		$markers['###LLL:cal###'] = 					$LANG->getLL('cal');
+		$markers['###LLL:startdate###'] = 				$LANG->getLL('startdate');
+		$markers['###LLL:enddate###'] = 				$LANG->getLL('enddate');
 
 		$this->addValueMarkers($markers, $params);
 
@@ -756,7 +857,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
 	protected function getFunctionArea() {
-
+		global $LANG;
 		$code = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###FUNCTION_AREA###');
 		$markers = array();
 		$markers['###URL###'] = $_SERVER['PHP_SELF'];
@@ -766,9 +867,13 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$markers['###DELETE_FIELDS_MARKER###'] = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###DELETE_FIELDS###');
 		$markers['###SELECTION_BOX_MARKER###'] = $this->getSelectionBox();
 		
-		$content = Tx_Formhandler_StaticFuncs::substituteMarkerArray($code, $markers);
-		$markers = array();
-		$markers['###UID###'] = $this->id;
+		$markers['###WHICH_ENTRIES_MARKER###'] = $this->pageBrowser->getResultBox()->fromRec . $this->pageBrowser->getResultBox()->toRec . $this->pageBrowser->getResultBox()->totalRec;
+		$markers['###WHICH_PAGES_MARKER###'] = $this->pageBrowser->getResultBox()->curPage . ' ' . $this->pageBrowser->getResultBox()->totalPage;
+ 		
+ 		$content = Tx_Formhandler_StaticFuncs::substituteMarkerArray($code, $markers);
+ 		$markers = array();
+ 		$markers['###UID###'] = $this->id;
+		$markers['###LLL:delete_selected###'] = $LANG->getLL('delete_selected');
 		return Tx_Formhandler_StaticFuncs::substituteMarkerArray($content, $markers);
 	}
 
@@ -796,9 +901,12 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 */
 	protected function getTable(&$records) {
 		global $LANG;
+		
+		//get filter
+		$table = $this->getFilterSection();
 
 		if(count($records) == 0) {
-			return '<div>' . $LANG->getLL('no_records') . '</div>';
+			return $table . '<div>' . $LANG->getLL('no_records') . '</div>';
 		}
 
 
@@ -806,11 +914,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$params = t3lib_div::_GP('formhandler');
 
 
-		//get filter
-		$table = $this->getFilterSection();
 		
-		//add JavaScript
-		$table .= $this->getSelectionJS();
 		$table .= $this->getFunctionArea();
 		$tableCode = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###LIST_TABLE###');
 
@@ -853,10 +957,15 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$count++;
 			$tableMarkers['###ROWS###'] .= Tx_Formhandler_StaticFuncs::substituteMarkerArray($rowCode, $markers);
 		}
+		
+		// add pagination
+		$tableMarkers['###LLL:ENTRIES###'] = $LANG->getLL('pagination_show_entries');
+		$tableMarkers['###WHICH_PAGEBROWSER###'] = $this->pageBrowser->displayBrowseBox();
 
 		//add Export as option
 		$table .= Tx_Formhandler_StaticFuncs::substituteMarkerArray($tableCode, $tableMarkers);
 		$table .= Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###EXPORT_FIELDS###');
+		
 		$markers = array();
 		$markers['###UID###'] = $this->id;
 		$table = Tx_Formhandler_StaticFuncs::substituteMarkerArray($table, $markers);

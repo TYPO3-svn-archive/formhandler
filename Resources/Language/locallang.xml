@@ -32,6 +32,7 @@
 			<label index="enddate">End date</label>
 			<label index="detail_view">Detail view</label>
 			<label index="delete_selected">Delete selected</label>
+			<label index="delete_question">Remove selected records?</label>
 			<label index="show">Show</label>
 			<label index="cal">Cal</label>
 			<label index="no_records">No records found!</label>
@@ -41,7 +42,30 @@
 			<label index="mathguard_question"> security question, please solve:</label>
 			<label index="clear_selected_tables">Clear selected tables</label>
 			<label index="table">Table</label>
-			<label index="total_rows">Total rows</label>
+			<label index="pagination_how_much">Display limit: </label>
+            <label index="pagination_entries">Entries</label>
+            <label index="pagination_show_entries">Show entries:</label>
+            <label index="pagination_all_entries">All entries</label>
+            <label index="pagination_fromRec">%s - </label>
+            <label index="pagination_toRec">%s</label>
+            <label index="pagination_totalRec"> of %s entries</label>
+            <label index="pagination_curPage">Page %s of</label>
+            <label index="pagination_totalPage">%s page</label>
+            <label index="pagination_totalPages">%s</label>
+            <label index="pagination_page">Page %s</label>
+            <label index="pagination_pages">of %s Pages</label>
+            <label index="pagination_first_tt">First page</label>
+            <label index="pagination_previous_tt">Previous page</label>
+            <label index="pagination_current_tt">Current page (%s)</label>
+            <label index="pagination_page_tt">Page (%s)</label>
+            <label index="pagination_next_tt">Next page</label>
+            <label index="pagination_last_tt">Last page</label>
+            <label index="pagination_first_lbl"><![CDATA[|&lt;]]></label>
+            <label index="pagination_previous_lbl"><![CDATA[&lt;&lt;]]></label>
+            <label index="pagination_page_lbl">[%s-%s]</label>
+            <label index="pagination_current_lbl">%s-%s</label>
+            <label index="pagination_next_lbl"><![CDATA[&gt;&gt;]]></label>
+            <label index="pagination_last_lbl"><![CDATA[&gt;|]]></label>
 		</languageKey>
 		<languageKey index="en" type="array">
 			<label index="title">Formhandler</label>
@@ -74,6 +98,7 @@
 			<label index="enddate">End date</label>
 			<label index="detail_view">Detail view</label>
 			<label index="delete_selected">Delete selected</label>
+			<label index="delete_question">Remove selected records?</label>
 			<label index="show">Show</label>
 			<label index="cal">Cal</label>
 			<label index="no_records">No records found!</label>
@@ -83,7 +108,30 @@
 			<label index="mathguard_question"> security question, please solve:</label>
 			<label index="clear_selected_tables">Clear selected tables</label>
 			<label index="table">Table</label>
-			<label index="total_rows">Total rows</label>
+			<label index="pagination_how_much">Display limit: </label>
+            <label index="pagination_entries">Entries</label>
+            <label index="pagination_show_entries">Show entries:</label>
+            <label index="pagination_all_entries">All entries</label>
+            <label index="pagination_fromRec">%s - </label>
+            <label index="pagination_toRec">%s</label>
+            <label index="pagination_totalRec"> of %s entries</label>
+            <label index="pagination_curPage">Page %s of</label>
+            <label index="pagination_totalPage">%s page</label>
+            <label index="pagination_totalPages">%s</label>
+            <label index="pagination_page">Page %s</label>
+            <label index="pagination_pages">of %s Pages</label>
+            <label index="pagination_first_tt">First page</label>
+            <label index="pagination_previous_tt">Previous page</label>
+            <label index="pagination_current_tt">Current page (%s)</label>
+            <label index="pagination_page_tt">Page (%s)</label>
+            <label index="pagination_next_tt">Next page</label>
+            <label index="pagination_last_tt">Last page</label>
+            <label index="pagination_first_lbl"><![CDATA[|&lt;]]></label>
+            <label index="pagination_previous_lbl"><![CDATA[&lt;&lt;]]></label>
+            <label index="pagination_page_lbl">[%s-%s]</label>
+            <label index="pagination_current_lbl">%s-%s</label>
+            <label index="pagination_next_lbl"><![CDATA[&gt;&gt;]]></label>
+            <label index="pagination_last_lbl"><![CDATA[&gt;|]]></label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="title">Formhandler</label>
@@ -118,6 +166,7 @@
 			<label index="enddate">Endzeitpunkt</label>
 			<label index="detail_view">Detailansicht</label>
 			<label index="delete_selected">Ausgewählte löschen</label>
+			<label index="delete_question">Ausgewählte Datensätze wirklich löschen?</label>
 			<label index="show">Anzeigen</label>
 			<label index="cal">Kalender</label>
 			<label index="no_records">Keine Datensätze gefunden!</label>
@@ -125,7 +174,30 @@
 			<label index="crdate">Datum</label>
 			<label index="clear_selected_tables">Ausgewählte Tabellen leeren</label>
 			<label index="table">Tabelle</label>
-			<label index="total_rows">Einträge</label>
+			<label index="pagination_how_much">Anzeige Limit: </label>
+            <label index="pagination_entries">Datensätze</label>
+            <label index="pagination_show_entries">Zeige Datensätze:</label>
+            <label index="pagination_all_entries">Alle Datensätze</label>
+            <label index="pagination_fromRec">%s - </label>
+            <label index="pagination_toRec">%s</label>
+            <label index="pagination_totalRec"> von %s Einträgen</label>
+            <label index="pagination_curPage">Seite %s von</label>
+            <label index="pagination_totalPage">%s Seiten</label>
+            <label index="pagination_totalPages"> %s</label>
+            <label index="pagination_page">Seite %s</label>
+            <label index="pagination_pages">von %s Seiten</label>
+            <label index="pagination_first_tt">Erste Seite</label>
+            <label index="pagination_previous_tt">Letzte Seite</label>
+            <label index="pagination_current_tt">Aktuelle Seite (%s)</label>
+            <label index="pagination_page_tt">Seite (%s)</label>
+            <label index="pagination_next_tt">Nächste Seite</label>
+            <label index="pagination_last_tt">Letzte Seite</label>
+            <label index="pagination_first_lbl"><![CDATA[|&lt;]]></label>
+            <label index="pagination_previous_lbl"><![CDATA[&lt;&lt;]]></label>
+            <label index="pagination_page_lbl">[%s-%s]</label>
+            <label index="pagination_current_lbl">%s-%s</label>
+            <label index="pagination_next_lbl"><![CDATA[&gt;&gt;]]></label>
+            <label index="pagination_last_lbl"><![CDATA[&gt;|]]></label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="title">Formhandler</label>
