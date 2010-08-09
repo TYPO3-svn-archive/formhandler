@@ -1084,7 +1084,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	protected function getValueMarkers($values, $level = 0, $prefix = 'value_') {
 		
 		$markers = array();
-		
+		$arrayValueSeparator = ',';
+		if($this->settings['arrayValueSeparator']) {
+			$arrayValueSeparator = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'arrayValueSeparator');
+		}
 		if (is_array($values)) {
 			foreach($values as $k => $v) {
 				$currPrefix = $prefix;
@@ -1096,7 +1099,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				if (is_array($v)) {
 					$level++;
 					$markers = array_merge($markers, $this->getValueMarkers($v, $level, $currPrefix));
-					$v = implode(',', $v);
+					$v = implode($arrayValueSeparator, $v);
 					$level--;
 				}
 				$v = trim($v);

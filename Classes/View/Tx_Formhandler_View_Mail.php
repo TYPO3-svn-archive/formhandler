@@ -47,7 +47,12 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 			$this->langFiles = Tx_Formhandler_Globals::$langFiles;
 		}
 
-		if($errors['mode'] != 'plain') {
+		$componentSettings = $this->getComponentSettings();
+		if($componentSettings[$errors['mode']][$errors['suffix'] . '.']['arrayValueSeparator']) {
+			$this->settings['arrayValueSeparator'] = $componentSettings[$errors['mode']][$errors['suffix'] . '.']['arrayValueSeparator'];
+			$this->settings['arrayValueSeparator.'] = $componentSettings[$errors['mode']][$errors['suffix'] . '.']['arrayValueSeparator.'];
+		}
+		if($errors['suffix'] != 'plain') {
 			$this->sanitizeMarkers();
 		}
 		

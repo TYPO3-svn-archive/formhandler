@@ -106,7 +106,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			}
 		}
 		
-		return $view->render($this->gp, array('mode' => $suffix));
+		return $view->render($this->gp, array('mode' => $mode, 'suffix' => $suffix));
 	}
 
 	/**
@@ -500,7 +500,9 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			'return_path',
 			'attachment',
 			'attachPDF',
-			'htmlEmailAsAttachment'
+			'htmlEmailAsAttachment',
+			'plain.',
+			'html.'
 		);
 
 		$emailSettings['admin'] = $this->parseEmailSettingsByType($emailSettings['admin.'], 'admin', $options);
@@ -584,6 +586,16 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 					case 'filePrefix':
 						if(isset($currentSettings['filePrefix'])) {
 							$emailSettings['filePrefix'] = $currentSettings['filePrefix'];
+						}
+					break;
+					case 'plain.':
+						if(isset($currentSettings['plain.'])) {
+							$emailSettings['plain.'] = $currentSettings['plain.'];
+						}
+					break;
+					case 'html.':
+						if(isset($currentSettings['html.'])) {
+							$emailSettings['html.'] = $currentSettings['html.'];
 						}
 					break;
 				}
