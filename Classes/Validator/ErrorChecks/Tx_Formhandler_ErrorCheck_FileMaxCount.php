@@ -38,7 +38,7 @@ class Tx_Formhandler_ErrorCheck_FileMaxCount extends Tx_Formhandler_AbstractErro
 		$settings = Tx_Formhandler_Session::get('settings');
 		$currentStep = Tx_Formhandler_Session::get('currentStep');
 		$lastStep = Tx_Formhandler_Session::get('lastStep');
-		$maxCount = $check['params']['maxCount'];
+		$maxCount = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'maxCount');
 		if(	is_array($files[$name]) &&
 			count($files[$name]) >= $maxCount &&
 			$currentStep == $lastStep) {

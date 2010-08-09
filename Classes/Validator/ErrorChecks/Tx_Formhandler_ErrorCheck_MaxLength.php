@@ -33,7 +33,7 @@ class Tx_Formhandler_ErrorCheck_MaxLength extends Tx_Formhandler_AbstractErrorCh
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		$max = $check['params']['value'];
+		$max = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'value');
 		if(	isset($gp[$name]) &&
 			strlen(trim($gp[$name])) > 0 &&
 			intval($max) > 0 &&

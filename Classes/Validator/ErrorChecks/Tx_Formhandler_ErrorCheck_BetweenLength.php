@@ -33,8 +33,8 @@ class Tx_Formhandler_ErrorCheck_BetweenLength extends Tx_Formhandler_AbstractErr
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		$min = $check['params']['minValue'];
-		$max = $check['params']['maxValue'];
+		$min = intval(Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'minValue'));
+		$max = intval(Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'maxValue'));
 		if(	isset($gp[$name]) &&
 			(strlen($gp[$name]) < intval($min) || 
 			strlen($gp[$name]) > intval($max))) {

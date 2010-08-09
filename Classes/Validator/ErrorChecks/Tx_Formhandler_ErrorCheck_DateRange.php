@@ -35,9 +35,12 @@ class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date
 		$checkFailed = '';
 
 		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
-			$min = $check['params']['min'];
-			$max = $check['params']['max'];
-			$pattern = $check['params']['pattern'];
+			$min = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'min');
+			$max = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'max');
+			$pattern = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'pattern');
+			print $min;
+			print "<br />";
+			print $max;
 			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
 			$sep = $res[1];
 	

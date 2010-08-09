@@ -38,7 +38,7 @@ class Tx_Formhandler_ErrorCheck_FileMinCount extends Tx_Formhandler_AbstractErro
 		$settings = Tx_Formhandler_Session::get('settings');
 		$currentStep = Tx_Formhandler_Session::get('currentStep');
 		$lastStep = Tx_Formhandler_Session::get('lastStep');
-		$minCount = $check['params']['minCount'];
+		$minCount = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'minCount');
 		if (is_array($files[$name]) &&
 			$currentStep > $lastStep) {
 			
