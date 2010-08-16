@@ -147,7 +147,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		//should show index
-		if(!$params['detailId'] && !$params['markedUids']) {
+		if(!$params['detailId'] && !$params['markedUids'] && !$params['csvFormat']) {
 
 			//if log table doesn't exist, show error
 			$tables = $GLOBALS['TYPO3_DB']->admin_get_tables();
@@ -193,10 +193,12 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				//save single record as CSV
 				if($params['detailId']) {
 					return $this->generateCSV($params['detailId']);
-
+					
 					//save many records as CSV
 				} elseif(isset($params['markedUids']) && is_array($params['markedUids'])) {
 					return $this->generateCSV($params['markedUids']);
+				} else {
+					return $this->generateCSV(FALSE);
 				}
 
 			}
@@ -295,20 +297,25 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
 	protected function generateCSV($detailId) {
-
-		/*
-		 * if there is only one record to export, initialize an array with the one uid
-		 * to ensure that foreach loops will not crash
-		 */
-		if(!is_array($detailId)) {
+		$where = '';
+		
+		if(!$detailId) {
+			$where = '1=1';
+		} elseif(!is_array($detailId)) {
+			
+			/*
+			 * if there is only one record to export, initialize an array with the one uid
+			 * to ensure that foreach loops will not crash
+			 */
 			$detailId = array($detailId);
+			$where = 'uid IN (' . implode(',', $detailId) . ')';
 		}
 
 		//init gp params
 		$params = t3lib_div::_GP('formhandler');
 
 		//select the records to export
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params,key_hash', $this->logTable, ('uid IN (' . implode(',', $detailId) . ')'));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params,key_hash', $this->logTable, $where);
 
 		//if record were found
 		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
@@ -356,15 +363,20 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 				//more than one format and user has chosen a format to export
 			} elseif(isset($params['csvFormat'])) {
-
-				//select the format
-				$format = $hashes[$params['csvFormat']];
 				$renderRecords = array();
+				if($params['csvFormat'] === '*') {
+					$renderRecords = $records;
+				} else {
 
-				//find out which records belong to this format
-				foreach($records as $record) {
-					if(!strcmp($record['key_hash'], $format)) {
-						$renderRecords[] = $record;
+					//select the format
+					$format = $hashes[$params['csvFormat']];
+					$renderRecords = array();
+	
+					//find out which records belong to this format
+					foreach($records as $record) {
+						if(!strcmp($record['key_hash'], $format)) {
+							$renderRecords[] = $record;
+						}
 					}
 				}
 
@@ -375,7 +387,19 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 					//no fields chosen, show selection view.
 				} else {
-					return $this->generateCSVExportFieldsSelector($renderRecords[0]['params']);
+					$fields = $renderRecords[0]['params'];
+					if($params['csvFormat'] === '*') {
+						$exportParams = array();
+						foreach($renderRecords as $record) {
+							foreach($record['params'] as $key=>$value) {
+								if(!array_key_exists($key, $exportParams)) {
+									$exportParams[$key] = $value;
+								}
+							}
+						}
+						$fields = $exportParams;
+					}
+					return $this->generateCSVExportFieldsSelector($fields);
 				}
 
 				//more than one format and none chosen by now, show format selection view.
@@ -571,12 +595,23 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 					$formatMarkers['###HIDDEN_FIELDS###'] .= '<input type="hidden" name="formhandler[markedUids][]" value="' . $id . '" />';
 				}
 				$formatMarkers['###KEY###'] = $key;
+				$formatMarkers['###UID###'] = 0;
 				$formatMarkers['###LLL:export###'] = $LANG->getLL('export');
 				$formatMarkers['###FORMAT###'] = implode(',', array_keys($format));
 				$markers['###FORMATS###'] .= Tx_Formhandler_StaticFuncs::substituteMarkerArray($code, $formatMarkers);
 			}
 			
 		}
+		$code = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###SINGLE_FORMAT###');
+		$formatMarkers = array();
+		$formatMarkers['###URL###'] = $_SERVER['PHP_SELF'];
+		$formatMarkers['###HIDDEN_FIELDS###'] = '';
+		$formatMarkers['###KEY###'] = '*';
+		$formatMarkers['###UID###'] = 0;
+		$formatMarkers['###LLL:export###'] = $LANG->getLL('export_all');
+		$formatMarkers['###FORMAT###'] = '';
+		$markers['###FORMATS###'] .= Tx_Formhandler_StaticFuncs::substituteMarkerArray($code, $formatMarkers);
+		
 		$markers['###UID###'] = $this->id;
 		$markers['###LLL:formats_found###'] = sprintf($LANG->getLL('formats_found'), $foundFormats);
 		$markers['###BACK_URL###'] = $_SERVER['PHP_SELF'];

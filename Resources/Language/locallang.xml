@@ -12,6 +12,7 @@
 			<label index="select_all">Select all</label>
 			<label index="deselect_all">Deselect all</label>
 			<label index="export">Export</label>
+			<label index="export_all">Export all</label>
 			<label index="export_as">Export as</label>
 			<label index="ip_address">IP address</label>
 			<label index="submission_date">Submission date</label>
@@ -78,6 +79,7 @@
 			<label index="select_all">Select all</label>
 			<label index="deselect_all">Deselect all</label>
 			<label index="export">Export</label>
+			<label index="export_all">Export all</label>
 			<label index="export_as">Export as</label>
 			<label index="ip_address">IP address</label>
 			<label index="submission_date">Submission date</label>
@@ -146,6 +148,7 @@
 			<label index="select_all">Alle auswählen</label>
 			<label index="deselect_all">Auswahl aufheben</label>
 			<label index="export">Exportieren</label>
+			<label index="export_all">Alle exportieren</label>
 			<label index="export_as">Exportieren als</label>
 			<label index="ip_address">IP-Adresse</label>
 			<label index="submission_date">Absendedatum</label>
