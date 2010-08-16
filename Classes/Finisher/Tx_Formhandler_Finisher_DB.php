@@ -108,20 +108,38 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			//query the database
 			$this->save($queryFields);
 			
-			//get db uid
+			if(!is_array($this->gp['saveDB'])) {
+				$this->gp['saveDB'] = array();
+			}
+			
+			//Get DB info, including UID
 			if(!$this->doUpdate) {
 				$this->gp['inserted_uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
 				$this->gp[$this->table . '_inserted_uid'] = $this->gp['inserted_uid'];
-				if(!is_array($this->gp['saveDB'])) {
-					$this->gp['saveDB'] = array();
-				}
 				$info = array(
 					'table' => $this->table,
 					'uid' => $this->gp['inserted_uid'],
 					'uidField' => $this->key
 				);
 				array_push($this->gp['saveDB'], $info);
-			}	
+			} else {
+				$uid = $this->getUpdateUid();
+				$info = array(
+					'table' => $this->table,
+					'uid' => $uid,
+					'uidField' => $this->key
+				);
+				array_push($this->gp['saveDB'], $info);
+			}
+			
+			//Insert the data written to DB into GP array
+			$dataKeyName = $this->table;
+			$dataKeyIndex = 1;
+			while(isset($this->gp['saveDB'][$dataKeyName])) {
+				$dataKeyIndex++;
+				$dataKeyName = $this->table . '_' . $dataKeyIndex;
+			}
+			$this->gp['saveDB'][$dataKeyName] = $queryFields;
 		}
 
 		return $this->gp;
@@ -174,14 +192,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		} else {
 				
 			//check if uid of record to update is in GP
-			$uid = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'key_value');
-			if(!$uid) {
-				$uid = $this->gp[$this->key];
-			}
-			if(!$uid) {
-				$uid = $this->gp['inserted_uid'];
-			}
-			
+			$uid = $this->getUpdateUid();
+						
 			if($uid) {
 				$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
 				Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
@@ -343,6 +355,21 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		}
 		return implode(',', $filenames);
 	}
-
+	
+	/**
+	 * Returns current UID to use for updating the DB.
+	 * @return int UID
+	 */
+	protected function getUpdateUid() {
+		$uid = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'key_value');
+		if(!$uid) {
+			$uid = $this->gp[$this->key];
+		}
+		if(!$uid) {
+			$uid = $this->gp['inserted_uid'];
+		}
+		return $uid;
+	}
+	
 }
 ?>
