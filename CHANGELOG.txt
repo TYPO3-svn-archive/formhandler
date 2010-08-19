@@ -1,5 +1,324 @@
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+---------------------------- Version 0.9.8 -----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+r36995 | reinhardfuehricht | 2010-08-19 17:13:06 +0200 (Don, 19. Aug 2010) | 1 Zeile
+
+- FIX: Ajax validation didn't work because of a typo
+------------------------------------------------------------------------
+r36867 | mabolek | 2010-08-17 10:06:14 +0200 (Die, 17. Aug 2010) | 1 Zeile
+
+Bug #9248: String length related ErrorChecks not multibyte compatible
+------------------------------------------------------------------------
+r36849 | reinhardfuehricht | 2010-08-16 17:54:38 +0200 (Mon, 16. Aug 2010) | 1 Zeile
+
+- FIX #9328: Using required only for some fields results to export problems
+------------------------------------------------------------------------
+r36840 | mabolek | 2010-08-16 16:23:47 +0200 (Mon, 16. Aug 2010) | 1 Zeile
+
+Updated manual.
+------------------------------------------------------------------------
+r36838 | mabolek | 2010-08-16 15:52:00 +0200 (Mon, 16. Aug 2010) | 1 Zeile
+
+Feature #8953: Tx_Formhandler_Finisher_DB data dumped to $this->gp
+------------------------------------------------------------------------
+r36837 | mabolek | 2010-08-16 15:46:15 +0200 (Mon, 16. Aug 2010) | 1 Zeile
+
+Bug #9294: LoadDefaultValues: "separator" doesn't work in all cases (and code cleanup)
+------------------------------------------------------------------------
+r36662 | erep | 2010-08-12 12:40:54 +0200 (Don, 12. Aug 2010) | 1 Zeile
+
+- UPDATE: documentation showThumbnails #7705
+------------------------------------------------------------------------
+r36528 | reinhardfuehricht | 2010-08-09 15:04:41 +0200 (Mon, 09. Aug 2010) | 1 Zeile
+
+- Feature #7173: TS-setting for separator of checkbox/radiobutton-output
+------------------------------------------------------------------------
+r36522 | reinhardfuehricht | 2010-08-09 10:58:58 +0200 (Mon, 09. Aug 2010) | 1 Zeile
+
+- UPDATE: All parameters for any errorCheck can be cObjects now
+------------------------------------------------------------------------
+r36376 | reinhardfuehricht | 2010-08-05 11:19:56 +0200 (Don, 05. Aug 2010) | 2 Zeilen
+
+- FEATURE #5674: Backend Module Log Paging (Special thanks to Felix Nagel)
+- FEATURE #7070: Enable TSconfig configuration for module (Special thanks to Felix Nagel)
+------------------------------------------------------------------------
+r36262 | reinhardfuehricht | 2010-08-02 16:05:52 +0200 (Mon, 02. Aug 2010) | 1 Zeile
+
+- FIX: required markers didn't work for fileRequired error check
+------------------------------------------------------------------------
+r36252 | reinhardfuehricht | 2010-08-02 09:54:40 +0200 (Mon, 02. Aug 2010) | 1 Zeile
+
+- FIX: #9074: Validation Errors
+------------------------------------------------------------------------
+r35825 | mabolek | 2010-07-19 21:53:07 +0200 (Mon, 19. Jul 2010) | 1 Zeile
+
+Feature #8673: New PreProcessor class (Tx_Formhandler_PreProcessor_LoadDB) for fetching data from DB.
+------------------------------------------------------------------------
+r35722 | fabien_u | 2010-07-15 22:25:42 +0200 (Don, 15. Jul 2010) | 1 Zeile
+
+[+BUGFIX] formhandler: Improve Finisher DB - GP inserted_uid - resolves #8729
+------------------------------------------------------------------------
+r35714 | fabien_u | 2010-07-15 17:58:54 +0200 (Don, 15. Jul 2010) | 1 Zeile
+
+[BUGFIX] formhandler: Add EnableFields to Validator "IsNotInDBTable" - resolves #8729
+------------------------------------------------------------------------
+r35676 | reinhardfuehricht | 2010-07-15 11:26:51 +0200 (Don, 15. Jul 2010) | 1 Zeile
+
+- FIX #8093: TS configuration check breaks BE module
+------------------------------------------------------------------------
+r35675 | reinhardfuehricht | 2010-07-15 11:23:34 +0200 (Don, 15. Jul 2010) | 1 Zeile
+
+- UPDATE: Set tx_formhandler_log to read only.
+------------------------------------------------------------------------
+r35674 | reinhardfuehricht | 2010-07-15 11:11:19 +0200 (Don, 15. Jul 2010) | 1 Zeile
+
+- FIX #8508: Wrong template parsing when two markers in a line
+------------------------------------------------------------------------
+r35672 | reinhardfuehricht | 2010-07-15 10:57:25 +0200 (Don, 15. Jul 2010) | 1 Zeile
+
+- UPDATE: Add sql_free_result() in Interceptor_IPBlocking
+------------------------------------------------------------------------
+r35671 | reinhardfuehricht | 2010-07-15 10:30:39 +0200 (Don, 15. Jul 2010) | 1 Zeile
+
+- FIX #8502: Checkboxes are ignored at condition in Finisher_DB
+------------------------------------------------------------------------
+r35573 | reinhardfuehricht | 2010-07-12 15:35:36 +0200 (Mon, 12. Jul 2010) | 1 Zeile
+
+- FIX: added missing assignments in Finisher_GenerateAuthCode
+------------------------------------------------------------------------
+r35570 | reinhardfuehricht | 2010-07-12 15:10:13 +0200 (Mon, 12. Jul 2010) | 1 Zeile
+
+- FIX: Generate authUrl with baseUrl too.
+------------------------------------------------------------------------
+r35543 | reinhardfuehricht | 2010-07-12 11:09:10 +0200 (Mon, 12. Jul 2010) | 1 Zeile
+
+- FIX: fileRequired checked only currently uploaded files, not files in session too.
+------------------------------------------------------------------------
+r35435 | reinhardfuehricht | 2010-07-07 11:38:08 +0200 (Mit, 07. Jul 2010) | 1 Zeile
+
+- FIX: Add allowTableOnStandardPages for 'tx_formhandler_log'
+------------------------------------------------------------------------
+r35430 | reinhardfuehricht | 2010-07-07 09:45:16 +0200 (Mit, 07. Jul 2010) | 1 Zeile
+
+- FIX: Invalid argument supplied for foreach() in Controller_Form
+------------------------------------------------------------------------
+r35421 | reinhardfuehricht | 2010-07-06 15:59:32 +0200 (Die, 06. Jul 2010) | 1 Zeile
+
+- FIX: small changes to make BCC and CC emails work without bcc_name and cc_name
+------------------------------------------------------------------------
+r35362 | reinhardfuehricht | 2010-07-05 12:33:25 +0200 (Mon, 05. Jul 2010) | 1 Zeile
+
+- Follow-Up: Corrected a mistake in previous commit
+------------------------------------------------------------------------
+r35360 | reinhardfuehricht | 2010-07-05 12:30:21 +0200 (Mon, 05. Jul 2010) | 1 Zeile
+
+- FIX: Let component manager read the right TS setup if Formhandler is not called from TYPO3, but from the user.
+------------------------------------------------------------------------
+r35122 | reinhardfuehricht | 2010-06-30 11:09:31 +0200 (Mit, 30. Jun 2010) | 1 Zeile
+
+- Fixes for AJAX handling
+------------------------------------------------------------------------
+r34889 | reinhardfuehricht | 2010-06-25 10:32:40 +0200 (Fre, 25. Jun 2010) | 1 Zeile
+
+- FIX: Render TypoScript marker only if it is used in the template. This should slightly increase performance and prevent double calling of userFuncs.
+------------------------------------------------------------------------
+r34736 | reinhardfuehricht | 2010-06-22 14:33:15 +0200 (Die, 22. Jun 2010) | 1 Zeile
+
+- FIX #8218: mark fields as text-fields
+------------------------------------------------------------------------
+r34735 | reinhardfuehricht | 2010-06-22 14:32:26 +0200 (Die, 22. Jun 2010) | 1 Zeile
+
+- Fixed bug: Disabling a component resulted in an exception
+------------------------------------------------------------------------
+r34718 | reinhardfuehricht | 2010-06-22 13:14:04 +0200 (Die, 22. Jun 2010) | 1 Zeile
+
+- FIX #8313: Tx_Formhandler_ErrorCheck_MaxLength.php is using $min instead of $max
+------------------------------------------------------------------------
+r34197 | reinhardfuehricht | 2010-06-11 15:52:49 +0200 (Fre, 11. Jun 2010) | 2 Zeilen
+
+- FIX #7307: Multiple value checkboxes: Can't load values with _PreProcessor_LoadDefaultValues
+- IMPORTANT: Changed all "seperator" to "separator".
+------------------------------------------------------------------------
+r34190 | reinhardfuehricht | 2010-06-11 15:29:46 +0200 (Fre, 11. Jun 2010) | 1 Zeile
+
+- FIX #8160: Preprocessor LoadGetPost doesn't load GPvars
+------------------------------------------------------------------------
+r34075 | reinhardfuehricht | 2010-06-09 17:16:40 +0200 (Mit, 09. Jun 2010) | 1 Zeile
+
+- FIX: escaping of arguments passed to ajax validation added.
+------------------------------------------------------------------------
+r34073 | reinhardfuehricht | 2010-06-09 17:08:42 +0200 (Mit, 09. Jun 2010) | 1 Zeile
+
+- FIX: AJAX validation broke sometimes
+------------------------------------------------------------------------
+r34070 | reinhardfuehricht | 2010-06-09 15:50:43 +0200 (Mit, 09. Jun 2010) | 1 Zeile
+
+- UPDATE: manual updated. Section Finisher_Mail
+------------------------------------------------------------------------
+r34069 | reinhardfuehricht | 2010-06-09 15:50:17 +0200 (Mit, 09. Jun 2010) | 1 Zeile
+
+- UPDATE: Store values in $_SESSION and not in user session. Reason: performance
+------------------------------------------------------------------------
+r34062 | reinhardfuehricht | 2010-06-09 15:07:57 +0200 (Mit, 09. Jun 2010) | 1 Zeile
+
+- UPDATE: Add Interceptor_Filtreatment automatically to saveInterceptors
+------------------------------------------------------------------------
+r33742 | reinhardfuehricht | 2010-05-31 15:22:20 +0200 (Mon, 31. Mai 2010) | 1 Zeile
+
+- UPDATE: Show error message if no TS configuration is found.
+------------------------------------------------------------------------
+r33505 | erep | 2010-05-26 15:54:18 +0200 (Mit, 26. Mai 2010) | 1 Zeile
+
+- ADDED: #7705 feature to show Thumbnail and Filename 
+------------------------------------------------------------------------
+r33487 | erep | 2010-05-26 11:42:30 +0200 (Mit, 26. Mai 2010) | 1 Zeile
+
+- Fixed: Follow up to: New TS option to let the user remove uploaded files without AJAX
+------------------------------------------------------------------------
+r33455 | reinhardfuehricht | 2010-05-25 18:19:14 +0200 (Die, 25. Mai 2010) | 4 Zeilen
+
+- BIG update: 
+AJAX validation is now possible
+New TS option to let the user remove uploaded files without AJAX
+Manual updated
+------------------------------------------------------------------------
+r33428 | reinhardfuehricht | 2010-05-25 11:00:53 +0200 (Die, 25. Mai 2010) | 1 Zeile
+
+- UPDATE: Changed a foreach loop where passing by reference is not needed.
+------------------------------------------------------------------------
+r33427 | reinhardfuehricht | 2010-05-25 10:59:33 +0200 (Die, 25. Mai 2010) | 1 Zeile
+
+- UPDATE: Changed order of marker replacement to: isError, error
+------------------------------------------------------------------------
+r33413 | erep | 2010-05-24 14:12:45 +0200 (Mon, 24. Mai 2010) | 1 Zeile
+
+- UPDATE: updated unit tests
+------------------------------------------------------------------------
+r33412 | erep | 2010-05-24 14:09:53 +0200 (Mon, 24. Mai 2010) | 1 Zeile
+
+FIXED: Tx_Formhandler_Logger_DB should use Tx_Formhandler_Session::set()
+------------------------------------------------------------------------
+r33287 | erep | 2010-05-18 22:54:11 +0200 (Die, 18. Mai 2010) | 1 Zeile
+
+FIXED: small css inclusion bug with T3 4.3
+------------------------------------------------------------------------
+r33212 | erep | 2010-05-16 13:32:55 +0200 (Son, 16. Mai 2010) | 1 Zeile
+
+UPDATE: Change stylesheetFile to cssFile in Examples, was changed in rev32752 for #7427
+------------------------------------------------------------------------
+r33117 | reinhardfuehricht | 2010-05-11 17:21:32 +0200 (Die, 11. Mai 2010) | 1 Zeile
+
+- FIX #7127: Installing Current Release on T3 v. 4.3.2 Prevents Logging-In.. Side-Effect: no more custom flex form files settable in user-TS
+------------------------------------------------------------------------
+r33006 | reinhardfuehricht | 2010-05-06 17:52:35 +0200 (Don, 06. Mai 2010) | 1 Zeile
+
+- FIX #7335: PreProcessor_LoadDefaultValues only runs at 1st step
+------------------------------------------------------------------------
+r33003 | reinhardfuehricht | 2010-05-06 17:44:09 +0200 (Don, 06. Mai 2010) | 1 Zeile
+
+- FIX #7672: Fatal error in Backend Module
+------------------------------------------------------------------------
+r32754 | reinhardfuehricht | 2010-04-29 18:00:35 +0200 (Don, 29. Apr 2010) | 1 Zeile
+
+- FIX #7448: Text input receive no value if selected checkboxes are above them
+------------------------------------------------------------------------
+r32753 | reinhardfuehricht | 2010-04-29 17:50:02 +0200 (Don, 29. Apr 2010) | 1 Zeile
+
+- FIX: #7435: linkText of webkitpdf is not inherit
+------------------------------------------------------------------------
+r32752 | reinhardfuehricht | 2010-04-29 17:43:57 +0200 (Don, 29. Apr 2010) | 1 Zeile
+
+- ADD #7472: New general option to add a Javascript file
+------------------------------------------------------------------------
+r32749 | reinhardfuehricht | 2010-04-29 17:08:44 +0200 (Don, 29. Apr 2010) | 1 Zeile
+
+- ADD #7509: passing $additionalWhere though Tx_Formhandler_StaticFuncs::getSingle
+------------------------------------------------------------------------
+r32576 | reinhardfuehricht | 2010-04-26 15:45:25 +0200 (Mon, 26. Apr 2010) | 1 Zeile
+
+- FIX: Bug in error checks for min and max file count
+------------------------------------------------------------------------
+r32492 | reinhardfuehricht | 2010-04-22 17:37:04 +0200 (Don, 22. Apr 2010) | 1 Zeile
+
+- FIX #7305: additionalIncludePaths does not work from predefined config perspective
+------------------------------------------------------------------------
+r32491 | reinhardfuehricht | 2010-04-22 17:18:45 +0200 (Don, 22. Apr 2010) | 1 Zeile
+
+- UPDATE #7318: "customRemovalText" and "showThumbnails" is not listed in manual
+------------------------------------------------------------------------
+r32490 | reinhardfuehricht | 2010-04-22 17:13:08 +0200 (Don, 22. Apr 2010) | 1 Zeile
+
+- FIX #7323: Undefined variable: typolinkConf in Tx_Formhandler_AbstractView
+------------------------------------------------------------------------
+r32489 | reinhardfuehricht | 2010-04-22 17:09:24 +0200 (Don, 22. Apr 2010) | 1 Zeile
+
+- UPDATE #7377: Removed all session_start() and added a static start func to Tx_Formhandler_Session
+------------------------------------------------------------------------
+r32483 | reinhardfuehricht | 2010-04-22 16:34:20 +0200 (Don, 22. Apr 2010) | 1 Zeile
+
+- FIX #7406: Controller_Form cleares files in session in multistep forms
+------------------------------------------------------------------------
+r32378 | reinhardfuehricht | 2010-04-20 12:20:57 +0200 (Die, 20. Apr 2010) | 1 Zeile
+
+-FIX: Small bug when using custom validators without config
+------------------------------------------------------------------------
+r32274 | reinhardfuehricht | 2010-04-16 15:30:54 +0200 (Fre, 16. Apr 2010) | 1 Zeile
+
+FIX #7271: print_link in SubmittedOK view is not translated
+------------------------------------------------------------------------
+r32103 | reinhardfuehricht | 2010-04-10 13:46:19 +0200 (Sam, 10. Apr 2010) | 1 Zeile
+
+- FIX: Small issue in ErrorCheck_Date
+------------------------------------------------------------------------
+r32073 | reinhardfuehricht | 2010-04-09 09:46:35 +0200 (Fre, 09. Apr 2010) | 2 Zeilen
+
+- Updates in manual
+- Updated comments referring to Finisher_Confirmation
+------------------------------------------------------------------------
+r32061 | reinhardfuehricht | 2010-04-08 20:44:41 +0200 (Don, 08. Apr 2010) | 1 Zeile
+
+- ADD #7097: Configuration check for classes arrays
+------------------------------------------------------------------------
+r32059 | reinhardfuehricht | 2010-04-08 20:26:32 +0200 (Don, 08. Apr 2010) | 1 Zeile
+
+- ADD: new error check containsOnly
+------------------------------------------------------------------------
+r32058 | reinhardfuehricht | 2010-04-08 20:14:56 +0200 (Don, 08. Apr 2010) | 1 Zeile
+
+- UPDATE: changes in manual.
+------------------------------------------------------------------------
+r32057 | reinhardfuehricht | 2010-04-08 20:13:45 +0200 (Don, 08. Apr 2010) | 1 Zeile
+
+- UPDATE: requiredSign can now be any cObject.
+------------------------------------------------------------------------
+r32056 | reinhardfuehricht | 2010-04-08 20:06:25 +0200 (Don, 08. Apr 2010) | 4 Zeilen
+
+- Big update, you may need to adopt your conditional multistep forms.
+- Rewrite of step handling.
+- hidden fields will be added automatically.
+- new marker ###HIDDEN_FIELDS###.
+------------------------------------------------------------------------
+r31402 | reinhardfuehricht | 2010-03-23 18:14:49 +0100 (Die, 23. Mär 2010) | 1 Zeile
+
+- FIX: Form will not resubmit after redirect anymore.
+------------------------------------------------------------------------
+r31325 | reinhardfuehricht | 2010-03-22 14:04:23 +0100 (Mon, 22. Mär 2010) | 1 Zeile
+
+- FIX: Corrected version number to 0.9.8dev
+------------------------------------------------------------------------
+r31321 | reinhardfuehricht | 2010-03-22 13:34:24 +0100 (Mon, 22. Mär 2010) | 1 Zeile
+
+- UPDATE: Version number raised to 0.9.7dev
+------------------------------------------------------------------------
+r31320 | reinhardfuehricht | 2010-03-22 13:30:43 +0100 (Mon, 22. Mär 2010) | 1 Zeile
+
+- UPDATE: Changelog updated
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 ---------------------------- Version 0.9.7 -----------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
