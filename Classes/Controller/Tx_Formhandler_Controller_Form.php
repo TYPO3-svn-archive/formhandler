@@ -299,7 +299,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 	}
 	
-	protected function processValid() {
+	protected function processNotValid() {
 		$this->gp['formErrors'] = $this->errors;
 		Tx_Formhandler_Globals::$gp = $this->gp;
 		
