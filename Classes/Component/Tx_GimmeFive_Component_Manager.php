@@ -57,6 +57,7 @@ class Tx_GimmeFive_Component_Manager {
      * Loads the TypoScript config/setup for the formhandler on the current page.
      */
     private function loadTypoScriptConfig() {
+    	$conf = array();
     	if(!is_array(Tx_Formhandler_Globals::$overrideSettings['settings.'])) {
 	  		$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
 			if(!$GLOBALS['TSFE']->sys_page) {
@@ -68,17 +69,19 @@ class Tx_GimmeFive_Component_Manager {
 			$TSObj->init();
 			$TSObj->runThroughTemplates($rootLine);
 			$TSObj->generateConfig();
-			$conf = $TSObj->setup['plugin.']['Tx_Formhandler.']['settings.'];
-		} else {
-			$conf = Tx_Formhandler_Globals::$overrideSettings['settings.'];
+			if($TSObj->setup['plugin.']['Tx_Formhandler.']['settings.']['additionalIncludePaths.']) {
+				$conf = $TSObj->setup['plugin.']['Tx_Formhandler.']['settings.']['additionalIncludePaths.'];
+			}
+		} elseif(Tx_Formhandler_Globals::$overrideSettings['settings.']['additionalIncludePaths.']) {
+			$conf = Tx_Formhandler_Globals::$overrideSettings['settings.']['additionalIncludePaths.'];
 		}
 		
 	
-		if(Tx_Formhandler_Globals::$predef && is_array($conf['predef.'][Tx_Formhandler_Globals::$predef])) {
-			$conf = $conf['predef.'][Tx_Formhandler_Globals::$predef];
+		if(Tx_Formhandler_Globals::$predef && is_array($conf['predef.'][Tx_Formhandler_Globals::$predef]['additionalIncludePaths.'])) {
+			$conf = array_merge($conf, $conf['predef.'][Tx_Formhandler_Globals::$predef]['additionalIncludePaths.']);
 		}
 
-		$this->tsConf = $conf;
+		$this->additionalIncludePaths = $conf;
     }
    	
 	/**
@@ -377,8 +380,8 @@ class Tx_GimmeFive_Component_Manager {
 			}
 			
 			
-			if(is_array($this->tsConf['additionalIncludePaths.'])) {
-				foreach($this->tsConf['additionalIncludePaths.'] as $dir) {
+			if(is_array($this->additionalIncludePaths)) {
+				foreach($this->additionalIncludePaths as $dir) {
 					
 					$temp = array();
 					$temp = $this->buildArrayOfClassFiles($dir);
