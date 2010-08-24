@@ -302,12 +302,8 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		if(!$detailId) {
 			$where = '1=1';
 		} elseif(!is_array($detailId)) {
-			
-			/*
-			 * if there is only one record to export, initialize an array with the one uid
-			 * to ensure that foreach loops will not crash
-			 */
-			$detailId = array($detailId);
+			$where = 'uid=' . $detailId;
+		} else {
 			$where = 'uid IN (' . implode(',', $detailId) . ')';
 		}
 
@@ -605,7 +601,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$code = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###SINGLE_FORMAT###');
 		$formatMarkers = array();
 		$formatMarkers['###URL###'] = $_SERVER['PHP_SELF'];
-		$formatMarkers['###HIDDEN_FIELDS###'] = '';
+		
+		//add hidden fields for all selected records to export
+		foreach($detailId as $id) {
+			$formatMarkers['###HIDDEN_FIELDS###'] .= '<input type="hidden" name="formhandler[markedUids][]" value="' . $id . '" />';
+		}
 		$formatMarkers['###KEY###'] = '*';
 		$formatMarkers['###UID###'] = 0;
 		$formatMarkers['###LLL:export###'] = $LANG->getLL('export_all');
