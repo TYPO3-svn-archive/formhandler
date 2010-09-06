@@ -491,7 +491,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$name = Tx_Formhandler_Globals::$formValuesPrefix . '[submitted]';
 		}
 		$markers['###HIDDEN_FIELDS###'] = '
-			<input type="hidden" name="no_cache" value="1" />
 			<input type="hidden" name="id" value="' . $GLOBALS['TSFE']->id . '" />
 			<input type="hidden" name="' . $name . '" value="1" />
 		';
