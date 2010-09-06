@@ -9,8 +9,7 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 	 */
 	public function process() {
 		$params = $this->gp;
-		//require class for $this->csv
-		require_once('typo3conf/ext/formhandler/Resources/PHP/csv.lib.php');
+		require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
 
 		//build data
 		foreach($params as $key => &$value) {
@@ -23,15 +22,9 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 			$value = str_replace('"', '""', $value);
 		}
 
-		//init csv object
-		$this->csv = new export2CSV(',', "\n");
-		$data[0] = $params;
-
-		//generate file
-		$this->csv = $this->csv->create_csv_file($data);
-		header('Content-type: application/eml');
-		header('Content-Disposition: attachment; filename=formhandler.csv');
-		echo $this->csv;
+		// create new parseCSV object.
+		$csv = new parseCSV();
+		$csv->output('formhandler.csv', $data, $exportParams);
 		die();
 	}
 	
