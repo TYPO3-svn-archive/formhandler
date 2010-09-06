@@ -80,15 +80,22 @@ class Tx_Formhandler_Generator_CSV {
 		}
 		if(count($exportParams) > 0) {
 			foreach($data as &$params) {
+				
+				// fill missing fields with empty value
 				foreach($exportParams as $key => $param) {
 					if(!array_key_exists($param, $params)) {
 						$params[$param] = '';
 					}
 				}
+				
+				// remove unwanted fields
+				foreach($params as $key => $value) {
+					if(!in_array($key, $exportParams)) {
+						unset($params[$key]);
+					}
+				}
 			}
 		}
-		
-		array_unshift($data, array_keys($exportParams));
 		
 		// sort data
 		$dataSorted = array();
