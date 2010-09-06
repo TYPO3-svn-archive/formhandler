@@ -27,6 +27,7 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 				require_once(t3lib_extMgm::extPath('webkitpdf') . 'pi1/class.tx_webkitpdf_pi1.php');
 			}
 			$generator = t3lib_div::makeInstance('tx_webkitpdf_pi1');
+			$generator->cObj = Tx_Formhandler_Globals::$cObj;
 			
 			return $generator->main('', $config);
 			
