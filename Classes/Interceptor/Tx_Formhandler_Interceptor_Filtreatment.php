@@ -36,7 +36,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 		$globalSetting = $this->settings['fieldConf.']['global.'];
 		if($globalSetting['removeChars']) {
 			$sep = ',';
-			
+
 			//user set custom rules via cObject
 			$cObjSettings = $globalSetting['removeChars.'];
 			if(is_array($cObjSettings)) {
@@ -50,7 +50,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 			} else {
 				
 				//user entered a comma seperated list
-				$list = $globalSetting;
+				$list = $globalSetting['removeChars'];
 			}
 			$this->removeChars = t3lib_div::trimExplode($sep, $list);
 		} elseif(intval($globalSetting['removeChars.']['disable']) === 1) {
@@ -105,7 +105,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 					} else {
 						
 						//user entered a comma seperated list
-						$list = $fieldSetting;
+						$list = $fieldSetting['removeChars'];
 					}
 					$removeChars = t3lib_div::trimExplode($sep, $list);
 				} elseif(intval($fieldSetting['removeChars.']['disable']) === 1) {
