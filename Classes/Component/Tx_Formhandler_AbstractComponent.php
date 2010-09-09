@@ -33,6 +33,14 @@ abstract class Tx_Formhandler_AbstractComponent {
 	 * @var tslib_cObj
 	 */
 	protected $cObj;
+	
+	/**
+	 * Settings
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $settings;
 
 	/**
 	 * The constructor for an interceptor setting the component manager and the configuration.
