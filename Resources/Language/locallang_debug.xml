@@ -58,6 +58,7 @@
 			<label index="using_prefix">Using prefix for form values: "%s"</label>
 			<label index="using_subpart">Using subpart "%s"!</label>
 			<label index="using_view">Using view "%s"</label>
+			<label index="cacheCmd">Clearing cache user cacheCmd "%s"</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="adding_html">Füge HTML hinzu: %s</label>
@@ -110,6 +111,7 @@
 			<label index="using_prefix">Verwende Prefix für Formularwerte: "%s"</label>
 			<label index="using_subpart">Verwende Subpart "%s"!</label>
 			<label index="using_view">Verwende View "%s"</label>
+			<label index="cacheCmd">Cache wird gelöscht mit cacheCmd "%s"</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="adding_html">TRANSLATE: Adding HTML: %s</label>
@@ -162,6 +164,7 @@
 			<label index="using_prefix">Utilisation du préfix pour la valeur: "%s"</label>
 			<label index="using_subpart">Utilisation subpart "%s"!</label>
 			<label index="using_view">Utilisation de la vue "%s"</label>
+			<!-- <label index="cacheCmd"></label> -->
 		</languageKey>
 	</data>
 </T3locallang>
