@@ -844,7 +844,7 @@ Data type:
 Description:
 Default:
 redirectPage
-int/string
+int/string/cObj
 Page ID or URL to redirect to. If a user is blocked from submiting the form, he gets redirected to this page.
 -
 report
@@ -1349,8 +1349,29 @@ Array
 [plugin.Tx_Formhandler.settings.finishers]
 
 Finisher_ClearCache
-Clear the cache of the current page. It needs no further configuration.
+Clear the page cache. If no further configuration is given, the current page's cache will be cleared.
 
+Property:
+Data type:
+Description:
+Default:
+cacheCmd
+int/string/cObj
+Enter as many finishers as you like. Each entry requires a class name of the finisher. Optional you can enter specific configuration for the finisher in the confg section.  More information about available finishers and their settings is provided just below this table.
+
+Example:
+
+finishers.1.class = Tx_Formhandler_Finisher_ClearCache
+
+# The cache of page 15 will be cleared 
+finishers.1.config.cacheCmd = 15
+ 
+# cObject is supported...
+finishers.1.config.cacheCmd = TEXT
+finishers.1.config.cacheCmd.data = GP:someparameter
+ 
+# for other cacheCmds see phpdoc in t3lib_TCEmain->clear_cacheCmd()
+Current page
 Finisher_GenerateAuthCode
 Generates a unique token for a database entry.
 This can be users for FE user registration or newsletter registration.
