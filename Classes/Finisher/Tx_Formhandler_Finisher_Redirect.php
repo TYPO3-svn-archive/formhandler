@@ -41,18 +41,15 @@ class Tx_Formhandler_Finisher_Redirect extends Tx_Formhandler_AbstractFinisher {
 	 */
 	public function process() {
 
-
 		//read redirect page
-		$emailRedirect = $this->settings['redirectPage'];
+		$redirectPage = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'redirectPage');
 
-		$url = '';
-
-		if(!isset($emailRedirect)) {
+		if(!isset($redirectPage)) {
 			return;
 		}
 		Tx_Formhandler_Session::reset();
 
-		Tx_Formhandler_Staticfuncs::doRedirect($emailRedirect, $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
+		Tx_Formhandler_Staticfuncs::doRedirect($redirectPage, $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
 		exit();
 	}
 
