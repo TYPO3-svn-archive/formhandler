@@ -32,10 +32,6 @@ abstract class Tx_Formhandler_AbstractFinisher extends Tx_Formhandler_AbstractCo
 	public function validateConfig() {
 
 	}
-	
-	public function init($gp, $settings) {
-		parent::init($gp, $settings);
-	}
 
 }
 ?>
