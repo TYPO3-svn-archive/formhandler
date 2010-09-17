@@ -101,6 +101,11 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 					
 					$this->gp[$fN] = $data[Tx_Formhandler_StaticFuncs::getSingle($settings[$fN.'.'], 'mapping')];
 					
+					if($settings[$fN . '.']['separator']) {
+						$separator = $settings[$fN . '.']['separator'];
+						$this->gp[$fN] = t3lib_div::trimExplode($separator, $this->gp[$fN]);
+					}
+					
 					//post process the field value.
 					if(is_array($settings['postProcessing.'])) {
 						$settings['postProcessing.']['value'] = $this->gp[$fN];
@@ -135,7 +140,12 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 				
 				$fN = preg_replace('/\.$/', '', $fN);
 				if (!isset($values[$step][$fN])) {
-					$values[$step][$fN] = $data[Tx_Formhandler_StaticFuncs::getSingle($settings[$fN.'.'], 'mapping')];	
+					$values[$step][$fN] = $data[Tx_Formhandler_StaticFuncs::getSingle($settings[$fN.'.'], 'mapping')];
+
+					if($settings[$fN . '.']['separator']) {
+						$separator = $settings[$fN . '.']['separator'];
+						$values[$step][$fN] = t3lib_div::trimExplode($separator, $values[$step][$fN]);
+					}
 				}
 					
 				//post process the field value.
