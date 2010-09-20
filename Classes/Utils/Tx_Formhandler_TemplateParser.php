@@ -34,6 +34,8 @@ class Tx_Formhandler_TemplateParser
 	 */
 	protected $fields = array();
 	
+	protected $foundStrings = array();
+	
 	/**
 	 * @var Tx_Formhandler_TemplateParser
 	 */
@@ -108,6 +110,16 @@ class Tx_Formhandler_TemplateParser
         }
         
         $this->fields = ($invokePrefixOnly) ? $fields[$prefix] : $fields;
+	}
+	
+	public function populateValues($gp)
+	{
+		var_dump($this->templateFile);
+		$xml = new SimpleXMLElement($this->templateFile);
+		foreach ($gp as $field => $value)
+		{
+			//if ()
+		}
 	}
 	
 	/**
