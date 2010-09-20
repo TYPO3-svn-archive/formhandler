@@ -81,7 +81,13 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB
 			}
 		}
 		
-		return parent::parseFields();
+		$fields = parent::parseFields();
+		$escapedFields = array();
+		foreach ($fields as $field => $value)
+		{
+			$escapedFields['`'.$field.'`'] = $value;
+		}
+		return $escapedFields;
 	}
 	
 	/**
@@ -106,9 +112,11 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB
 		$res = $this->db->sql_query("SHOW TABLES LIKE '".$this->table."'");
 		if (!$this->db->sql_num_rows($res))
 		{
-			$this->db->sql_query("CREATE TABLE `".$this->table."` (
-            `".$this->key."` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
-            )");
+			$query = "CREATE TABLE `".$this->table."` (
+            	`".$this->key."` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+            )";
+			$this->db->sql_query($query);
+			Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
 			$dbFields = array($this->key);
 		}else{
 			$dbFields = array_keys($this->db->admin_get_fields($this->table));
@@ -119,7 +127,12 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB
 			$sql = 'ALTER TABLE '.$this->table.' ADD `';
 			$sql .= implode('` '.$this->newFieldsSqlAttribs.', ADD `', $createFields);
 			$sql .= '` '.$this->newFieldsSqlAttribs.'';
+			
 			$this->db->sql_query($sql);
+			Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $sql);
+			if($this->db->sql_error()) {
+				Tx_Formhandler_StaticFuncs::debugMessage($GLOBALS['TYPO3_DB']->sql_error());
+			}
 		}
 	}
 }
