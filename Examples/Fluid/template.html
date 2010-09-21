@@ -1,88 +1,40 @@
 {namespace fh=Tx_Formhandler_Fluid_ViewHelper}
 <!-- ###TEMPLATE_FORM1### begin -->
-  <fh:form id="mailform" method="post" actionUri="{relUrl}" enctype="multipart/form-data">
-      <fieldset>
-        <legend>Kontaktinformationen</legend>
-        <dl>
-          <dt>
-            <label for="vorname">Vorname:</label>
-          </dt>
-          <dd>
-            <f:form.textfield id="vornamen" class="textInput" type="text" name="vorname"/>
-          </dd>
-          <dt>
-            <label for="name">Name:</label>
-          </dt>
-          <dd>
-            <f:form.textfield id="name" class="textInput" type="text" name="name"/>
-          </dd>
-          <dt>
-            <label for="geburtsname">Geburtsname:</label>
-          </dt>
-          <dd>
-            <f:form.textfield id="geburtsname" class="textInput" type="text" name="geburtsname"/>
-          </dd>
-          <dt>
-            <label for="birthday">Geburtsdatum:</label>
-          </dt>
-          <dd>
-            <span id="born">
-              <f:form.textfield class="date" id="birthday" type="text" name="birthday"/>
-              <f:form.textfield class="date" id="birthmonth" type="text" name="birthmonth"/> 
-            </span>
-            <f:form.textfield id="birthyear" class="birthYear" type="text" name="birthyear"/>
-          </dd>
-          <dt>
-            <label for="geburtsort">Geburtsort:</label>
-          </dt>
-          <dd>
-            <f:form.textfield id="geburtsort" class="textInput" type="text" name="geburtsort"/>
-          </dd>
-          <dt>
-            <label for="nationality">Nationalität:</label>
-          </dt>
-          <dd>
-            <f:form.textfield id="nationality" class="textInput" type="text" name="nationality"/>
-          </dd>
-          <dt>
-            <label for="zip">PLZ/Wohnort:</label>
-          </dt>
-          <dd>
-          <span class="textInput">
-            <f:form.textfield id="zip" class="year" type="text" name="zip"/>
-            <f:form.textfield id="city" class="city" type="text" name="city"/>
-          </span>
-          </dd>
-          <dt>
-            <label for="street">Straße/Nr.:</label>
-          </dt>
-          <dd>
-            <f:form.textfield id="street" class="textInput" type="text" name="street"/>
-          </dd>
-          <dt>
-            <label for="phone">Telefon:</label>
-          </dt>
-          <dd>
-            <f:form.textfield id="phone" class="textInput" type="text" name="phone"/>
-          </dd>
-          <dt>
-            <label for="mobile">Mobil:</label>
-          </dt>
-          <dd>
-            <f:form.textfield id="mobile" class="textInput" type="text" name="mobile"/>
-          </dd>
-          <dt>
-            <label for="mail">Mail:</label>
-          </dt>
-          <dd>
-            <f:form.textfield id="mail" class="textInput" type="text" name="mail"/>
-          </dd>
-     		<dt>
-     		</dt>
-     		<dd>
-     			<fh:form.submit value="Absenden"/>
-     		</dd>
-        </dl>
-      </fieldset>
+<fh:form id="mailform" method="post" actionUri="{relUrl}" enctype="multipart/form-data">
+	<fieldset>
+		<legend>Kontaktinformationen</legend>
+		<f:form.errors>
+		  <div style="background-color: #fdd; padding: 5px; margin:5px 0;">
+		    <b>{error.propertyName}: </b>
+		    <f:for each="{error.errors}" as="fieldError">
+		      <br/>- {fieldError.code}
+		    </f:for>
+		  </div>
+		</f:form.errors>
+		<dl>
+			<dt>
+				<label for="firstname">Vorname:</label>
+			</dt>
+			<dd>
+				<f:form.textfield id="firstname" class="textInput" type="text" name="firstname"/>
+			</dd>
+			<dt>
+				<label for="lastname">Name:</label>
+			</dt>
+			<dd>
+				<f:form.textfield id="lastname" class="textInput" type="text" name="lastname"/>
+			</dd>
+			<dt>
+				<label for="mail">Mail:</label>
+			</dt>
+			<dd>
+				<f:form.textfield id="mail" class="textInput" type="text" name="mail"/>
+			</dd>
+	 		<dt></dt>
+	 		<dd>
+	 			<fh:form.submit value="Absenden"/>
+	 		</dd>
+		</dl>
+	</fieldset>
 </fh:form>
-  <!-- ###TEMPLATE_FORM1### end -->
+<!-- ###TEMPLATE_FORM1### end -->

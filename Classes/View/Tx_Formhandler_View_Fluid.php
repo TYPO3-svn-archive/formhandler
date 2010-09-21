@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id: Tx_Formhandler_View_Form.php 36528 2010-08-09 13:04:41Z reinhardfuehricht $
+ * $Id$
  *                                                                        */
 
 // Somehow autoloading from Fluid does not work yet :/
@@ -19,9 +19,9 @@ require_once t3lib_extMgm::extPath('formhandler') . 'Classes/View/Fluid/ViewHelp
 require_once t3lib_extMgm::extPath('formhandler') . 'Classes/View/Fluid/ViewHelper/Form/SubmitViewHelper.php';
 
 /**
- * A default view for Formhandler
+ * This is a proxy between formhandler controller and fluid view
  *
- * @author	Reinhard Führicht <rf@typoheads.at>
+ * @author	Christian Opitz <co@netzelf.de>
  * @package	Tx_Formhandler
  * @subpackage	View
  */
@@ -43,14 +43,10 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 	protected $request;
 	
 	/**
-	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 * Stick the view, controllerContext and request together
 	 */
-	protected $objectManager;
-	
 	public function initializeView()
 	{
-		$this->objectManager = t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectManager');
-		
 		$this->view = t3lib_div::makeInstance('Tx_Fluid_View_TemplateView');
 		$this->controllerContext = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ControllerContext');
 		$this->request = t3lib_div::makeInstance('Tx_Extbase_MVC_Request');
@@ -59,7 +55,6 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 		$this->request->setPluginName('pi1');
 		
 		$this->controllerContext->setRequest($this->request);
-		//$this->controllerContext
 		$this->view->setControllerContext($this->controllerContext);
 	}
 	
@@ -84,6 +79,9 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 		return $path;
 	}
 	
+	/* (non-PHPdoc)
+	 * @see Classes/View/Tx_Formhandler_AbstractView#render()
+	 */
 	public function render($gp, $errors)
 	{				
 		$this->view->setTemplatePathAndFilename($this->getTemplatePath());
@@ -91,11 +89,42 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 		$this->view->assign('gp', $gp);
 		$this->view->assign('errors', $errors);
 		
+		$this->processErrors($errors);
 		$this->assignDefaults();
 		
 		return $this->view->render();
 	}
 	
+	/**
+	 * Translates the formhandler-error-array to extbase propertyErrors and
+	 * sets them in the request (to output them with form.errors-helper)
+	 * 
+	 * @param array $errors
+	 * @todo Think about a way to pass translated messages for each validator
+	 */
+	protected function processErrors($errors)
+	{
+		$extBaseErrors = array();
+		
+		foreach ((array) $errors as $field => $validators)
+		{
+			/* @var $propertyError Tx_Extbase_Validation_PropertyError */
+			$propertyError = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', $field);
+			$propertyErrors = array();
+			foreach ((array) $validators as $validator)
+			{
+				array_push($propertyErrors, t3lib_div::makeInstance('Tx_Extbase_Error_Error', '', $validator));
+			}
+			$propertyError->addErrors($propertyErrors);
+			array_push($extBaseErrors, $propertyError);
+		}
+		
+		$this->request->setErrors($extBaseErrors);
+	}
+	
+	/**
+	 * Assign all vars that the view needs
+	 */
 	protected function assignDefaults()
 	{
 		$this->view->assignMultiple(
@@ -136,6 +165,12 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 		*/
 	}
 	
+	/**
+	 * Get the current URL
+	 * 
+	 * @deprecated Use link-helpers instead
+	 * @return string
+	 */
 	protected function getUrl()
 	{
 		$parameters = t3lib_div::_GET();
