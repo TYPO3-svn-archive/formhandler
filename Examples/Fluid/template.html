@@ -2,36 +2,40 @@
 <!-- ###TEMPLATE_FORM1### begin -->
 <fh:form id="mailform" method="post" actionUri="{relUrl}" enctype="multipart/form-data">
 	<fieldset>
-		<legend>Kontaktinformationen</legend>
+		<legend><fh:translate key="legend"/></legend>
 		<f:form.errors>
 		  <div style="background-color: #fdd; padding: 5px; margin:5px 0;">
-		    <b>{error.propertyName}: </b>
+		    <b><fh:translate key="{error.propertyName}"/></b>
 		    <f:for each="{error.errors}" as="fieldError">
-		      <br/>- {fieldError.code}
+		      <br/>- <fh:translate key="error_{error.propertyName}_{fieldError.code}">{error.propertyName} {fieldError.code}</fh:translate>
 		    </f:for>
 		  </div>
 		</f:form.errors>
 		<dl>
 			<dt>
-				<label for="firstname">Vorname:</label>
+				<label for="firstname"><fh:translate key="firstname"/>:</label>
 			</dt>
 			<dd>
 				<f:form.textfield id="firstname" class="textInput" type="text" name="firstname"/>
 			</dd>
 			<dt>
-				<label for="lastname">Name:</label>
+				<label for="lastname"><fh:translate key="lastname"/>:</label>
 			</dt>
 			<dd>
 				<f:form.textfield id="lastname" class="textInput" type="text" name="lastname"/>
 			</dd>
 			<dt>
-				<label for="mail">Mail:</label>
+				<label for="email"><fh:translate key="email"/>:</label>
 			</dt>
 			<dd>
-				<f:form.textfield id="mail" class="textInput" type="text" name="mail"/>
+				<f:form.textfield id="email" class="textInput" type="text" name="email"/>
 			</dd>
 	 		<dt></dt>
 	 		<dd>
+	 			<!-- 
+	 				Calling view-helpers from within attributes currently seems not possible
+	 				See news://lists.typo3.org:119/mailman.2574.1285105541.583.typo3-dev@lists.typo3.org 
+	 			-->
 	 			<fh:form.submit value="Absenden"/>
 	 		</dd>
 		</dl>

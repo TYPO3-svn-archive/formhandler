@@ -15,6 +15,7 @@
  *                                                                        */
 
 // Somehow autoloading from Fluid does not work yet :/
+require_once t3lib_extMgm::extPath('formhandler') . 'Classes/View/Fluid/ViewHelper/TranslateViewHelper.php';
 require_once t3lib_extMgm::extPath('formhandler') . 'Classes/View/Fluid/ViewHelper/FormViewHelper.php';
 require_once t3lib_extMgm::extPath('formhandler') . 'Classes/View/Fluid/ViewHelper/Form/SubmitViewHelper.php';
 
@@ -163,6 +164,16 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 		$this->fillFEUserMarkers($markers);
 		$this->fillFileMarkers($markers);
 		*/
+	}
+	
+	/**
+	 * Pass language files to the fh:translate-view-helper 
+	 * 
+	 * @param array $langFiles
+	 */
+	public function setLangFiles(array $langFiles)
+	{
+		Tx_Formhandler_Fluid_ViewHelper_TranslateViewHelper::setLangFiles($langFiles);
 	}
 	
 	/**
