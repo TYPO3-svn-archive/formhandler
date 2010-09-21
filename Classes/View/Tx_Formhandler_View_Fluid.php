@@ -14,6 +14,10 @@
  * $Id: Tx_Formhandler_View_Form.php 36528 2010-08-09 13:04:41Z reinhardfuehricht $
  *                                                                        */
 
+// Somehow autoloading from Fluid does not work yet :/
+require_once t3lib_extMgm::extPath('formhandler') . 'Classes/View/Fluid/ViewHelper/FormViewHelper.php';
+require_once t3lib_extMgm::extPath('formhandler') . 'Classes/View/Fluid/ViewHelper/Form/SubmitViewHelper.php';
+
 /**
  * A default view for Formhandler
  *
@@ -22,43 +26,114 @@
  * @subpackage	View
  */
 class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
-{
+{	
 	/**
 	 * @var Tx_Fluid_View_TemplateView
 	 */
-	protected $renderer;
+	protected $view;
 	
-	public function render($gp, $errors)
+	/**
+	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 */
+	protected $controllerContext;
+	
+	/**
+	 * @var Tx_Extbase_MVC_Request
+	 */
+	protected $request;
+	
+	/**
+	 * @var Tx_Fluid_Compatibility_ObjectManager
+	 */
+	protected $objectManager;
+	
+	public function initializeView()
 	{
-		$this->renderer = t3lib_div::makeInstance('Tx_Fluid_View_TemplateView');
-		$controllerContext = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ControllerContext');
-		$controllerContext->setRequest(t3lib_div::makeInstance('Tx_Extbase_MVC_Request'));
-		$this->renderer->setControllerContext($controllerContext);
-				
-		$this->renderer->setTemplatePathAndFilename('fileadmin/template/form/index.html');
+		$this->objectManager = t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectManager');
 		
-		$this->renderer->assignMultiple(
-			array(
-				'gp'		=> $gp,
-				'errors'	=> $errors
-			)
-		);
+		$this->view = t3lib_div::makeInstance('Tx_Fluid_View_TemplateView');
+		$this->controllerContext = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ControllerContext');
+		$this->request = t3lib_div::makeInstance('Tx_Extbase_MVC_Request');
 		
-		$this->fillDefaultMarkers();
+		$this->request->setControllerExtensionName('formhandler');
+		$this->request->setPluginName('pi1');
 		
-		return $this->renderer->render();
+		$this->controllerContext->setRequest($this->request);
+		//$this->controllerContext
+		$this->view->setControllerContext($this->controllerContext);
 	}
 	
-	protected function fillDefaultMarkers()
+	/**
+	 * Get the path to the template to set it as fluid template
+	 * 
+	 * @return string
+	 */
+	protected function getTemplatePath()
 	{
-		$this->renderer->assignMultiple(
+		$settings = Tx_Formhandler_Globals::$settings;
+		
+		if ($settings['templateFile'])
+		{
+			$path = Tx_Formhandler_StaticFuncs::resolvePath($settings['templateFile']);
+		}
+
+		if(!$path) {
+			
+			Tx_Formhandler_StaticFuncs::throwException('no_template_file');
+		}
+		return $path;
+	}
+	
+	public function render($gp, $errors)
+	{				
+		$this->view->setTemplatePathAndFilename($this->getTemplatePath());
+		
+		$this->view->assign('gp', $gp);
+		$this->view->assign('errors', $errors);
+		
+		$this->assignDefaults();
+		
+		return $this->view->render();
+	}
+	
+	protected function assignDefaults()
+	{
+		$this->view->assignMultiple(
 			array(
-				'timestamp'	=> time(),
-				'randomId'	=> Tx_Formhandler_Globals::$randomID,
-				'relUrl' 	=> $path = $this->getUrl(),
-				'absUrl'	=> t3lib_div::locationHeaderUrl('').$path,
+				'timestamp'			=> time(),
+				'submission_date'	=> date('d.m.Y H:i:s', time()),
+				'randomId'			=> Tx_Formhandler_Globals::$randomID,
+				'relUrl' 			=> $url = $this->getUrl(),
+				'absUrl'			=> t3lib_div::locationHeaderUrl('').$url,
+				'fieldNamePrefix'	=> Tx_Formhandler_Globals::$formValuesPrefix,
+				'ip'				=> t3lib_div::getIndpEnv('REMOTE_ADDR'),
+				'pid'				=> $GLOBALS['TSFE']->id,
+				'currentStep'		=> Tx_Formhandler_Session::get('currentStep'),
+				'totalSteps'		=> Tx_Formhandler_Session::get('totalSteps'),
+				'lastStep'			=> Tx_Formhandler_Session::get('lastStep')
 			)
 		);
+		
+		if ($this->gp['generated_authCode']) {
+			$this->view->assign('authCode', $this->gp['generated_authCode']);
+		}
+		
+		/*
+		Stepbar currently removed - probably this should move in a partial
+		$markers['###step_bar###'] = $this->createStepBar(
+			Tx_Formhandler_Session::get('currentStep'),
+			Tx_Formhandler_Session::get('totalSteps'),
+			$prevName,
+			$nextName
+		);
+		*/
+		
+		/*
+		Not yet realized
+		$this->fillCaptchaMarkers($markers);
+		$this->fillFEUserMarkers($markers);
+		$this->fillFileMarkers($markers);
+		*/
 	}
 	
 	protected function getUrl()
@@ -68,9 +143,9 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 			unset($parameters['id']);
 		}
 		
-		$path = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $parameters);
-		$path = str_replace('&', '&amp;', $path);
+		$url = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $parameters);
+		$url = str_replace('&', '&amp;', $url);
 		
-		return $path;
+		return $url;
 	}
 }

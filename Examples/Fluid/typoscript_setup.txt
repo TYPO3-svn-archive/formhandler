@@ -1,0 +1,7 @@
+##### FLUID #####
+plugin.Tx_Formhandler.settings.predef.fluid {
+  name = Formhandler with a Fluid-template
+  templateFile = EXT:formhandler/Examples/Fluid/template.html
+  view = Tx_Formhandler_View_Fluid
+  formValuesPrefix = prefix
+}
