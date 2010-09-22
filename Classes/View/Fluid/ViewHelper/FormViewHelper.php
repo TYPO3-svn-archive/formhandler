@@ -51,6 +51,27 @@ class Tx_Formhandler_Fluid_ViewHelper_FormViewHelper extends Tx_Fluid_ViewHelper
 		return (string) Tx_Formhandler_Globals::$formValuesPrefix;
 	}
 	
+	/**
+	 * Trigger ObjectAccessorMode
+	 * @see Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper#isObjectAccessorMode()
+	 */
+	protected function addFormNameToViewHelperVariableContainer()
+	{
+		if (Tx_Formhandler_Globals::$formValuesPrefix) {
+			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName', '');
+		}
+	}
+
+	/**
+	 * Removes the "form name" from the ViewHelperVariableContainer.
+	 */
+	protected function removeFormNameFromViewHelperVariableContainer()
+	{
+		if (Tx_Formhandler_Globals::$formValuesPrefix) {
+			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+		}
+	}
+	
 	/* (non-PHPdoc)
 	 * @see typo3/sysext/fluid/Classes/ViewHelpers/Tx_Fluid_ViewHelpers_FormViewHelper#renderRequestHashField()
 	 */
