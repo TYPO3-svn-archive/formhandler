@@ -48,12 +48,7 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 		}
 		return $this->gp;
 	}
-	
-	protected function init($gp, $settings) {
-		$this->gp = $gp;
-		$this->settings = $settings;
-	}
-	
+
 	/**
 	 * Deletes all files older than a specific time in a temporary upload folder.
 	 * Settings for the threshold time and the folder are made in TypoScript.
