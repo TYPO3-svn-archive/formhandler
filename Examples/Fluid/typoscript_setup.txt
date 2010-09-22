@@ -2,6 +2,14 @@
 plugin.Tx_Formhandler.settings.predef.fluid {
   name = Formhandler with a Fluid-template
   templateFile = EXT:formhandler/Examples/Fluid/template.html
+  langFile = EXT:formhandler/Examples/Default/lang.xml
   view = Tx_Formhandler_View_Fluid
+  validators.1 {
+  	class = Tx_Formhandler_Validator_Default
+	config.fieldConf {
+	  firstname.errorCheck.1 = required
+	  lastname.errorCheck.1 = required
+	}
+  }
   formValuesPrefix = prefix
 }
