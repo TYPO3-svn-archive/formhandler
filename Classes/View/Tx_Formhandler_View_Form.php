@@ -477,6 +477,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		
 		$path = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $parameters);
 		$path = str_replace('&', '&amp;', $path);
+		$path = htmlspecialchars($path);
 		$markers = array();
 		$markers['###REL_URL###'] = $path;
 		$markers['###TIMESTAMP###'] = time();
@@ -1190,7 +1191,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			if ($i == $currentStep) {
 				$class =  'class="' . $classprefix . '_currentstep"';
 			}
-			$content.= '<span ' . $class . ' >' . $i . '</span>';
+			$stepName = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':step-' . $i));
+			if(!$stepName) {
+				$stepName = $i;
+			}
+			$content.= '<span ' . $class . ' >' . $stepName . '</span>';
 		}
 		$content = '<span class="' . $classprefix . '_steps' . '" style="">' . $content . '</span>';
 
