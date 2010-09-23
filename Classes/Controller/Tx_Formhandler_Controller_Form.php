@@ -213,10 +213,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 			$this->loadSettingsForStep($this->lastStep);
 			$this->parseConditions();
+			$this->loadSettingsForStep($this->lastStep);
+			$this->setViewSubpart($this->currentStep);
 		} else {
 			$this->loadSettingsForStep($this->currentStep);
 			$this->parseConditions();
-			
+			$this->loadSettingsForStep($this->currentStep);
+			$this->setViewSubpart($this->currentStep);
 		}
 		
 		//run init interceptors
@@ -866,7 +869,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						$isConfigOk = TRUE;
 						break;
 					} elseif (  $finisher['class'] == (str_replace('Tx_Formhandler_', '', $componentName))
-                                || @is_subclass_of('Tx_Formhandler_' . $finisher['class'], $componentName)) {
+								|| @is_subclass_of('Tx_Formhandler_' . $finisher['class'], $componentName)) {
 
 						$isConfigOk = TRUE;
 						break;
@@ -881,54 +884,68 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 	}
 	
+	protected function parseConditionsBlock($settings) {
+		$finalResult = FALSE;
+		foreach($settings['if.'] as $conditionSettings) {
+			$conditions = $conditionSettings['conditions.'];
+			$condition = '';
+			$orConditions = array();
+			foreach($conditions as $andConditions) {
+				$results = array();
+				foreach($andConditions as $andCondition) {
+					if(strstr($andCondition, '=')) {
+						list($field,$value) = t3lib_div::trimExplode('=', $andCondition);
+						$result = $this->gp[$field] == $value;
+					} elseif(strstr($andCondition, '>')) {
+						list($field,$value) = t3lib_div::trimExplode('>', $andCondition);
+						$result = $this->gp[$field] > $value;
+					} elseif(strstr($andCondition, '<')) {
+						list($field,$value) = t3lib_div::trimExplode('<', $andCondition);
+						$result = $this->gp[$field] < $value;
+					}
+					$results[] = ($result?'TRUE':'FALSE');
+				}
+				$orConditions[] = '(' . implode(' && ', $results) . ')';
+			}
+			$finalCondition = '(' . implode(' || ', $orConditions) . ')';
+		
+			eval('$evaluation = ' . $finalCondition . ';');
+		
+			if($evaluation) {
+				$newSettings = $conditionSettings['isTrue.'];
+				if(is_array($newSettings)) {
+				
+					$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $newSettings);
+				}
+			} else {
+				$newSettings = $conditionSettings['else.'];
+				if(is_array($newSettings)) {
+				
+					$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $newSettings);
+				}
+			}
+		
+		}
+	}
+	
 	protected function parseConditions() {
 
+		//parse global conditions
 		if(is_array($this->settings['if.'])) {
-			$finalResult = FALSE;
-			foreach($this->settings['if.'] as $conditionSettings) {
-				$conditions = $conditionSettings['conditions.'];
-				$condition = '';
-				$orConditions = array();
-				foreach($conditions as $andConditions) {
-					$results = array();
-					foreach($andConditions as $andCondition) {
-						if(strstr($andCondition, '=')) {
-							list($field,$value) = t3lib_div::trimExplode('=', $andCondition);
-							$result = $this->gp[$field] == $value;
-						} elseif(strstr($andCondition, '>')) {
-							list($field,$value) = t3lib_div::trimExplode('>', $andCondition);
-							$result = $this->gp[$field] > $value;
-						} elseif(strstr($andCondition, '<')) {
-							list($field,$value) = t3lib_div::trimExplode('<', $andCondition);
-							$result = $this->gp[$field] < $value;
-						}
-						$results[] = ($result?'TRUE':'FALSE');
-					}
-					$orConditions[] = '(' . implode(' && ', $results) . ')';
-				}
-				$finalCondition = '(' . implode(' || ', $orConditions) . ')';
-				
-				eval('$evaluation = ' . $finalCondition . ';');
-				
-				if($evaluation) {
-					$newSettings = $conditionSettings['isTrue.'];
-					if(is_array($newSettings)) {
-						
-						$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $newSettings);
-					}
-				} else {
-					$newSettings = $conditionSettings['else.'];
-					if(is_array($newSettings)) {
-						
-						$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $newSettings);
-					}
-				}
-				
-			}
-			
+			$this->parseConditionsBlock($this->settings);
 		}
-		
-		
+
+		//parse conditions for each of the previous steps
+		$endStep = Tx_Formhandler_Session::get('currentStep');
+		$step = 1;
+
+		while($step <= $endStep) {
+			$stepSettings = $this->settings[$step . '.'];
+			if(is_array($stepSettings['if.'])) {
+				$this->parseConditionsBlock($stepSettings);
+			}
+			$step++;
+		}
 	}
 
 	protected function init() {
