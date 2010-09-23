@@ -5,11 +5,13 @@ plugin.Tx_Formhandler.settings.predef.fluid {
   langFile = EXT:formhandler/Examples/Default/lang.xml
   view = Tx_Formhandler_View_Fluid
   validators.1 {
-  	class = Tx_Formhandler_Validator_Default
-	config.fieldConf {
-	  firstname.errorCheck.1 = required
-	  lastname.errorCheck.1 = required
-	}
+    class = Tx_Formhandler_Validator_Default
+    config.fieldConf {
+      firstname.errorCheck.1 = required
+      lastname.errorCheck.1 = required
+      email.errorCheck.1 = required
+      email.errorCheck.2 = email
+    }
   }
-  formValuesPrefix = prefix
+  formValuesPrefix = formhandler
 }

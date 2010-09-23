@@ -1,6 +1,21 @@
+<!-- 
+	This is a Fluid-template with custom view helpers:
+	* fh:form extends f.form, sticks in the hidden fields formhandler needs, ensures that the 
+	  prefix-id is right and binding is possible without name-attribute for fh:form
+	* fh:form.submit extends f:form.submit and returns a submit with the name formhandler 
+	  needs to detect the action
+	* The fh:translate translates messages from your LL-file configured in setup
+	
+	The binding happens by passing the gp-var as object to fh:form and makes the form-elements
+	that are fluid-form-helpers (e.g. f:form.textfield) overtake all submitted and default values
+	when theyr property-attribute is set.
+	(Name-attribute of element-tag will then automatically be set to "prefix[property]") 
+-->
+
 {namespace fh=Tx_Formhandler_Fluid_ViewHelper}
+
 <!-- ###TEMPLATE_FORM1### begin -->
-<fh:form id="mailform" method="post" actionUri="{relUrl}" enctype="multipart/form-data">
+<fh:form id="mailform" object="{gp}" method="post" actionUri="{f:uri.page()}" enctype="multipart/form-data">
 	<fieldset>
 		<legend><fh:translate key="legend"/></legend>
 		<f:form.errors>
@@ -16,27 +31,23 @@
 				<label for="firstname"><fh:translate key="firstname"/>:</label>
 			</dt>
 			<dd>
-				<f:form.textfield id="firstname" class="textInput" type="text" name="firstname"/>
+				<f:form.textfield id="firstname" class="textInput" type="text" property="firstname"/>
 			</dd>
 			<dt>
 				<label for="lastname"><fh:translate key="lastname"/>:</label>
 			</dt>
 			<dd>
-				<f:form.textfield id="lastname" class="textInput" type="text" name="lastname"/>
+				<f:form.textfield id="lastname" class="textInput" type="text" property="lastname"/>
 			</dd>
 			<dt>
 				<label for="email"><fh:translate key="email"/>:</label>
 			</dt>
 			<dd>
-				<f:form.textfield id="email" class="textInput" type="text" name="email"/>
+				<f:form.textfield id="email" class="textInput" type="text" property="email"/>
 			</dd>
 	 		<dt></dt>
 	 		<dd>
-	 			<!-- 
-	 				Calling view-helpers from within attributes currently seems not possible
-	 				See news://lists.typo3.org:119/mailman.2574.1285105541.583.typo3-dev@lists.typo3.org 
-	 			-->
-	 			<fh:form.submit value="Absenden"/>
+	 			<fh:form.submit value="{fh:translate(key: 'submit')}"/>
 	 		</dd>
 		</dl>
 	</fieldset>

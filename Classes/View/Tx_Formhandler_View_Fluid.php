@@ -38,46 +38,52 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 	 */
 	protected $controllerContext;
 	
-	/**
-	 * @var Tx_Extbase_MVC_Request
-	 */
-	protected $request;
+	protected $settings = array();
 	
 	/**
-	 * Stick the view, controllerContext and request together
+	 * Make the 'real' view (this is just a proxy)
+	 * @see Tx_Extbase_MVC_Controller_ControllerContext#getControllerContext()
 	 */
-	public function initializeView()
+	protected function initializeView()
 	{
 		$this->view = t3lib_div::makeInstance('Tx_Fluid_View_TemplateView');
-		$this->controllerContext = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ControllerContext');
-		$this->request = t3lib_div::makeInstance('Tx_Extbase_MVC_Request');
-		
-		$this->request->setControllerExtensionName('formhandler');
-		$this->request->setPluginName('pi1');
-		
-		$this->controllerContext->setRequest($this->request);
+		$this->controllerContext = Tx_Formhandler_Controller_FluidForm::getControllerContext();
 		$this->view->setControllerContext($this->controllerContext);
+		
+		// Set the view paths (usually done in controller but this view is not
+		// alway called from an controller (f.i. Tx_Formhandler_View_FluidMail)
+		$this->settings = Tx_Formhandler_Globals::$settings;
+		if ($this->settings['templateRoot'])
+		{
+			$path = Tx_Formhandler_StaticFuncs::resolvePath($this->settings['templateRoot']);
+			$path = rtrim($path, '\\/').'/';
+			$this->view->setTemplateRootPath($path.$this->getSetting('templatePath', 'Private/Templates'));
+			$this->view->setLayoutRootPath($path.$this->getSetting('layoutPath', 'Private/Layouts'));
+			$this->view->setPartialRootPath($path.$this->getSetting('partialsPath', 'Private/Partials'));
+		}
+		elseif ($this->settings['templateFile'])
+		{
+			$path = Tx_Formhandler_StaticFuncs::resolvePath($this->settings['templateFile']);
+			$this->view->setTemplatePathAndFilename($path);
+		} else {
+			Tx_Formhandler_StaticFuncs::throwException('no_template_file');
+		}
+	}
+	
+	public function getSetting($key, $default)
+	{
+		return $this->settings[$key] ? $this->settings[$key] : $default;
 	}
 	
 	/**
-	 * Get the path to the template to set it as fluid template
+	 * Proxy to the view
 	 * 
-	 * @return string
+	 * @param string $method
+	 * @param array $args
 	 */
-	protected function getTemplatePath()
+	public function __call($method, $args)
 	{
-		$settings = Tx_Formhandler_Globals::$settings;
-		
-		if ($settings['templateFile'])
-		{
-			$path = Tx_Formhandler_StaticFuncs::resolvePath($settings['templateFile']);
-		}
-
-		if(!$path) {
-			
-			Tx_Formhandler_StaticFuncs::throwException('no_template_file');
-		}
-		return $path;
+		call_user_func_array(array($this->view, $method), $args);
 	}
 	
 	/* (non-PHPdoc)
@@ -85,8 +91,6 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 	 */
 	public function render($gp, $errors)
 	{				
-		$this->view->setTemplatePathAndFilename($this->getTemplatePath());
-		
 		$this->view->assign('gp', $gp);
 		$this->view->assign('errors', $errors);
 		
@@ -120,7 +124,7 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 			array_push($extBaseErrors, $propertyError);
 		}
 		
-		$this->request->setErrors($extBaseErrors);
+		$this->controllerContext->getRequest()->setErrors($extBaseErrors);
 	}
 	
 	/**
@@ -133,14 +137,14 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 				'timestamp'			=> time(),
 				'submission_date'	=> date('d.m.Y H:i:s', time()),
 				'randomId'			=> Tx_Formhandler_Globals::$randomID,
-				'relUrl' 			=> $url = $this->getUrl(),
-				'absUrl'			=> t3lib_div::locationHeaderUrl('').$url,
 				'fieldNamePrefix'	=> Tx_Formhandler_Globals::$formValuesPrefix,
 				'ip'				=> t3lib_div::getIndpEnv('REMOTE_ADDR'),
 				'pid'				=> $GLOBALS['TSFE']->id,
 				'currentStep'		=> Tx_Formhandler_Session::get('currentStep'),
 				'totalSteps'		=> Tx_Formhandler_Session::get('totalSteps'),
-				'lastStep'			=> Tx_Formhandler_Session::get('lastStep')
+				'lastStep'			=> Tx_Formhandler_Session::get('lastStep'),
+				// f:url(absolute:1) does not work correct :(
+				'baseUrl'			=> t3lib_div::locationHeaderUrl('')
 			)
 		);
 		
@@ -174,24 +178,5 @@ class Tx_Formhandler_View_Fluid extends Tx_Formhandler_AbstractView
 	public function setLangFiles(array $langFiles)
 	{
 		Tx_Formhandler_Fluid_ViewHelper_TranslateViewHelper::setLangFiles($langFiles);
-	}
-	
-	/**
-	 * Get the current URL
-	 * 
-	 * @deprecated Use link-helpers instead
-	 * @return string
-	 */
-	protected function getUrl()
-	{
-		$parameters = t3lib_div::_GET();
-		if (isset($parameters['id'])) {
-			unset($parameters['id']);
-		}
-		
-		$url = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $parameters);
-		$url = str_replace('&', '&amp;', $url);
-		
-		return $url;
 	}
 }
