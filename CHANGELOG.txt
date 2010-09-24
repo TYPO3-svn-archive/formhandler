@@ -1,5 +1,134 @@
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+------------------------------------------------------------------------
+---------------------------- Version 0.9.9 -----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+r38524 | reinhardfuehricht | 2010-09-23 16:15:59 +0200 (Don, 23. Sep 2010) | 2 Zeilen
+
+- FIX: conditions for multistep forms were parsed wrong when hitting "previous"
+- FIX: Fixed template for the according example form
+------------------------------------------------------------------------
+r38522 | reinhardfuehricht | 2010-09-23 16:04:21 +0200 (Don, 23. Sep 2010) | 1 Zeile
+
+- FIX: additionalIncludePaths didn't work when using them in predef forms only
+------------------------------------------------------------------------
+r38515 | reinhardfuehricht | 2010-09-23 13:59:33 +0200 (Don, 23. Sep 2010) | 1 Zeile
+
+- FIX: perform htmlspecialchars on ###REL_URL###
+------------------------------------------------------------------------
+r38453 | reinhardfuehricht | 2010-09-22 15:10:01 +0200 (Mit, 22. Sep 2010) | 1 Zeile
+
+- FIX #9738: PreProcessor_ClearTempFiles doesn't need an init method
+------------------------------------------------------------------------
+r38277 | mabolek | 2010-09-17 09:01:35 +0200 (Fre, 17. Sep 2010) | 1 Zeile
+
+FIXED Bug #9785: Separator fallen out of Tx_Formhandler_PreProcessor_LoadDB
+------------------------------------------------------------------------
+r37974 | fabriziobranca | 2010-09-11 21:58:17 +0200 (Sam, 11. Sep 2010) | 1 Zeile
+
+#9670 Remove Tx_Formhandler_AbstractFinisher->init()
+------------------------------------------------------------------------
+r37891 | fabriziobranca | 2010-09-09 20:56:04 +0200 (Don, 09. Sep 2010) | 1 Zeile
+
+Added undeclared properties
+------------------------------------------------------------------------
+r37890 | fabriziobranca | 2010-09-09 20:43:30 +0200 (Don, 09. Sep 2010) | 1 Zeile
+
+Property ->settings was not declared in Tx_Formhandler_AbstractComponent
+------------------------------------------------------------------------
+r37889 | fabriziobranca | 2010-09-09 20:25:44 +0200 (Don, 09. Sep 2010) | 1 Zeile
+
+Added debugMessage to Finishe_ClearCache
+------------------------------------------------------------------------
+r37888 | fabriziobranca | 2010-09-09 20:17:48 +0200 (Don, 09. Sep 2010) | 1 Zeile
+
+Updated documentation for features #9658 and #9639
+------------------------------------------------------------------------
+r37887 | fabriziobranca | 2010-09-09 20:09:56 +0200 (Don, 09. Sep 2010) | 1 Zeile
+
+#9640 Add manual.txt
+------------------------------------------------------------------------
+r37886 | fabriziobranca | 2010-09-09 20:06:11 +0200 (Don, 09. Sep 2010) | 1 Zeile
+
+#9658 Finisher_Redirect's redirectPage setting should support cObject
+------------------------------------------------------------------------
+r37885 | fabriziobranca | 2010-09-09 20:01:55 +0200 (Don, 09. Sep 2010) | 1 Zeile
+
+#9639 cacheCmd setting for Tx_Formhandler_Finisher_ClearCache
+------------------------------------------------------------------------
+r37715 | reinhardfuehricht | 2010-09-06 16:58:42 +0200 (Mon, 06. Sep 2010) | 1 Zeile
+
+- FIX: Generator_WebkitPdf died with a fatal error.
+------------------------------------------------------------------------
+r37711 | erep | 2010-09-06 16:02:59 +0200 (Mon, 06. Sep 2010) | 1 Zeile
+
+REMOVE: no_cache parameter 9582
+------------------------------------------------------------------------
+r37710 | reinhardfuehricht | 2010-09-06 15:40:43 +0200 (Mon, 06. Sep 2010) | 1 Zeile
+
+- FIX #9604: Interceptors // removeChars only worked when using a cObject.
+------------------------------------------------------------------------
+r37702 | reinhardfuehricht | 2010-09-06 11:17:15 +0200 (Mon, 06. Sep 2010) | 1 Zeile
+
+- Follow-Up #9342: Problems with quotes
+------------------------------------------------------------------------
+r37698 | reinhardfuehricht | 2010-09-06 09:46:06 +0200 (Mon, 06. Sep 2010) | 1 Zeile
+
+- FIX #9342: Problems with quotes
+------------------------------------------------------------------------
+r37696 | reinhardfuehricht | 2010-09-06 09:22:52 +0200 (Mon, 06. Sep 2010) | 1 Zeile
+
+- Follow-Up #9328: Using required only for some fields results to export problems
+------------------------------------------------------------------------
+r37695 | reinhardfuehricht | 2010-09-06 09:16:30 +0200 (Mon, 06. Sep 2010) | 1 Zeile
+
+- FIX #9603: print statement Tx_Formhandler_ErrorCheck_DateRange.php
+------------------------------------------------------------------------
+r37513 | reinhardfuehricht | 2010-09-01 11:12:00 +0200 (Mit, 01. Sep 2010) | 1 Zeile
+
+- Follow-Up FIX #9328: Using required only for some fields results to export problems
+------------------------------------------------------------------------
+r37292 | reinhardfuehricht | 2010-08-26 18:01:01 +0200 (Don, 26. Aug 2010) | 1 Zeile
+
+- FIX #7070: Follow-Up fix for: Enable TSconfig configuration for module
+------------------------------------------------------------------------
+r37176 | reinhardfuehricht | 2010-08-24 14:37:13 +0200 (Die, 24. Aug 2010) | 1 Zeile
+
+- FIX #9328: Using required only for some fields results to export problems. resolves #9328
+------------------------------------------------------------------------
+r37154 | reinhardfuehricht | 2010-08-24 09:44:30 +0200 (Die, 24. Aug 2010) | 1 Zeile
+
+- FIX #9416: Problems with own components
+------------------------------------------------------------------------
+r37121 | reinhardfuehricht | 2010-08-23 14:39:16 +0200 (Mon, 23. Aug 2010) | 1 Zeile
+
+- FIX: Wrongly named method in controller
+------------------------------------------------------------------------
+r37113 | reinhardfuehricht | 2010-08-23 12:11:18 +0200 (Mon, 23. Aug 2010) | 1 Zeile
+
+- UPDATE: Raised version number to 0.9.9dev
+------------------------------------------------------------------------
+r37112 | reinhardfuehricht | 2010-08-23 12:10:52 +0200 (Mon, 23. Aug 2010) | 1 Zeile
+
+- FIX #9411: randomID not unique if there is more than one form page
+------------------------------------------------------------------------
+r37111 | reinhardfuehricht | 2010-08-23 12:08:59 +0200 (Mon, 23. Aug 2010) | 1 Zeile
+
+- UPDATE: Moved logic in process() to separate methods
+------------------------------------------------------------------------
+r36998 | reinhardfuehricht | 2010-08-19 17:30:28 +0200 (Don, 19. Aug 2010) | 1 Zeile
+
+- UPDATE: New version number due to TER upload
+------------------------------------------------------------------------
+r36996 | reinhardfuehricht | 2010-08-19 17:25:28 +0200 (Don, 19. Aug 2010) | 1 Zeile
+
+- UPDATE: Changelog updated
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 ---------------------------- Version 0.9.8 -----------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
