@@ -47,6 +47,12 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB
 	 */
 	protected $newFieldsSqlAttribs = 'TINYTEXT NOT NULL';
 	
+	/**
+	 * Initialize the component
+	 * 
+	 * @param array $gp
+	 * @param array $settings
+	 */
 	public function init($gp, $settings)
 	{
 		if (!is_array($settings['fields.']))
@@ -59,10 +65,8 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB
 		$this->db = $GLOBALS['TYPO3_DB'];
 	}
 
-	/**
-	 * Generates mapping settings
-	 *
-	 * @return array The query fields
+	/* (non-PHPdoc)
+	 * @see Classes/Finisher/Tx_Formhandler_Finisher_DB#parseFields()
 	 */
 	protected function parseFields()
 	{
@@ -91,23 +95,69 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB
 	}
 	
 	/**
+	 * Retrieve the fieldnames registered by the fluid form (those include
+	 * the prefix if set)
+	 * 
+	 * @return array
+	 */
+	protected function getFormFieldNames()
+	{
+		$pattern = '/\<(?=input|select|textarea)[^\>]*name=("|\')([^"\']*)\1/i';
+    
+        $templateFile = Tx_Formhandler_Globals::$templateCode;
+		preg_match_all($pattern, $templateFile, $matches);
+        
+        return (array) $matches[2];
+	}
+	
+	/**
+	 * Gets the top level fields from the formFieldNames (@see getFormFieldNames)
+	 * 
+	 * @return array
+	 */
+	protected function getFormFields()
+	{
+		$invokePrefix = strlen(Tx_Formhandler_Globals::$formValuesPrefix) > 0;
+        $prefix = Tx_Formhandler_Globals::$formValuesPrefix;
+        $fields = array();
+        
+		foreach ($this->getFormFieldNames() as $fieldName)
+		{
+			$keys = explode('[', str_replace(']', '', $fieldName));
+			if ($invokePrefix && $keys[0] == $prefix && !empty($keys[1]))
+			{
+				$fields[$keys[1]] = $keys[1];
+			}
+			elseif (!$invokePrefix && strlen($keys[0]))
+			{
+				$fields[$keys[0]] = $keys[0];
+			}
+		}
+		
+		return $fields;
+	}
+	
+	/**
 	 * Looks if the specified table exists and if not create it with the key-
 	 * field (uid). Then it syncs the DB-fields with the fields found in the form 
 	 * with help of template parser
 	 */
 	protected function createTable()
 	{
-		$templateFields = Tx_Formhandler_TemplateParser::getInstance()->getFields();
-		$fields = array();
-		foreach ($templateFields as $name => $field)
+		$fields = $this->getFormFields();
+		
+		if ($this->settings['excludeFields'])
 		{
-			if (isset($field['type']) && $field['type'] == 'submit')
-			{
-				continue;
+			$excludes = t3lib_div::trimExplode(',', $this->settings['excludeFields']);
+			foreach ($excludes as $exclude) {
+				unset($fields[$exclude]);
 			}
-			$fields[] = $name;
 		}
-		$this->db->debugOutput = 1;
+		
+		if (Tx_Formhandler_Globals::$settings['debug'])
+		{
+			$this->db->debugOutput = 1;
+		}
 		
 		$res = $this->db->sql_query("SHOW TABLES LIKE '".$this->table."'");
 		if (!$this->db->sql_num_rows($res))
