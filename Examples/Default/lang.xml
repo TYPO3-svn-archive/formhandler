@@ -67,7 +67,7 @@
 			<label index="interests_music">Musik</label>
 			<label index="interests_science">Wissenschaft</label>
 			<label index="interests_cars">Autos</label>
-			<label index="personal_info">Persönliche Information</label>
+			<label index="personal_info">Persönliche Informationen</label>
 			<label index="contact">Kontakt</label>
 			<label index="contact_via">Bitte kontaktieren Sie mich per</label>
 			<label index="contact_via_email">E-mail</label>
