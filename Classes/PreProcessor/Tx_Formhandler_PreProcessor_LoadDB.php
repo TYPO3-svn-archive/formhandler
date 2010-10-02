@@ -94,9 +94,9 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 
 				if (!isset($this->gp[$fN])) {
 					//post process the field value.
-					if(is_array($settings['preProcessing.'])) {
-						$settings['preProcessing.']['value'] = $this->gp[$fN];
-						$this->gp[$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings, 'preProcessing');
+					if(is_array($settings[$fN.'.']['preProcessing.'])) {
+						$settings[$fN.'.']['preProcessing.']['value'] = $this->gp[$fN];
+						$this->gp[$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings[$fN.'.'], 'preProcessing');
 					}
 					
 					$this->gp[$fN] = $data[Tx_Formhandler_StaticFuncs::getSingle($settings[$fN.'.'], 'mapping')];
@@ -107,9 +107,9 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 					}
 					
 					//post process the field value.
-					if(is_array($settings['postProcessing.'])) {
-						$settings['postProcessing.']['value'] = $this->gp[$fN];
-						$this->gp[$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings, 'postProcessing');
+					if(is_array($settings[$fN.'.']['postProcessing.'])) {
+						$settings[$fN.'.']['postProcessing.']['value'] = $this->gp[$fN];
+						$this->gp[$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings[$fN.'.'], 'postProcessing');
 					}
 						
 				}
@@ -133,9 +133,9 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 			$values = Tx_Formhandler_Session::get('values');
 			foreach (array_keys($settings) as $fN) {
 				//post process the field value.
-				if(is_array($settings['preProcessing.'])) {
-					$settings['preProcessing.']['value'] = $values[$step][$fN];
-					$values[$step][$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings, 'preProcessing');
+				if(is_array($settings[$fN.'.']['preProcessing.'])) {
+					$settings[$fN.'.']['preProcessing.']['value'] = $values[$step][$fN];
+					$values[$step][$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings[$fN.'.'], 'preProcessing');
 				}
 				
 				$fN = preg_replace('/\.$/', '', $fN);
@@ -149,9 +149,9 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 				}
 					
 				//post process the field value.
-				if(is_array($settings['postProcessing.'])) {
-					$settings['postProcessing.']['value'] = $values[$step][$fN];
-					$values[$step][$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings, 'postProcessing');
+				if(is_array($settings[$fN.'.']['postProcessing.'])) {
+					$settings[$fN.'.']['postProcessing.']['value'] = $values[$step][$fN];
+					$values[$step][$fN] = Tx_Formhandler_StaticFuncs::getSingle($settings[$fN.'.'], 'postProcessing');
 				}
 			}
 			
@@ -174,7 +174,7 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 			$selectFields = '*';
 		}
 		
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$sql = $GLOBALS['TYPO3_DB']->SELECTquery(
 		  $selectFields,
 		  Tx_Formhandler_StaticFuncs::getSingle($settings, 'table'),
 		  Tx_Formhandler_StaticFuncs::getSingle($settings, 'where'),
@@ -182,6 +182,10 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 		  Tx_Formhandler_StaticFuncs::getSingle($settings, 'orderBy'),
 		  Tx_Formhandler_StaticFuncs::getSingle($settings, 'limit')
 		);
+		
+		Tx_Formhandler_StaticFuncs::debugMessage($sql);
+		
+		$res = $GLOBALS['TYPO3_DB']->sql_query($sql);
 				
 		if($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
