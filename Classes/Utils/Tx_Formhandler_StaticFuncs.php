@@ -235,7 +235,7 @@ class Tx_Formhandler_StaticFuncs {
 		}
 
 		if($url) {
-			header("Status: 200");
+			header("Status: 301 Moved Permanently");
 			header("Location: " . t3lib_div::locationHeaderUrl($url));
 		}
 	}
