@@ -118,27 +118,42 @@ class Tx_Formhandler_StaticFuncs {
 	 */
 	static public function readTemplateFile($templateFile, &$settings) {
 		
+		$templateCode = FALSE;
 		//template file was not set in flexform, search TypoScript for setting
 		if(!$templateFile) {
+			if(!$settings['templateFile']) {
+				Tx_Formhandler_StaticFuncs::throwException('no_template_file');
+			}
 			$templateFile = $settings['templateFile'];
 			if(isset($settings['templateFile.']) && is_array($settings['templateFile.'])) {
-				$templateFile = Tx_Formhandler_StaticFuncs::getSingle($settings, 'templateFile');
+				$templateCode = Tx_Formhandler_StaticFuncs::getSingle($settings, 'templateFile');
 			} else {
 				$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
-				$templateFile = t3lib_div::getURL($templateFile);
+				if(!@file_exists($templateFile)) {
+					Tx_Formhandler_StaticFuncs::throwException('template_file_not_found', $templateFile);
+				}
+				$templateCode = t3lib_div::getURL($templateFile);
 			}
 		} else {
 			if(strpos($templateFile, "\n") === FALSE) {
 				$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
-				$templateFile = t3lib_div::getURL($templateFile);
+				if(!@file_exists($templateFile)) {
+					Tx_Formhandler_StaticFuncs::throwException('template_file_not_found', $templateFile);
+				}
+				$templateCode = t3lib_div::getURL($templateFile);
+			} else {
+				
+				// given variable $templateFile already contains the template code
+				$templateCode = $templateFile;
 			}
 		}
-
-		if(!$templateFile) {
-			
-			Tx_Formhandler_StaticFuncs::throwException('no_template_file');
+		if(strlen($templateCode) === 0) {
+			Tx_Formhandler_StaticFuncs::throwException('empty_template_file', $templateFile);
 		}
-		return $templateFile;
+		if(stristr($templateCode, '###TEMPLATE_FORM1###') === FALSE) {
+			Tx_Formhandler_StaticFuncs::throwException('invalid_template_file', $templateFile);
+		}
+		return $templateCode;
 	}
 	
 	/**
