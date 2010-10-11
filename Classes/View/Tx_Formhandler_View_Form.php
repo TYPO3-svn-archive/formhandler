@@ -1191,37 +1191,29 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			if ($i == $currentStep) {
 				$class =  'class="' . $classprefix . '_currentstep"';
 			}
-			$stepName = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':step-' . $i));
-			if(!$stepName) {
+			$stepName = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'step-' . $i);
+			if(strlen($stepName) === 0) {
 				$stepName = $i;
 			}
 			$content.= '<span ' . $class . ' >' . $stepName . '</span>';
 		}
-		$content = '<span class="' . $classprefix . '_steps' . '" style="">' . $content . '</span>';
+		$content = '<span class="' . $classprefix . '_steps' . '">' . $content . '</span>';
 
 		//if not the first step, show back button
 		if ($currentStep > 1) {
 			//check if label for specific step
 			$buttonvalue = '';
-			foreach($this->langFiles as $langFile) {
-				$temp = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':prev_' . $currentStep));
-				if(strlen($temp) > 0) {
-					$message = $temp;
-				} else {
-					$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':prev'));
-				}
+			$message = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'prev_' . $currentStep);
+			if(strlen($message) === 0) {
+				$message = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'prev');
 			}
 			$buttonvalue = $message;
 			$buttons .= '<input type="submit" name="' . $buttonNameBack . '" value="' . trim($buttonvalue) . '" class="button_prev" style="margin-right:10px;" />';
 		}
 		$buttonvalue = '';
-		foreach($this->langFiles as $langFile) {
-			$temp = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':next_' . $currentStep));
-			if(strlen($temp) > 0) {
-				$message = $temp;
-			} else {
-				$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':next'));
-			}
+		$message = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'next_' . $currentStep);
+		if(strlen($message) === 0) {
+			$message = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'next');
 		}
 		$buttonvalue = $message;
 		$buttons .= '<input type="submit" name="' . $buttonNameFwd . '" value="' . trim($buttonvalue) . '" class="button_next" />';
