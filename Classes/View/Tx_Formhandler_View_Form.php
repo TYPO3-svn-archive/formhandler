@@ -589,7 +589,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$this->fillFileMarkers($markers);
 
 		if(!preg_match('/###HIDDEN_FIELDS###/', $this->template)) {
-			$this->template = str_replace('</form>', $markers['###HIDDEN_FIELDS###'] . '</form>', $this->template);
+			$this->template = str_replace(
+				'</form>', 
+				'<fieldset style="display: none;">' . $markers['###HIDDEN_FIELDS###'] . '</fieldset></form>', 
+				$this->template
+			);
 		}
 		
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
