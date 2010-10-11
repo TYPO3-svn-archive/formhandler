@@ -391,6 +391,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	private function parseFilesList($settings ,$type, $key) {
 		if(isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
 			$parsed = Tx_Formhandler_StaticFuncs::getSingle($settings, $key);
+			$parsed = t3lib_div::trimExplode(',', $parsed);
 		} elseif($settings[$key]) {
 			$files = t3lib_div::trimExplode(',', $settings[$key]);
 			$parsed = array();
