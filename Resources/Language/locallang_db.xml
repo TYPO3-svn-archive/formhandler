@@ -7,9 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="wizard_pi1.title">Formhandler</label>
-			<label index="wizard_pi2.title">Formhandler list</label>
 			<label index="tt_content.list_type_pi1">Formhandler</label>
-			<label index="tt_content.list_type_pi2">Formhandler list</label>
 			<label index="tx_formhandler_main">Formhandler</label>
 			<label index="tx_formhandler_main.email_to">send formular field to this email</label>
 			<label index="tx_formhandler_main.email_subject">subject of email</label>
@@ -29,7 +27,6 @@
 			<label index="be_missing_config">No forms predefined</label>
 			<label index="be_please_select">Choose a predefined form</label>
 			<label index="tt_content.pi1_plus_wiz_description">Advanced form system with many typoscript options which bring a lot of flexibiliy.</label>
-			<label index="tt_content.pi2_plus_wiz_description">Frontend Listing of Formhandler</label>
 			<label index="be_defined_by_TS">Defined by TypoScript</label>
 
             <label index="tx_formhandler_log">Formhandler log entry</label>
@@ -39,9 +36,7 @@
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="wizard_pi1.title">Formhandler</label>
-			<label index="wizard_pi2.title">Formhandler Liste</label>
 			<label index="tt_content.list_type_pi1">Formhandler</label>
-			<label index="tt_content.list_type_pi2">Formhandler Liste</label>
 			<label index="tx_formhandler_main">Formhandler</label>
 			<label index="tx_formhandler_main.email_to">sende die Formularfelder an folgende Email</label>
 			<label index="tx_formhandler_main.email_subject">Betreff der Email</label>
@@ -61,7 +56,6 @@
 			<label index="be_missing_config">keine Vorlagen vorhanden</label>
 			<label index="be_please_select">wählen Sie eine Vorlage</label>
 			<label index="tt_content.pi1_plus_wiz_description">Advanced form system with many typoscript options which bring a lot of flexibiliy.</label>
-			<label index="tt_content.pi2_plus_wiz_description">Frontend Listing of Formhandler</label>
 			<label index="be_defined_by_TS">Definiert durch TypoScript</label>
 
             <label index="tx_formhandler_log">Formhandler Logeintrag</label>
@@ -71,9 +65,7 @@
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="wizard_pi1.title">Formhandler</label>
-			<label index="wizard_pi2.title">Formhandler liste</label>
 			<label index="tt_content.list_type_pi1">Formhandler</label>
-			<label index="tt_content.list_type_pi2">Formhandler liste</label>
 			<label index="tx_formhandler_main">Formhandler</label>
 			<label index="tx_formhandler_main.email_to">Envoyer le champs du formulaire à cette adresse</label>
 			<label index="tx_formhandler_main.email_subject">sujet de l'email</label>
@@ -93,7 +85,6 @@
 			<label index="be_missing_config">Pas de formulaire prédéfini</label>
 			<label index="be_please_select">Choisir un formulaire prédéfini</label>
 			<label index="tt_content.pi1_plus_wiz_description">Formulaires avancés avec de nombreuses possibilité de configuration TypoScript. Très flexible.</label>
-			<label index="tt_content.pi2_plus_wiz_description">Frontend Listing de Formhandler</label>
 			<label index="be_defined_by_TS">Défini par TypoScript</label>
 		</languageKey>
 	</data>

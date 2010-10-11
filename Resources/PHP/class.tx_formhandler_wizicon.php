@@ -49,13 +49,6 @@ class tx_formhandler_wizicon {
 			'description' => $LANG->getLLL('tt_content.pi1_plus_wiz_description',$LL),
 			'params'      => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=formhandler_pi1'
 		);
-		
-		$wizardItems['plugins_tx_formhandler_pi2'] = array(
-			'icon'        => t3lib_extMgm::extRelPath('formhandler').'Resources/Images/ce_wiz_pi2.png',
-			'title'       => $LANG->getLLL('wizard_pi2.title',$LL),
-			'description' => $LANG->getLLL('tt_content.pi2_plus_wiz_description',$LL),
-			'params'      => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=formhandler_pi2'
-		);
 
 		return $wizardItems;
 	}
