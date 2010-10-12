@@ -43,7 +43,15 @@ class Tx_Formhandler_ErrorCheck_FileMaxCount extends Tx_Formhandler_AbstractErro
 			count($files[$name]) >= $maxCount &&
 			$currentStep == $lastStep) {
 
-			$checkFailed = $this->getCheckFailed($check);
+			$found = FALSE;
+			foreach($_FILES as $idx=>$info) {
+				if(strlen($info['name'][$name]) > 0) {
+					$found = TRUE;
+				}
+			}
+			if($found) {
+				$checkFailed = $this->getCheckFailed($check);
+			}
 		} elseif (is_array($files[$name]) &&
 			$currentStep > $lastStep) {
 
