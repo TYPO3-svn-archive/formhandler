@@ -46,7 +46,7 @@ class Tx_Formhandler_Interceptor_ParseValues extends Tx_Formhandler_AbstractInte
 	 */
 	protected function parseFloats($fields){
 		if (is_array($fields)) {
-			foreach($fields as $field) {
+			foreach($fields as $idx => $field) {
 				if(isset($this->gp[$field])) {
 					$this->gp[$field] = $this->getFloat($this->gp[$field]);
 				}

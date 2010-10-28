@@ -209,7 +209,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	
 	protected function replaceMarkersFromMaster() {
 		$fieldMarkers = array();
-		foreach($this->masterTemplates as $masterTemplate) {
+		foreach($this->masterTemplates as $idx => $masterTemplate) {
 			$masterTemplateCode = t3lib_div::getURL($masterTemplate);
 			$matches = array();
 			preg_match_all('/###(field|master)_([^#]*)###/', $masterTemplateCode, $matches);
@@ -219,7 +219,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				
 				$subpartsCodes = array();
 				if(is_array($subparts)) {
-					foreach($subparts as $subpart) {
+					foreach($subparts as $index => $subpart) {
 						$subpartKey = str_replace('#', '', $subpart);
 						$subpartsCodes[$subpartKey] = $this->cObj->getSubpart($masterTemplateCode, $subpart);
 					}
@@ -313,13 +313,14 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		
 		if (!strpos($key, '|'))
 		{
+			print "Hier: " . $key . ': ' . $this->gp[$key] . ': ' .  (!empty($this->gp[$key])?'befüllt':'leer') . "<br />";
 			return !empty($this->gp[$key]);
 		}
 		
 		$keys = explode('|', $key);
 		
 		$tmp = $this->gp[array_shift($keys)];
-		foreach ($keys as $key) {
+		foreach ($keys as $idx => $key) {
 			if (empty($tmp[$key])) {
 				return FALSE;
 			}else{
@@ -361,7 +362,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$flags = array();
 		$nowrite = FALSE;
 		$out = array();
-		foreach(explode(chr(10), $this->template) as $line){
+		$loopArr = explode(chr(10), $this->template);
+		foreach($loopArr as $idx => $line){
 
 			// works only on it's own line
 			$pattern = '/###isset_+([^#]*)_*###/i';
@@ -389,7 +391,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			}
 		}
 
-		$out = implode(chr(10),$out);
+		$out = implode(chr(10), $out);
 
 		$this->template = $out;
 	}
@@ -476,7 +478,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		}
 		
 		$path = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $parameters);
-		$path = str_replace('&', '&amp;', $path);
 		$path = htmlspecialchars($path);
 		$markers = array();
 		$markers['###REL_URL###'] = $path;
@@ -703,7 +704,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			}
 
 			// Adds the value.
-			foreach($fields as $field) {
+			foreach($fields as $idx => $field) {
 				$settings['validators.'][$index . '.']['config.']['fieldConf.'][$field . '.']['errorCheck.'] = array();
 				$settings['validators.'][$index . '.']['config.']['fieldConf.'][$field . '.']['errorCheck.']['1'] = 'required';
 			}
@@ -765,7 +766,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$totalWrap = $settings['singleFileMarkerTemplate.']['totalWrap'];
 			$totalMarkersTotalWrap = $settings['totalFilesMarkerTemplate.']['totalWrap'];
 			foreach($sessionFiles as $field => $files) {
-				foreach($files as $fileInfo) {
+				foreach($files as $idx => $fileInfo) {
 					$filename = $fileInfo['name'];
 					$thumb = '';
 					if(intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 1 || intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 2) {
@@ -980,11 +981,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			if(!is_array($types)) {
 				$types = array($types);
 			}
-			foreach($types as $type) {
+			foreach($types as $idx => $type) {
 
 				$temp = t3lib_div::trimExplode(';', $type);
 				$type = array_shift($temp);
-				foreach($temp as $item) {
+				foreach($temp as $subIdx => $item) {
 					$item = t3lib_div::trimExplode('::', $item);
 					$values[$item[0]] = $item[1];
 				}
@@ -1127,13 +1128,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if (is_array($this->langFiles)) {
 			$aLLMarkerList = array();
 			preg_match_all('/###LLL:[^#]+?###/Ssm', $this->template, $aLLMarkerList);
-			foreach($aLLMarkerList[0] as $LLMarker){
+			foreach($aLLMarkerList[0] as $idx => $LLMarker){
 				
 				$llKey = substr($LLMarker, 7, (strlen($LLMarker) - 10));
 				
 				$marker = $llKey;
 				$message = '';
-				foreach($this->langFiles as $langFile) {
+				foreach($this->langFiles as $subIdx => $langFile) {
 					$temp = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':' . $llKey));
 					if(strlen($temp) > 0) {
 						$message = $temp;

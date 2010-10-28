@@ -248,7 +248,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		if(!is_array($mailSettings['attachment'])) {
 			$mailSettings['attachment'] = array($mailSettings['attachment']);
 		}
-		foreach($mailSettings['attachment'] as $attachment) {
+		foreach($mailSettings['attachment'] as $idx => $attachment) {
 			if(strlen($attachment) > 0) {
 				$emailObj->addAttachment($attachment);
 			}
@@ -270,7 +270,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		reset($mailSettings['to_email']);
 
 		//send e-mails
-		foreach($mailSettings['to_email'] as $mailto) {
+		foreach($mailSettings['to_email'] as $idx => $mailto) {
 			$sent = FALSE;
 			if($count < $max) {
 				if (strstr($mailto, '@') && !preg_match("/\r/i", $mailto) && !preg_match("/\n/i", $mailto)) {
@@ -312,7 +312,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	private function explodeList($list, $sep = ',') {
 		$items = t3lib_div::trimExplode($sep, $list);
 		$splitArray = array();
-		foreach($items as $item) {
+		foreach($items as $idx => $item) {
 			if(isset($this->gp[$item])) {
 				array_push($splitArray, $this->gp[$item]);
 			} else {
@@ -396,10 +396,10 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			$files = t3lib_div::trimExplode(',', $settings[$key]);
 			$parsed = array();
 			$sessionFiles = Tx_Formhandler_Session::get('files');
-			foreach($files as $file) {
+			foreach($files as $idx => $file) {
 				if(isset($sessionFiles[$file])) {
-					foreach($sessionFiles[$file] as $uploadedFile) {
-						array_push($parsed,$uploadedFile['uploaded_path'] . $uploadedFile['uploaded_name']);
+					foreach($sessionFiles[$file] as $subIdx => $uploadedFile) {
+						array_push($parsed, $uploadedFile['uploaded_path'] . $uploadedFile['uploaded_name']);
 					}
 				} else {
 					array_push($parsed, $file);
@@ -526,7 +526,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		$typeUpper = strtoupper($type);
 		$section = 'sEMAIL' . $typeUpper;
 		$emailSettings = $currentSettings;
-		foreach($optionsToParse as $option) {
+		foreach($optionsToParse as $idx => $option) {
 			$value = Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], $option, $section);
 			if(strlen($value) > 0) {
 				$emailSettings[$option] = $value;

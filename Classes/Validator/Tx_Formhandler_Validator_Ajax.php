@@ -89,7 +89,7 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 					if(!isset($disableErrorCheckFields) || !in_array($name, $disableErrorCheckFields)) {
 							
 						//foreach error checks
-						foreach($errorChecks as $check) {
+						foreach($errorChecks as $idx => $check) {
 							$classNameFix = ucfirst($check['check']);
 							$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
 							
@@ -129,7 +129,7 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 	public function loadConfig($tsConfig) {
 		$this->settings = array();
 		if($tsConfig['validators.']) {
-			foreach($tsConfig['validators.'] as $settings) {
+			foreach($tsConfig['validators.'] as $idx => $settings) {
 				if(is_array($settings['config.'])) {
 					
 					$this->settings = array_merge($this->settings, $settings['config.']);

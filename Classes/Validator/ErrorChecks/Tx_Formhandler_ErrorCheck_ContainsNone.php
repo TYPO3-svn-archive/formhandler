@@ -41,7 +41,7 @@ class Tx_Formhandler_ErrorCheck_ContainsNone extends Tx_Formhandler_AbstractErro
 				$checkValue = t3lib_div::trimExplode(',', $checkValue);
 			}
 			$found = FALSE;
-			foreach($checkValue as $word) {
+			foreach($checkValue as $idx => $word) {
 				if(stristr($formValue, $word) && !$found) {
 	
 					//remove userfunc settings and only store comma seperated words

@@ -155,7 +155,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	protected function parseCondition($condition) {
 		$pattern = '/[\w]+/is';
 		preg_match_all($pattern, $condition, $fields);
-		foreach($fields[0] as $fieldName) {
+		foreach($fields[0] as $idx => $fieldName) {
 			if (isset($this->gp[$fieldName])) {
 					
 				// Formats the value by surrounding it with '.
@@ -164,7 +164,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 				// Replace conditions
 				$condition = str_replace($fieldName, $value, $condition);
 			} else {
-                $condition = str_replace($fieldName, 'FALSE', $condition);
+				$condition = str_replace($fieldName, 'FALSE', $condition);
 			}
 		}
 		return $condition;
@@ -321,7 +321,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 					case 'inserted_uid':
 						$table = $options['special.']['table'];
 						if(is_array($this->gp['saveDB'])) {
-							foreach($this->gp['saveDB'] as $info) {
+							foreach($this->gp['saveDB'] as $idx => $info) {
 								if($info['table'] == $table) {
 									$queryFields[$fieldname] = $info['uid'];
 								}
@@ -350,7 +350,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	protected function getFileList($fieldname){
 		$filenames = array();
 		$files = Tx_Formhandler_Session::get('files');
-		foreach ($files[$fieldname] as $file) {
+		foreach ($files[$fieldname] as $idx => $file) {
 			array_push($filenames, $file['uploaded_name']);
 		}
 		return implode(',', $filenames);

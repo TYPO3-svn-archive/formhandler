@@ -116,9 +116,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 		
 				$value = str_replace("\t", '', $value);
 				
-				foreach($removeChars as $char) {
-					$value = str_replace($char, ' ', $value);
-				}
+				$value = str_replace($removeChars, ' ', $value);
 				
 				$isUTF8 = $this->isUTF8($value);
 				

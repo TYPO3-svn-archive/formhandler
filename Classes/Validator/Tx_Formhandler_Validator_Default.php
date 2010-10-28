@@ -56,7 +56,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 		$flexformValue = Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], 'required_fields', 'sMISC');
 		if($flexformValue) {
 			$fields = t3lib_div::trimExplode(',', $flexformValue);
-			foreach($fields as $field) {
+			foreach($fields as $idx => $field) {
 				if(!is_array($this->settings['fieldConf.'][$field.'.']['errorCheck.'])) {
 					$this->settings['fieldConf.'][$field.'.']['errorCheck.'] = array();
 				}
@@ -128,7 +128,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				if(!isset($disableErrorCheckFields) || (!in_array($name, $disableErrorCheckFields) && !in_array('all', $disableErrorCheckFields))) {
 						
 					//foreach error checks
-					foreach($errorChecks as $check) {
+					foreach($errorChecks as $idx => $check) {
 						$classNameFix = ucfirst($check['check']);
 						$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
 						if(!$errorCheckObject) {

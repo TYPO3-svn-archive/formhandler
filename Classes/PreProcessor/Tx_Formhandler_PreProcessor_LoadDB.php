@@ -89,7 +89,8 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 		$data = $this->data;
 		
 		if (is_array($settings)) {
-			foreach (array_keys($settings) as $fN) {
+			$arrKeys = array_keys($settings);
+			foreach ($arrKeys as $idx => $fN) {
 				$fN = preg_replace('/\.$/', '', $fN);
 
 				if (!isset($this->gp[$fN])) {
@@ -131,7 +132,8 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 
 		if (is_array($settings) && $step) {
 			$values = Tx_Formhandler_Session::get('values');
-			foreach (array_keys($settings) as $fN) {
+			$arrKeys = array_keys($settings);
+			foreach ($arrKeys as $idx => $fN) {
 				//post process the field value.
 				if(is_array($settings[$fN.'.']['preProcessing.'])) {
 					$settings[$fN.'.']['preProcessing.']['value'] = $values[$step][$fN];

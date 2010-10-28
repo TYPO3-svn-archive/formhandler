@@ -100,7 +100,7 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 		$checkBinaryCrLf = $componentSettings['checkBinaryCrLf'];
 		if ($checkBinaryCrLf != '') {
 			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
-			foreach($paramsToCheck as &$field) {
+			foreach($paramsToCheck as $idx => $field) {
 				if(!is_array($field)) {
 					$this->gp[$field] = str_replace (chr(13), '', $this->gp[$field]);
 					$this->gp[$field] = str_replace ('\\', '', $this->gp[$field]);

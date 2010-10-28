@@ -185,7 +185,7 @@ class Tx_Formhandler_StaticFuncs {
 			}
 		}
 		
-		foreach($langFiles as &$langFile) {
+		foreach($langFiles as $idx => &$langFile) {
 			$langFile = Tx_Formhandler_StaticFuncs::convertToRelativePath($langFile);
 		}
 		return $langFiles;
@@ -196,7 +196,7 @@ class Tx_Formhandler_StaticFuncs {
 		if(!is_array($langFiles)) {
 			$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFiles . ':' . $key));
 		} else {
-			foreach($langFiles as $langFile) {
+			foreach($langFiles as $idx => $langFile) {
 				if(strlen(trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':' . $key))) > 0) {
 					$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':' . $key));
 				}
@@ -294,7 +294,7 @@ class Tx_Formhandler_StaticFuncs {
 			if (t3lib_div::testInt($v))	{
 				if (is_array($tempArr))	{
 					$c = 0;
-					foreach($tempArr as $values) {
+					foreach($tempArr as $idx => $values) {
 						if ($c == $v) {
 							$tempArr = $values;
 							break;
@@ -405,11 +405,11 @@ class Tx_Formhandler_StaticFuncs {
 			$aLLMarkerList = array();
 			preg_match_all('/###LLL:.+?###/Ssm', $template, $aLLMarkerList);
 
-			foreach($aLLMarkerList[0] as $LLMarker){
+			foreach($aLLMarkerList[0] as $idx => $LLMarker){
 				$llKey =  substr($LLMarker, 7, strlen($LLMarker) - 10);
 				$marker = $llKey;
 				$message = '';
-				foreach($langFiles as $langFile) {
+				foreach($langFiles as $idx => $langFile) {
 					$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFile . ':' . $llKey));
 				}
 				$langMarkers['###LLL:' . $marker . '###'] = $message;

@@ -109,7 +109,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 			}
 			$message .= 'in the last ' . $value . ' '  .$unit . '!';
 			if($this->settings['report.']['email']) {
-				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 					$rows[] = $row;
 				}
 				$intervalValue = $this->settings['report.']['interval.']['value'];
@@ -172,7 +172,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		$message .= "\n\n" . 'This is the URL to the form: ' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 		if(is_array($rows)) {
 			$message .= "\n\n" . 'These are the submitted values:' . "\n\n";
-			foreach($rows as $row) {
+			foreach($rows as $idx => $row) {
 				$message .= date('Y/m/d h:i:s' , $row['crdate']) . ":\n";
 				$message .= 'IP: ' . $row['ip'] . "\n";
 				$message .= 'Params:' . "\n";
@@ -200,7 +200,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		$emailObj->setPlain($message);
 			
 		//send e-mails
-		foreach($email as $mailto) {
+		foreach($email as $idx => $mailto) {
 
 			$sent = $emailObj->send($mailto);
 			if($sent) {

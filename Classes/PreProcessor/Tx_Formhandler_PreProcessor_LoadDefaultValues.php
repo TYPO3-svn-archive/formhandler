@@ -72,7 +72,8 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 	function loadDefaultValuesToGP($settings) {
 
 		if (is_array($settings)) {
-			foreach (array_keys($settings) as $fN) {
+			$arrKeys = array_keys($settings);
+			foreach ($arrKeys as $idx => $fN) {
 				$fN = preg_replace('/\.$/', '', $fN);
 				
 				if (!isset($this->gp[$fN])) {
@@ -97,7 +98,8 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 
 		if (is_array($settings) && $step) {
 			$values = Tx_Formhandler_Session::get('values');
-			foreach (array_keys($settings) as $fN) {
+			$arrKeys = array_keys($settings);
+			foreach ($arrKeys as $idx => $fN) {
 				$fN = preg_replace('/\.$/', '', $fN);
 				
 				if (!isset($values[$step][$fN])) {

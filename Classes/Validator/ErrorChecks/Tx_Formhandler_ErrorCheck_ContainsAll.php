@@ -40,7 +40,7 @@ class Tx_Formhandler_ErrorCheck_ContainsAll extends Tx_Formhandler_AbstractError
 			if(!is_array($checkValue)) {
 				$checkValue = t3lib_div::trimExplode(',', $checkValue);
 			}
-			foreach($checkValue as $word) {
+			foreach($checkValue as $idx => $word) {
 				if(!stristr($formValue, $word)) {
 	
 						// remove userfunc settings and only store comma seperated words

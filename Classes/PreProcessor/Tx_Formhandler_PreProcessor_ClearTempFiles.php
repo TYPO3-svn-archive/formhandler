@@ -81,7 +81,7 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 		$threshold = Tx_Formhandler_StaticFuncs::getTimestamp($olderThanValue, $olderThanUnit);
 
 		//for all files in temp upload folder
-		foreach($tmpFiles as $file) {
+		foreach($tmpFiles as $idx => $file) {
 
 			//if creation timestamp is lower than threshold timestamp
 			//delete the file

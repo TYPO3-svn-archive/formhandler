@@ -50,7 +50,7 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 		$fieldsArr = $options['fields.'];
 		
 		$combinedString = '';
-		foreach($fieldsArr as $field) {
+		foreach($fieldsArr as $idx => $field) {
 			if(	intval($options['hideEmptyValues']) === 0 || 
 					(intval($options['hideEmptyValues']) === 1 && isset($this->gp[$field]) && strlen($this->gp[$field]) > 0)) {
 				$combinedString .= $this->gp[$field] . $separator;

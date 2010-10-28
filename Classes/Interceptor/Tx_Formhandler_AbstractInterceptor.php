@@ -27,7 +27,7 @@ abstract class Tx_Formhandler_AbstractInterceptor extends Tx_Formhandler_Abstrac
 	protected function log($markAsSpam = FALSE) {
 		$classesArray = $this->settings['loggers.'];
 		if(isset($classesArray) && is_array($classesArray)) {
-			foreach($classesArray as $tsConfig) {
+			foreach($classesArray as $idx => $tsConfig) {
 				if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
 					$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 					Tx_Formhandler_StaticFuncs::debugBeginSection('calling_class', $className);

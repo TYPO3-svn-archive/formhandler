@@ -64,11 +64,6 @@ class tx_formhandler_stdwrap implements tslib_content_stdWrapHook {
 		}
 		return $content;
 	}
-
-	protected function replaceGP($str) {
-		
-	}
-	
 }
 
 ?>

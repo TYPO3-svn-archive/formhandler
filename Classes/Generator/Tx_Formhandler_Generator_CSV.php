@@ -66,11 +66,11 @@ class Tx_Formhandler_Generator_CSV {
 		$dataSorted = array();
 
 		//build data array
-		foreach($records as $record) {
+		foreach($records as $idx => $record) {
 			if(!is_array($record['params'])) {
 				$record['params'] = array();
 			}
-			foreach($record['params'] as &$param) {
+			foreach($record['params'] as $subIdx => &$param) {
 				if(is_array($param)) {
 					$param = implode(';', $param);
 				}
@@ -78,7 +78,7 @@ class Tx_Formhandler_Generator_CSV {
 			$data[] = $record['params'];
 		}
 		if(count($exportParams) > 0) {
-			foreach($data as &$params) {
+			foreach($data as $idx => &$params) {
 				
 				// fill missing fields with empty value
 				foreach($exportParams as $key => $param) {
@@ -98,7 +98,7 @@ class Tx_Formhandler_Generator_CSV {
 		
 		// sort data
 		$dataSorted = array();
-		foreach($data as $array) {
+		foreach($data as $idx => $array) {
 			$dataSorted[] = $this->sortArrayByArray($array, $exportParams);
 		}
 		$data = $dataSorted;
@@ -139,7 +139,7 @@ class Tx_Formhandler_Generator_CSV {
 	
 	private function sortArrayByArray($array, $orderArray) {
 		$ordered = array();
-		foreach($orderArray as $key) {
+		foreach($orderArray as $idx => $key) {
 			if(array_key_exists($key, $array)) {
 					$ordered[$key] = $array[$key];
 					unset($array[$key]);

@@ -236,13 +236,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			is_array($this->settings['validators.']) && 
 			intval($this->settings['validators.']['disable']) !== 1) {
 				
-			foreach($this->settings['validators.'] as $tsConfig) {
+			foreach($this->settings['validators.'] as $idx => $tsConfig) {
 				if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
 					if(intval($tsConfig['disable']) !== 1) {
 						$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 						Tx_Formhandler_StaticFuncs::debugBeginSection('calling_validator',  $className);
 						$validator = $this->componentManager->getComponent($className);
-						if($this->currentStep == $this->lastStep) {
+						if($this->currentStep === $this->lastStep) {
 							$userSetting = t3lib_div::trimExplode(',', $tsConfig['config.']['restrictErrorChecks']);
 							$autoSetting = array('fileAllowedTypes','fileRequired','fileMaxCount','fileMinCount','fileMaxSize','fileMinSize');
 							$merged = array_merge($userSetting,$autoSetting);
@@ -369,7 +369,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				$this->addFinisherStoreGP();
 			}
 
-			foreach($this->settings['finishers.'] as $tsConfig) {
+			foreach($this->settings['finishers.'] as $idx => $tsConfig) {
 				if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
 					if(intval($tsConfig['disable']) !== 1) {
 						$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
@@ -382,7 +382,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						//check if the form was finished before. This flag is set by the Finisher_SubmittedOK
 						if(!$this->submittedOK) {
 										
-							$finisher->init($this->gp,$tsConfig['config.']);
+							$finisher->init($this->gp, $tsConfig['config.']);
 							
 							$this->storeGPinSession();
 							$this->mergeGPWithSession(FALSE, $this->currentStep);
@@ -450,7 +450,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//run finishers
 		if(isset($this->settings['finishers.']) && is_array($this->settings['finishers.']) && intval($this->settings['finishers.']['disable']) !== 1) {
 
-			foreach($this->settings['finishers.'] as $tsConfig) {
+			foreach($this->settings['finishers.'] as $idx => $tsConfig) {
 				if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
 					if(intval($tsConfig['disable']) !== 1) {
 						$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
@@ -483,7 +483,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		foreach($sessionFiles as $fieldname => $files) {
 			$fileNames = array();
 			if(is_array($files)) {
-				foreach($files as $fileInfo) {
+				foreach($files as $idx => $fileInfo) {
 					$fileName = $fileInfo['uploaded_name'];
 					if(!$fileName) {
 						$fileName = $fileInfo['name'];
@@ -543,9 +543,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$classesArray[] = array('class' => $className);
 			
 		} else {
-
-			foreach($classesArray as $classOptions) {
-				$found = FALSE;
+			$found = FALSE;
+			foreach($classesArray as $idx => $classOptions) {
+				
 				if(strpos($className, $classOptions['class']) !== FALSE) {
 					$found = TRUE;
 				}
@@ -569,16 +569,15 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	
 					if(!strcmp($field, $fieldname)) {
 						$found = FALSE;
- 						foreach($files as $key=>&$fileInfo) {
+ 						foreach($files as $key => $fileInfo) {
  							if(!strcmp($fileInfo['uploaded_name'], $filename)) {
 								$found = TRUE;
  								unset($sessionFiles[$field][$key]);
  							}
  						}
 						if(!$found) {
-							foreach($files as $key=>&$fileInfo) {
+							foreach($files as $key => $fileInfo) {
 								if(!strcmp($fileInfo['name'], $filename)) {
-									$found = TRUE;
 									unset($sessionFiles[$field][$key]);
 								}
 							}
@@ -659,7 +658,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						if(!isset($this->errors[$field])) {
 							$exists = FALSE;
 							if(is_array($sessionFiles[$field])) {
-								foreach($sessionFiles[$field] as $fileOptions) {
+								foreach($sessionFiles[$field] as $idx => $fileOptions) {
 									if($fileOptions['name'] == $name) {
 										$exists = TRUE;
 									}
@@ -752,7 +751,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//check for checkbox and radiobutton fields using the values in $newGP
 		if($this->settings['checkBoxFields']) {
 			$fields = t3lib_div::trimExplode(',', $this->settings['checkBoxFields']);
-			foreach($fields as $field) {
+			foreach($fields as $idx => $field) {
 				if(!isset($newGP[$field]) && isset($this->gp[$field])) {
 					$data[$this->lastStep][$field] = array();
 				}
@@ -760,7 +759,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 		if($this->settings['radioButtonFields']) {
 			$fields = t3lib_div::trimExplode(',', $this->settings['radioButtonFields']);
-			foreach($fields as $field) {
+			foreach($fields as $idx => $field) {
 				if(!isset($newGP[$field]) && isset($this->gp[$field])) {
 					$data[$this->lastStep][$field] = array();
 				}
@@ -792,7 +791,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	protected function findCurrentStep() {
 		if(isset($this->gp) && is_array($this->gp)) {
 			$action = 'reload';
-			foreach (array_keys($this->gp) as $pname) {
+			$keys = array_keys($this->gp);
+			foreach ($keys as $idx => $pname) {
 
 				if (strstr($pname, 'step-')) {
 					
@@ -802,7 +802,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						$action = $matches[2][0];
 						$step = intval($matches[1][0]);
 					}
-					
 					
 				} // if end
 			} // foreach end
@@ -851,7 +850,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			array('required_fields', 'sMISC', 'validators', 'Tx_Formhandler_Validator_Default'),
 		);
 
-		foreach ($options as $option) {
+		foreach ($options as $idx => $option) {
 			$fieldName = $option[0];
 			$flexformSection = $option[1];
 			$component = $option[2];
@@ -862,9 +861,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			// Check if a Mail Finisher can be found in the config
 			$isConfigOk = FALSE;
 			if (is_array($this->settings[$component . '.'])) {
-				foreach ($this->settings[$component . '.'] as $finisher) {
-					if (    $finisher['class'] == $componentName
-                            || @is_subclass_of($finisher['class'], $componentName)) {
+				foreach ($this->settings[$component . '.'] as $idx => $finisher) {
+					if (	$finisher['class'] == $componentName
+							|| @is_subclass_of($finisher['class'], $componentName)) {
 
 						$isConfigOk = TRUE;
 						break;
@@ -886,24 +885,24 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	
 	protected function parseConditionsBlock($settings) {
 		$finalResult = FALSE;
-		foreach($settings['if.'] as $conditionSettings) {
+		foreach($settings['if.'] as $idx => $conditionSettings) {
 			$conditions = $conditionSettings['conditions.'];
 			$condition = '';
 			$orConditions = array();
-			foreach($conditions as $andConditions) {
+			foreach($conditions as $subIdx => $andConditions) {
 				$results = array();
-				foreach($andConditions as $andCondition) {
+				foreach($andConditions as $subSubIdx => $andCondition) {
 					if(strstr($andCondition, '=')) {
-						list($field,$value) = t3lib_div::trimExplode('=', $andCondition);
+						list($field, $value) = t3lib_div::trimExplode('=', $andCondition);
 						$result = $this->gp[$field] == $value;
 					} elseif(strstr($andCondition, '>')) {
-						list($field,$value) = t3lib_div::trimExplode('>', $andCondition);
+						list($field, $value) = t3lib_div::trimExplode('>', $andCondition);
 						$result = $this->gp[$field] > $value;
 					} elseif(strstr($andCondition, '<')) {
-						list($field,$value) = t3lib_div::trimExplode('<', $andCondition);
+						list($field, $value) = t3lib_div::trimExplode('<', $andCondition);
 						$result = $this->gp[$field] < $value;
 					}
-					$results[] = ($result?'TRUE':'FALSE');
+					$results[] = ($result ? 'TRUE' : 'FALSE');
 				}
 				$orConditions[] = '(' . implode(' && ', $results) . ')';
 			}
@@ -1222,7 +1221,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$output = '';
 		if(isset($classesArray) && is_array($classesArray) && intval($classesArray['disable']) !== 1) {
 			
-			foreach($classesArray as $tsConfig) {
+			foreach($classesArray as $idx => $tsConfig) {
 				if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
 					if(intval($tsConfig['disable']) !== 1) {
 					
@@ -1263,14 +1262,14 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$stylesheetFile = $this->settings['cssFile'];
 		$cssFiles = array();
 		if($this->settings['cssFile.']) {
-			foreach($this->settings['cssFile.'] as $file) {
+			foreach($this->settings['cssFile.'] as $idx => $file) {
 				$cssFiles[] = $file;
 			}
 		} elseif (strlen($stylesheetFile) > 0) {
 			$cssFiles[] = $stylesheetFile;
 		}
 		
-		foreach($cssFiles as $file) {
+		foreach($cssFiles as $idx => $file) {
 			
 			// set stylesheet
 			$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
@@ -1288,14 +1287,14 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$jsFile = $this->settings['jsFile'];
 		$jsFiles = array();
 		if($this->settings['jsFile.']) {
-			foreach($this->settings['jsFile.'] as $file) {
+			foreach($this->settings['jsFile.'] as $idx => $file) {
 				$jsFiles[] = $file;
 			}
 		} elseif (strlen($jsFile) > 0) {
 			$jsFiles[] = $jsFile;
 		}
 		
-		foreach($jsFiles as $file) {
+		foreach($jsFiles as $idx => $file) {
 			
 			// set stylesheet
 			$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
@@ -1314,7 +1313,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		$valid = TRUE;
 		if(is_array($validArr)) {
-			foreach($validArr as $item) {
+			foreach($validArr as $idx => $item) {
 				if(!$item) {
 					$valid = FALSE;
 				}

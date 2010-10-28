@@ -42,7 +42,7 @@ class Tx_Formhandler_ErrorCheck_ContainsOnly extends Tx_Formhandler_AbstractErro
 			}
 			$error = FALSE;
 			$array = preg_split('//', $formValue, -1, PREG_SPLIT_NO_EMPTY);
-			foreach($array as $char) {
+			foreach($array as $idx => $char) {
 				if(!in_array($char, $checkValue)) {
 					$error = TRUE;
 				}
