@@ -249,9 +249,18 @@ class Tx_GimmeFive_Component_Manager {
 			$currentPath = $this->getPackagePath($packageKey) . $subDirectory;
 		}
 		
-		if (!is_dir($currentPath)) return array();
+		// special handling for extension keys with underscores
+		if (!is_dir($currentPath)) {
+			$packageKey = lcfirst($packageKey);
+			$packageKey = preg_replace('/([A-Z])/', '_$1', $packageKey);
+			$packageKey = strtolower($packageKey);
+			$currentPath = $this->getPackagePath($packageKey) . $subDirectory;
+		}
+		if (!is_dir($currentPath)) {
+			return array();
+		}
 		if ($recursionLevel > 100) throw new Exception('Recursion too deep.');
-
+		
 		try {
 			
 			$classesDirectoryIterator = new DirectoryIterator($currentPath);
@@ -303,7 +312,6 @@ class Tx_GimmeFive_Component_Manager {
 					}
 				}
 			}
-
 			$classFilePathAndName = isset($this->classFiles[$classNameParts[1]][$className]) ? $this->classFiles[$classNameParts[1]][$className] : NULL;
 			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
 				require_once ($classFilePathAndName);
@@ -312,7 +320,7 @@ class Tx_GimmeFive_Component_Manager {
 	}
 	
 	protected function getPackagePath($packageKey) {
-		if(strpos($packageKey, '/') === FALSE) {
+		if(strpos($packageKey, '/') === FALSE && t3lib_extMgm::isLoaded(strtolower($packageKey))) {
 			$path = t3lib_extMgm::extPath(strtolower($packageKey));	
 		} else {
 			$path = t3lib_div::getFileAbsFileName($packageKey);
