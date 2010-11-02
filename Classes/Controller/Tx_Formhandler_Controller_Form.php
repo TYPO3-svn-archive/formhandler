@@ -894,14 +894,21 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				foreach($andConditions as $subSubIdx => $andCondition) {
 					if(strstr($andCondition, '=')) {
 						list($field, $value) = t3lib_div::trimExplode('=', $andCondition);
-						$result = $this->gp[$field] == $value;
+						$result = ($this->gp[$field] === $value);
 					} elseif(strstr($andCondition, '>')) {
 						list($field, $value) = t3lib_div::trimExplode('>', $andCondition);
-						$result = $this->gp[$field] > $value;
+						$result = ($this->gp[$field] > $value);
 					} elseif(strstr($andCondition, '<')) {
 						list($field, $value) = t3lib_div::trimExplode('<', $andCondition);
-						$result = $this->gp[$field] < $value;
+						$result = ($this->gp[$field] < $value);
+					} elseif(strstr($andCondition, '!=')) {
+						list($field, $value) = t3lib_div::trimExplode('!=', $andCondition);
+						$result = ($this->gp[$field] !== $value);
+					} else {
+						$field = $andCondition;
+						$result = isset($this->gp[$field]);
 					}
+					
 					$results[] = ($result ? 'TRUE' : 'FALSE');
 				}
 				$orConditions[] = '(' . implode(' && ', $results) . ')';

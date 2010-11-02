@@ -2306,10 +2306,12 @@ plugin.Tx_Formhandler.settings {
 
 This will result in the following condition:
 
-(feld1 == 'wert1' && feld2 == 'wert2') || (feld3 == 'wert3')
+(field1 == 'value1' && field2 == 'value2') || (field3 == 'value3')
 
 You can use the following operators:
-=, <, >
+=, <, >, !=
+
+NOTE: If you don't use an operator, Formhandler will check if the field is set in GET/POST.
 
 
 NOTE: Using the TypoScript setting 'templateSuffix', you can define different templates for your steps, emails and PDFs. If you have a form with 3 steps and you want to send emails and PDFs according to the chosen route, you can set the templateSuffix option for step 4 too to ensure that the correct template for emails and PDFs is set.
