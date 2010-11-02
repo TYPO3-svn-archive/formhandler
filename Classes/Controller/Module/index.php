@@ -44,7 +44,7 @@ $BE_USER->modAccess($MCONF, 1);	// This checks permissions and exits if the user
 // DEFAULT initialization of a module [END]
 
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 /**
  * Module 'Formhandler' for the 'formhandler' extension.
@@ -181,7 +181,7 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 		switch((string)$this->MOD_SETTINGS['function'])	{
 			case 1:
 				// Render content:
-				$componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+				$componentManager = Tx_Formhandler_Component_Manager::getInstance();
 				$controllerClass = 'Tx_Formhandler_Controller_Backend';
 				$controller = $componentManager->getComponent($controllerClass);
 				$controller->setId($this->id);
@@ -190,7 +190,7 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 				break;
 			case 2:
 				// Render content:
-				$componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+				$componentManager = Tx_Formhandler_Component_Manager::getInstance();
 				$controllerClass = 'Tx_Formhandler_Controller_BackendClearLogs';
 				$controller = $componentManager->getComponent($controllerClass);
 				$controller->setId($this->id);

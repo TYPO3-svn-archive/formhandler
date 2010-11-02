@@ -12,7 +12,7 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 /**
  * Test for the Component "Tx_Formhandler_MarkerUtils" of the extension 'formhandler'

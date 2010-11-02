@@ -13,7 +13,7 @@
  *                                                                        */
 
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 /**
  * Test for the Component "Tx_Formhandler_Logger_DB" of the extension 'formhandler'
@@ -30,7 +30,7 @@ class Tx_Formhandler_Validator_Default_testcase extends tx_phpunit_testcase {
 	protected $message = 'Tested value:';
 	/**
 	 *
-	 * @var Tx_GimmeFive_Component_Manager
+	 * @var Tx_Formhandler_Component_Manager
 	 */
 	protected $components;
 	/**
@@ -40,7 +40,7 @@ class Tx_Formhandler_Validator_Default_testcase extends tx_phpunit_testcase {
 	protected $validator;
 
 	protected function setUp() {
-		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+		$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 		$this->validator = $this->componentManager->getComponent("Tx_Formhandler_Validator_Default");
 		$GLOBALS['TSFE']->initFEuser();
 	}

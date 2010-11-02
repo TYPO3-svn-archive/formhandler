@@ -33,20 +33,20 @@ class Tx_Formhandler_Generator_TCPDF {
 	protected $pdf;
 
 	/**
-	 * The GimmeFive component manager
+	 * The Formhandler component manager
 	 *
 	 * @access protected
-	 * @var Tx_GimmeFive_Component_Manager
+	 * @var Tx_Formhandler_Component_Manager
 	 */
 	protected $componentManager;
 
 	/**
 	 * Default Constructor
 	 *
-	 * @param Tx_GimmeFive_Component_Manager $componentManager The component manager of GimmeFive
+	 * @param Tx_Formhandler_Component_Manager $componentManager The component manager of Formhandler
 	 * @return void
 	 */
-	public function __construct(Tx_GimmeFive_Component_Manager $componentManager) {
+	public function __construct(Tx_Formhandler_Component_Manager $componentManager) {
 		$this->componentManager = $componentManager;
 
 	}

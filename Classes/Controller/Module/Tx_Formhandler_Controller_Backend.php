@@ -25,10 +25,10 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 
 	/**
-	 * The GimmeFive component manager
+	 * The Formhandler component manager
 	 *
 	 * @access protected
-	 * @var Tx_GimmeFive_Component_Manager
+	 * @var Tx_Formhandler_Component_Manager
 	 */
 	protected $componentManager;
 
@@ -77,12 +77,12 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	/**
 	 * The constructor for a finisher setting the component manager and the configuration.
 	 *
-	 * @param Tx_GimmeFive_Component_Manager $componentManager
+	 * @param Tx_Formhandler_Component_Manager $componentManager
 	 * @param Tx_Formhandler_Configuration $configuration
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return void
 	 */
-	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration) {
+	public function __construct(Tx_Formhandler_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration) {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		$this->templatePath = t3lib_extMgm::extPath('formhandler') . 'Resources/HTML/backend/';

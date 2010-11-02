@@ -2,7 +2,7 @@
 
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Session.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 class Tx_Formhandler_Utils_AjaxValidate {
 	
 	public function main() {
@@ -12,7 +12,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 			$randomID = t3lib_div::_GP('randomID');
 			Tx_Formhandler_Globals::$randomID = $randomID;
 			
-			$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+			$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 		
 			$validator = $this->componentManager->getComponent('Tx_Formhandler_Validator_Ajax');
 			

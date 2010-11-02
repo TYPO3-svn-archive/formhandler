@@ -12,7 +12,7 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 /**
  * Test for the Component "Tx_Formhandler_Logger_DB" of the extension 'formhandler'
@@ -26,7 +26,7 @@ class Tx_Formhandler_Logger_DB_testcase extends tx_phpunit_testcase {
 	protected $logger;
 
 	protected function setUp() {
-		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+		$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 		$this->logger = $this->componentManager->getComponent("Tx_Formhandler_Logger_DB");
 		$GLOBALS['TSFE']->initFEuser();
 	}

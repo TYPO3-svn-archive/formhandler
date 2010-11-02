@@ -12,7 +12,7 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 /**
  * Test for the Component "Tx_Formhandler_Interceptor_ParseValues" of the extension 'formhandler'
@@ -32,7 +32,7 @@ class Tx_Formhandler_Interceptor_ParseValues_testcase extends tx_phpunit_testcas
 	protected $message = 'Tested value:';
 
 	protected function setUp() {
-		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+		$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 		$this->interceptor = $this->componentManager->getComponent("Tx_Formhandler_Interceptor_ParseValues");
 	}
 

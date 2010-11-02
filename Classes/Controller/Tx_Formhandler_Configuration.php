@@ -138,7 +138,7 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	 * @return string
 	 */
 	public function getPrefixedPackageKey() {
-		return Tx_GimmeFive_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY;
+		return Tx_Formhandler_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY;
 	}
 
 	/**
@@ -148,7 +148,7 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	 * @return string
 	 */
 	public function getPrefixedPackageKeyLowercase() {
-		return strtolower(Tx_GimmeFive_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY);
+		return strtolower(Tx_Formhandler_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY);
 	}
 }
 ?>

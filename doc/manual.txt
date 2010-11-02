@@ -80,7 +80,7 @@ The new architecture and TypoScript configuration makes it possible to easily co
 Please visit the extension's section on forge to post feature requests or report bugs.
 http://forge.typo3.org/projects/show/extension-formhandler
 
-Note: This extension requires PHP 5.2 or higher and the extension “gimmefive” from Jochen Rau.
+Note: This extension requires PHP 5.2 or higher.
 
 Features
 

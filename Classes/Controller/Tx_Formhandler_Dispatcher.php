@@ -14,7 +14,7 @@
  * $Id$
  *                                                                        */
 
-require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
@@ -32,7 +32,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 	 * Compontent Manager
 	 * 
 	 * @access protected
-	 * @var Tx_GimmeFive_Component_Manager
+	 * @var Tx_Formhandler_Component_Manager
 	 */
 	protected $componentManager;
 	
@@ -109,7 +109,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			Tx_Formhandler_Globals::$predef = $predef;
 			Tx_Formhandler_Globals::$cObj = $this->cObj;
 			Tx_Formhandler_Globals::$overrideSettings = $setup;
-			$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+			$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 			
 			//handle AJAX stuff
 			$this->handleAjax();

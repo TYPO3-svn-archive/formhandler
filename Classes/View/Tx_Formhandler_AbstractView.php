@@ -56,10 +56,10 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	public $piVars;
 
 	/**
-	 * The GimmeFive component manager
+	 * The Formhandler component manager
 	 *
 	 * @access protected
-	 * @var Tx_GimmeFive_Component_Manager
+	 * @var Tx_Formhandler_Component_Manager
 	 */
 	protected $componentManager;
 
@@ -124,11 +124,11 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	/**
 	 * The constructor for a view setting the component manager and the configuration.
 	 *
-	 * @param Tx_GimmeFive_Component_Manager $componentManager
+	 * @param Tx_Formhandler_Component_Manager $componentManager
 	 * @param Tx_Formhandler_Configuration $configuration
 	 * @return void
 	 */
-	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration) {
+	public function __construct(Tx_Formhandler_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration) {
 		parent::__construct();
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;

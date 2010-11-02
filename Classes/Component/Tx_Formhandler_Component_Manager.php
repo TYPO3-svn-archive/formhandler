@@ -13,14 +13,17 @@
  *                                                                        */
 
 /**
- * Component Manager of the extension 'gimmefive'. This is a backport of the Component Manager of FLOW3. It's based
+ * Component Manager originally written for the extension 'Formhandler'. 
+ * This is a backport of the Component Manager of FLOW3. It's based
  * on code mainly written by Robert Lemke. Thanx to the FLOW3 team for all the great stuff!
+ * 
+ * Refactored for usage with Formhandler.
  *
  * @package	TYPO3
- * @subpackage	Tx_GimmeFive
+ * @subpackage	Tx_Formhandler
  */
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-class Tx_GimmeFive_Component_Manager {
+class Tx_Formhandler_Component_Manager {
 	const PACKAGE_PREFIX = 'Tx';
 	const DIRECTORY_CLASSES = 'Classes/';
 	const DIRECTORY_TEMPLATE = 'Resources/Template/';
@@ -35,7 +38,7 @@ class Tx_GimmeFive_Component_Manager {
 	
 	public static function getInstance() {
 		if (self::$instance === NULL) {
-			self::$instance = new Tx_GimmeFive_Component_Manager();
+			self::$instance = new Tx_Formhandler_Component_Manager();
 		}
 		return self::$instance;
 	}
