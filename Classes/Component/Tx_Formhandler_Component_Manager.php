@@ -254,7 +254,7 @@ class Tx_Formhandler_Component_Manager {
 		
 		// special handling for extension keys with underscores
 		if (!is_dir($currentPath)) {
-			$packageKey = lcfirst($packageKey);
+			$packageKey{0} = strtolower($packageKey{0});
 			$packageKey = preg_replace('/([A-Z])/', '_$1', $packageKey);
 			$packageKey = strtolower($packageKey);
 			$currentPath = $this->getPackagePath($packageKey) . $subDirectory;
