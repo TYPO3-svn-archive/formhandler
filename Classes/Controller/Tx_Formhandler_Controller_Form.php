@@ -973,7 +973,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		$randomID = $this->gp['randomID'];
 		if(!$this->gp['randomID']) {
-			$randomID = md5(Tx_Formhandler_Globals::$formValuesPrefix . time());
+			$randomID = md5(Tx_Formhandler_Globals::$formValuesPrefix . $GLOBALS['ACCESS_TIME']);
 		}
 		
 		Tx_Formhandler_Globals::$randomID = $randomID;
