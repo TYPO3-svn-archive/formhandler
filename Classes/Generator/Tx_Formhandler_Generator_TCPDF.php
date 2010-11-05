@@ -20,7 +20,7 @@
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @package	Tx_Formhandler
  * @subpackage	Generator
- * @uses Tx_Formhandler_Template_PDF
+ * @uses Tx_Formhandler_Template_TCPDF
  */
 class Tx_Formhandler_Generator_TCPDF {
 
@@ -28,7 +28,7 @@ class Tx_Formhandler_Generator_TCPDF {
 	 * The internal PDF object
 	 *
 	 * @access protected
-	 * @var Tx_Formhandler_Template_PDF
+	 * @var Tx_Formhandler_Template_TCPDF
 	 */
 	protected $pdf;
 
