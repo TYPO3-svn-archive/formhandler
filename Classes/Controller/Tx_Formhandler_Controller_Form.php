@@ -210,15 +210,16 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		 * to run the right interceptors and validators.
 		 */
 		if($this->currentStep > $this->lastStep) {
-
 			$this->loadSettingsForStep($this->lastStep);
 			$this->parseConditions();
-			$this->loadSettingsForStep($this->lastStep);
+			$this->view->setLangFiles($this->langFiles);
+			$this->view->setSettings($this->settings);
 			$this->setViewSubpart($this->currentStep);
 		} else {
 			$this->loadSettingsForStep($this->currentStep);
 			$this->parseConditions();
-			$this->loadSettingsForStep($this->currentStep);
+			$this->view->setLangFiles($this->langFiles);
+			$this->view->setSettings($this->settings);
 			$this->setViewSubpart($this->currentStep);
 		}
 		
@@ -316,6 +317,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//load settings from last step again because an error occurred
 		$this->loadSettingsForStep($this->currentStep);
 		Tx_Formhandler_Session::set('settings', $this->settings);
+		
+		$this->view->setLangFiles($this->langFiles);
+		$this->view->setSettings($this->settings);
 
 		//reset the template because step had probably been decreased
 		$this->setViewSubpart($this->currentStep);
