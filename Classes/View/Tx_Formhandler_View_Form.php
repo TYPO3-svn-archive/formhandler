@@ -313,7 +313,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		
 		if (!strpos($key, '|'))
 		{
-			print "Hier: " . $key . ': ' . $this->gp[$key] . ': ' .  (!empty($this->gp[$key])?'befüllt':'leer') . "<br />";
 			return !empty($this->gp[$key]);
 		}
 		
