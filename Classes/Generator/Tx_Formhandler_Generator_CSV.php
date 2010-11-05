@@ -109,34 +109,6 @@ class Tx_Formhandler_Generator_CSV {
 		die();
 	}
 
-	/**
-	 * Function to generate a CSV file from submitted form values. This function is called by Tx_Formhandler_Finisher_SubmittedOK
-	 *
-	 * @param array $params The values to export to CSV
-	 * @param array $exportParams A list of fields to export. If not set all fields are exported
-	 * @see Tx_Formhandler_Finisher_SubmittedOK::process()
-	 * @return void
-	 */
-	public function generateFrontendCSV($params, $exportParams = array()) {
-		require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
-
-		//build data
-		foreach($params as $key => &$value) {
-			if(is_array($value)) {
-				$value = implode(',', $value);
-			}
-			if(count($exportParams) > 0 && !in_array($key, $exportParams)) {
-				unset($params[$key]);
-			}
-			$value = str_replace('"', '""', $value);
-		}
-
-		// create new parseCSV object.
-		$csv = new parseCSV();
-		$csv->output('formhandler.csv', $data, $exportParams);
-		die();
-	}
-	
 	private function sortArrayByArray($array, $orderArray) {
 		$ordered = array();
 		foreach($orderArray as $idx => $key) {

@@ -164,58 +164,6 @@ class Tx_Formhandler_Generator_TCPDF {
 
 	}
 
-	/**
-	 * Function to generate a PDF file from submitted form values. This function is called by Tx_Formhandler_Finisher_SubmittedOK and Tx_Formhandler_Finisher_Mail
-	 *
-	 * @param array $gp The values to export
-	 * @param string $langFile The translation file configured in TypoScript of Formhandler
-	 * @param array $exportFields A list of fields to export. If not set all fields are exported
-	 * @param string $file A filename to save the PDF in. If not set, the PDF will be rendered directly to screen
-	 * @param boolean $returns If set, the PDF will be rendered into the given file, if not set, the PDF will be rendered into the file and afterwards directly to screen
-	 * @see Tx_Formhandler_Finisher_SubmittedOK::process()
-	 * @see Tx_Formhandler_Finisher_Mail::parseMailSettings()
-	 * @return void|filename
-	 */
-	function generateFrontendPDF($gp, $langFile, $exportFields = array(), $file = '', $returns = FALSE) {
-		$this->pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
-		$this->pdf->AddPage();
-		$this->pdf->SetFont('Helvetica', '', 12);
-		$view = $this->componentManager->getComponent('Tx_Formhandler_View_PDF');
-		
-		$suffix = Tx_Formhandler_Session::get('templateSuffix');
-		if($suffix) {
-			$view->setTemplate($this->templateCode, 'PDF' . $suffix);
-		}
-		if(!$view->hasTemplate()) {
-			$view->setTemplate($this->templateCode, 'PDF');
-		}
-		if(!$view->hasTemplate()) {
-			Tx_Formhandler_StaticFuncs::throwException('no_pdf_template');
-		}
-		
-		$view->setPredefined(Tx_Formhandler_StaticFuncs::$predefined);
-		
-		$content = $view->render($gp, array());
-		
-		$pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
-		
-		$pdf->writeHTML(stripslashes($content), TRUE, 0);
-
-		if(strlen($file) > 0) {
-			$pdf->Output($file, 'F');
-			$pdf->Close();
-			$downloadpath = $file;
-			if($returns) {
-				return $downloadpath;
-			}
-			
-			header('Location: ' . $downloadpath);
-		} else {
-			$pdf->Output('formhandler.pdf','D');
-		}
-
-	}
-	
 	public function setTemplateCode($templateCode) {
 		$this->templateCode = $templateCode;
 	}
