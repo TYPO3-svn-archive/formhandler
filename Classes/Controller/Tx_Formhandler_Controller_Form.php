@@ -255,7 +255,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						array_push($valid, $res);
 						Tx_Formhandler_StaticFuncs::debugEndSection();
 					}
-				}  else {
+				} else {
 					Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
 				}
 			}
@@ -1075,13 +1075,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		//init ajax
 		if($this->settings['ajax.']) {
-			$ajaxHandler = $this->settings['ajax.']['class'];
-			if(!$ajaxHandler) {
-				$ajaxHandler = 'Tx_Formhandler_AjaxHandler_JQuery';
+			$class = $this->settings['ajax.']['class'];
+			if(!$class) {
+				$class = 'Tx_Formhandler_AjaxHandler_JQuery';
 			}
-			Tx_Formhandler_StaticFuncs::debugMessage('using_ajax', $ajaxHandler);
-			$ajaxHandler = Tx_Formhandler_StaticFuncs::prepareClassName($ajaxHandler);
-			$ajaxHandler = $this->componentManager->getComponent($ajaxHandler);
+			Tx_Formhandler_StaticFuncs::debugMessage('using_ajax', $class);
+			$class = Tx_Formhandler_StaticFuncs::prepareClassName($class);
+			$ajaxHandler = $this->componentManager->getComponent($class);
 			Tx_Formhandler_Globals::$ajaxHandler = $ajaxHandler;
 			
 			$ajaxHandler->init($this->settings['ajax.']['config.']);

@@ -390,13 +390,13 @@ Path to a custom upload folder
 uploads/formhandler/tmp
 files.enableAjaxFileRemoval
 Boolean (0/1)
-You need to install the extension xajax in order to use this feature!
+You need to use an AjaxHandler for this feature.
 
 Adds a remove link to every filename in ###[fieldname]_uploadedFiles### and ###total_uploadedFiles###. Unfortunately other markers like ###[fieldname]_fileCount### will not be updated at the moment.
 
 files.enableFileRemoval
 Boolean (0/1)
-Enables file removal without having xajax installed. It will just display an “X” or anything entered in “files.customRemovalText” next to a file name of an uploaded file, so the user can remove it.
+Enables file removal without using an AjaxHandler. It will just display an “X” or anything entered in “files.customRemovalText” next to a file name of an uploaded file, so the user can remove it.
 
 files.customRemovalText
 String/cObj

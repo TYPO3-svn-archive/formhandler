@@ -35,47 +35,6 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 	 * @var Tx_Formhandler_Component_Manager
 	 */
 	protected $componentManager;
-	
-	/**
-	 * xajax
-	 * 
-	 * @access protected
-	 * @var tx_xajax
-	 */
-	protected $xajax;
-
-	/**
-	 * Adds JavaScript for xajax and registers callable methods.
-	 * Passes AJAX requests to requested methods.
-	 *
-	 * @return void
-	 */
-	protected function handleAjax() {
-		if(t3lib_extMgm::isLoaded('xajax', 0) && !class_exists('tx_xajax') && !$this->xajax) {
-			require_once(t3lib_extMgm::extPath('xajax') . 'class.tx_xajax.php');
-		}
-		if (!$this->xajax && class_exists('tx_xajax')) {
-			$view = $this->componentManager->getComponent('Tx_Formhandler_View_Form');
-
-			$this->xajax = t3lib_div::makeInstance('tx_xajax');
-			$this->xajax->decodeUTF8InputOn();
-			$this->prefixId = 'Tx_Formhandler';
-			$this->xajax->setCharEncoding('utf-8');
-			#$this->xajax->setWrapperPrefix($this->prefixId);
-				
-			$this->xajax->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
-			$this->xajax->registerFunction(array($this->prefixId . '_removeUploadedFile', &$view, 'removeUploadedFile'));
-			
-			// Do you wnat messages in the status bar?
-			$this->xajax->statusMessagesOn();
-			
-			// Turn only on during testing
-			$this->xajax->debugOff();
-			
-			$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] = $this->xajax->getJavascript(t3lib_extMgm::siteRelPath('xajax'));
-			$this->xajax->processRequests();
-		}
-	}
 
 	/**
 	 * Main method of the dispatcher. This method is called as a user function.
@@ -111,8 +70,6 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			Tx_Formhandler_Globals::$overrideSettings = $setup;
 			$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 			
-			//handle AJAX stuff
-			$this->handleAjax();
 	
 			/*
 			 * set controller:

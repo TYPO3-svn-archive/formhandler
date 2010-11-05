@@ -24,69 +24,6 @@
 class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 	/**
-	 * Removes an uploaded file from session. This method is called via an AJAX request.
-	 *
-	 * @param string $fieldname The field holding the file to delete
-	 * @param string $filename The file to delete
-	 * @return void
-	 */
-	public function removeUploadedFile($fieldname,$filename) {
-		if(!t3lib_extMgm::isLoaded('xajax')) {
-			return;
-		}
-
-		if(!class_exists('tx_xajax_response')) {
-			// Instantiate the tx_xajax_response object
-			require (t3lib_extMgm::extPath('xajax') . 'class.tx_xajax_response.php');
-		}
-		
-		$objResponse = new tx_xajax_response();
-
-
-		$sessionFiles = Tx_Formhandler_Session::get('files');
-		if(is_array($sessionFiles)) {
-			foreach($sessionFiles as $field => $files) {
-
-				if(!strcmp($field, $fieldname)) {
-					$found = FALSE;
- 					foreach($files as $key=>&$fileInfo) {
- 						if(!strcmp($fileInfo['uploaded_name'], $filename)) {
-							$found = TRUE;
- 							unset($sessionFiles[$field][$key]);
- 						}
- 					}
-					if(!$found) {
-						foreach($files as $key=>&$fileInfo) {
-							if(!strcmp($fileInfo['name'], $filename)) {
-								$found = TRUE;
-								unset($sessionFiles[$field][$key]);
-							}
-						}
-					}
- 				}
-				
-			}
-		}
-		
-		Tx_Formhandler_Session::set('files', $sessionFiles);
-
-		// Add the content to or Result Box: #formResult
-		if(is_array($sessionFiles)) {
-			$markers = array();
-			$this->fillFileMarkers($markers);
-			$content = $markers['###'. $fieldname. '_uploadedFiles###'];
-			$objResponse->addAssign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', $content);
-
-		} else {
-			$objResponse->addAssign('Tx_Formhandler_UploadedFiles_' . $fieldname, 'innerHTML', '');
-		}
-
-		//return the XML response
-		return $objResponse->getXML();
-	}
-
-
-	/**
 	 * Main method called by the controller.
 	 *
 	 * @param array $gp The current GET/POST parameters
@@ -683,7 +620,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @param array &$markers Reference to the markers array
 	 * @return void
 	 */
-	protected function fillFileMarkers(&$markers) {
+	public function fillFileMarkers(&$markers) {
 		$settings = $this->parseSettings();
 
 		$flexformValue = Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], 'required_fields', 'sMISC');
@@ -785,12 +722,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					if(!$uploadedFileName) {
 						$uploadedFileName = $fileInfo['name'];
 					}				
-					if(t3lib_extMgm::isLoaded('xajax') && $settings['files.']['enableAjaxFileRemoval']) {
-						$link= '<a 
- 								href="javascript:void(0)" 
- 								class="formhandler_removelink" 
- 								onclick="xajax_' . $this->prefixId . '_removeUploadedFile(\'' . $field . '\',\'' . $uploadedFileName . '\')"
- 								>' . $text . '</a>';
+					if(Tx_Formhandler_Globals::$ajaxHandler && $settings['files.']['enableAjaxFileRemoval']) {
+						$link= Tx_Formhandler_Globals::$ajaxHandler->getFileRemovalLink($text, $field, $uploadedFileName);
 					} elseif($settings['files.']['enableFileRemoval']) {
 						$submitName = 'step-' . Tx_Formhandler_Session::get('currentStep') . '-reload';
 						if(Tx_Formhandler_Globals::$formValuesPrefix) {

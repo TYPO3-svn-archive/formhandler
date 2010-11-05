@@ -110,14 +110,6 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	 * @var array
 	 */
 	protected $gp;
-
-	/**
-	 * Currently not needed
-	 *
-	 * @access protected
-	 * @var tx_xajax
-	 */
-	protected $xajax;
 	
 	protected $componentSettings;
 

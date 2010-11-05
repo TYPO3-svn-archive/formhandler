@@ -62,6 +62,28 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		}
 		
 	}
+	
+
+	public function getFileRemovalLink($text, $field, $uploadedFileName) {
+		$params = array(
+			'eID' => 'formhandler-removefile',
+			'field' => $field,
+			'uploadedFileName' => $uploadedFileName,
+			'randomID' => Tx_Formhandler_Globals::$randomID
+		);
+		$url = Tx_Formhandler_Globals::$cObj->getTypoLink_Url($GLOBALS['TSFE']->id, $params);
+		return '<a  
+ 				class="formhandler_removelink" 
+ 				href="' . $url . '"
+ 				>' . $text . '</a>
+ 				<script type="text/javascript">
+	 				jQuery("a.formhandler_removelink").click(function() {
+	 					var url = jQuery(this).attr("href");
+	 					jQuery("#Tx_Formhandler_UploadedFiles_' . $field. '").load(url + "#Tx_Formhandler_UploadedFiles_picture");
+	 					return false;
+	 				});
+	 			</script>';
+	}
 
 
 
