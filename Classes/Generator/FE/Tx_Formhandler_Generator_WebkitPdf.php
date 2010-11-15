@@ -56,27 +56,44 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 	}
 	
 	public function getLink($linkGP) {
-		$params = array();
-		
-		$url = Tx_Formhandler_StaticFuncs::getHostname() . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $linkGP);
-		
-		$config = $this->readWebkitPdfConf();
-		$text = 'Save as PDF';
-		if($config['linkText']) {
-			$text = Tx_Formhandler_StaticFuncs::getSingle($config, 'linkText');
+		$params = $this->getDefaultLinkParams();
+		$componentParams = $this->getComponentLinkParams($linkGP);
+		if(is_array($componentParams)) {
+			$params = t3lib_div::array_merge_recursive_overrule($params, $componentParams);
 		}
-		
+		$text = $this->getLinkText();
+		$url = Tx_Formhandler_StaticFuncs::getHostname() . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $params);
 		$params = array(
 			'tx_webkitpdf_pi1' => array(
 				'urls' => array(
 					$url
 				)
 			),
-			'no_cache' => 1,
-			'submitted_ok' => 1
+			'no_cache' => 1
 		);
-		
 		return $this->cObj->getTypolink($text, $this->settings['pid'], $params);
+	}
+	
+	protected function getComponentLinkParams($linkGP) {
+		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
+		$params = array();
+		if($prefix) {
+			$params[$prefix] = array(
+				'submitted_ok' => 1
+			);
+		} else {
+			$params['submitted_ok'] = 1;
+		}
+		return $params;
+	}
+	
+	protected function getLinkText() {
+		$config = $this->readWebkitPdfConf();
+		$text = 'Save as PDF';
+		if($config['linkText']) {
+			$text = Tx_Formhandler_StaticFuncs::getSingle($config, 'linkText');
+		}
+		return $text;
 	}
 }
 

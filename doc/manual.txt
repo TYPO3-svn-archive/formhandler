@@ -1254,9 +1254,13 @@ int
 Page type for PDF generation.
 123
 x.config.target
-string
+String/cObj
 Target for the PDF link
 _blank
+x.config.linkText
+String/cObj
+The text of the link
+Save
 Generator_TcPdf
 
 Generates PDF files using TCPDF.
@@ -1297,10 +1301,22 @@ int (1/0)
 If set, the generator will return only the file name of the generated PDF.
 Needed for usage with Finisher_Mail in combination with “storeInTempFile”
 
+x.config.linkText
+String/cObj
+The text of the link
+Save
 Generator_Csv
 
-Just enter the class name. No configuration required for this component,
+Just enter the class name. No configuration required for this component.
 
+Property:
+Data type:
+Description:
+Default:
+x.config.linkText
+String/cObj
+The text of the link
+Save
 Finishers
 Property:
 Data type:

@@ -52,7 +52,7 @@
  * finishers.2.config.user.attachment = fileadmin/files/file.txt,picture
  *
  * # attaches a PDF file with submitted values
- * finishers.2.config.user.attachPDF.class = Tx_Formhandler_Generator_PDF
+ * finishers.2.config.user.attachPDF.class = Tx_Formhandler_Generator_TcPdf
  * finishers.2.config.user.attachPDF.exportFields = firstname,lastname,email,interests,pid,submission_date,ip
  * 
  * #configure how the attached files are prefixes (PDF/HTML).
@@ -235,9 +235,9 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 				$tmphtml = str_replace('.tmp', '', $tmphtml);
 				$tmphandle = fopen($tmphtml, 'wb');
 				if ($tmphandle) {
-					fwrite($tmphandle,$template['html']);
+					fwrite($tmphandle, $template['html']);
 					fclose($tmphandle);
-					Tx_Formhandler_StaticFuncs::debugMessage('adding_html', $tmphtml);
+					Tx_Formhandler_StaticFuncs::debugMessage('adding_html', $template['html']);
 					$emailObj->addAttachment($tmphtml);
 				}
 			} else {

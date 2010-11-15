@@ -183,24 +183,60 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		$this->processFileRemoval();
 
-		//not submitted
-		if(!$this->submitted) {
-			
-			return $this->processNotSubmitted();
-			
-			//submitted
-		} else {
-			if($this->submittedOK) {
-				
-				return $this->processSubmittedOK();
-
-			} else {
+		$action = t3lib_div::_GP('action');
+		if(Tx_Formhandler_Globals::$formValuesPrefix) {
+			$temp = t3lib_div::_GP(Tx_Formhandler_Globals::$formValuesPrefix);
+			$action = $temp['action'];
+		}
+		if($action) {
+			$this->processAction($action);
+		}
 		
-				return $this->processSubmitted();
-				
-			}
+		if($this->submittedOK) {
+			return $this->processSubmittedOK();
+		} elseif(!$this->submitted) {
+			return $this->processNotSubmitted();
+		} else {
+			return $this->processSubmitted();
 		}
 
+	}
+	
+	protected function processAction($action) {
+		$gp = $_GET;
+		if(Tx_Formhandler_Globals::$formValuesPrefix) {
+			$gp = t3lib_div::_GP(Tx_Formhandler_Globals::$formValuesPrefix);
+		}
+		if(is_array($this->settings['finishers.'])) {
+			$finisherConf = array();
+			foreach($this->settings['finishers.'] as $key => $config) {
+				if(strpos($key, '.') !== FALSE) {
+					$className = Tx_Formhandler_StaticFuncs::prepareClassName($config['class']);
+					if($className === 'Tx_Formhandler_Finisher_SubmittedOK' && is_array($config['config.']['actions.'])) {
+						$finisherConf = $config['config.']['actions.'];
+					}
+				}
+			}
+			if($finisherConf[$action . '.']) {
+				$tstamp = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['tstamp']);
+				$hash = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['hash']);
+				if($tstamp && $hash) {
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'tx_formhandler_log', 'tstamp=' . $tstamp . ' AND key_hash=' . $hash);
+					if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) === 1) {
+						$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+						$GLOBALS['TYPO3_DB']->sql_free_result($res);
+						$params = unserialize($row['params']);
+						$class = $finisherConf[$action . '.']['class'];
+						if($class) {
+							$class = Tx_Formhandler_StaticFuncs::prepareClassName($class);
+							$object = $this->componentManager->getComponent($class);
+							$object->init($params, $finisherConf[$action . '.']['config.']);
+							$object->process();
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	protected function processSubmitted() {
@@ -445,6 +481,22 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	}
 	
 	protected function processSubmittedOK() {
+		
+		$gp = $_GET;
+		if(Tx_Formhandler_Globals::$formValuesPrefix) {
+			$gp = t3lib_div::_GP(Tx_Formhandler_Globals::$formValuesPrefix);
+		}
+		$tstamp = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['tstamp']);
+		$hash = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['hash']);
+		if($tstamp && $hash) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'tx_formhandler_log', 'tstamp=' . $tstamp . ' AND key_hash=' . $hash);
+			if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) === 1) {
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				$this->gp = unserialize($row['params']);
+			}
+		}
+		
 		$this->loadSettingsForStep($this->currentStep);
 		$this->parseConditions();
 		$this->view->setLangFiles($this->langFiles);
@@ -781,7 +833,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		Tx_Formhandler_Session::set('startblock', NULL);
 		Tx_Formhandler_Session::set('endblock', NULL);
 		Tx_Formhandler_Session::set('currentStep', 1);
+		Tx_Formhandler_Session::set('inserted_uid', NULL);
+		Tx_Formhandler_Session::set('inserted_tstamp', NULL);
+		Tx_Formhandler_Session::set('key_hash', NULL);
 		$this->gp = array();
+		$this->currentStep = 1;
 		Tx_Formhandler_Globals::$gp = $this->gp;
 		Tx_Formhandler_StaticFuncs::debugMessage('cleared_session');
 	}
@@ -1040,6 +1096,10 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//}
 		
 		$this->submittedOK = Tx_Formhandler_Session::get('submittedOK');
+		
+		if(!$this->submittedOK) {
+			$this->submittedOK = $this->gp['submitted_ok'];
+		}
 		
 		if(!$this->submittedOK) {
 			$this->submittedOK = t3lib_div::_GP('submitted_ok');

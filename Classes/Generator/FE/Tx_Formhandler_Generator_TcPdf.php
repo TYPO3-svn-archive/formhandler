@@ -64,35 +64,25 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 			}
 			$downloadpath = str_replace(t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT'), '', $downloadpath);
 			header('Location: ' . $downloadpath);
+			exit;
 		} else {
-			$this->pdf->Output('formhandler.pdf','I');
-			
+			$this->pdf->Output('formhandler.pdf','D');
+			exit;
 		}
 	}
 	
-	public function getLink($linkGP) {
-		$linkGP = array();
+	protected function getComponentLinkParams($linkGP) {
 		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
-		
-		$target = '_blank';
-        if($this->settings['target']) {
-            $target = $this->settings['target'];
-        }
-        
+		$tempParams = array(
+			'action' => 'pdf'
+		);
+		$params = array();
 		if($prefix) {
-			$linkGP[$prefix]['action'] = 'pdf';
-			$linkGP[$prefix]['submitted'] = '1';
-			$linkGP[$prefix]['submitted_ok'] = '1';
+			$params[$prefix] = $tempParams;
 		} else {
-			$linkGP['action'] = 'pdf';
-			$linkGP['submitted'] = '1';
-			$linkGP['submitted_ok'] = '1';
+			$params = $tempParams;
 		}
-		$linkGP['no_cache'] = 1;
-		$linkGP['dontReset'] = 1;
-		
-
-		return $this->cObj->getTypolink('PDF', $GLOBALS['TSFE']->id, $linkGP, $target);
+		return $params;
 	}
 }
 
