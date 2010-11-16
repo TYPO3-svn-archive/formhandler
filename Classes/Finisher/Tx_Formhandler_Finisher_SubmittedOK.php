@@ -43,25 +43,25 @@ class Tx_Formhandler_Finisher_SubmittedOK extends Tx_Formhandler_AbstractFinishe
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		
+
 		//set session value to prevent another validation or finisher circle. Formhandler will call only this Finisher if the user reloads the page.
 		Tx_Formhandler_Session::set('submittedOK', TRUE);
 
 		//read template file
 		$this->templateFile = Tx_Formhandler_Globals::$templateCode;
-		
+
 		//set view
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_SubmittedOK');
-			
+
 		//show TEMPLATE_SUBMITTEDOK
 		$view->setTemplate($this->templateFile, ('SUBMITTEDOK' . Tx_Formhandler_Globals::$templateSuffix));
-		if(!$view->hasTemplate()) {
+		if (!$view->hasTemplate()) {
 			$view->setTemplate($this->templateFile, 'SUBMITTEDOK');
-			if(!$view->hasTemplate()) {
+			if (!$view->hasTemplate()) {
 				Tx_Formhandler_StaticFuncs::debugMessage('no_submittedok_template');
 			}
 		}
-		
+
 		$view->setSettings(Tx_Formhandler_Session::get('settings'));
 		$view->setComponentSettings($this->settings);
 		return $view->render($this->gp, array());

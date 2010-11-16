@@ -30,10 +30,10 @@ class Tx_Formhandler_Interceptor_TranslateFields extends Tx_Formhandler_Abstract
 	 */
 	public function process() {
 		$this->langFiles = Tx_Formhandler_Globals::$langFiles;
-		if(is_array($this->settings['translateFields.'])) {
-			foreach($this->settings['translateFields.'] as $newField=>$options) {
+		if (is_array($this->settings['translateFields.'])) {
+			foreach ($this->settings['translateFields.'] as $newField=>$options) {
 				$newField = str_replace('.', '', $newField);
-				if(isset($options['langKey'])) {
+				if (isset($options['langKey'])) {
 					$this->gp[$newField] = $this->translateFields($options);
 					Tx_Formhandler_StaticFuncs::debugMessage('translated', $newField, $this->gp[$newField]);
 				}
@@ -41,13 +41,13 @@ class Tx_Formhandler_Interceptor_TranslateFields extends Tx_Formhandler_Abstract
 		}
 		return $this->gp;
 	}
-	
+
 	protected function translateFields($options) {
 		$key = $options['langKey'];
 		$field = $options['field'];
-		if($field) {
+		if ($field) {
 			$key = str_replace('|', $this->gp[$field], $key);
-		} 
+		}
 		return Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, $key); 
 	}
 

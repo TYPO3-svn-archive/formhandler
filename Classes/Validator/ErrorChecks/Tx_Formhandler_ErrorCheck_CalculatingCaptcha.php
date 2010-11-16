@@ -33,26 +33,24 @@ class Tx_Formhandler_ErrorCheck_CalculatingCaptcha extends Tx_Formhandler_Abstra
 	 * @return string The error string
 	 */
 	public function check(&$check, $name, &$gp) {
-		
 		$checkFailed = '';
-		if(t3lib_extMgm::isLoaded('wt_calculating_captcha')) {
-			
+		if (t3lib_extMgm::isLoaded('wt_calculating_captcha')) {
+
 				// include captcha class
 			require_once(t3lib_extMgm::extPath('wt_calculating_captcha') . 'class.tx_wtcalculatingcaptcha.php');
-			
+
 				// generate object
 			$captcha = t3lib_div::makeInstance('tx_wtcalculatingcaptcha');
-			
+
 				// check if code is correct
 			if (!$captcha->correctCode($gp[$name])) {
 				$checkFailed = $this->getCheckFailed($check);
 			}
 			unset($GLOBALS['TSFE']->fe_user->sesData['wt_calculating_captcha_value']);
 		}
-		
+
 		return $checkFailed;
 	}
-
 
 }
 ?>

@@ -37,7 +37,6 @@ abstract class Tx_Formhandler_AbstractErrorCheck extends Tx_Formhandler_Abstract
 	 */
 	abstract public function check(&$check, $name, &$gp);
 
-	
 	/**
 	 * Sets the suitable string for the checkFailed message parsed in view.
 	 *
@@ -46,9 +45,9 @@ abstract class Tx_Formhandler_AbstractErrorCheck extends Tx_Formhandler_Abstract
 	 */
 	protected function getCheckFailed($check) {
 		$checkFailed = $check['check'];
-		if(is_array($check['params'])) {
+		if (is_array($check['params'])) {
 			$checkFailed .= ';';
-			foreach($check['params'] as $key => $value) {
+			foreach ($check['params'] as $key => $value) {
 				$checkFailed .= $key . '::' . $value . ';';
 			}
 			$checkFailed = substr($checkFailed, 0, (strlen($checkFailed) - 1));

@@ -39,10 +39,9 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-
 		$this->olderThanValue = $this->settings['clearTempFilesOlderThan.']['value'];
 		$this->olderThanUnit = $this->settings['clearTempFilesOlderThan.']['unit'];
-		if(!empty($this->olderThanValue) && is_numeric($this->olderThanValue)) {
+		if (!empty($this->olderThanValue) && is_numeric($this->olderThanValue)) {
 			$uploadFolder = Tx_Formhandler_StaticFuncs::getTempUploadFolder();
 			$this->clearTempFiles($uploadFolder, $this->olderThanValue, $this->olderThanValue);
 		}
@@ -64,7 +63,7 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
 	protected function clearTempFiles($uploadFolder, $olderThanValue, $olderThanUnit) {
-		if(!$olderThanValue) {
+		if (!$olderThanValue) {
 			return;
 		}
 
@@ -81,7 +80,7 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 		$threshold = Tx_Formhandler_StaticFuncs::getTimestamp($olderThanValue, $olderThanUnit);
 
 		//for all files in temp upload folder
-		foreach($tmpFiles as $idx => $file) {
+		foreach ($tmpFiles as $idx => $file) {
 
 			//if creation timestamp is lower than threshold timestamp
 			//delete the file
@@ -89,7 +88,8 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 
 			//fix for different timezones
 			$creationTime += date('O') / 100 * 60;
-			if($creationTime < $threshold) {
+
+			if ($creationTime < $threshold) {
 				unlink($path . $file);
 				Tx_Formhandler_StaticFuncs::debugMessage('deleting_file', $file);
 			}

@@ -1,7 +1,8 @@
 <?php
 
+require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
 class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
-	
+
 	/**
 	 * Renders the CSV.
 	 *
@@ -9,17 +10,17 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 	 */
 	public function process() {
 		$params = $this->gp;
-		require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
 		$exportParams = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'exportParams');
-		if(!is_array($exportParams)) {
+		if (!is_array($exportParams)) {
 			$exportParams = t3lib_div::trimExplode(',', $exportParams);
 		}
+
 		//build data
-		foreach($params as $key => &$value) {
-			if(is_array($value)) {
+		foreach ($params as $key => &$value) {
+			if (is_array($value)) {
 				$value = implode(',', $value);
 			}
-			if(count($exportParams) > 0 && !in_array($key, $exportParams)) {
+			if (count($exportParams) > 0 && !in_array($key, $exportParams)) {
 				unset($params[$key]);
 			}
 			$value = str_replace('"', '""', $value);
@@ -37,7 +38,7 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 			'action' => 'csv'
 		);
 		$params = array();
-		if($prefix) {
+		if ($prefix) {
 			$params[$prefix] = $tempParams;
 		} else {
 			$params = $tempParams;

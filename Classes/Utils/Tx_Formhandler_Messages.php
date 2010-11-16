@@ -23,7 +23,6 @@
  */
 class Tx_Formhandler_Messages {
 
-
 	/**
 	 * Returns a debug message according to given key
 	 *
@@ -43,7 +42,7 @@ class Tx_Formhandler_Messages {
 	public static function getExceptionMessage($key) {
 		return trim($GLOBALS['TSFE']->sL('LLL:EXT:formhandler/Resources/Language/locallang_exceptions.xml:' . $key));
 	}
-	
+
 	/**
 	 * Returns a formatted debug message
 	 *
@@ -54,8 +53,8 @@ class Tx_Formhandler_Messages {
 		$message = str_replace("\n", '<br />', $message);
 		return '<div style="font-weight:bold;color:#333;">' . $message . '</div>' . "\n";	
 	}
-	
-/**
+
+	/**
 	 * Returns a formatted debug section header
 	 *
 	 * @param string The unformatted message

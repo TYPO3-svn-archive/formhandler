@@ -12,8 +12,6 @@
  * Public License for more details.                                       *
  *
  * $Id$
- *          
- *                                                                        
  *                                                                       */
 
 /**
@@ -35,13 +33,12 @@ class Tx_Formhandler_View_PDF extends Tx_Formhandler_View_Form {
 	public function render($gp, $errors) {
 		$this->gp = $gp;
 		$this->settings = $this->parseSettings();
-		
+
 		$this->sanitizeMarkers();
 		$content = parent::render($this->gp, $errors);
-
 		return $this->pi_wrapInBaseClass($content);
 	}
-	
+
 	/**
 	 * Sanitizes GET/POST parameters by processing the 'checkBinaryCrLf' setting in TypoScript
 	 *
@@ -52,10 +49,10 @@ class Tx_Formhandler_View_PDF extends Tx_Formhandler_View_Form {
 		$checkBinaryCrLf = $componentSettings['checkBinaryCrLf'];
 		if ($checkBinaryCrLf !== '') {
 			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
-			foreach($paramsToCheck as $idx => $field) {
-				if(!is_array($field)) {
-					$this->gp[$field] = str_replace (chr(13), '<br />', $this->gp[$field]);
-					$this->gp[$field] = str_replace ('\\', '', $this->gp[$field]);
+			foreach ($paramsToCheck as $idx => $field) {
+				if (!is_array($field)) {
+					$this->gp[$field] = str_replace(chr(13), '<br />', $this->gp[$field]);
+					$this->gp[$field] = str_replace('\\', '', $this->gp[$field]);
 					$this->gp[$field] = nl2br($this->gp[$field]);
 				}
 			}

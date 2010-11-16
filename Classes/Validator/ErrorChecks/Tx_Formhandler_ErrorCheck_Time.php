@@ -33,8 +33,8 @@ class Tx_Formhandler_ErrorCheck_Time extends Tx_Formhandler_AbstractErrorCheck {
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		
-		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
+
+		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			$pattern = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'pattern');
 			preg_match('/^[h|m]*(.)[h|m]*/i', $pattern, $res);
 			$sep = $res[1];
@@ -52,7 +52,6 @@ class Tx_Formhandler_ErrorCheck_Time extends Tx_Formhandler_AbstractErrorCheck {
 		}
 		return $checkFailed;
 	}
-
 
 }
 ?>

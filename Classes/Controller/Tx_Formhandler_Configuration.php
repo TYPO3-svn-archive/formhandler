@@ -41,16 +41,15 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	/**
 	 * The constructor reading the TS setup into the according attribute
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return void
 	 */
 	public function __construct() {
-		if(TYPO3_MODE === 'FE') {
+		if (TYPO3_MODE === 'FE') {
 			$this->setup = $GLOBALS['TSFE']->tmpl->setup['plugin.'][$this->getPrefixedPackageKey() . '.'];
-			if(!is_array($this->setup)) {
+			if (!is_array($this->setup)) {
 				Tx_Formhandler_StaticFuncs::throwException('missing_config');
 			}
-			if(is_array(Tx_Formhandler_Globals::$overrideSettings)) {
+			if (is_array(Tx_Formhandler_Globals::$overrideSettings)) {
 				$this->setup = t3lib_div::array_merge_recursive_overrule($this->setup, Tx_Formhandler_Globals::$overrideSettings);
 			}
 		}
@@ -59,7 +58,6 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	/**
 	 * Merges the values of $setup with plugin.[xxx].settings
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @param array $setup
 	 * @return void
 	 */
@@ -80,11 +78,7 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	}
 
 	public function offsetExists($offset) {
-		if (isset($this->setup['settings.'][$offset])) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+		return isset($this->setup['settings.'][$offset]);
 	}
 
 	public function offsetUnset($offset) {
@@ -94,7 +88,6 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	/**
 	 * Returns the TS settings for formhandler.
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return array The settings
 	 */
 	public function getSettings() {
@@ -104,7 +97,6 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	/**
 	 * Returns the sources config for formhandler
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return array The config
 	 */
 	public function getSourcesConfiguration() {
@@ -114,7 +106,6 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	/**
 	 * Returns the package key
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return string
 	 */
 	public function getPackageKey() {
@@ -124,7 +115,6 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	/**
 	 * Returns the package key in lower case
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return string
 	 */
 	public function getPackageKeyLowercase() {
@@ -134,7 +124,6 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	/**
 	 * Returns the prefixed package key
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return string
 	 */
 	public function getPrefixedPackageKey() {
@@ -144,7 +133,6 @@ class Tx_Formhandler_Configuration implements ArrayAccess {
 	/**
 	 * Returns the prefixed package key in lower case
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return string
 	 */
 	public function getPrefixedPackageKeyLowercase() {

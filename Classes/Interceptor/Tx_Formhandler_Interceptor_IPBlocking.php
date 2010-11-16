@@ -57,27 +57,27 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	 * @var string
 	 */
 	protected $logTable = 'tx_formhandler_log';
-	
+
 	/**
 	 * The main method called by the controller
 	 *
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		
+
 		$ipTimebaseValue = $this->settings['ip.']['timebase.']['value'];
 		$ipTimebaseUnit = $this->settings['ip.']['timebase.']['unit'];
 		$ipMaxValue = $this->settings['ip.']['threshold'];
 
-		if($ipTimebaseValue && $ipTimebaseUnit && $ipMaxValue) {
+		if ($ipTimebaseValue && $ipTimebaseUnit && $ipMaxValue) {
 			$this->check($ipTimebaseValue, $ipTimebaseUnit, $ipMaxValue, TRUE);
 		}
 
 		$globalTimebaseValue = $this->settings['global.']['timebase.']['value'];
 		$globalTimebaseUnit = $this->settings['global.']['timebase.']['unit'];
 		$globalMaxValue = $this->settings['global.']['threshold'];
-		
-		if($globalTimebaseValue && $globalTimebaseUnit && $globalMaxValue) {
+
+		if ($globalTimebaseValue && $globalTimebaseUnit && $globalMaxValue) {
 			$this->check($globalTimebaseValue, $globalTimebaseUnit, $globalMaxValue, TRUE);
 		}
 
@@ -96,41 +96,39 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	private function check($value, $unit, $maxValue, $addIPToWhere = TRUE) {
 		$timestamp = Tx_Formhandler_StaticFuncs::getTimestamp($value, $unit);
 		$where = 'crdate >= ' . $timestamp;
-		if($addIPToWhere) {
+		if ($addIPToWhere) {
 			$where = 'ip=\'' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '\' AND ' . $where;
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,ip,crdate,params', $this->logTable, $where);
-
-		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) >= $maxValue) {
+		if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) >= $maxValue) {
 			$this->log(TRUE);
 			$message = 'You are not allowed to send more mails because form got submitted too many times ';
-			if($addIPToWhere) {
+			if ($addIPToWhere) {
 				$message .= 'by your IP address ';
 			}
 			$message .= 'in the last ' . $value . ' '  .$unit . '!';
-			if($this->settings['report.']['email']) {
+			if ($this->settings['report.']['email']) {
 				while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 					$rows[] = $row;
 				}
 				$intervalValue = $this->settings['report.']['interval.']['value'];
 				$intervalUnit = $this->settings['report.']['interval.']['unit'];
 				$send = TRUE;
-				if($intervalUnit && $intervalValue) {
+				if ($intervalUnit && $intervalValue) {
 					$intervalTstamp = Tx_Formhandler_StaticFuncs::getTimestamp($intervalValue, $intervalUnit);
 					$where = 'pid=' . $GLOBALS['TSFE']->id . ' AND crdate>' . $intervalTstamp;
-					if($addIPToWhere) {
+					if ($addIPToWhere) {
 						$where .= ' AND ip=\'' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '\'';
 					}
 
 					$res_log = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $this->reportTable, $where);
-
-					if($res_log && $GLOBALS['TYPO3_DB']->sql_num_rows($res_log) > 0) {
+					if ($res_log && $GLOBALS['TYPO3_DB']->sql_num_rows($res_log) > 0) {
 						$send = FALSE;
 						$GLOBALS['TYPO3_DB']->sql_free_result($res_log);
 					}
 				}
-				if($send) {
-					if($addIPToWhere) {
+				if ($send) {
+					if ($addIPToWhere) {
 						$this->sendReport('ip', $rows);
 					} else {
 						$this->sendReport('global', $rows);
@@ -138,10 +136,9 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 				} else {
 					Tx_Formhandler_StaticFuncs::debugMessage('alert_mail_not_sent');
 				}
-				
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			if($this->settings['redirectPage']) {
+			if ($this->settings['redirectPage']) {
 				Tx_Formhandler_StaticFuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl']);
 				Tx_Formhandler_StaticFuncs::debugMessage('redirect_failed');
 				exit(0);
@@ -163,22 +160,22 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		$sender = $this->settings['report.']['sender'];
 		$subject = $this->settings['report.']['subject'];
 		$message = '';
-		if($type == 'ip') {
+		if ($type == 'ip') {
 			$message = 'IP address "' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '" has submitted a form too many times!';
 		} else {
 			$message = 'A form got submitted too many times!';
 		}
 
 		$message .= "\n\n" . 'This is the URL to the form: ' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
-		if(is_array($rows)) {
+		if (is_array($rows)) {
 			$message .= "\n\n" . 'These are the submitted values:' . "\n\n";
-			foreach($rows as $idx => $row) {
+			foreach ($rows as $idx => $row) {
 				$message .= date('Y/m/d h:i:s' , $row['crdate']) . ":\n";
 				$message .= 'IP: ' . $row['ip'] . "\n";
 				$message .= 'Params:' . "\n";
 				$params = unserialize($row['params']);
-				foreach($params as $key=>$value) {
-					if(is_array($value)) {
+				foreach ($params as $key=>$value) {
+					if (is_array($value)) {
 						$value = implode(',', $value);
 					}
 					$message .= "\t" . $key . ': ' . $value . "\n";
@@ -194,16 +191,13 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 
 		//set e-mail options
 		$emailObj->subject = $subject;
-			
 		$emailObj->from_email = $sender;
-			
 		$emailObj->setPlain($message);
-			
-		//send e-mails
-		foreach($email as $idx => $mailto) {
 
+		//send e-mails
+		foreach ($email as $idx => $mailto) {
 			$sent = $emailObj->send($mailto);
-			if($sent) {
+			if ($sent) {
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_sent', $mailto);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', $emailObj->from_email, FALSE);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject, FALSE);
@@ -213,10 +207,8 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', $emailObj->from_email, FALSE);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject, FALSE);
 				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', $message, FALSE);
-
 			}
 		}
-		
 	}
 
 }

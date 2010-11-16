@@ -33,11 +33,11 @@ class Tx_Formhandler_ErrorCheck_MaxItems extends Tx_Formhandler_AbstractErrorChe
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		
-		if(isset($gp[$name])) {
+
+		if (isset($gp[$name])) {
 			$value = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'value');
-			if(is_array($gp[$name])) {
-				if(count($gp[$name]) > $value) {
+			if (is_array($gp[$name])) {
+				if (count($gp[$name]) > $value) {
 					$checkFailed = $this->getCheckFailed($check);
 				}
 			} else {
@@ -46,7 +46,6 @@ class Tx_Formhandler_ErrorCheck_MaxItems extends Tx_Formhandler_AbstractErrorChe
 		}
 		return $checkFailed;
 	}
-
 
 }
 ?>

@@ -34,11 +34,11 @@ class Tx_Formhandler_ErrorCheck_Equals extends Tx_Formhandler_AbstractErrorCheck
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 		$formValue = trim($gp[$name]);
-		
-		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
+
+		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			$checkValue = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'word');
-			if(strcasecmp($formValue, $checkValue)) {
-					
+			if (strcasecmp($formValue, $checkValue)) {
+
 					//remove userfunc settings
 				unset($check['params']['word.']);
 				$checkFailed = $this->getCheckFailed($check);
@@ -46,7 +46,6 @@ class Tx_Formhandler_ErrorCheck_Equals extends Tx_Formhandler_AbstractErrorCheck
 		}
 		return $checkFailed;
 	}
-
 
 }
 ?>

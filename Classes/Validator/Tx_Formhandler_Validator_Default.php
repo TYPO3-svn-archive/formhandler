@@ -42,7 +42,6 @@
  */
 class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator {
 
-
 	/**
 	 * Method to set GET/POST for this class and load the configuration
 	 *
@@ -54,13 +53,13 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 		$this->settings = $tsConfig;
 
 		$flexformValue = Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], 'required_fields', 'sMISC');
-		if($flexformValue) {
+		if ($flexformValue) {
 			$fields = t3lib_div::trimExplode(',', $flexformValue);
-			foreach($fields as $idx => $field) {
-				if(!is_array($this->settings['fieldConf.'][$field.'.']['errorCheck.'])) {
+			foreach ($fields as $idx => $field) {
+				if (!is_array($this->settings['fieldConf.'][$field.'.']['errorCheck.'])) {
 					$this->settings['fieldConf.'][$field.'.']['errorCheck.'] = array();
 				}
-				if(!array_search('required', $this->settings['fieldConf.'][$field.'.']['errorCheck.'])) {
+				if (!array_search('required', $this->settings['fieldConf.'][$field.'.']['errorCheck.'])) {
 					array_push($this->settings['fieldConf.'][$field.'.']['errorCheck.'], 'required');
 				}
 			}
@@ -78,34 +77,33 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 	public function validate(&$errors) {
 
 		//no config? validation returns TRUE
-		if(!is_array($this->settings['fieldConf.'])) {
+		if (!is_array($this->settings['fieldConf.'])) {
 			return TRUE;
 		}
 
 		$disableErrorCheckFields = array();
-		if(isset($this->settings['disableErrorCheckFields'])) {
+		if (isset($this->settings['disableErrorCheckFields'])) {
 			$disableErrorCheckFields = t3lib_div::trimExplode(',', $this->settings['disableErrorCheckFields']);
 		}
-		
+
 		$restrictErrorChecks = array();
-		if(isset($this->settings['restrictErrorChecks'])) {
+		if (isset($this->settings['restrictErrorChecks'])) {
 			$restrictErrorChecks = t3lib_div::trimExplode(',', $this->settings['restrictErrorChecks']);
 		}
 
-
 		//foreach configured form field
-		foreach($this->settings['fieldConf.'] as $fieldName => $fieldSettings) {
+		foreach ($this->settings['fieldConf.'] as $fieldName => $fieldSettings) {
 			$name = str_replace('.', '', $fieldName);
-				
+
 			//parse error checks
-			if(is_array($fieldSettings['errorCheck.'])) {
+			if (is_array($fieldSettings['errorCheck.'])) {
 				$counter = 0;
 				$errorChecks = array();
-				
+
 				//set required to first position if set
-				foreach($fieldSettings['errorCheck.'] as $key => $check) {
-					if(!strstr($key, '.')) {
-						if(!strcmp($check, 'required') || !strcmp($check, 'file_required')) {
+				foreach ($fieldSettings['errorCheck.'] as $key => $check) {
+					if (!strstr($key, '.')) {
+						if (!strcmp($check, 'required') || !strcmp($check, 'file_required')) {
 							$errorChecks[$counter]['check'] = $check;
 							unset($fieldSettings['errorCheck.'][$key]);
 							$counter++;
@@ -114,10 +112,10 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				}
 
 				//set other errorChecks
-				foreach($fieldSettings['errorCheck.'] as $key=>$check) {
-					if(!strstr($key, '.')) {
+				foreach ($fieldSettings['errorCheck.'] as $key=>$check) {
+					if (!strstr($key, '.')) {
 						$errorChecks[$counter]['check'] = $check;
-						if(is_array($fieldSettings['errorCheck.'][$key . '.'])) {
+						if (is_array($fieldSettings['errorCheck.'][$key . '.'])) {
 							$errorChecks[$counter]['params'] = $fieldSettings['errorCheck.'][$key . '.'];
 						}
 						$counter++;
@@ -125,20 +123,20 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				}
 
 				$checkFailed = '';
-				if(!isset($disableErrorCheckFields) || (!in_array($name, $disableErrorCheckFields) && !in_array('all', $disableErrorCheckFields))) {
-						
+				if (!isset($disableErrorCheckFields) || (!in_array($name, $disableErrorCheckFields) && !in_array('all', $disableErrorCheckFields))) {
+
 					//foreach error checks
-					foreach($errorChecks as $idx => $check) {
+					foreach ($errorChecks as $idx => $check) {
 						$classNameFix = ucfirst($check['check']);
 						$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
-						if(!$errorCheckObject) {
+						if (!$errorCheckObject) {
 							Tx_Formhandler_StaticFuncs::debugMessage('check_not_found', 'Tx_Formhandler_ErrorCheck_' . $classNameFix);
 						}
-						if(empty($restrictErrorChecks) || in_array($check['check'], $restrictErrorChecks)) {
+						if (empty($restrictErrorChecks) || in_array($check['check'], $restrictErrorChecks)) {
 							Tx_Formhandler_StaticFuncs::debugMessage('calling_class', 'Tx_Formhandler_ErrorCheck_' . $classNameFix);
 							$checkFailed = $errorCheckObject->check($check, $name, $this->gp);
-							if(strlen($checkFailed) > 0) {
-								if(!is_array($errors[$name])) {
+							if (strlen($checkFailed) > 0) {
+								if (!is_array($errors[$name])) {
 									$errors[$name] = array();
 								}
 								array_push($errors[$name], $checkFailed);
@@ -151,7 +149,6 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 			}
 		}
 		return empty($errors);
-
 	}
 
 }

@@ -35,7 +35,7 @@ class Tx_Formhandler_ErrorCheck_MinValue extends Tx_Formhandler_AbstractErrorChe
 		$checkFailed = '';
 		$min = floatval(str_replace(',', '.', Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'value')));
 		$valueToCheck = floatval(str_replace(',', '.', $gp[$name]));
-		if(	isset($gp[$name]) &&
+		if (isset($gp[$name]) &&
 			$valueToCheck >= 0 &&
 			$min >= 0 &&
 			(!is_numeric($valueToCheck) || $valueToCheck < $min)) {
@@ -44,7 +44,6 @@ class Tx_Formhandler_ErrorCheck_MinValue extends Tx_Formhandler_AbstractErrorChe
 		}
 		return $checkFailed;
 	}
-
 
 }
 ?>

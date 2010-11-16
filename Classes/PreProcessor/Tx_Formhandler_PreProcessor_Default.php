@@ -29,7 +29,6 @@ class Tx_Formhandler_PreProcessor_Default extends Tx_Formhandler_AbstractPreProc
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-
 		return $this->gp;
 	}
 

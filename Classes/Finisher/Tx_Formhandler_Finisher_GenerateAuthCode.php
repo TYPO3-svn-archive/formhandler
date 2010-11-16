@@ -31,16 +31,16 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 	 */
 	public function process() {
 		$firstInsertInfo = array();
-		if(is_array($this->gp['saveDB'])) {
-			if(isset($this->settings['table'])) {
-				foreach($this->gp['saveDB'] as $idx => $insertInfo) {
-					if($insertInfo['table'] == $this->settings['table']) {
+		if (is_array($this->gp['saveDB'])) {
+			if (isset($this->settings['table'])) {
+				foreach ($this->gp['saveDB'] as $idx => $insertInfo) {
+					if ($insertInfo['table'] === $this->settings['table']) {
 						$firstInsertInfo = $insertInfo;
 						break;
 					}
 				}
 			}
-			if(empty($firstInsertInfo)) {
+			if (empty($firstInsertInfo)) {
 				reset($this->gp['saveDB']);
 				$firstInsertInfo = current($this->gp['saveDB']);
 			}
@@ -48,38 +48,39 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 		$table = $firstInsertInfo['table'];
 		$uid = $firstInsertInfo['uid'];
 		$uidField = $firstInsertInfo['uidField'];
-		if($table && $uid && $uidField) {
+		if(!$uidField) {
+			$uidField = 'uid';
+		}
+		if ($table && $uid && $uidField) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $uidField . '=' . $uid);
-		
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . $uid);
-			if($res) {
+			if ($res) {
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$authCode = md5(serialize($row));
 				$this->gp['generated_authCode'] = $authCode;
-				
+
 				// looking for the page, which should be used for the authCode Link
 				// first look for TS-setting 'authCodePage', second look for redirect_page-setting, third use actual page
 				$authCodePage = ''; 
-				if(isset($this->settings['authCodePage'])) {
+				if (isset($this->settings['authCodePage'])) {
 					$authCodePage = $this->settings['authCodePage'];
 				} else {
 					$authCodePage = Tx_Formhandler_StaticFuncs::pi_getFFvalue($this->cObj->data['pi_flexform'], 'redirect_page', 'sMISC');
 				}
-				if(!$authCodePage) {
+				if (!$authCodePage) {
 					$authCodePage = $GLOBALS['TSFE']->id;
 				}
-			
+
 				//create the parameter-array for the authCode Link
 				$paramsArray = array_merge($firstInsertInfo, array('authCode' => $authCode, 'submitted' => 1, 'step-2' => 1));
-				
+
 				// If we have set a formValuesPrefix, add it to the parameter-array
-				if(!empty(Tx_Formhandler_Globals::$formValuesPrefix)) {
+				if (!empty(Tx_Formhandler_Globals::$formValuesPrefix)) {
 					$paramsArray = array(Tx_Formhandler_Globals::$formValuesPrefix => $paramsArray);
 				}
-				
+	
 				// create the link, using typolink function, use baseUrl if set, else use t3lib_div::getIndpEnv('TYPO3_SITE_URL')
 				$this->gp['authCodeUrl'] = '';
-				if(isset($GLOBALS['TSFE']->baseUrl)) {
+				if (isset($GLOBALS['TSFE']->baseUrl)) {
 					$this->gp['authCodeUrl'] = $GLOBALS['TSFE']->baseUrl . $this->cObj->getTypoLink_URL($authCodePage, $paramsArray);
 				} else {
 					$this->gp['authCodeUrl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $this->cObj->getTypoLink_URL($authCodePage, $paramsArray);

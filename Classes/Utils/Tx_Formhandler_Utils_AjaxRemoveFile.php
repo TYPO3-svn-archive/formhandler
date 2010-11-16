@@ -5,27 +5,27 @@ require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandle
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_StaticFuncs.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 class Tx_Formhandler_Utils_AjaxRemoveFile {
-	
+
 	public function main() {
 		$this->init();
 		$content = '';
 
-		if($this->fieldName) {
+		if ($this->fieldName) {
 			$sessionFiles = Tx_Formhandler_Session::get('files');
-			if(is_array($sessionFiles)) {
-				foreach($sessionFiles as $field => $files) {
+			if (is_array($sessionFiles)) {
+				foreach ($sessionFiles as $field => $files) {
 
-					if(!strcmp($field, $this->fieldName)) {
+					if (!strcmp($field, $this->fieldName)) {
 						$found = FALSE;
-						foreach($files as $key=>&$fileInfo) {
-							if(!strcmp($fileInfo['uploaded_name'], $this->uploadedFileName)) {
+						foreach ($files as $key=>&$fileInfo) {
+							if (!strcmp($fileInfo['uploaded_name'], $this->uploadedFileName)) {
 								$found = TRUE;
 								unset($sessionFiles[$field][$key]);
 							}
 						}
-						if(!$found) {
-							foreach($files as $key=>&$fileInfo) {
-								if(!strcmp($fileInfo['name'], $this->uploadedFileName)) {
+						if (!$found) {
+							foreach ($files as $key=>&$fileInfo) {
+								if (!strcmp($fileInfo['name'], $this->uploadedFileName)) {
 									$found = TRUE;
 									unset($sessionFiles[$field][$key]);
 								}
@@ -38,7 +38,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 			Tx_Formhandler_Session::set('files', $sessionFiles);
 
 			// Add the content to or Result Box: #formResult
-			if(is_array($sessionFiles)) {
+			if (is_array($sessionFiles)) {
 				$markers = array();
 				$view = $this->componentManager->getComponent('Tx_Formhandler_View_Form');
 				$view->setSettings($this->settings);
@@ -48,7 +48,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		}
 		print $content;
 	}
-	
+
 	protected function init() {
 		$this->fieldName = $_GET['field'];
 		$this->uploadedFileName = $_GET['uploadedFileName'];
@@ -60,11 +60,11 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		$randomID = t3lib_div::_GP('randomID');
 		Tx_Formhandler_Globals::$randomID = $randomID;
 		$this->settings = Tx_Formhandler_Session::get('settings');
-		
+
 		//init ajax
-		if($this->settings['ajax.']) {
+		if ($this->settings['ajax.']) {
 			$class = $this->settings['ajax.']['class'];
-			if(!$class) {
+			if (!$class) {
 				$class = 'Tx_Formhandler_AjaxHandler_JQuery';
 			}
 			$class = Tx_Formhandler_StaticFuncs::prepareClassName($class);
@@ -75,7 +75,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 			$ajaxHandler->initAjax();
 		}
 	}
-	
+
 	protected function initializeTSFE($pid, $feUserObj = '') {
 		global $TSFE, $TYPO3_CONF_VARS;
 
@@ -137,7 +137,6 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 	protected function initializeBackendUser() {
 		global $BE_USER, $TYPO3_DB, $TSFE, $LANG;
 
-			// @todo	What's the point here? To prevent looping?
 		if ($this->initBE) {
 			return;
 		}
@@ -152,9 +151,6 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 			require_once (PATH_t3lib . 'class.t3lib_beuserauth.php');
 			require_once (PATH_t3lib . 'class.t3lib_tsfebeuserauth.php');
 
-			// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
-			// @todo 	Comment says its set to empty, but where does that happen?
-				
 			$GLOBALS['BE_USER'] = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');
 			$GLOBALS['BE_USER']->OS = TYPO3_OS;
 			$GLOBALS['BE_USER']->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
@@ -177,7 +173,6 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 		$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
 	}
-	
 }
 
 $output = t3lib_div::makeInstance('Tx_Formhandler_Utils_AjaxRemoveFile');

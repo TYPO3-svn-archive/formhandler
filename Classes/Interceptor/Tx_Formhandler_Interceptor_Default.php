@@ -29,7 +29,6 @@ class Tx_Formhandler_Interceptor_Default extends Tx_Formhandler_AbstractIntercep
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-
 		return $this->gp;
 	}
 

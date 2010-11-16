@@ -22,6 +22,7 @@
  * @subpackage	Generator
  * @uses export2CSV in csv.lib.php
  */
+require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
 class Tx_Formhandler_Generator_CSV {
 
 	/**
@@ -48,7 +49,6 @@ class Tx_Formhandler_Generator_CSV {
 	 */
 	public function __construct(Tx_Formhandler_Component_Manager $componentManager) {
 		$this->componentManager = $componentManager;
-
 	}
 
 	/**
@@ -61,44 +61,44 @@ class Tx_Formhandler_Generator_CSV {
 	 */
 	public function generateModuleCSV($records, $exportParams = array()) {
 
-		require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
+		
 		$data = array();
 		$dataSorted = array();
 
 		//build data array
-		foreach($records as $idx => $record) {
-			if(!is_array($record['params'])) {
+		foreach ($records as $idx => $record) {
+			if (!is_array($record['params'])) {
 				$record['params'] = array();
 			}
-			foreach($record['params'] as $subIdx => &$param) {
-				if(is_array($param)) {
+			foreach ($record['params'] as $subIdx => &$param) {
+				if (is_array($param)) {
 					$param = implode(';', $param);
 				}
 			}
 			$data[] = $record['params'];
 		}
-		if(count($exportParams) > 0) {
-			foreach($data as $idx => &$params) {
-				
+		if (count($exportParams) > 0) {
+			foreach ($data as $idx => &$params) {
+
 				// fill missing fields with empty value
-				foreach($exportParams as $key => $param) {
-					if(!array_key_exists($param, $params)) {
+				foreach ($exportParams as $key => $param) {
+					if (!array_key_exists($param, $params)) {
 						$params[$param] = '';
 					}
 				}
-				
+
 				// remove unwanted fields
-				foreach($params as $key => $value) {
-					if(!in_array($key, $exportParams)) {
+				foreach ($params as $key => $value) {
+					if (!in_array($key, $exportParams)) {
 						unset($params[$key]);
 					}
 				}
 			}
 		}
-		
+
 		// sort data
 		$dataSorted = array();
-		foreach($data as $idx => $array) {
+		foreach ($data as $idx => $array) {
 			$dataSorted[] = $this->sortArrayByArray($array, $exportParams);
 		}
 		$data = $dataSorted;
@@ -111,10 +111,10 @@ class Tx_Formhandler_Generator_CSV {
 
 	private function sortArrayByArray($array, $orderArray) {
 		$ordered = array();
-		foreach($orderArray as $idx => $key) {
-			if(array_key_exists($key, $array)) {
-					$ordered[$key] = $array[$key];
-					unset($array[$key]);
+		foreach ($orderArray as $idx => $key) {
+			if (array_key_exists($key, $array)) {
+				$ordered[$key] = $array[$key];
+				unset($array[$key]);
 			}
 		}
 		return $ordered + $array;

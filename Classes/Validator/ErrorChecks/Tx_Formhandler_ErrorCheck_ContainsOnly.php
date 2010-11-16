@@ -34,21 +34,21 @@ class Tx_Formhandler_ErrorCheck_ContainsOnly extends Tx_Formhandler_AbstractErro
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 		$formValue = trim($gp[$name]);
-		
-		if(strlen($formValue) > 0) {
+
+		if (strlen($formValue) > 0) {
 			$checkValue = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'words');
-			if(!is_array($checkValue)) {
+			if (!is_array($checkValue)) {
 				$checkValue = t3lib_div::trimExplode(',', $checkValue);
 			}
 			$error = FALSE;
 			$array = preg_split('//', $formValue, -1, PREG_SPLIT_NO_EMPTY);
-			foreach($array as $idx => $char) {
-				if(!in_array($char, $checkValue)) {
+			foreach ($array as $idx => $char) {
+				if (!in_array($char, $checkValue)) {
 					$error = TRUE;
 				}
 			}
-			if($error) {
-					
+			if ($error) {
+
 				//remove userfunc settings and only store comma seperated words
 				$check['params']['words'] = implode(',', $checkValue);
 				unset($check['params']['words.']);
@@ -57,7 +57,6 @@ class Tx_Formhandler_ErrorCheck_ContainsOnly extends Tx_Formhandler_AbstractErro
 		}
 		return $checkFailed;
 	}
-
 
 }
 ?>

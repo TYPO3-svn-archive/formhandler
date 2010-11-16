@@ -34,7 +34,6 @@ class Tx_Formhandler_Content {
 	/**
 	 * The constructor settings the internal attribute "content"
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return void
 	 */
 	public function __construct($content) {
@@ -44,7 +43,6 @@ class Tx_Formhandler_Content {
 	/**
 	 * Sets the internal attribute "content"
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @param string $content
 	 * @return void
 	 */
@@ -55,7 +53,6 @@ class Tx_Formhandler_Content {
 	/**
 	 * Returns the internal attribute "content"
 	 *
-	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 * @return string The content
 	 */
 	public function getContent() {
@@ -65,7 +62,6 @@ class Tx_Formhandler_Content {
 	/**
 	 * Actually only returns the internal attribute "content"
 	 *
-	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 * @return string The content
 	 */
 	public function toString() {

@@ -1,7 +1,7 @@
 <?php
 
 abstract class Tx_Formhandler_AbstractComponent {
-	
+
 	/**
 	 * The Formhandler component manager
 	 *
@@ -33,7 +33,7 @@ abstract class Tx_Formhandler_AbstractComponent {
 	 * @var tslib_cObj
 	 */
 	protected $cObj;
-	
+
 	/**
 	 * Settings
 	 * 
@@ -54,7 +54,7 @@ abstract class Tx_Formhandler_AbstractComponent {
 		$this->configuration = $configuration;
 		$this->cObj = Tx_Formhandler_Globals::$cObj;
 	}
-	
+
 	public function init($gp, $settings) {
 		$this->gp = $gp;
 		$this->settings = $settings;
@@ -68,7 +68,7 @@ abstract class Tx_Formhandler_AbstractComponent {
 	 * @return array The probably modified GET/POST parameters
 	 */
 	abstract public function process();
-	
+
 }
 
 ?>

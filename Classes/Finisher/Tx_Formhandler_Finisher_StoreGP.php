@@ -61,6 +61,7 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 	 * @return void
 	 */
 	protected function updateSession() {
+
 		//reset session
 		Tx_Formhandler_Session::set('values', array());
 		
@@ -68,10 +69,9 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 		
 		//set the variables in session
 		//no need to seperate steps in finishers, so simply store to step 1
-		foreach($this->gp as $key => $value) {
+		foreach ($this->gp as $key => $value) {
 			$newValues[1][$key] = $value;
 		}
-		
 		Tx_Formhandler_Session::set('values', $newValues);
 	}
 

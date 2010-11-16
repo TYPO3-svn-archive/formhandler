@@ -178,7 +178,7 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 		
 		
 		
-		switch((string)$this->MOD_SETTINGS['function'])	{
+		switch ((string)$this->MOD_SETTINGS['function'])	{
 			case 1:
 				// Render content:
 				$componentManager = Tx_Formhandler_Component_Manager::getInstance();
@@ -219,7 +219,7 @@ $SOBE = t3lib_div::makeInstance('tx_formhandler_module1');
 $SOBE->init();
 
 // Include files?
-foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+foreach ($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();

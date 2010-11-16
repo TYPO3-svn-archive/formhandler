@@ -34,16 +34,16 @@ class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 
-		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
+		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			$min = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'min');
 			$max = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'max');
 			$pattern = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'pattern');
 			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
 			$sep = $res[1];
-	
+
 			// normalisation of format
 			$pattern = $this->normalizeDatePattern($pattern,$sep);
-	
+
 			// find out correct positioins of "d","m","y"
 			$pos1 = strpos($pattern, 'd');
 			$pos2 = strpos($pattern, 'm');
@@ -53,25 +53,25 @@ class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date
 			$check_day = $checkdate[$pos1];
 			$check_month = $checkdate[$pos2];
 			$check_year = $checkdate[$pos3];
-			if(strlen($min) > 0) {
+			if (strlen($min) > 0) {
 				$min_date = t3lib_div::trimExplode($sep, $min);
 				$min_day = $min_date[$pos1];
 				$min_month = $min_date[$pos2];
 				$min_year = $min_date[$pos3];
-				if($check_year < $min_year) {
+				if ($check_year < $min_year) {
 					$checkFailed = $this->getCheckFailed($check);
-				} elseif($check_year == $min_year && $check_month < $min_month) {
+				} elseif ($check_year == $min_year && $check_month < $min_month) {
 					$checkFailed = $this->getCheckFailed($check);
-				} elseif($check_year == $min_year && $check_month == $min_month && $check_day < $min_day) {
+				} elseif ($check_year == $min_year && $check_month == $min_month && $check_day < $min_day) {
 					$checkFailed = $this->getCheckFailed($check);
 				}
 			}
-			if(strlen($max) > 0) {
+			if (strlen($max) > 0) {
 				$max_date = t3lib_div::trimExplode($sep, $max);
 				$max_day = $max_date[$pos1];
 				$max_month = $max_date[$pos2];
 				$max_year = $max_date[$pos3];
-				if($check_year > $max_year) {
+				if ($check_year > $max_year) {
 					$checkFailed = $this->getCheckFailed($check);
 				} elseif ($check_year == $max_year && $check_month > $max_month) {
 					$checkFailed = $this->getCheckFailed($check);

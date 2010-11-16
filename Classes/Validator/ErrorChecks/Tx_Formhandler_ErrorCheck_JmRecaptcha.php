@@ -33,7 +33,7 @@ class Tx_Formhandler_ErrorCheck_JmRecaptcha extends Tx_Formhandler_AbstractError
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		if(t3lib_extMgm::isLoaded('jm_recaptcha')) {
+		if (t3lib_extMgm::isLoaded('jm_recaptcha')) {
 			require_once(t3lib_extMgm::extPath('jm_recaptcha') . 'class.tx_jmrecaptcha.php');
 			$this->recaptcha = new tx_jmrecaptcha();
 			$status = $this->recaptcha->validateReCaptcha();
@@ -43,7 +43,6 @@ class Tx_Formhandler_ErrorCheck_JmRecaptcha extends Tx_Formhandler_AbstractError
 		}
 		return $checkFailed;
 	}
-
 
 }
 ?>

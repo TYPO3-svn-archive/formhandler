@@ -36,7 +36,7 @@ class Tx_Formhandler_ErrorCheck_BetweenValue extends Tx_Formhandler_AbstractErro
 		$min = floatval(str_replace(',', '.', Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'minValue')));
 		$max = floatval(str_replace(',', '.', Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'maxValue')));
 		$valueToCheck = str_replace(',', '.', $gp[$name]);
-		if(	isset($gp[$name]) &&
+		if (isset($gp[$name]) &&
 			(!is_numeric($valueToCheck) || 
 			$valueToCheck < $min || 
 			$valueToCheck > $max)) {

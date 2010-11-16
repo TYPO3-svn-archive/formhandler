@@ -30,7 +30,7 @@ abstract class Tx_Formhandler_AbstractValidator extends Tx_Formhandler_AbstractC
 	 * @return boolean
 	 */
 	abstract public function validate(&$errors);
-	
+
 	public function process() {
 		return;
 	}

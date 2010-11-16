@@ -8,57 +8,55 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 	 * @return void
 	 */
 	public function process() {
-		if(t3lib_extMgm::isLoaded('webkitpdf')) {
+		if (t3lib_extMgm::isLoaded('webkitpdf')) {
 			$linkGP = array();
-			
-			if(strlen(Tx_Formhandler_Globals::$formValuesPrefix) > 0) {
+
+			if (strlen(Tx_Formhandler_Globals::$formValuesPrefix) > 0) {
 				$linkGP[Tx_Formhandler_Globals::$formValuesPrefix] = $this->gp;
 			} else {
 				$linkGP = $this->gp;
 			}
 			$linkGP['submitted_ok'] = 1;
 			$url = Tx_Formhandler_StaticFuncs::getHostname() . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $linkGP);
-			
 			$config = $this->readWebkitPdfConf();
 			$config['fileOnly'] = 1;
 			$config['urls.']['1'] = $url;
-			
-			if(!class_exists('tx_webkitpdf_pi1')) {
+
+			if (!class_exists('tx_webkitpdf_pi1')) {
 				require_once(t3lib_extMgm::extPath('webkitpdf') . 'pi1/class.tx_webkitpdf_pi1.php');
 			}
 			$generator = t3lib_div::makeInstance('tx_webkitpdf_pi1');
 			$generator->cObj = Tx_Formhandler_Globals::$cObj;
-			
+
 			return $generator->main('', $config);
-			
 		}
 	}
 	
 	protected function readWebkitPdfConf() {
 		$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
-	
-		if(!$GLOBALS['TSFE']->sys_page) {
+
+		if (!$GLOBALS['TSFE']->sys_page) {
 			$GLOBALS['TSFE']->sys_page = $sysPageObj;
 		}
-		
+
 		$rootLine = $sysPageObj->getRootLine($GLOBALS['TSFE']->id);
 		$TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
 		$TSObj->tt_track = 0;
 		$TSObj->init();
 		$TSObj->runThroughTemplates($rootLine);
 		$TSObj->generateConfig();
-		
+
 		$conf = array();
-		if(isset($TSObj->setup['plugin.']['tx_webkitpdf_pi1.'])) {
+		if (isset($TSObj->setup['plugin.']['tx_webkitpdf_pi1.'])) {
 			$conf = $TSObj->setup['plugin.']['tx_webkitpdf_pi1.'];
-		} 
+		}
 		return $conf;
 	}
-	
+
 	public function getLink($linkGP) {
 		$params = $this->getDefaultLinkParams();
 		$componentParams = $this->getComponentLinkParams($linkGP);
-		if(is_array($componentParams)) {
+		if (is_array($componentParams)) {
 			$params = t3lib_div::array_merge_recursive_overrule($params, $componentParams);
 		}
 		$text = $this->getLinkText();
@@ -73,11 +71,11 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 		);
 		return $this->cObj->getTypolink($text, $this->settings['pid'], $params);
 	}
-	
+
 	protected function getComponentLinkParams($linkGP) {
 		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
 		$params = array();
-		if($prefix) {
+		if ($prefix) {
 			$params[$prefix] = array(
 				'submitted_ok' => 1
 			);
@@ -86,11 +84,11 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 		}
 		return $params;
 	}
-	
+
 	protected function getLinkText() {
 		$config = $this->readWebkitPdfConf();
 		$text = 'Save as PDF';
-		if($config['linkText']) {
+		if ($config['linkText']) {
 			$text = Tx_Formhandler_StaticFuncs::getSingle($config, 'linkText');
 		}
 		return $text;

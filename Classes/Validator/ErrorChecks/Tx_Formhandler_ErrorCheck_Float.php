@@ -33,16 +33,15 @@ class Tx_Formhandler_ErrorCheck_Float extends Tx_Formhandler_AbstractErrorCheck 
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		
-		if(isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
+
+		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			$valid = preg_match('/^([-]*[0-9\.,\' ]+?)((\.|,){1}([0-9-]{1,2}))*$/', $gp[$name]);
-			if(!$valid) {
+			if (!$valid) {
 				$checkFailed = $this->getCheckFailed($check);
 			}
 		}
 		return $checkFailed;
 	}
-
 
 }
 ?>

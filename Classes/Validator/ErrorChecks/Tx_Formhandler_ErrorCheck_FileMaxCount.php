@@ -39,24 +39,24 @@ class Tx_Formhandler_ErrorCheck_FileMaxCount extends Tx_Formhandler_AbstractErro
 		$currentStep = Tx_Formhandler_Session::get('currentStep');
 		$lastStep = Tx_Formhandler_Session::get('lastStep');
 		$maxCount = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'maxCount');
-		if(	is_array($files[$name]) &&
+		if (is_array($files[$name]) &&
 			count($files[$name]) >= $maxCount &&
 			$currentStep == $lastStep) {
 
 			$found = FALSE;
-			foreach($_FILES as $idx=>$info) {
-				if(strlen($info['name'][$name]) > 0) {
+			foreach ($_FILES as $idx=>$info) {
+				if (strlen($info['name'][$name]) > 0) {
 					$found = TRUE;
 				}
 			}
-			if($found) {
+			if ($found) {
 				$checkFailed = $this->getCheckFailed($check);
 			}
 		} elseif (is_array($files[$name]) &&
 			$currentStep > $lastStep) {
 
-			foreach($_FILES as $idx=>$info) {
-				if(strlen($info['name'][$name]) > 0 && count($files[$name]) >= $maxCount) {
+			foreach ($_FILES as $idx=>$info) {
+				if (strlen($info['name'][$name]) > 0 && count($files[$name]) >= $maxCount) {
 					$checkFailed = $this->getCheckFailed($check);
 				}
 			}
@@ -64,7 +64,6 @@ class Tx_Formhandler_ErrorCheck_FileMaxCount extends Tx_Formhandler_AbstractErro
 		}
 		return $checkFailed;
 	}
-
 
 }
 ?>

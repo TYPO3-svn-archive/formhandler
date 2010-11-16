@@ -37,7 +37,7 @@ class Tx_Formhandler_Interceptor_ParseValues extends Tx_Formhandler_AbstractInte
 		
 		return $this->gp;
 	}
-	
+
 	/**
 	 * parses the given field values from strings to floats
 	 * 
@@ -46,8 +46,8 @@ class Tx_Formhandler_Interceptor_ParseValues extends Tx_Formhandler_AbstractInte
 	 */
 	protected function parseFloats($fields){
 		if (is_array($fields)) {
-			foreach($fields as $idx => $field) {
-				if(isset($this->gp[$field])) {
+			foreach ($fields as $idx => $field) {
+				if (isset($this->gp[$field])) {
 					$this->gp[$field] = $this->getFloat($this->gp[$field]);
 				}
 			}
@@ -63,8 +63,8 @@ class Tx_Formhandler_Interceptor_ParseValues extends Tx_Formhandler_AbstractInte
 	 * @param string $value formated float
 	 */
 	protected function getFloat($value) {
-     	return floatval(preg_replace('#^([-]*[0-9\.,\' ]+?)((\.|,){1}([0-9-]{1,2}))*$#e', "str_replace(array('.', ',', \"'\", ' '), '', '\\1') . '.\\4'", $value));
-	} 
+		return floatval(preg_replace('#^([-]*[0-9\.,\' ]+?)((\.|,){1}([0-9-]{1,2}))*$#e', "str_replace(array('.', ',', \"'\", ' '), '', '\\1') . '.\\4'", $value));
+	}
 
 }
 ?>

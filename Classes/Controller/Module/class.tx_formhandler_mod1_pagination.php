@@ -89,7 +89,7 @@ class tx_formhandler_mod1_pagination {
 		// Sets the new line character
 		$this->NL = chr(10);
 
-		if(is_object($pObj)) {
+		if (is_object($pObj)) {
 			$this->pObj = $pObj;
 		} else {
 			print 'the constructor need the parent object. ex. $Browser = new ' . __CLASS__ . '($totalCount, $this)';
@@ -106,13 +106,13 @@ class tx_formhandler_mod1_pagination {
 		$GPvars = t3lib_div::_GP('formhandler');
 
 		// max results records to display per page
-		if($GPvars['howmuch']) {
+		if ($GPvars['howmuch']) {
 			$this->maxResPerPage = intval($GPvars['howmuch']);
-		} elseif($totalCount > 10000) {
+		} elseif ($totalCount > 10000) {
 			$this->maxResPerPage = 1000;
-		} elseif($totalCount > 1000) {
+		} elseif ($totalCount > 1000) {
 			$this->maxResPerPage = 100;
-		} elseif($totalCount > 100) {
+		} elseif ($totalCount > 100) {
 			$this->maxResPerPage  = 10;
 		}
 
@@ -122,7 +122,7 @@ class tx_formhandler_mod1_pagination {
 		// interval pointer
 		$this->pointer = ($GPvars['pointer'] ? intval($GPvars['pointer']) : 0);
 
-		if($this->pointer > ($this->totalPages - 1) && $this->pointer > 0) {
+		if ($this->pointer > ($this->totalPages - 1) && $this->pointer > 0) {
 			$this->pointer = ($this->totalPages - 1);
 		} else if ($this->pointer < 0) {
 			$this->pointer = 0;
@@ -179,7 +179,7 @@ class tx_formhandler_mod1_pagination {
 		$resBox = new stdClass();
 
 		// and Pages
-		if($this->totalPages < 2) {
+		if ($this->totalPages < 2) {
 			$resBox->totalPage = sprintf($this->lang->totalPage, $this->totalPages);
 		} else {
 			$resBox->curPage = sprintf($this->lang->curPage, $this->pointer + 1);
@@ -217,9 +217,9 @@ class tx_formhandler_mod1_pagination {
 		$pointers = array();
 
 		$GPvars = t3lib_div::_GP('formhandler');
-		if(!$GPvars) $GPvars = array();
-		if($GPvars['pointer']) unset($GPvars['pointer']);
-		if(!$GPvars['pidFilter'] && $this->id) $GPvars['pidFilter'] = intval($this->id);
+		if (!$GPvars) $GPvars = array();
+		if ($GPvars['pointer']) unset($GPvars['pointer']);
+		if (!$GPvars['pidFilter'] && $this->id) $GPvars['pidFilter'] = intval($this->id);
 
 		$GP_url = t3lib_div::implodeArrayForUrl('formhandler', $GPvars);
 
@@ -227,7 +227,7 @@ class tx_formhandler_mod1_pagination {
 		$htmlCode = array();
 
 		// Check for multiple pages
-		if($this->totalPages > 1) {
+		if ($this->totalPages > 1) {
 			
 			// Number of pages to show
 			$showPages = ($this->totalPages < $this->maxBrowsePages) ? $this->totalPages : $this->maxBrowsePages;
@@ -236,7 +236,7 @@ class tx_formhandler_mod1_pagination {
 			$htmlCode[] = '<ul class="pages">';
 
 			// Check pointer
-			if($this->pointer > 0) {
+			if ($this->pointer > 0) {
 				
 				// go to first link
 				$firstLink = '<a href="' . $this->scriptName . '?formhandler[pointer]=0' . $GP_url . '"' .
@@ -254,7 +254,7 @@ class tx_formhandler_mod1_pagination {
 			}
 
 			// calc. the current page to set the right style after
-			if($this->pointer <= ($this->totalPages - $showPages) + 1) {
+			if ($this->pointer <= ($this->totalPages - $showPages) + 1) {
 				$currentPage = ($this->pointer > floor($showPages / 2)) ? $this->pointer - floor($showPages / 2) : 0 ;
 			} else {
 				$currentPage = ($this->totalPages - $showPages);
@@ -272,7 +272,7 @@ class tx_formhandler_mod1_pagination {
 				$href = $this->scriptName . '?formhandler[pointer]=' . $i . $GP_url;
 
 				// apply tilte and css Class to current page
-				if($i == $this->pointer) {
+				if ($i == $this->pointer) {
 					$class = 'cur';
 					$linkTitle = sprintf($this->lang->current_tt, ($i + 1));
 					$linkLabel = sprintf($this->lang->current_lbl, $from, $to);
@@ -290,7 +290,7 @@ class tx_formhandler_mod1_pagination {
 			}
 
 			// Check pointer
-			if($this->pointer < $this->totalPages - 1) {
+			if ($this->pointer < $this->totalPages - 1) {
 				// Next link
 				$nextLink = '<a href="' . $this->scriptName . '?formhandler[pointer]=' . ($this->pointer + 1) . $GP_url .
                               '" title="' . $this->lang->next_tt . '">' . $this->lang->next_lbl . '</a>';

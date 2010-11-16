@@ -1,7 +1,7 @@
 <?php
 
 abstract class Tx_Formhandler_AbstractAjaxHandler {
-	
+
 	/**
 	 * The component manager
 	 *
@@ -9,7 +9,7 @@ abstract class Tx_Formhandler_AbstractAjaxHandler {
 	 * @var Tx_Formhandler_Component_Manager
 	 */
 	protected $componentManager;
-	
+
 	/**
 	 * The global Formhandler configuration
 	 *
@@ -25,7 +25,7 @@ abstract class Tx_Formhandler_AbstractAjaxHandler {
 	 * @var tslib_cObj
 	 */
 	protected $cObj;
-	
+
 	/**
 	 * The constructor for a finisher setting the component manager, configuration and the repository.
 	 *
@@ -40,18 +40,15 @@ abstract class Tx_Formhandler_AbstractAjaxHandler {
 		$this->cObj = Tx_Formhandler_Globals::$cObj;
 
 	}
-	
+
 	abstract public function initAjax();
-	
+
 	public function init($settings) {
-		
 		$this->settings = $settings;
 	}
-	
+
 	abstract public function fillAjaxMarkers(&$markers);
-	
-	
-	
+
 }
 
 ?>

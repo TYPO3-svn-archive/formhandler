@@ -44,6 +44,5 @@ class Tx_Formhandler_ErrorCheck_Captcha extends Tx_Formhandler_AbstractErrorChec
 		return $checkFailed;
 	}
 
-
 }
 ?>

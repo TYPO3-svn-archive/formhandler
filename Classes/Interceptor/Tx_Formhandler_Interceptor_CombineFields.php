@@ -29,10 +29,10 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		if(is_array($this->settings['combineFields.'])) {
-			foreach($this->settings['combineFields.'] as $newField=>$options) {
+		if (is_array($this->settings['combineFields.'])) {
+			foreach ($this->settings['combineFields.'] as $newField => $options) {
 				$newField = str_replace('.', '', $newField);
-				if(is_array($options['fields.'])) {
+				if (is_array($options['fields.'])) {
 					$this->gp[$newField] = $this->combineFields($options);
 					Tx_Formhandler_StaticFuncs::debugMessage('combined', $newField, $this->gp[$newField]);
 				}
@@ -40,23 +40,22 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 		}
 		return $this->gp;
 	}
-	
+
 	protected function combineFields($options) {
-		if(!isset($options['separator'])) {
+		if (!isset($options['separator'])) {
 			$separator = ' ';
 		} else {
 			$separator = $options['separator'];
 		}
 		$fieldsArr = $options['fields.'];
-		
 		$combinedString = '';
-		foreach($fieldsArr as $idx => $field) {
-			if(	intval($options['hideEmptyValues']) === 0 || 
-					(intval($options['hideEmptyValues']) === 1 && isset($this->gp[$field]) && strlen($this->gp[$field]) > 0)) {
+		foreach ($fieldsArr as $idx => $field) {
+			if (intval($options['hideEmptyValues']) === 0 || 
+				(intval($options['hideEmptyValues']) === 1 && isset($this->gp[$field]) && strlen($this->gp[$field]) > 0)) {
 				$combinedString .= $this->gp[$field] . $separator;
 			}
 		}
-		if($combinedString) {
+		if ($combinedString) {
 			$combinedString = substr($combinedString, 0, (strlen($combinedString) - 1));
 		}
 		return $combinedString; 

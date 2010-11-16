@@ -23,17 +23,16 @@
  * @abstract
  */
 abstract class Tx_Formhandler_AbstractInterceptor extends Tx_Formhandler_AbstractComponent {
-	
+
 	protected function log($markAsSpam = FALSE) {
 		$classesArray = $this->settings['loggers.'];
-		if(isset($classesArray) && is_array($classesArray)) {
-			foreach($classesArray as $idx => $tsConfig) {
-				if(is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
+		if (isset($classesArray) && is_array($classesArray)) {
+			foreach ($classesArray as $idx => $tsConfig) {
+				if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
 					$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
 					Tx_Formhandler_StaticFuncs::debugBeginSection('calling_class', $className);
-	
 					$obj = $this->componentManager->getComponent($className);
-					if($markAsSpam) {
+					if ($markAsSpam) {
 						$tsConfig['config.']['markAsSpam'] = 1;
 					}
 					$obj->init($this->gp, $tsConfig['config.']);
@@ -45,6 +44,6 @@ abstract class Tx_Formhandler_AbstractInterceptor extends Tx_Formhandler_Abstrac
 			}
 		}
 	}
-	
+
 }
 ?>

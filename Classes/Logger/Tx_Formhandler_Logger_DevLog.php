@@ -16,8 +16,7 @@ class Tx_Formhandler_Logger_DevLog extends Tx_Formhandler_AbstractLogger {
 	public function process() {
 		$message = 'Form on page ' . $GLOBALS['TSFE']->id . ' was submitted!';
 		$severity = 1;
-		if(intval($this->settings['markAsSpam']) === 1) {
-				
+		if (intval($this->settings['markAsSpam']) === 1) {
 				$message = 'Caught possible spamming on page ' . $GLOBALS['TSFE']->id . '!';
 				$severity = 2;
 		}

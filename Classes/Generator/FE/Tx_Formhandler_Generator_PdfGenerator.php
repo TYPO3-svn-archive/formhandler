@@ -1,7 +1,7 @@
 <?php
 
 class Tx_Formhandler_Generator_PdfGenerator extends Tx_Formhandler_AbstractGenerator {
-	
+
 	/**
 	 * Renders the PDF.
 	 *
@@ -14,11 +14,11 @@ class Tx_Formhandler_Generator_PdfGenerator extends Tx_Formhandler_AbstractGener
 	protected function getComponentLinkParams($linkGP) {
 		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
 		$type = 123;
-		if($this->settings['type']) {
+		if ($this->settings['type']) {
 			$type = $this->settings['type'];
 		}
 		$params = array();
-		if($prefix) {
+		if ($prefix) {
 			$params[$prefix] = array(
 				'submitted_ok' => 1
 			);

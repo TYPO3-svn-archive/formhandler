@@ -130,7 +130,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		
 
 		//should delete records
-		if($params['delete'] && isset($params['markedUids']) && is_array($params['markedUids'])) {
+		if ($params['delete'] && isset($params['markedUids']) && is_array($params['markedUids'])) {
 
 			//delete records
 			$this->deleteRecords($params['markedUids']);
@@ -147,11 +147,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		//should show index
-		if(!$params['detailId'] && !$params['markedUids'] && !$params['csvFormat']) {
+		if (!$params['detailId'] && !$params['markedUids'] && !$params['csvFormat']) {
 
 			//if log table doesn't exist, show error
 			$tables = $GLOBALS['TYPO3_DB']->admin_get_tables();
-			if(!in_array($this->logTable, array_keys($tables))) {
+			if (!in_array($this->logTable, array_keys($tables))) {
 				return $this->getErrorMessage();
 
 				//show index table
@@ -168,34 +168,34 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			}
 
 			//should export to some format
-		} elseif(!$params['delete']) {
+		} elseif (!$params['delete']) {
 
 			//should show detail view of a single record
-			if(!$params['renderMethod']) {
+			if (!$params['renderMethod']) {
 
 				return $this->showSingleView($params['detailId']);
 
 				//PDF generation
-			} elseif(!strcasecmp($params['renderMethod'], 'pdf')) {
+			} elseif (!strcasecmp($params['renderMethod'], 'pdf')) {
 
 				//render a single record to PDF
-				if($params['detailId']) {
+				if ($params['detailId']) {
 					return $this->generatePDF($params['detailId']);
 
 					//render many records to PDF
-				} elseif(isset($params['markedUids']) && is_array($params['markedUids'])) {
+				} elseif (isset($params['markedUids']) && is_array($params['markedUids'])) {
 					return $this->generatePDF($params['markedUids']);
 				}
 
 				//CSV
-			} elseif(!strcasecmp($params['renderMethod'], 'csv')) {
+			} elseif (!strcasecmp($params['renderMethod'], 'csv')) {
 
 				//save single record as CSV
-				if($params['detailId']) {
+				if ($params['detailId']) {
 					return $this->generateCSV($params['detailId']);
 					
 					//save many records as CSV
-				} elseif(isset($params['markedUids']) && is_array($params['markedUids'])) {
+				} elseif (isset($params['markedUids']) && is_array($params['markedUids'])) {
 					return $this->generateCSV($params['markedUids']);
 				} else {
 					return $this->generateCSV(FALSE);
@@ -231,7 +231,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		 * if there is only one record to export, initialize an array with the one uid
 		 * to ensure that foreach loops will not crash
 		 */
-		if(!is_array($detailId)) {
+		if (!is_array($detailId)) {
 			$detailId = array($detailId);
 		}
 
@@ -242,7 +242,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params', $this->logTable, ('uid IN (' . implode(',', $detailId) . ')'));
 
 		//if records were found
-		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
+		if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 			$records = array();
 			$allParams = array();
 
@@ -252,7 +252,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				//unserialize params and save the array
 				$row['params'] = unserialize($row['params']);
 				$records[] = $row;
-				if(!is_array($row['params'])) {
+				if (!is_array($row['params'])) {
 					$row['params'] = array();
 				}
 
@@ -268,7 +268,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['pdf'], 1);
 				$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_TCPDF');
 				$generator->generateModulePDF($records, $configParams);	
-			} elseif(isset($gp['exportParams'])) {
+			} elseif (isset($gp['exportParams'])) {
 				
 				//if fields were chosen in selection view, export the records using the selected fields
 				
@@ -299,9 +299,9 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	protected function generateCSV($detailId) {
 		$where = '';
 		
-		if(!$detailId) {
+		if (!$detailId) {
 			$where = '1=1';
-		} elseif(!is_array($detailId)) {
+		} elseif (!is_array($detailId)) {
 			$where = 'uid=' . $detailId;
 		} else {
 			$where = 'uid IN (' . implode(',', $detailId) . ')';
@@ -314,7 +314,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params,key_hash', $this->logTable, $where);
 
 		//if record were found
-		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
+		if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 			$records = array();
 			$count = 0;
 			$hashes = array();
@@ -327,7 +327,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				$row['params'] = unserialize($row['params']);
 
 				//find the amount of different formats to inform the user.
-				if(!in_array($row['key_hash'], $hashes)) {
+				if (!in_array($row['key_hash'], $hashes)) {
 					$hashes[] = $row['key_hash'];
 					$availableFormats[] = $row['params'];
 				}
@@ -337,7 +337,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$availableFormatsCount = count($availableFormats);
 		
 			//only one format found
-			if($availableFormatsCount === 1) {
+			if ($availableFormatsCount === 1) {
 				$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1'); 
 				$configParams = array();
 				// check if TSconfig filter is set
@@ -345,7 +345,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
 					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
 					$generator->generateModuleCSV($records, $configParams);	
-				} elseif(isset($params['exportParams'])) {
+				} elseif (isset($params['exportParams'])) {
 					
 					//if fields were chosen in the selection view, perform the export
 					
@@ -358,9 +358,9 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				}
 
 				//more than one format and user has chosen a format to export
-			} elseif(isset($params['csvFormat'])) {
+			} elseif (isset($params['csvFormat'])) {
 				$renderRecords = array();
-				if($params['csvFormat'] === '*') {
+				if ($params['csvFormat'] === '*') {
 					$renderRecords = $records;
 				} else {
 
@@ -369,8 +369,8 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 					$renderRecords = array();
 	
 					//find out which records belong to this format
-					foreach($records as $record) {
-						if(!strcmp($record['key_hash'], $format)) {
+					foreach ($records as $record) {
+						if (!strcmp($record['key_hash'], $format)) {
 							$renderRecords[] = $record;
 						}
 					}
@@ -384,7 +384,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
 					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
 					$generator->generateModuleCSV($renderRecords, $configParams);	
-				} elseif(isset($params['exportParams'])) {
+				} elseif (isset($params['exportParams'])) {
 					
 					//if fields were chosen in the selection view, perform the export
 					
@@ -394,11 +394,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 					//no fields chosen, show selection view.
 				} else {
 					$fields = $renderRecords[0]['params'];
-					if($params['csvFormat'] === '*') {
+					if ($params['csvFormat'] === '*') {
 						$exportParams = array();
-						foreach($renderRecords as $record) {
-							foreach($record['params'] as $key=>$value) {
-								if(!array_key_exists($key, $exportParams)) {
+						foreach ($renderRecords as $record) {
+							foreach ($record['params'] as $key=>$value) {
+								if (!array_key_exists($key, $exportParams)) {
 									$exportParams[$key] = $value;
 								}
 							}
@@ -427,7 +427,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		global $LANG;
 
 		//if there are no params, initialize the array to ensure that foreach loops will not crash
-		if(!is_array($params)) {
+		if (!is_array($params)) {
 			$params = array();
 		}
 
@@ -450,24 +450,24 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		 * UIDs could be in param "markedUids" if more records where selected or in "detailId" if only one record get exported.
 		 */
 		$detailId = $gp['markedUids'];
-		if(!$detailId) {
+		if (!$detailId) {
 			$detailId = $gp['detailId'];
 		}
-		if(!is_array($detailId)) {
+		if (!is_array($detailId)) {
 			$detailId = array($detailId);
 		}
 
 		$markers['###SELECTED_RECORDS###'] = '';
 		
 		//the selected records in a previous step
-		foreach($detailId as $id) {
+		foreach ($detailId as $id) {
 			$markers['###SELECTED_RECORDS###'] .= '<input type="hidden" name="formhandler[markedUids][]" value="' . $id . '" />';
 		}
 
 		$markers['###EXPORTFIELDS###'] = '';
 		
 		//add a label and a checkbox for each available parameter
-		foreach($params as $field=>$value) {
+		foreach ($params as $field=>$value) {
 			$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="' . $field . '">' . $field . '</td></tr>';
 		}
 		$markers['###UID###'] = $this->id;
@@ -490,7 +490,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		global $LANG;
 
 		//if there are no params, initialize the array to ensure that foreach loops will not crash
-		if(!is_array($params)) {
+		if (!is_array($params)) {
 			$params = array();
 		}
 
@@ -513,17 +513,17 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		 * UIDs could be in param "markedUids" if more records where selected or in "detailId" if only one record get exported.
 		 */
 		$detailId = $gp['markedUids'];
-		if(!$detailId) {
+		if (!$detailId) {
 			$detailId = $gp['detailId'];
 		}
-		if(!is_array($detailId)) {
+		if (!is_array($detailId)) {
 			$detailId = array($detailId);
 		}
 
 		$markers['###SELECTED_RECORDS###'] = '';
 		
 		//the selected records in a previous step
-		foreach($detailId as $id) {
+		foreach ($detailId as $id) {
 			$markers['###SELECTED_RECORDS###'] .= '<input type="hidden" name="formhandler[markedUids][]" value="' . $id . '" />';
 		}
 
@@ -533,7 +533,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="pid" />' . $LANG->getLL('page_id') . '</td></tr>';
 		
 		//add a label and a checkbox for each available parameter
-		foreach($params as $field => $value) {
+		foreach ($params as $field => $value) {
 			$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="' . $field . '">' . $field . '</td></tr>';
 		}
 		$markers['###UID###'] = $this->id;
@@ -576,7 +576,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		 * if there is only one record to export, initialize an array with the one uid
 		 * to ensure that foreach loops will not crash.
 		 */
-		if(!is_array($detailId)) {
+		if (!is_array($detailId)) {
 			$detailId = array($detailId);
 		}
 
@@ -585,19 +585,19 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$foundFormats = 0;
 		
 		//loop through formats
-		foreach($formats as $key => $format) {
+		foreach ($formats as $key => $format) {
 			
 			$formatMarkers = array();
 			
 			//if format is valid
-			if(isset($format) && is_array($format)) {
+			if (isset($format) && is_array($format)) {
 				$foundFormats++;
 				$code = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###SINGLE_FORMAT###');
 				$formatMarkers['###URL###'] = $_SERVER['PHP_SELF'];
 
 				$formatMarkers['###HIDDEN_FIELDS###'] = '';
 				//add hidden fields for all selected records to export
-				foreach($detailId as $id) {
+				foreach ($detailId as $id) {
 					$formatMarkers['###HIDDEN_FIELDS###'] .= '<input type="hidden" name="formhandler[markedUids][]" value="' . $id . '" />';
 				}
 				$formatMarkers['###KEY###'] = $key;
@@ -613,7 +613,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$formatMarkers['###URL###'] = $_SERVER['PHP_SELF'];
 		
 		//add hidden fields for all selected records to export
-		foreach($detailId as $id) {
+		foreach ($detailId as $id) {
 			$formatMarkers['###HIDDEN_FIELDS###'] .= '<input type="hidden" name="formhandler[markedUids][]" value="' . $id . '" />';
 		}
 		$formatMarkers['###KEY###'] = '*';
@@ -644,7 +644,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params', $this->logTable, ('uid=' . $singleUid));
 
 		//if UID was valid
-		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
+		if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$viewCode = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###DETAIL_VIEW###');
@@ -664,10 +664,10 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$markers['###LLL:ip_address###'] = $LANG->getLL('ip_address');
 
 			//add the submitted params
-			if(isset($params) && is_array($params)) {
+			if (isset($params) && is_array($params)) {
 				$paramsTable .= '<table>';
-				foreach($params as $key=>$value) {
-					if(is_array($value)) {
+				foreach ($params as $key=>$value) {
+					if (is_array($value)) {
 						$value = implode(',', $value);
 					}
 					$paramsTable .= '
@@ -723,7 +723,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params,is_spam', $this->logTable, $where, '', 'crdate DESC', $this->pageBrowser->getSqlLimitClause());
 
 		//if records found
-		if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
+		if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 			$count = 0;
 			while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 				$records[$count] = $row;
@@ -767,15 +767,15 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 		$pidFilter = '';
 		
-		if(strlen(trim($params['pidFilter'])) > 0) {
+		if (strlen(trim($params['pidFilter'])) > 0) {
 			$pidFilter = $params['pidFilter'];
  		}
 
-		if(strlen(trim($params['pidFilter'])) > 0 && trim($params['pidFilter']) != "*") {
+		if (strlen(trim($params['pidFilter'])) > 0 && trim($params['pidFilter']) != "*") {
 			$pids = t3lib_div::trimExplode(',', $params['pidFilter'], 1);
 			$pid_search = array();
 			// check is page shall be accessed by current BE user
-			foreach($pids as $pid) {
+			foreach ($pids as $pid) {
 				if (t3lib_BEfunc::readPageAccess(intval($pid))) $pid_search[] = intval($pid);
 			}
 			// check if there's a valid pid left
@@ -790,29 +790,29 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$this->pidFilter = $this->id;
 		}	
 		
-		if(trim($params['ipFilter']) > 0) {
+		if (trim($params['ipFilter']) > 0) {
 			$ips = t3lib_div::trimExplode(',', $params['ipFilter'], 1);
 			$ip_search = array();
-			foreach($ips as $value) {
+			foreach ($ips as $value) {
 				$ip_search[] = "'" . htmlspecialchars($value) . "'";
 			}
 			$where[] = 'ip IN (' . implode(",", $ip_search) . ')';
  		}
 
 		//only records submitted after given timestamp
-		if(strlen(trim($params['startdateFilter'])) > 0) {
+		if (strlen(trim($params['startdateFilter'])) > 0) {
 			$tstamp = Tx_Formhandler_StaticFuncs::dateToTimestamp($params['startdateFilter']);
 			$where[] = 'crdate >= ' . $tstamp;
 		}
 
 		//only records submitted before given timestamp
-		if(strlen(trim($params['enddateFilter'])) > 0) {
+		if (strlen(trim($params['enddateFilter'])) > 0) {
 			$tstamp = Tx_Formhandler_StaticFuncs::dateToTimestamp($params['enddateFilter'], TRUE);
 			$where[] = 'crdate <= ' . $tstamp;
 		}
 
 		//if filter was applied, return the WHERE clause
-		if(count($where) > 0) {
+		if (count($where) > 0) {
 			return implode(' AND ', $where);
 		}
 	}
@@ -877,8 +877,8 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
 	protected function addValueMarkers(&$markers, $params) {
-		if(is_array($params)) {
-			foreach($params as $key => $value) {
+		if (is_array($params)) {
+			foreach ($params as $key => $value) {
 				$markers['###value_' . $key . '###'] = $value;
 			}
 		}
@@ -950,7 +950,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		//get filter
 		$table = $this->getFilterSection();
 
-		if(count($records) == 0) {
+		if (count($records) == 0) {
 			return $table . '<div>' . $LANG->getLL('no_records') . '</div>';
 		}
 
@@ -974,13 +974,13 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$tableMarkers['###ROWS###'] = '';
 		
 		//add records
-		foreach($records as $record) {
-			if($count % 2 == 0) {
+		foreach ($records as $record) {
+			if ($count % 2 == 0) {
 				$style = 'class="bgColor3-20"';
 			} else {
 				$style = 'class="bgColor3-40"';
 			}
-			if($record['is_spam'] == 1) {
+			if ($record['is_spam'] == 1) {
 				$style = 'style="background-color:#dd7777"';
 			}
 			$rowCode = Tx_Formhandler_StaticFuncs::getSubpart($this->templateCode, '###LIST_TABLE_ROW###');
@@ -994,7 +994,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$markers['###EXPORT_LINKS###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->id . '&formhandler[detailId]=' . $record['uid'] . '&formhandler[renderMethod]=pdf">PDF</a>
 						/<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->id . '&formhandler[detailId]=' . $record['uid'] . '&formhandler[renderMethod]=csv">CSV</a>';
 			$checkbox = '<input type="checkbox" name="formhandler[markedUids][]" value="' . $record['uid'] . '" ';
-			if(isset($params['markedUids']) && is_array($params['markedUids']) && in_array($record['uid'], $params['markedUids'])) {
+			if (isset($params['markedUids']) && is_array($params['markedUids']) && in_array($record['uid'], $params['markedUids'])) {
 				$checkbox .= 'checked="checked"';
 			}
 			$checkbox .= '/>';

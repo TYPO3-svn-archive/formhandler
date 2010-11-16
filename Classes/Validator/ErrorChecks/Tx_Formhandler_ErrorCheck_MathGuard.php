@@ -35,16 +35,15 @@ class Tx_Formhandler_ErrorCheck_MathGuard extends Tx_Formhandler_AbstractErrorCh
 		$checkFailed = '';
 		if (t3lib_extMgm::isLoaded('mathguard')) {
 			require_once(t3lib_extMgm::extPath('mathguard') . 'class.tx_mathguard.php');
-	
+
 			$captcha = t3lib_div::makeInstance('tx_mathguard');
 			$valid = $captcha->validateCaptcha();
-			if(!$valid) {
+			if (!$valid) {
 				$checkFailed = $this->getCheckFailed($check);
 			}
 		}
 		return $checkFailed;
 	}
-
 
 }
 ?>

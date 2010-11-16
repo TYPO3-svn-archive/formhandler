@@ -110,7 +110,7 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	 * @var array
 	 */
 	protected $gp;
-	
+
 	protected $componentSettings;
 
 	/**
@@ -125,7 +125,6 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		$this->cObj = Tx_Formhandler_Globals::$cObj;
-
 		$this->pi_loadLL();
 		$this->initializeView();
 	}
@@ -149,13 +148,13 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	public function setSettings($settings) {
 		$this->settings = $settings;
 	}
-	
+
 	public function setComponentSettings($settings) {
 		$this->componentSettings = $settings;
 	}
-	
+
 	public function getComponentSettings() {
-		if(!is_array($this->componentSettings)) {
+		if (!is_array($this->componentSettings)) {
 			$this->componentSettings = array();
 		}
 		return $this->componentSettings;
@@ -202,7 +201,7 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 		$this->subparts['template'] = $this->cObj->getSubpart($templateCode,'###TEMPLATE_' . $templateName . '###');
 		$this->subparts['item'] = $this->cObj->getSubpart($this->subparts['template'], '###ITEM###');
 	}
-	
+
 	/**
 	 * Returns FALSE if the view doesn't have template code.
 	 *
@@ -229,26 +228,6 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	 * @author Jochen Rau
 	 */
 	protected function initializeView() {
-	}
-
-	/**
-	 * Fills markers in template
-	 *
-	 * @return void
-	 * @author Jochen Rau
-	 */
-	protected function fillMarker($term, &$markerArray, &$wrappedSubpartArray) {
-		$labelWrap['noTrimWrap'] = $this->configuration->offsetGet('labelWrap') ? $this->configuration->offsetGet('labelWrap') : NULL;
-		foreach ($term as $property => $value) {
-			// TODO Improve pre-processing of property-values
-			if (is_array($value)) {
-				$value = implode(',' , $value);
-			}
-			$propertyMarker = '###' . $this->getUpperCase($property) . '###';
-			$markerArray[$propertyMarker] = $term[$property] ? $value : $this->pi_getLL('na');
-			$labelMarker = '###' . $this->getUpperCase($property) . '_LABEL###';
-			$markerArray[$labelMarker] = $this->cObj->stdWrap($this->pi_getLL($property), $labelWrap);
-		}
 	}
 
 	/**
