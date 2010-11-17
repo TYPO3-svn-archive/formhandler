@@ -1,7 +1,6 @@
 ##### STEP 1 CONFIGURATION #####
 plugin.Tx_Formhandler.settings.predef.multistep_example.1 {
 	checkBoxFields = interests
-	radioButtonFields = contact_via
 	validators {
 		1 {
 			class = Tx_Formhandler_Validator_Default

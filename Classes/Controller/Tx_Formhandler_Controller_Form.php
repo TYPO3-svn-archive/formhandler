@@ -731,17 +731,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 		}
 
-		//check for checkbox and radiobutton fields using the values in $newGP
+		//check for checkbox fields using the values in $newGP
 		if ($this->settings['checkBoxFields']) {
 			$fields = t3lib_div::trimExplode(',', $this->settings['checkBoxFields']);
-			foreach ($fields as $idx => $field) {
-				if (!isset($newGP[$field]) && isset($this->gp[$field])) {
-					$data[$this->lastStep][$field] = array();
-				}
-			}
-		}
-		if ($this->settings['radioButtonFields']) {
-			$fields = t3lib_div::trimExplode(',', $this->settings['radioButtonFields']);
 			foreach ($fields as $idx => $field) {
 				if (!isset($newGP[$field]) && isset($this->gp[$field])) {
 					$data[$this->lastStep][$field] = array();

@@ -421,21 +421,6 @@ plugin.Tx_Formhandler.settings {
   2.checkBoxFields = work_experience,accounts
 }
 
-radioButtonFields
-String
-Comma seperated list of field names which contain radio button values. This is needed for multipage forms in order to ensure correct submission of these values from step to step. Please enter all radio button field names in here. Set this option per step. 
-
-Example:
-
-plugin.Tx_Formhandler.settings {
-
-  # Radiobutton fields in step 1
-  1.radioButtonFields = contact_via
-
-  # Radiobutton fields in step 2
-  2. radioButtonFields = receive_gift
-}
-
 addErrorAnchors
 Boolean (0/1)
 If you use ###error### and error markers for each field, you can enable 
