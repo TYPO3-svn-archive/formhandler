@@ -1153,6 +1153,17 @@ fieldConf {
   }
 }
 
+messageLimit
+Int/Array
+Limits the number of error messages for all and/or specific fields.
+
+Example
+
+#Limit messages to 1 for each field:
+messageLimit = 1
+#Heighten limit for one field
+messageLimit.upload = 5
+-
 
 Validator_Ajax
 
@@ -2461,7 +2472,36 @@ How to set up error checks
     <label index="error_field2_email">Field2 is no valid e-mail!</label>
 
 NOTE: The marker ###value### in the error message is filled with the value of the parameter “value” for error check “maxLength”. If an error check requires parameters, you can use markers like ###[parametername]### in the translatable message.
+When you have to validate values in nested arrays you can nest the validators as well. Given following fields:
+    <input type="text" name="birthdate[day]"/>
+    <input type="text" name="birthdate[month]"/>
+    <input type="text" name="birthdate[year]"/>
+    <input type="text" name="name"/>
 
+You can setup your validators like that:
+validators.1.config.fieldConf {
+      birthdate {
+        day.errorCheck {
+          1 = betweenValue
+          1.minValue = 1
+          1.maxValue = 31
+        }
+        month.errorCheck {
+          1 = betweenValue
+          1.minValue = 1
+          1.maxValue = 12
+        }
+        year.errorCheck {
+          1 = minValue
+          1.minValue = 45
+        }
+      }
+      birthdate.errorCheck.1 = maxItems
+      birthdate.errorCheck.1.value = 3
+      name.errorCheck.1 = required
+    }
+
+The errors for the birthdate array will then be merged into the marker ###error_birthdate###.
 How to use ###is_error### markers
 
 These markers allow you to display additional content is an error occurred for each form field or globally.
