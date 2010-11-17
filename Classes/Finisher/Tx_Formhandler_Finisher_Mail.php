@@ -92,7 +92,14 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @return string The template code
 	 */
 	protected function parseTemplate($mode, $suffix) {
-		$view = $this->componentManager->getComponent('Tx_Formhandler_View_Mail');
+		
+		$viewClass = $this->settings['view'];
+		if(!$viewClass) {
+			$viewClass = 'Tx_Formhandler_View_Mail';
+		}
+		/* @var $view Tx_Formhandler_AbstractView */
+		$view = $this->componentManager->getComponent($viewClass);
+		
 		$view->setLangFiles(Tx_Formhandler_Globals::$langFiles);
 		$view->setPredefined($this->predefined);
 		$view->setComponentSettings($this->settings);

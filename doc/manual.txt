@@ -1618,7 +1618,7 @@ fields {
 
 
 Finisher_AutoDB
-Extends Finisher_DB to automatically generate the database fields for the fields in your form when a backend user is logged in and autoCreate is enabled. Therefor it scans your template code for form elements with a name, generates the table if it doesn’t exist and adds each field as column if it does not exist.
+Extends Finisher_DB to automatically generate the database fields for the fields in your form when a backend user is logged in and .autoCreate is enabled. Therefor it scans your template code for form elements with a name, generates the table if it doesn’t exist and adds each field as column if it does not exist.
 This finisher inherits all setup properties from the Finisher_DB. Please note that while creating the fields it does not yet take the field mapping into account but generates all fields that are found in the form and not excluded by .excludeFields
 [
 plugin.Tx_Formhandler.settings.finishers.x.class = Tx_Formhandler_Finisher_AutoDB
@@ -1748,6 +1748,10 @@ A mailer must fulfill the given MailerInterface.
 mailer {
   class = Mailer_HtmlMail
 }
+view
+string
+Classname of the view to be used for generation of email-contents
+Tx_Formhandler_View_Mail
 admin
 array
 Settings for the mail sent to site admin
