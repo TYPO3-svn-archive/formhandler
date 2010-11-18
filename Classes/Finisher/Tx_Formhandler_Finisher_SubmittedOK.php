@@ -44,9 +44,6 @@ class Tx_Formhandler_Finisher_SubmittedOK extends Tx_Formhandler_AbstractFinishe
 	 */
 	public function process() {
 
-		//set session value to prevent another validation or finisher circle. Formhandler will call only this Finisher if the user reloads the page.
-		Tx_Formhandler_Session::set('submittedOK', TRUE);
-
 		//read template file
 		$this->templateFile = Tx_Formhandler_Globals::$templateCode;
 
