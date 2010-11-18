@@ -956,9 +956,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			Tx_Formhandler_StaticFuncs::throwException('You messed with the steps!');
 		}
 
-		if ($this->currentStep >= $this->lastStep) {
-			$this->mergeGPWithSession(FALSE, $this->currentStep);
-		}
+		$this->mergeGPWithSession(FALSE, $this->currentStep);
 
 		$this->parseConditions();
 
