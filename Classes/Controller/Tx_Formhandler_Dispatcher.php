@@ -44,7 +44,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 	 */
 	public function main($content, $setup) {
 		$this->pi_USER_INT_obj = 1;
-		try {
+		//try {
 
 			//init flexform
 			$this->pi_initPIflexForm();
@@ -95,10 +95,10 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			}
 
 			$result = $controller->process();
-		} catch(Exception $e) {
+		/*} catch(Exception $e) {
 			$result = '<div style="color:red; font-weight: bold">Caught exception: ' . $e->getMessage() . '</div>';
 			$result .= '<div style="color:red; font-weight: bold">File: ' . $e->getFile() . '(' . $e->getLine() . ')</div>';
-		}
+		}*/
 		return $result;
 	}
 }
