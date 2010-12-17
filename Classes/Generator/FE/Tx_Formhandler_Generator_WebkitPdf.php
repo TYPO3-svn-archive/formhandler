@@ -16,7 +16,6 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 			} else {
 				$linkGP = $this->gp;
 			}
-			$linkGP['submitted_ok'] = 1;
 			$url = Tx_Formhandler_StaticFuncs::getHostname() . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $linkGP);
 			$config = $this->readWebkitPdfConf();
 			$config['fileOnly'] = 1;
@@ -73,16 +72,7 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 	}
 
 	protected function getComponentLinkParams($linkGP) {
-		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
-		$params = array();
-		if ($prefix) {
-			$params[$prefix] = array(
-				'submitted_ok' => 1
-			);
-		} else {
-			$params['submitted_ok'] = 1;
-		}
-		return $params;
+		return array();
 	}
 
 	protected function getLinkText() {
