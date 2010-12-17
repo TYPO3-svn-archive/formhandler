@@ -1,6 +1,175 @@
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+---------------------------- Version 0.9.10 ----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+r41214 | reinhardfuehricht | 2010-12-17 09:46:51 +0100 (Fre, 17. Dez 2010) | 1 Zeile
+
+- Some cosmetic changes in generators.
+------------------------------------------------------------------------
+r40430 | metti | 2010-11-18 20:52:35 +0100 (Don, 18. Nov 2010) | 1 Zeile
+
+Big sorry - last commit was accidental - reverting it
+------------------------------------------------------------------------
+r40429 | metti | 2010-11-18 20:47:19 +0100 (Don, 18. Nov 2010) | 2 Zeilen
+
+* Anfrage läuft (fixes #699)
+* Neue extension "jobfair" (perspektivisch auch für ct-flex)
+------------------------------------------------------------------------
+r40396 | reinhardfuehricht | 2010-11-18 13:03:28 +0100 (Don, 18. Nov 2010) | 1 Zeile
+
+Refactored handling of submittedOK state (fixes #10927)
+------------------------------------------------------------------------
+r40391 | reinhardfuehricht | 2010-11-18 10:45:05 +0100 (Don, 18. Nov 2010) | 1 Zeile
+
+- Conditions in multistep forms where parsed wrong when hitting back button (fixes: #10906)
+------------------------------------------------------------------------
+r40385 | metti | 2010-11-17 22:29:02 +0100 (Mit, 17. Nov 2010) | 1 Zeile
+
+Added setting for _view_-class in Finisher_Mail (fixes #10909)
+------------------------------------------------------------------------
+r40370 | metti | 2010-11-17 18:02:16 +0100 (Mit, 17. Nov 2010) | 1 Zeile
+
+Applied patch from #9972 and updated docs accordingly (fixes #9972)
+------------------------------------------------------------------------
+r40352 | metti | 2010-11-17 16:27:31 +0100 (Mit, 17. Nov 2010) | 1 Zeile
+
+Added Finisher_AutoDB and updated documentation for it (fixes #9447)
+------------------------------------------------------------------------
+r40319 | reinhardfuehricht | 2010-11-17 10:55:01 +0100 (Mit, 17. Nov 2010) | 1 Zeile
+
+- FIX #6491: radioButtonsFields and checkBoxFields
+------------------------------------------------------------------------
+r40269 | reinhardfuehricht | 2010-11-16 16:23:54 +0100 (Die, 16. Nov 2010) | 1 Zeile
+
+- Code cleanup: Refactoring to be more CGL compliant
+------------------------------------------------------------------------
+r40202 | reinhardfuehricht | 2010-11-15 10:01:12 +0100 (Mon, 15. Nov 2010) | 2 Zeilen
+
+- FIX #10402: Problems with finisher SubmittedOK
+- FIX #9530: NO CSV file generation after submitting form
+------------------------------------------------------------------------
+r39888 | reinhardfuehricht | 2010-11-05 16:44:16 +0100 (Fre, 05. Nov 2010) | 1 Zeile
+
+- UPDATE: Removed unused class Template_PDF
+------------------------------------------------------------------------
+r39887 | reinhardfuehricht | 2010-11-05 16:42:15 +0100 (Fre, 05. Nov 2010) | 1 Zeile
+
+- UPDATE: Removed unneeded class Generator_PDF and unused methods in the other generators for BE.
+------------------------------------------------------------------------
+r39886 | reinhardfuehricht | 2010-11-05 16:24:36 +0100 (Fre, 05. Nov 2010) | 1 Zeile
+
+- UPDATE: Removed unneeded csv.lib.php
+------------------------------------------------------------------------
+r39885 | reinhardfuehricht | 2010-11-05 16:20:43 +0100 (Fre, 05. Nov 2010) | 4 Zeilen
+
+- FIX #9672: xajax extension should be suggested
+- FIX #7912: Dispatcher handleAjax() only if needed
+- #7915: AjaxFileRemoval is not working
+
+------------------------------------------------------------------------
+r39865 | reinhardfuehricht | 2010-11-05 09:50:55 +0100 (Fre, 05. Nov 2010) | 2 Zeilen
+
+- FIX #10637: Markers are empty after reload of non-valid form
+
+------------------------------------------------------------------------
+r39864 | reinhardfuehricht | 2010-11-05 09:38:04 +0100 (Fre, 05. Nov 2010) | 1 Zeile
+
+- Removed a forgotten "print"
+------------------------------------------------------------------------
+r39813 | reinhardfuehricht | 2010-11-03 11:55:03 +0100 (Mit, 03. Nov 2010) | 2 Zeilen
+
+- Follow-Up #9411: randomID not unique if there is more than one form page
+
+------------------------------------------------------------------------
+r39780 | reinhardfuehricht | 2010-11-02 15:01:36 +0100 (Die, 02. Nov 2010) | 1 Zeile
+
+- FIX #6979: betweenValue checks for float
+------------------------------------------------------------------------
+r39779 | reinhardfuehricht | 2010-11-02 14:41:33 +0100 (Die, 02. Nov 2010) | 2 Zeilen
+
+- Follow-Up #10349: Extension keys with underscores
+
+------------------------------------------------------------------------
+r39769 | reinhardfuehricht | 2010-11-02 10:12:11 +0100 (Die, 02. Nov 2010) | 2 Zeilen
+
+- UPDATE #9671: Rename Tx_GimmeFive_Component_Manager
+
+------------------------------------------------------------------------
+r39765 | reinhardfuehricht | 2010-11-02 09:50:55 +0100 (Die, 02. Nov 2010) | 2 Zeilen
+
+- ADD #10455: Add condition to check for field existence.
+
+------------------------------------------------------------------------
+r39763 | reinhardfuehricht | 2010-11-02 09:33:51 +0100 (Die, 02. Nov 2010) | 2 Zeilen
+
+- ADD #10349: Extension keys with underscores
+
+------------------------------------------------------------------------
+r39762 | reinhardfuehricht | 2010-11-02 09:32:18 +0100 (Die, 02. Nov 2010) | 1 Zeile
+
+- Removed a (last) relict of the listing feature
+------------------------------------------------------------------------
+r39617 | reinhardfuehricht | 2010-10-28 14:59:52 +0200 (Don, 28. Okt 2010) | 2 Zeilen
+
+- Performance tuning. Should be significantly faster now!
+- Little code tuning
+------------------------------------------------------------------------
+r39069 | reinhardfuehricht | 2010-10-12 17:52:12 +0200 (Die, 12. Okt 2010) | 1 Zeile
+
+- FIX: fileMaxCount always failed with multiple upload fields, when one was at max count and another one was filled out.
+------------------------------------------------------------------------
+r39033 | reinhardfuehricht | 2010-10-11 14:22:00 +0200 (Mon, 11. Okt 2010) | 1 Zeile
+
+- FIX #10191: Hidden inputs cause not valid xhtml
+------------------------------------------------------------------------
+r39031 | reinhardfuehricht | 2010-10-11 13:15:36 +0200 (Mon, 11. Okt 2010) | 1 Zeile
+
+- Task #10092: Remove frontend listing
+------------------------------------------------------------------------
+r39026 | reinhardfuehricht | 2010-10-11 11:23:27 +0200 (Mon, 11. Okt 2010) | 1 Zeile
+
+- FIX: Bug in parseFilesList n Finisher_Mail when the list is generated by a userFunc.
+------------------------------------------------------------------------
+r39025 | reinhardfuehricht | 2010-10-11 11:08:46 +0200 (Mon, 11. Okt 2010) | 1 Zeile
+
+- ADD: Set labels for the steps in the step bar in translation file.
+------------------------------------------------------------------------
+r38890 | reinhardfuehricht | 2010-10-06 12:54:01 +0200 (Mit, 06. Okt 2010) | 1 Zeile
+
+- FIX #10002: Formhandler says that template file does not exist, but it does - but it's empty
+------------------------------------------------------------------------
+r38889 | reinhardfuehricht | 2010-10-06 12:31:20 +0200 (Mit, 06. Okt 2010) | 1 Zeile
+
+- FIX #10042: Tx_Formhandler_Finisher_Redirect does not work on Windows
+------------------------------------------------------------------------
+r38814 | mabolek | 2010-10-02 10:29:28 +0200 (Sam, 02. Okt 2010) | 2 Zeilen
+
+FIXED Bug #10020: PreProcessor_LoadDB should show query when debugging is on
+FIXED Bug #10028: Pre and post processing accessing settings incorrectly (Tx_Formhandler_PreProcessor_LoadDB)
+------------------------------------------------------------------------
+r38805 | reinhardfuehricht | 2010-10-01 15:10:48 +0200 (Fre, 01. Okt 2010) | 1 Zeile
+
+- FIX #10001: Remove layout, starting point and code from plugin settings
+------------------------------------------------------------------------
+r38764 | reinhardfuehricht | 2010-09-29 15:28:24 +0200 (Mit, 29. Sep 2010) | 1 Zeile
+
+- Follow up #9978: Typo: "Persönlisch Information"
+------------------------------------------------------------------------
+r38763 | reinhardfuehricht | 2010-09-29 15:28:00 +0200 (Mit, 29. Sep 2010) | 1 Zeile
+
+- FIX #9978: Typo: "Persönlisch Information"
+------------------------------------------------------------------------
+r38566 | reinhardfuehricht | 2010-09-24 11:41:15 +0200 (Fre, 24. Sep 2010) | 1 Zeile
+
+- New version number due to TER upload
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 ---------------------------- Version 0.9.9 -----------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
