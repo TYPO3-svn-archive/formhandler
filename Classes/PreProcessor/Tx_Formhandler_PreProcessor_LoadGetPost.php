@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id: Tx_Formhandler_PreProcessor_Default.php 22614 2009-07-21 20:43:47Z fabien_u $
+ * $Id: Tx_Formhandler_PreProcessor_LoadGetPost.php 22614 2009-07-21 20:43:47Z fabien_u $
  *                                                                        */
 
 /**
