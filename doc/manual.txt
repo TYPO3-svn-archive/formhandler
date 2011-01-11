@@ -1,4 +1,4 @@
-
+Ôªø
 EXT: Universal Formhandler
 Extension Key: formhandler
 Language: en
@@ -70,12 +70,12 @@ To-Do list	52
 
 Introduction
 
-This extension was initially developed by Reinhard F¸hricht for Typoheads (www.typoheads.at). After the initial upload to Forge, the development team got enriched by Fabien Udriot and Johannes Feustel. If you want to participate, report bugs or demand additional features please use the possibilities of Forge (forge.typo3.org).
+This extension was initially developed by Reinhard F√ºhricht for Typoheads (www.typoheads.at). After the initial upload to Forge, the development team got enriched by Fabien Udriot and Johannes Feustel. If you want to participate, report bugs or demand additional features please use the possibilities of Forge (forge.typo3.org).
 If you like this extension and want to encourage development of new features, feel free to write an email to office(at) typoheads.at to receive details about donation process.
 What does it do?
 When you reach the limits of the standard mailform functionality of TYPO3 (especially when you want the form to look special) you can use this extension to use your conventional HTML-forms (as HTML-snippets) with full mailform functionality.
 This extension is considered as the follow-up to th_mailformplus, including nearly all the features of th_mailformplus and many more new features having a completely new architecture and code. The result is a very flexible approach to form handling.
-The new architecture and TypoScript configuration makes it possible to easily control the processing of the form by adding an infinite number of validators and interceptors to filter form input. After successful form submission you can add special interceptors to sanitize input values for final processing in the so called ìfinishersî. Finishers are used to save data into DB, send emails, redirect to another page, etc. Have a look at the available classes described in this manual. If you miss a feature, you can easily write your own class and plug it into MailformPlus MVC processing. After having read the manual and looked into the code documentation, you will see how your own classes can be integrated into MailformPlus MVC.
+The new architecture and TypoScript configuration makes it possible to easily control the processing of the form by adding an infinite number of validators and interceptors to filter form input. After successful form submission you can add special interceptors to sanitize input values for final processing in the so called ‚Äúfinishers‚Äù. Finishers are used to save data into DB, send emails, redirect to another page, etc. Have a look at the available classes described in this manual. If you miss a feature, you can easily write your own class and plug it into MailformPlus MVC processing. After having read the manual and looked into the code documentation, you will see how your own classes can be integrated into MailformPlus MVC.
 
 Please visit the extension's section on forge to post feature requests or report bugs.
 http://forge.typo3.org/projects/show/extension-formhandler
@@ -100,18 +100,18 @@ Backend module to manage and export submitted data (PDF,CSV)
 
 Goals
 
-This extension's architecture is designed to be as modular as possible making it easy to perform changes and add new features. As every form needs different configuration than another form, there are many different ìblocksî which can be stuck together fulfilling almost all needs.
+This extension's architecture is designed to be as modular as possible making it easy to perform changes and add new features. As every form needs different configuration than another form, there are many different ‚Äúblocks‚Äù which can be stuck together fulfilling almost all needs.
 
 Comparison to th_mailformplus
 
-Formhandler is considered a follow-up to th_mailformplus. th_mailformplus has started with a very basic feature set and has grown to a huge extension over the years. The code got kind of unmaintainable and it was time to change the architecture to be quicker spotting and fixing bugs and to offer a whole new experience of flexibility. For a guide on how to upgrade TypoScript configuration from th_mailformplus to Formhandler have a look at the section ìHow to upgrade  from th_mailformplus to Formhandlerî.
+Formhandler is considered a follow-up to th_mailformplus. th_mailformplus has started with a very basic feature set and has grown to a huge extension over the years. The code got kind of unmaintainable and it was time to change the architecture to be quicker spotting and fixing bugs and to offer a whole new experience of flexibility. For a guide on how to upgrade TypoScript configuration from th_mailformplus to Formhandler have a look at the section ‚ÄúHow to upgrade  from th_mailformplus to Formhandler‚Äù.
 First of all Formhandler has a more up-to-date architecture, which allows a more modular approach having different classes for different tasks. Another advantage of this architecture is a smaller code base making updates and adding of additional features much less time consuming.
 Compared to th_mailformplus Formhandler offers much more flexibility. The modular approach allows the user to add an infinite number of either predefined or self written classes to processing (PreProcessors, Interceptors, Validators, Finishers). When you are not satisfied with the features Formhandler has to offer, you can easily write your own class and add it to the rendering process without changing a single line in the PHP code of Formhandler. 
-Have a look at the section ìHow does this extension work?î and the TypoScript configuration options. For a more practical way of explanation, have a look at the ìHow to ...î sections at the end of the manual or the folder ìExamplesî in the extension directory.
+Have a look at the section ‚ÄúHow does this extension work?‚Äù and the TypoScript configuration options. For a more practical way of explanation, have a look at the ‚ÄúHow to ...‚Äù sections at the end of the manual or the folder ‚ÄúExamples‚Äù in the extension directory.
 Screenshots
 
 
-This is how Formhandler works. Quite simple, isn't it? For more information about the rendering process have a look at the section ìHow does this extension work?î.
+This is how Formhandler works. Quite simple, isn't it? For more information about the rendering process have a look at the section ‚ÄúHow does this extension work?‚Äù.
 
 
 The Plugin view of Formhandler. The user can choose a template file and a translation file. Furthermore the user can enter settings for E-mail submission and redirection.
@@ -119,11 +119,11 @@ The Plugin view of Formhandler. The user can choose a template file and a transl
 A form generated with Formhandler having file uploads handling and error checks.
 Users manual
 Create template
-To create a form using Formhandler you will first have to write a HTML template file containing the code of your form. You will have to follow certain rules, so that Formhandler will be able to detect the suitable subparts for each situation. For an overview of how to create a form template have a look at the sections ìHow to set up a simple formî and ìAvailable markers to use in subpartsî or check the demo templates located at EXT:formhandler/Examples/
+To create a form using Formhandler you will first have to write a HTML template file containing the code of your form. You will have to follow certain rules, so that Formhandler will be able to detect the suitable subparts for each situation. For an overview of how to create a form template have a look at the sections ‚ÄúHow to set up a simple form‚Äù and ‚ÄúAvailable markers to use in subparts‚Äù or check the demo templates located at EXT:formhandler/Examples/
 Create translation file
-In order to use error messages for your fields and to be able to use multilanguage labels, you have to write a translation file. We decided to make translation files kind of obligatory because it's just nicer. So if you want your form to be fully functional, we recommend to use a translation file. A little tutorial on how to use those translations is in section ìHow to set up multilanguage formsî.
+In order to use error messages for your fields and to be able to use multilanguage labels, you have to write a translation file. We decided to make translation files kind of obligatory because it's just nicer. So if you want your form to be fully functional, we recommend to use a translation file. A little tutorial on how to use those translations is in section ‚ÄúHow to set up multilanguage forms‚Äù.
 Create a Plugin Record
-Create a new page and create a content element. Choose type ìGeneral pluginî. In the section ìPluginî now choose ìFormhandlerî as plugin type. Now you are able to select your template file and translation file as well as setting options for e-mail sending, basic ìrequiredî error checks and a redirect page after successful submission of the form. When creating a new record, the default predefined form is selected. To add your own predefined form, you should add a new TypoScript template.
+Create a new page and create a content element. Choose type ‚ÄúGeneral plugin‚Äù. In the section ‚ÄúPlugin‚Äù now choose ‚ÄúFormhandler‚Äù as plugin type. Now you are able to select your template file and translation file as well as setting options for e-mail sending, basic ‚Äúrequired‚Äù error checks and a redirect page after successful submission of the form. When creating a new record, the default predefined form is selected. To add your own predefined form, you should add a new TypoScript template.
 Enter your options and save.
 Create a TypoScript setup
 If you want to use the whole power of Formhandler you should use TypoScript to configure your form. Many different examples are available at EXT:formhandler/Examples/
@@ -136,7 +136,7 @@ Feel free to contribute on http://forge.typo3.org/projects/extension-formhandler
 
 Administration
 
-Not much to say here. Have a look at the sections ìAvailable subparts to use in the templateî, ìAvailable markers to use in subpartsî, the TypoScript reference and the available error checks and you will be fine. 
+Not much to say here. Have a look at the sections ‚ÄúAvailable subparts to use in the template‚Äù, ‚ÄúAvailable markers to use in subparts‚Äù, the TypoScript reference and the available error checks and you will be fine. 
 
 For better understanding the rendering process of this extension will be explained in more detail.
 
@@ -264,7 +264,7 @@ plugin.Tx_Formhandler.settings {
   }
 }
 
-If you use ìpredefî for your form, you can also use it for ìadditionalIncludePathsî:
+If you use ‚Äúpredef‚Äù for your form, you can also use it for ‚ÄúadditionalIncludePaths‚Äù:
 
 plugin.Tx_Formhandler.settings.predef.example {
   additionalIncludePaths {
@@ -396,11 +396,11 @@ Adds a remove link to every filename in ###[fieldname]_uploadedFiles### and ###t
 
 files.enableFileRemoval
 Boolean (0/1)
-Enables file removal without using an AjaxHandler. It will just display an ìXî or anything entered in ìfiles.customRemovalTextî next to a file name of an uploaded file, so the user can remove it.
+Enables file removal without using an AjaxHandler. It will just display an ‚ÄúX‚Äù or anything entered in ‚Äúfiles.customRemovalText‚Äù next to a file name of an uploaded file, so the user can remove it.
 
 files.customRemovalText
 String/cObj
-Enter a custom text shown as the text of the remove link. Used in combination with ìenableAjaxFileRemovalî.
+Enter a custom text shown as the text of the remove link. Used in combination with ‚ÄúenableAjaxFileRemoval‚Äù.
 X
 markers.[markername]
 mixed
@@ -430,7 +430,7 @@ anchors will point to the messages in ###error_[fieldname]###.
 predef
 Array
 Predefine form settings and make them selectable in plugin record.
-Have a look at the section ìHow to use predefined formsî
+Have a look at the section ‚ÄúHow to use predefined forms‚Äù
 
 isErrorMarker
 array
@@ -441,7 +441,7 @@ Example
 plugin.Tx_Formhandler.settings {
   isErrorMarker {
     global = Global message if an error occurred (filled into ###is_error###)
-    default = class=îerrorî (filled into ###is_error_[fieldname]###
+    default = class=‚Äùerror‚Äù (filled into ###is_error_[fieldname]###
     field1 = TEXT
     field1.value = Some message (filled into ###is_error_field1###)
   }
@@ -453,7 +453,7 @@ If set to 1, the value markers (###value_[field]###) are replaced before the lan
 0
 arrayValueSeparator
 String/cObj
-If using f.e. A checkbox array named ìcbî, the marker ###value_cb### will contain a comma separated list of the selected values. Use this option to specifiy your own separator.
+If using f.e. A checkbox array named ‚Äúcb‚Äù, the marker ###value_cb### will contain a comma separated list of the selected values. Use this option to specifiy your own separator.
 
 Example:
 
@@ -539,10 +539,10 @@ NOTE: The Logger_DB will be added by the controller automatically, so you don't 
 
 Logger_DB
 
-Will log into tx_formhandler_log. Logging can be accessed via the ìFormhandlerî backend module.
+Will log into tx_formhandler_log. Logging can be accessed via the ‚ÄúFormhandler‚Äù backend module.
 Logger_DevLog
 
-Will log into the devlog table. Use an extension like ìdevlogî to access the logged messages.
+Will log into the devlog table. Use an extension like ‚Äúdevlog‚Äù to access the logged messages.
 PreProcessors
 Property:
 Data type:
@@ -555,10 +555,10 @@ Enter as many pre processors as you like. Each entry requires a class name of th
 Example:
 
 preProcessors.1 {
-  class = Tx_Formhandler_PreProcessor_Default
+  class = Tx_Formhandler_PreProcessor_LoadGetPost
 }
 preProcessors.2 {
-  class = Tx_MyPackage_ PreProcessor
+  class = Tx_MyPackage_PreProcessor
   config {
     param = value
   }
@@ -572,7 +572,7 @@ Array
 
 PreProcessor_LoadDefaultValues
 
-Prefills form fields with configured values. Config is done for each step and for each form field. If you aim to prefill dynamically a dropdown menu (e.g. from the datebase), refer to the section ìHow to fill your own markers via TypoScriptî. There is a neat example about how to generate the ìoptionî tags.
+Prefills form fields with configured values. Config is done for each step and for each form field. If you aim to prefill dynamically a dropdown menu (e.g. from the datebase), refer to the section ‚ÄúHow to fill your own markers via TypoScript‚Äù. There is a neat example about how to generate the ‚Äúoption‚Äù tags.
 
 Example:
 preProcessors {
@@ -791,10 +791,10 @@ fieldConf
 array
 Settings per form field.
 
-Key = field name or ìglobalî
+Key = field name or ‚Äúglobal‚Äù
 Value = comma seperated list or cObject.
 
-Just configure ìremoveChars.disable=1î per field or globally to disable the removal. If you set specific configuration for a single field, the removal will take place even if it is disabled globally.
+Just configure ‚ÄúremoveChars.disable=1‚Äù per field or globally to disable the removal. If you set specific configuration for a single field, the removal will take place even if it is disabled globally.
 
 Example:
 
@@ -813,7 +813,7 @@ Default removal characters for each field are:
 <
 >
 '
-ì
+‚Äú
 Interceptor_IPBlocking
 If you do not want to use Captcha for your form, you can control how often the form is allowed to be submitted by a single IP address or in total with this class.
 
@@ -914,9 +914,9 @@ Interceptor_AntiSpamFormTime
 Spam protection for the form withouth Captcha. It parses the time the user needs to fill out the form. If the time is below a minimum time or over a maximum time, the submission is treated as Spam.
 If Spam is detected you can redirect the user to a custom page or use the Subpart ###TEMPLATE_ANTISPAM### to just display something.
 
-IMPORTANT: You will need a form field named ìformtimeî containing a timestamp in your form. To do this you can use the marker ###TIMESTAMP###.
+IMPORTANT: You will need a form field named ‚Äúformtime‚Äù containing a timestamp in your form. To do this you can use the marker ###TIMESTAMP###.
 Example:
-<input type=îhiddenî name=îformhandler[formtime]î value=î###TIMESTAMP###î />
+<input type=‚Äùhidden‚Äù name=‚Äùformhandler[formtime]‚Äù value=‚Äù###TIMESTAMP###‚Äù />
 
 [
 plugin.Tx_Formhandler.settings.saveInterceptors.x.class = Tx_Formhandler_Interceptor_AntiSpamFormTime
@@ -1029,7 +1029,7 @@ initInterceptors {
 	}
 }
 
-This example will load the translation for the selected salutation into the field ìnewFieldî.
+This example will load the translation for the selected salutation into the field ‚ÄúnewField‚Äù.
 [
 plugin.Tx_Formhandler.settings.saveInterceptors.x.class = Tx_Formhandler_Interceptor_ParseValues
 plugin.Tx_Formhandler.settings.saveInterceptors.x.config.
@@ -1052,11 +1052,11 @@ Scheme:
 translateFields.[fieldname].langKey
 string
 Key in translation file.
-Use the ì|î character to load content of ìfieldî into the langKey.
+Use the ‚Äú|‚Äù character to load content of ‚Äúfield‚Äù into the langKey.
 
 translateFields.[fieldname].field
 string
-Name of a form field. The value of this field will replace the ì|î in langKey.
+Name of a form field. The value of this field will replace the ‚Äú|‚Äù in langKey.
 
 
 Validators
@@ -1066,7 +1066,7 @@ Description:
 Default:
 x.class
 String
-Enter as many validators as you like. Each entry requires a class name of the validator. Optional you can enter specific configuration for the validator in the confg section. For detailed information about the default validator settings have a look at the section ìAvailable error checksî.
+Enter as many validators as you like. Each entry requires a class name of the validator. Optional you can enter specific configuration for the validator in the confg section. For detailed information about the default validator settings have a look at the section ‚ÄúAvailable error checks‚Äù.
 
 Example:
 
@@ -1286,7 +1286,7 @@ Array
 x.config.storeInTempFile
 int (1/0)
 If set, the generator will save the output in a temporary file rather than sending it directly as content.
-Needed for usage with Finisher_Mail in combination with ìreturnFileNameî
+Needed for usage with Finisher_Mail in combination with ‚ÄúreturnFileName‚Äù
 
 x.config.checkBinaryCrLf
 List of field names
@@ -1295,7 +1295,7 @@ Line breaks in the values of the entered fields will be replaced with HTML break
 x.config.returnFileName
 int (1/0)
 If set, the generator will return only the file name of the generated PDF.
-Needed for usage with Finisher_Mail in combination with ìstoreInTempFileî
+Needed for usage with Finisher_Mail in combination with ‚ÄústoreInTempFile‚Äù
 
 x.config.linkText
 String/cObj
@@ -1329,7 +1329,7 @@ finishers.1 {
   config {
     admin {
       to_email = rf@typoheads.at
-      to_name = Reinhard F¸hricht
+      to_name = Reinhard F√ºhricht
       subject = Request
       sender_email = contactform@mysite.com
       replyto_email = email
@@ -1438,7 +1438,7 @@ Possbile options:
 [md5] = md5 hash over filename
 [time] = The submission time stamp
 [filename] = Original Filename 
-[xxx] = Your own marker defined in ìschemeMarkersî
+[xxx] = Your own marker defined in ‚ÄúschemeMarkers‚Äù
 -
 schemeMarkers
 array
@@ -1538,7 +1538,7 @@ updateInsteadOfInsert
 int(1/0)
 Does not store the values as a new row in the table, but tries to update an existing record. 
 Needs a uid set in GET/POST parameters.
-Add a hidden field named like the value entered in ìkeyî to your form. Don't forget to add the formValuePrefix!
+Add a hidden field named like the value entered in ‚Äúkey‚Äù to your form. Don't forget to add the formValuePrefix!
 0
 fields
 array
@@ -1618,7 +1618,7 @@ fields {
 
 
 Finisher_AutoDB
-Extends Finisher_DB to automatically generate the database fields for the fields in your form when a backend user is logged in and .autoCreate is enabled. Therefor it scans your template code for form elements with a name, generates the table if it doesnít exist and adds each field as column if it does not exist.
+Extends Finisher_DB to automatically generate the database fields for the fields in your form when a backend user is logged in and .autoCreate is enabled. Therefor it scans your template code for form elements with a name, generates the table if it doesn‚Äôt exist and adds each field as column if it does not exist.
 This finisher inherits all setup properties from the Finisher_DB. Please note that while creating the fields it does not yet take the field mapping into account but generates all fields that are found in the form and not excluded by .excludeFields
 [
 plugin.Tx_Formhandler.settings.finishers.x.class = Tx_Formhandler_Finisher_AutoDB
@@ -1696,7 +1696,7 @@ updateInsteadOfInsert
 int(1/0)
 Does not store the values as a new row in the table, but tries to update an existing record. 
 Needs a uid set in GET/POST parameters.
-Add a hidden field named like the value entered in ìkeyî to your form. Don't forget to add the formValuePrefix!
+Add a hidden field named like the value entered in ‚Äúkey‚Äù to your form. Don't forget to add the formValuePrefix!
 0
 fields
 
@@ -2010,15 +2010,15 @@ Checks a field value using the configured perl regular expression
 value
 regExp/cObj
 captcha
-Checks if a field value equals the generated captcha string of the extension ìcaptchaî
+Checks if a field value equals the generated captcha string of the extension ‚Äúcaptcha‚Äù
 none
 -
 srFreecap
-Checks if a field value equals the generated captcha string of the extension ìsr_freecapî
+Checks if a field value equals the generated captcha string of the extension ‚Äúsr_freecap‚Äù
 none
 -
 jmRecaptcha
-Checks if a field value equals the generated captcha string of the extension ìjm_recaptchaî
+Checks if a field value equals the generated captcha string of the extension ‚Äújm_recaptcha‚Äù
 none
 -
 mathGuard
@@ -2123,7 +2123,7 @@ GET/POST value of the given inputfield.
 
 Example:
 
-<input type=îtextî name=îemailî value=î###value_email###î />
+<input type=‚Äùtext‚Äù name=‚Äùemail‚Äù value=‚Äù###value_email###‚Äù />
 ###LLL:[langkey]###
 Marker for translated texts. [langkey] is a key in your translation file.
 ###error_[fieldname]###
@@ -2141,19 +2141,19 @@ Use this in multi step forms to add a submit button pointing to the next step.
 
 Example:
 
-<input typeîsubmitî ###submit_nextStep### value=î###LLL:next###î />
+<input type‚Äùsubmit‚Äù ###submit_nextStep### value=‚Äù###LLL:next###‚Äù />
 ###submit_prevStep###
 Use this in multi step forms to add a submit button pointing to the previous step.
 
 Example:
 
-<input typeîsubmitî ###submit_prevStep### value=î###LLL:prev###î />
+<input type‚Äùsubmit‚Äù ###submit_prevStep### value=‚Äù###LLL:prev###‚Äù />
 ###submit_reload###
 Use this for upload fields in your form. By clicking the button, the user can upload a file directly.
 
 Example:
 
-<input typeîsubmitî ###submit_reload### value=îUpload file nowî />
+<input type‚Äùsubmit‚Äù ###submit_reload### value=‚ÄùUpload file now‚Äù />
 ###FEUSER_[property]###
 You can access name, email, ... fields from the logged in user (frontend-user) and fill out the name or emailaddress automatically.
 Attention: the fieldname has to be written in CAPITAL letters. 
@@ -2162,10 +2162,10 @@ GET/POST value of the given inputfield.
 ###required_[fieldname]###
 Adds required sign, if this field is marked as required in error checks.
 ###CAPTCHA###
-Only works if you have the ìcaptchaî extension installed.
+Only works if you have the ‚Äúcaptcha‚Äù extension installed.
 This marker will be replaced with a picture showing some only human readable text. The user has to type the text shown on the picture into a inputfield in your form. 
 ###RECAPTCHA###
-Only works if you have the ìjm_recaptchaî extension installed.
+Only works if you have the ‚Äújm_recaptcha‚Äù extension installed.
 This marker will be replaced with a picture showing some only human readable text. The user has to type the text shown on the picture into a inputfield in your form. 
 ###MATHGUARD###
 This marker gets replaced with a MathGuard security question. The user has to solve the question and enter the result in a form field.
@@ -2228,7 +2228,7 @@ The current timestamp. Useful in combination with Interceptor_AntiSpamFormTime.
 ###auth_code###
 This marker will be filled with the unique token generated by Finisher_GenerateAuthCode
 ###field_[masterkey]_[fieldname]###
-Insert fields predefined in master template. More details in section ìHow to use a master templateî
+Insert fields predefined in master template. More details in section ‚ÄúHow to use a master template‚Äù
 ###HIDDEN_FIELDS###
 Formhandler will insert all needed hidden fields here. If you don't add this marker, Formhandler will insert the hidden fields just before the closing <form> tag.
 Tutorial
@@ -2237,8 +2237,8 @@ How to set up a simple form
 
 1. Create a HTML template file containing your form. Examples can be found in EXT:formhandler/Examples
 2. Create a new page
-3. Create a content element with type ìGeneral Pluginî
-4. Choose ìFormhandlerî in Dropdown ìPluginî
+3. Create a content element with type ‚ÄúGeneral Plugin‚Äù
+4. Choose ‚ÄúFormhandler‚Äù in Dropdown ‚ÄúPlugin‚Äù
 5. Check that predefined form "Default" is selected.
 6. Optional: Choose a translation file containing error messages and translations filled into markers ###LLL:[key}###
 7. Optional: Enter settings for E-Mail, required fields or a page to redirect to
@@ -2249,8 +2249,8 @@ How to set up an advanced form
 1. Create a HTML template file containing your form. Examples can be found in EXT:formhandler/Examples
 2. Create a new page
 3. Create an extension template and enter a TypoScript setup entering template file, lang file and other settings.
-4. Create a content element with type ìGeneral Pluginî
-5. Choose ìFormhandlerî in Dropdown ìPluginî
+4. Create a content element with type ‚ÄúGeneral Plugin‚Äù
+5. Choose ‚ÄúFormhandler‚Äù in Dropdown ‚ÄúPlugin‚Äù
 6. Save and view the page
 
 NOTE: Configuring your form using TypoScript gives you much more possibilities.
@@ -2266,9 +2266,9 @@ Example:
 		...
 	}
 	
-2. Create a content element with type ìGeneral Pluginî
-3. Choose ìFormhandlerî in Dropdown ìPluginî
-4. Now you can choose the entered predefined form from the ìPredefined formsî dropdown.
+2. Create a content element with type ‚ÄúGeneral Plugin‚Äù
+3. Choose ‚ÄúFormhandler‚Äù in Dropdown ‚ÄúPlugin‚Äù
+4. Now you can choose the entered predefined form from the ‚ÄúPredefined forms‚Äù dropdown.
 5. Save and view the page.
 HINT: they are many examples available at EXT:formhandler/Examples
 How to set up a multistep form
@@ -2276,9 +2276,9 @@ How to set up a multistep form
 1. Create a HTML template file containing your form. Examples can be found in EXT:formhandler/Examples/MultiStep
 2. Create a new page
 3. Create an extension template and enter a TypoScript setup entering template file, lang file and other settings.
-4. Create a content element with type ìGeneral Pluginî
-5. Choose ìFormhandlerî in Dropdown ìPluginî
-6. Choose ìMulti stepî from Dropdown ìTypeî
+4. Create a content element with type ‚ÄúGeneral Plugin‚Äù
+5. Choose ‚ÄúFormhandler‚Äù in Dropdown ‚ÄúPlugin‚Äù
+6. Choose ‚ÄúMulti step‚Äù from Dropdown ‚ÄúType‚Äù
 7. Save and view the page
 
 NOTE: You can overwrite settings made in plugin.Tx_Formhandler.settings for each step using plugin.Tx_Formhandler.settings.[stepnumber]
@@ -2287,9 +2287,9 @@ How to set up a multistep form with conditions
 1. Create a HTML template file containing your form. Examples can be found in EXT:formhandler/Examples/MultiStepConditions
 2. Create a new page
 3. Create an extension template and enter a TypoScript setup entering template file, lang file and other settings.
-4. Create a content element with type ìGeneral Pluginî
-5. Choose ìFormhandlerî in Dropdown ìPluginî
-6. Choose ìMulti stepî from Dropdown ìTypeî
+4. Create a content element with type ‚ÄúGeneral Plugin‚Äù
+5. Choose ‚ÄúFormhandler‚Äù in Dropdown ‚ÄúPlugin‚Äù
+6. Choose ‚ÄúMulti step‚Äù from Dropdown ‚ÄúType‚Äù
 7. Add conditions and change the settings plugin.Tx_Formhandler.settings.[stepnumber].templateSuffix
 8. Save and view the page
 
@@ -2325,7 +2325,7 @@ plugin.Tx_Formhandler.settings {
     }
 }
 
-Using the ìifî setting you can specifiy conditions for GET/POST parameters. If the conditions evaluates to TRUE, the settings in ìisTrueî will be merged with the original Formhandler settings.
+Using the ‚Äúif‚Äù setting you can specifiy conditions for GET/POST parameters. If the conditions evaluates to TRUE, the settings in ‚ÄúisTrue‚Äù will be merged with the original Formhandler settings.
 The conditions can be specified in two levels. Level 1 will be OR conditions, level 2 will be AND conditions.
 
 Example:
@@ -2475,7 +2475,7 @@ How to set up error checks
     <label index="error_field2_required">Field2 is required!</label>
     <label index="error_field2_email">Field2 is no valid e-mail!</label>
 
-NOTE: The marker ###value### in the error message is filled with the value of the parameter ìvalueî for error check ìmaxLengthî. If an error check requires parameters, you can use markers like ###[parametername]### in the translatable message.
+NOTE: The marker ###value### in the error message is filled with the value of the parameter ‚Äúvalue‚Äù for error check ‚ÄúmaxLength‚Äù. If an error check requires parameters, you can use markers like ###[parametername]### in the translatable message.
 When you have to validate values in nested arrays you can nest the validators as well. Given following fields:
     <input type="text" name="birthdate[day]"/>
     <input type="text" name="birthdate[month]"/>
@@ -2527,7 +2527,7 @@ A possible TypoScript configuration looks like this:
 plugin.Tx_Formhandler.settings {
   isErrorMarker {
     global = Global message if an error occurred (filled into ###is_error###)
-    default = class=îerrorî (filled into ###is_error_[fieldname]###
+    default = class=‚Äùerror‚Äù (filled into ###is_error_[fieldname]###
     field1 = TEXT
     field1.value = Some message (filled into ###is_error_field1###)
   }
@@ -2535,12 +2535,12 @@ plugin.Tx_Formhandler.settings {
 
 Example:
 ###error_firstname###
-<div class=îrowî ###is_error_firstname###>
-  <label for=îfirstnameî>###LLL:firstname###</label>
-  <input type=îtextî name=îformhandler[firstname]î value=î###value_firstnameî  />
+<div class=‚Äùrow‚Äù ###is_error_firstname###>
+  <label for=‚Äùfirstname‚Äù>###LLL:firstname###</label>
+  <input type=‚Äùtext‚Äù name=‚Äùformhandler[firstname]‚Äù value=‚Äù###value_firstname‚Äù  />
 </div>
 
-Using this you can display an error message like ìFirstname is missingî and add a CSS class to the surrounding DIV to highlight the row containing the error.
+Using this you can display an error message like ‚ÄúFirstname is missing‚Äù and add a CSS class to the surrounding DIV to highlight the row containing the error.
 How to fill your own markers via TypoScript
 
 Coding 1: 
@@ -2562,7 +2562,7 @@ Coding 1:
       plugin.Tx_Formhandler.settings.predef.myForm.markers.myMarker_3.value = {$local.myConstant}
 
 
-3. The marker will be filled with ìMy marker contentî
+3. The marker will be filled with ‚ÄúMy marker content‚Äù
 
 NOTE: You can fill your own markers using any TypoScript object like USER or COA. Just try it out.
 
@@ -2612,7 +2612,7 @@ In your HTML-Template you are able to wrap the field output in e-mails and subpa
 <!-- ###ISSET_fax### -->
   ###value_fax###<br/>
 <!-- ###ISSET_fax### -->
-If the user filled out the field ìfaxî in the form, the text will get shown in the e-mails, otherwise it will not be added.
+If the user filled out the field ‚Äúfax‚Äù in the form, the text will get shown in the e-mails, otherwise it will not be added.
 You have the possibility to add some conditions:
 <!-- ###ISSET_fax&&phone### -->
   ###value_fax###<br/>
@@ -2665,7 +2665,7 @@ example:
 <td><input type="password" name="password" value="###value_password###"></td>
 </tr>
 <tr>
-<td colspan=î2î><input type="submit" name="submit" value="###LLL:submit###"></td>
+<td colspan=‚Äù2‚Äù><input type="submit" name="submit" value="###LLL:submit###"></td>
 </tr>
 </table>
 </form>
@@ -2694,7 +2694,7 @@ Your custom language file:
 
 TypoScript:
 
-You can specifiy the path to your translation file in any setting ìlangFileî associated with ìformhandlerî.
+You can specifiy the path to your translation file in any setting ‚ÄúlangFile‚Äù associated with ‚Äúformhandler‚Äù.
 Example:
 plugin.Tx_Formhandler.settings.langFile = fileadmin/lang/myLangFile.xml
 
@@ -2823,7 +2823,7 @@ TypoScript:
 finishers.2 {
   class = Finisher_Extended
   config {
-    Ö
+    ‚Ä¶
   }
 }
 How to use a master template
@@ -2843,10 +2843,10 @@ Master template:
 <!-- ###field_submit### --> 
 ###LLL:label_submit### 
 <input type="submit" ###submit_nextStep### value="Abschicken" /> 
- <!-- ###field_submit### ?
+ <!-- ###field_submit### ‚Üí
 
 As you can see, there are two subparts containing the structure for an input field and the submit button.
-Each subpart must begin with either ìfield_î or ìmaster_î the rest is freely choosable.
+Each subpart must begin with either ‚Äúfield_‚Äù or ‚Äúmaster_‚Äù the rest is freely choosable.
 In your HTML template you can simply add a marker referring to this subpart plus entering a fieldname as suffix:
 
 <!-- ###TEMPLATE_FORM1### --> 
@@ -2858,7 +2858,7 @@ In your HTML template you can simply add a marker referring to this subpart plus
 </form> 
 <!-- ###TEMPLATE_FORM1### -->
 
-The marker ###field_input_name### refers to the subpart ###field_input###. The additional ì_nameî is the value to replace the ###fieldname### markers with. If you don't add this suffix, the marker ###fieldname### doesn't get replaced (as in ###field_submit###).
+The marker ###field_input_name### refers to the subpart ###field_input###. The additional ‚Äú_name‚Äù is the value to replace the ###fieldname### markers with. If you don't add this suffix, the marker ###fieldname### doesn't get replaced (as in ###field_submit###).
 The replaced HTML will look like this:
 <!-- ###TEMPLATE_FORM1### --> 
 <form action="###rel_url###"> 
@@ -2898,7 +2898,7 @@ Example:
 <input class="input" id="contact_name" type="text" name="contact[name]" value="###value_name###" /> 
 ###validate_name###
 
-The AJAX validation will use the error checks defined in the ìfieldConfî section of Tx_Formhandler_Validator_Default.
+The AJAX validation will use the error checks defined in the ‚ÄúfieldConf‚Äù section of Tx_Formhandler_Validator_Default.
 
 How to upgrade from th_mailformplus to Formhandler
 
@@ -2963,7 +2963,7 @@ plugin.Tx_Formhandler.settings {
 	}
 }
 
-As you see, the configuration looks similar, but Formhandler uses blocks like ìvalidatorsî or ìfinishersî to make it possible to group any number of classes. So that it is possible to let ìfinishers.1î be a class to send emails and ìfinishers.2î be a class to store data into database. 
+As you see, the configuration looks similar, but Formhandler uses blocks like ‚Äúvalidators‚Äù or ‚Äúfinishers‚Äù to make it possible to group any number of classes. So that it is possible to let ‚Äúfinishers.1‚Äù be a class to send emails and ‚Äúfinishers.2‚Äù be a class to store data into database. 
 When you compare the TypoScript options of th_mailformplus with Formhandler you will find out that they are quite similar and you should have no problems with writing configuration for Formhandler if you knew th_mailformplus before.
 
 HTML:
@@ -3028,4 +3028,4 @@ When using AJAX remove links for uploaded files the file markers such as ###[fie
 
 To-Do list
 Add a 1-2-3 wizard to generate form templates, translation files and TypoScript setup code.
-Think about integration of ìextBaseî architecture and usage of Fluid.
+Think about integration of ‚ÄúextBase‚Äù architecture and usage of Fluid.
