@@ -747,7 +747,7 @@ Enter as many interceptors as you like. Each entry requires a class name of the 
 Example:
 
 saveInterceptors.1 {
-  class = Tx_Formhandler_Interceptor_Default
+  class = Tx_Formhandler_Interceptor_Filtreatment
 }
 saveInterceptors.2 {
   class = Tx_MyPackage_ Interceptor
