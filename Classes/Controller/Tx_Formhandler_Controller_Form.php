@@ -865,10 +865,10 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
 
 		$randomID = $this->gp['randomID'];
-		if (!$this->gp['randomID']) {
-			$this->gp['randomID'] = md5(Tx_Formhandler_Globals::$formValuesPrefix . $GLOBALS['ACCESS_TIME']);
+		if (!$randomID) {
+			$randomID = Tx_Formhandler_StaticFuncs::generateRandomID();
 		}
-		Tx_Formhandler_Globals::$randomID = $this->gp['randomID'];
+		Tx_Formhandler_Globals::$randomID = $randomID;
 		
 		$action = t3lib_div::_GP('action');
 		if (Tx_Formhandler_Globals::$formValuesPrefix) {
@@ -971,6 +971,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 			$ajaxHandler->init($this->settings['ajax.']['config.']);
 			$ajaxHandler->initAjax();
+		}
+		if (!$this->gp['randomID']) {
+			$this->gp['randomID'] = Tx_Formhandler_Globals::$randomID;
 		}
 	}
 
