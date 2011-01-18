@@ -723,6 +723,11 @@ class Tx_Formhandler_StaticFuncs {
 		}
 		return $convertedValue;
 	}
+	
+	static public function generateRandomID() {
+		$randomID = md5(Tx_Formhandler_Globals::$formValuesPrefix . $GLOBALS['ACCESS_TIME']);
+		return $randomID;
+	}
 
 }
 
