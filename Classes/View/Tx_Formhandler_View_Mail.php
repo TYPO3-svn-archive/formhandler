@@ -75,12 +75,23 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 
 		//fill default markers
 		$this->fillDefaultMarkers();
-
-		//fill value_[fieldname] markers
-		$this->fillValueMarkers();
+		
+		if(intval($this->settings['fillValueMarkersBeforeLangMarkers']) === 1) {
+			
+			//fill value_[fieldname] markers
+			$this->fillValueMarkers();
+		}
 
 		//fill LLL:[language_key] markers
 		$this->fillLangMarkers();
+		
+		$this->fillSelectedMarkers();
+
+		if(intval($this->settings['fillValueMarkersBeforeLangMarkers']) !== 1) {
+			
+			//fill value_[fieldname] markers
+			$this->fillValueMarkers();
+		}
 
 		//remove markers that were not substituted
 		$content = Tx_Formhandler_StaticFuncs::removeUnfilledMarkers($this->template);
