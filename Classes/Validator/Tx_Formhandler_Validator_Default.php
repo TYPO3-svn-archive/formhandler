@@ -210,7 +210,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				if(!$errorCheckObject) {
 					Tx_Formhandler_StaticFuncs::debugMessage('check_not_found', 'Tx_Formhandler_ErrorCheck_' . $classNameFix);
 				}
-				if(empty($this->restrictErrorChecks) || !in_array($check['check'], $this->restrictErrorChecks)) {
+				if(empty($this->restrictErrorChecks) || in_array($check['check'], $this->restrictErrorChecks)) {
 					Tx_Formhandler_StaticFuncs::debugMessage('calling_class', 'Tx_Formhandler_ErrorCheck_' . $classNameFix);
 					$checkFailed = $errorCheckObject->check($check, $fieldName, $gp);
 					if(strlen($checkFailed) > 0) {
