@@ -179,26 +179,52 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 		//insert query
 		if (!$this->doUpdate) {
-			$query = $GLOBALS['TYPO3_DB']->INSERTquery($this->table, $queryFields);
-			Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
-			$res = $GLOBALS['TYPO3_DB']->sql_query($query);
-			if ($GLOBALS['TYPO3_DB']->sql_error()) {
-				Tx_Formhandler_StaticFuncs::debugMessage($GLOBALS['TYPO3_DB']->sql_error());
-			}
+			$this->doInsert($queryFields);
 
 			//update query
 		} else {
 
 			//check if uid of record to update is in GP
 			$uid = $this->getUpdateUid();
-			if ($uid) {
-				$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
-				Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
-				$res = $GLOBALS['TYPO3_DB']->sql_query($query);
+			$recordExists = $this->doesRecordExist($uid);
+			
+			if ($recordExists) {
+				$this->doUpdate($uid, $queryFields);
+			} elseif($this->settings['insertIfNoUpdatePossible']) {
+				$this->doInsert($queryFields);
 			} else {
 				Tx_Formhandler_StaticFuncs::debugMessage('no_update_possible');
 			}
 		}
+	}
+	
+	protected function doesRecordExist($uid) {
+		$exists = FALSE;
+		if($uid) {
+			$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($this->key, $this->table, $this->key . '=' . $uid);
+			if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
+				$exists = TRUE;
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		}
+		return $exists;
+	}
+	
+	protected function doInsert($queryFields) {
+		$query = $GLOBALS['TYPO3_DB']->INSERTquery($this->table, $queryFields);
+		Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
+		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
+		if ($GLOBALS['TYPO3_DB']->sql_error()) {
+			Tx_Formhandler_StaticFuncs::debugMessage($GLOBALS['TYPO3_DB']->sql_error());
+		}
+	}
+	
+	protected function doUpdate($uid, $queryFields) {
+		$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
+		$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
+		Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
+		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 	}
 
 	/**

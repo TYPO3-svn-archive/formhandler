@@ -29,44 +29,44 @@ How does this extension work?	8
 Configuration	9
 Reference	9
 General Options	9
-Loggers	14
+Loggers	13
 PreProcessors	14
 Interceptors	16
-Validators	21
+Validators	20
 Generators	22
 Finishers	24
-Backend Module	31
-Available error checks	32
+Backend Module	32
+Available error checks	33
 Available subparts to use in the template	34
-Available markers to use in subparts	34
-Tutorial	37
-How to set up a simple form	37
-How to set up an advanced form	37
-How to use predefined forms	37
-How to set up a multistep form	38
-How to set up a multistep form with conditions	38
-How to set up spam protection	39
-Enable captcha for your form	39
-Enable sr_freecap for your form	40
-Enable jm_recaptcha for your form	40
-Enable mathGuard for your form	40
-How to set up error checks	41
-How to use ###is_error### markers	41
-How to fill your own markers via TypoScript	42
-How to hide unfilled form field values in templates	43
-How to set up multi language forms	44
-How to load data from DB to use in Finisher_DB	44
-How to store data into more than one DB table	45
-How to use your own controller	46
-How to use your own component (Interceptor, Finisher, ...)	46
-How to XCLASS Formhandler	46
-How to use a master template	47
-How to use AJAX validation	48
-How to upgrade from th_mailformplus to Formhandler	48
-TypoScript:	48
-HTML:	49
-Known problems	51
-To-Do list	52
+Available markers to use in subparts	35
+Tutorial	38
+How to set up a simple form	38
+How to set up an advanced form	38
+How to use predefined forms	38
+How to set up a multistep form	39
+How to set up a multistep form with conditions	39
+How to set up spam protection	40
+Enable captcha for your form	40
+Enable sr_freecap for your form	41
+Enable jm_recaptcha for your form	41
+Enable mathGuard for your form	41
+How to set up error checks	42
+How to use ###is_error### markers	43
+How to fill your own markers via TypoScript	43
+How to hide unfilled form field values in templates	44
+How to set up multi language forms	45
+How to load data from DB to use in Finisher_DB	46
+How to store data into more than one DB table	47
+How to use your own controller	47
+How to use your own component (Interceptor, Finisher, ...)	47
+How to XCLASS Formhandler	48
+How to use a master template	48
+How to use AJAX validation	49
+How to upgrade from th_mailformplus to Formhandler	50
+TypoScript:	50
+HTML:	51
+Known problems	53
+To-Do list	54
 
 Introduction
 
@@ -1539,6 +1539,10 @@ int(1/0)
 Does not store the values as a new row in the table, but tries to update an existing record. 
 Needs a uid set in GET/POST parameters.
 Add a hidden field named like the value entered in “key” to your form. Don't forget to add the formValuePrefix!
+0
+insertIfNoUpdatePossible
+Int(1/0)
+If the update fails because the record to be updated does not exist, a new record will be created in the table rather than just doing nothing.
 0
 fields
 array
