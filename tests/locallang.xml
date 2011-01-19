@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<T3locallang>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="firstname">Firstname_translated</label>
-			<label index="lastname">Lastname_translated</label>
-		</languageKey>
-	</data>
-</T3locallang>
