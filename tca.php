@@ -3,71 +3,68 @@
 
 require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/class.tx_formhandler_tcafuncs.php');
 
-$TCA['tx_formhandler_log'] = Array (
+$TCA['tx_formhandler_log'] = array (
 	'ctrl' => $TCA['tx_formhandler_log']['ctrl'],
-	'interface' => Array (
+	'interface' => array (
 		'showRecordFieldList' => 'crdate,ip,params,is_spam,key_hash'
 	),
-	'columns' => Array (
-		'crdate' => Array (
+	'columns' => array (
+		'crdate' => array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.crdate',
-			'config' => Array (
+			'label' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log.submission_date',
+			'config' => array (
 				'type' => 'input',
 				'size' => '10',
 				'max' => '20',
 				'eval' => 'datetime',
 				'checkbox' => '0',
-				'default' => '0',
-                'readOnly' => TRUE
+				'default' => '0'
 			)
 		),
- 		'ip' => Array (
- 			'label' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log.ip',
- 			'config' => Array (
- 				'type' => 'input',
-                'readOnly' => TRUE
- 			)
- 		),
-		'params' => Array (
+		'ip' => array (
+			'label' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log.ip',
+			'config' => array (
+				'type' => 'input'
+			)
+		),
+		'params' => array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log.params',
-			'config' => Array (
+			'config' => array (
 				'type' => 'user',
-                'userFunc' => 'tx_formhandler_tcafuncs->user_getParams'
+				'userFunc' => 'tx_formhandler_tcafuncs->user_getParams'
 			)
 		),
-		'is_spam' => Array (
+		'is_spam' => array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log.is_spam',
-			'config' => Array (
-				'type' => 'check',
-                'readOnly' => TRUE
+			'config' => array (
+				'type' => 'check'
 			)
 		),
-		'uid' => Array (
+		'uid' => array (
 			'label' => '',
-			'config' => Array (
+			'config' => array (
 				'type' => 'none'
 			)
 		),
-		'pid' => Array (
+		'pid' => array (
 			'label' => '',
-			'config' => Array (
+			'config' => array (
 				'type' => 'none'
 			)
 		),
-		'tstamp' => Array (
+		'tstamp' => array (
 			'label' => '',
-			'config' => Array (
+			'config' => array (
 				'type' => 'none'
 			)
 		)
 	),
-	'types' => Array (
-		'0' => Array(
-            'showitem' => 'crdate,ip,params,is_spam'
-        )
+	'types' => array (
+		'0' => array(
+			'showitem' => 'crdate,ip,params,is_spam'
+		)
 	)
 );
 
