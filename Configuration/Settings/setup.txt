@@ -2,49 +2,20 @@ plugin.Tx_Formhandler.settings.predef.default {
 
 	# GENERAL CONFIGURATION
 	name = Default
-	debug = 0
 	addErrorAnchors = 1
 	formValuesPrefix = formhandler
-
-
-	# FILES UPLOAD CONFIGURATION
-	singleFileMarkerTemplate {
-		totalWrap = <ul>|</ul>
-		singleWrap = <li style="color:maroon;">|</li>
-	}
-	totalFilesMarkerTemplate {
-		totalWrap = <ul>|</ul>
-		singleWrap = <li style="color:red;">|</li>
-	}
-	files {
-		clearTempFilesOlderThanHours = 24
-		tmpUploadFolder = uploads/Formhandler/tmp2/
-		enableAjaxFileRemoval = 1
-	}
 
 	# ERRORS LAYOUT
 	singleErrorTemplate {
 		totalWrap = <div>|</div>
 		singleWrap = <span class="error">|</span><br />
 	}
+
 	errorListTemplate {
 		totalWrap = <ul>|</ul>
 		singleWrap = <li class="error">|</li>
 	}
-	
-	# LOG EVERY FORM SUBMISSIONS
-	loggers {
-		1 {
-			class = Tx_Formhandler_Logger_DB
-		}
-	}
-	
-	initInterceptors {
-		1 {
-			class = Tx_Formhandler_Interceptor_Filtreatment
-		}
-	}
-	
+
 	validators {
 		1.class = Tx_Formhandler_Validator_Default
 		1.config {
@@ -52,7 +23,6 @@ plugin.Tx_Formhandler.settings.predef.default {
 			}
 		}
 	}
-	
 
 	finishers {
 		1.class = Tx_Formhandler_Finisher_Mail
@@ -61,11 +31,10 @@ plugin.Tx_Formhandler.settings.predef.default {
 			admin {
 			}
 			user {
-		    }
+			}
 		}
 		2.class = Tx_Formhandler_Finisher_Redirect
 		2.config {
-		
 		}
 	}
 }
