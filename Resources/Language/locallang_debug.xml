@@ -16,7 +16,7 @@
 			<label index="cleared_session">Cleared params in session</label>
 			<label index="cleared_steps">Cleared steps:</label>
 			<label index="combined">Combined %s = %s!</label>
-			<label index="condition">Condition was evaluated as %s : $s!</label>
+			<label index="condition">Condition was evaluated as %s : %s!</label>
 			<label index="copy_file">Copying file "%s" to "%s"!</label>
 			<label index="current_files">The current uploaded files are:</label>
 			<label index="current_gp">The current GET/POST params are:</label>
@@ -72,7 +72,7 @@
 			<label index="check_skipped">Error check "%s" übersprungen!</label>
 			<label index="cleaning_temp_files">Lösche temporäre Dateien in "%s"!</label>
 			<label index="cleared_session">Leere Parameter in der Session</label>
-			<label index="condition">Bedingung wurde ausgewertet als %s : $s!</label>
+			<label index="condition">Bedingung wurde ausgewertet als %s : %s!</label>
 			<label index="copy_file">Kopiere Datei "%s" nach "%s"!</label>
 			<label index="current_files">Aktuell hochgeladene Dateien:</label>
 			<label index="current_gp">Die aktuellen GET/POST-Parameter:</label>
@@ -125,7 +125,7 @@
 			<label index="cleared_session">Les paramètres ont été supprimés session</label>
 			<label index="check_not_found">TRANSLATE: Error check "%s" not found!</label>
 			<label index="check_skipped">TRANSLATE: Skipped error check "%s"!</label>
-			<label index="condition">La condition a été évaluée à %s : $s!</label>
+			<label index="condition">La condition a été évaluée à %s : %s!</label>
 			<label index="copy_file">Copie du fichier "%s" vers "%s"!</label>
 			<label index="current_files">Les fichiers téléchargés sont:</label>
 			<label index="current_gp">Les paramètres GET/POST actuels sont:</label>
