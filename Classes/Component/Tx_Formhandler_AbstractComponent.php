@@ -55,6 +55,14 @@ abstract class Tx_Formhandler_AbstractComponent {
 		$this->cObj = Tx_Formhandler_Globals::$cObj;
 	}
 
+	/**	
+	 * Initialize the class variables
+	 *
+	 * @param array $gp GET and POST variable array
+	 * @param array $settings Typoscript configuration for the component (component.1.config.*)
+	 *
+	 * @return void
+	 */
 	public function init($gp, $settings) {
 		$this->gp = $gp;
 		$this->settings = $settings;
