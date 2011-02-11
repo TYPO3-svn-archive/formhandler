@@ -679,6 +679,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$fields = t3lib_div::trimExplode(',', $this->settings['checkBoxFields']);
 			foreach ($fields as $idx => $field) {
 				if (!isset($newGP[$field]) && isset($this->gp[$field])) {
+					if($this->lastStep < $this->currentStep) {
+						$this->gp[$field] = array();
+					}
 					$data[$this->lastStep][$field] = array();
 				}
 			}
