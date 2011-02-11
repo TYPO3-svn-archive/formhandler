@@ -37,7 +37,7 @@ Generators	22
 Finishers	24
 Backend Module	32
 Available error checks	33
-Available subparts to use in the template	34
+Available subparts to use in the template	35
 Available markers to use in subparts	35
 Tutorial	38
 How to set up a simple form	38
@@ -583,6 +583,8 @@ preProcessors {
             lastname.defaultValue = Firstname in here
             firstname.defaultValue = TEXT
             firstname.defaultValue.value = Lastname in here
+		email.defaultValue = TEXT
+		email.defaultvalue.data = GP:email
          }
          2 {
             creditcard.defaultValue = Enter your credit card number here
@@ -602,7 +604,7 @@ Description:
 Default:
 defaultValue
 String | TypoScript Object
-Field will be filled with this default value
+Field will be filled with this default value string or the content of a cObject.
 -
 PreProcessor_ClearTempFiles
 
@@ -750,7 +752,7 @@ saveInterceptors.1 {
   class = Tx_Formhandler_Interceptor_Filtreatment
 }
 saveInterceptors.2 {
-  class = Tx_MyPackage_ Interceptor
+  class = Tx_MyPackage_Interceptor
   config {
     param = value
   }
@@ -1124,9 +1126,21 @@ Data type:
 Description:
 Default:
 disableErrorCheckFields
-Comma seperated list
-List of fieldnames which should not get validated
+Comma separated list
+List of fieldnames which should not get validated.
+
+Use the special value 'all' to disable all error checks.
+
+Example:
+
+disableErrorCheckFields = firstname,lastname
+
+disableErrorCheckFields = all
 -
+restrictErrorChecks
+Comma separated list
+List of error checks to perform. If this is set, only these error checks will be executed, all other configured error checks will be ignored.
+
 fieldConf
 Array
 Array of fields to validate
@@ -1544,6 +1558,17 @@ insertIfNoUpdatePossible
 Int(1/0)
 If the update fails because the record to be updated does not exist, a new record will be created in the table rather than just doing nothing.
 0
+condition
+string
+Enter a condition in PHP syntax to be evaluated before the database operations. Only if the condition evaluates true, the database operations will be executed.
+You can enter form field names which will be replaced with the entered values.
+
+Example:
+
+condition = agree === '1'
+
+“agree” will be replaced with the value of the form field.
+-
 fields
 array
 Mapping of table fields to submitted values.
@@ -2525,6 +2550,9 @@ In the translation file enter the values like:
 or enter a default message for all fields:
 <label index="is_error_default">Error occurred!</label>
 
+or enter a global message used for the marker ###is_error###:
+<label index="is_error">Error occurred!</label>
+
 
 A possible TypoScript configuration looks like this:
 
@@ -2574,7 +2602,7 @@ Coding 2: Prefill a drop down menu dynamically
 
 1. Let's say you have dropdown menu in your HTML template which you may want to generate dynamically.
 <select id="changeMe" name="changeMe">
-  <options value="">###LLL:selectValue###</option>
+  <option value="">###LLL:selectValue###</option>
   ###options_dropdown###
 </select>
 2. Next, you will need to write / adapt the following TypoScript
