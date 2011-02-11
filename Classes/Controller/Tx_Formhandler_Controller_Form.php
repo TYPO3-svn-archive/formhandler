@@ -879,8 +879,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			Tx_Formhandler_Session::reset();
 			unset($_GET[Tx_Formhandler_Globals::$formValuesPrefix]);
 			unset($_GET['id']);
-			header('Location: ' . $this->cObj->getTypolink_Url($GLOBALS['TSFE']->id, $_GET));
-			exit;
+			Tx_Formhandler_StaticFuncs::doRedirect($GLOBALS['TSFE']->id, FALSE, $_GET);
+			exit();
 		}
 		$this->parseConditions();
 		$this->getStepInformation();
