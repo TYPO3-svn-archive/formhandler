@@ -173,7 +173,10 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$action = $temp['action'];
 		}
 		if ($action) {
-			$this->processAction($action);
+			$content = $this->processAction($action);
+			if(strlen(trim($content)) > 0) {
+				return $content;
+			}
 		}
 
 		if (!$this->submitted) {
@@ -184,6 +187,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	}
 
 	protected function processAction($action) {
+		$content = '';
 		$gp = $_GET;
 		if (Tx_Formhandler_Globals::$formValuesPrefix) {
 			$gp = t3lib_div::_GP(Tx_Formhandler_Globals::$formValuesPrefix);
@@ -193,31 +197,41 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			foreach ($this->settings['finishers.'] as $key => $config) {
 				if (strpos($key, '.') !== FALSE) {
 					$className = Tx_Formhandler_StaticFuncs::prepareClassName($config['class']);
-					if ($className === 'Tx_Formhandler_Finisher_SubmittedOK' && is_array($config['config.']['actions.'])) {
-						$finisherConf = $config['config.']['actions.'];
+					if ($className === 'Tx_Formhandler_Finisher_SubmittedOK' && is_array($config['config.'])) {
+						$finisherConf = $config['config.'];
 					}
 				}
 			}
-			if ($finisherConf[$action . '.']) {
-				$tstamp = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['tstamp']);
-				$hash = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['hash']);
-				if ($tstamp && $hash) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'tx_formhandler_log', 'tstamp=' . $tstamp . ' AND key_hash=' . $hash);
-					if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) === 1) {
-						$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-						$GLOBALS['TYPO3_DB']->sql_free_result($res);
-						$params = unserialize($row['params']);
-						$class = $finisherConf[$action . '.']['class'];
-						if ($class) {
-							$class = Tx_Formhandler_StaticFuncs::prepareClassName($class);
-							$object = $this->componentManager->getComponent($class);
-							$object->init($params, $finisherConf[$action . '.']['config.']);
-							$object->process();
-						}
-					}
+			$params = array();
+			$tstamp = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['tstamp']);
+			$hash = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['hash']);
+			if ($tstamp && $hash) {
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'tx_formhandler_log', 'tstamp=' . $tstamp . ' AND key_hash=' . $hash);
+				if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) === 1) {
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+					$params = unserialize($row['params']);
 				}
+			}
+			if ($finisherConf['actions.'][$action . '.'] && !empty($params)) {
+				$class = $finisherConf['actions.'][$action . '.']['class'];
+				if ($class) {
+					$class = Tx_Formhandler_StaticFuncs::prepareClassName($class);
+					$object = $this->componentManager->getComponent($class);
+					$object->init($params, $finisherConf['actions.'][$action . '.']['config.']);
+					$object->process();
+				}
+			} elseif($action === 'show') {
+				
+				//"show" makes it possible that Finisher_SubmittedOK show its output again
+				$class = 'Tx_Formhandler_Finisher_SubmittedOK';
+				$object = $this->componentManager->getComponent($class);
+				unset($finisherConf['actions.']);
+				$object->init($params, $finisherConf);
+				$content = $object->process();
 			}
 		}
+		return $content;
 	}
 
 	protected function processSubmitted() {
@@ -933,10 +947,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//set submitted
 		$this->submitted = $this->isFormSubmitted();
 
-		//not submitted
-		$dontReset = t3lib_div::_GP('dontReset');
-
-		if (!$this->submitted && intval($dontReset) !== 1) {
+		if (!$this->submitted) {
 			$this->reset();
 		}
 

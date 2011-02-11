@@ -10,12 +10,12 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 	public function process() {
 		if (t3lib_extMgm::isLoaded('webkitpdf')) {
 			$linkGP = array();
-
 			if (strlen(Tx_Formhandler_Globals::$formValuesPrefix) > 0) {
 				$linkGP[Tx_Formhandler_Globals::$formValuesPrefix] = $this->gp;
 			} else {
 				$linkGP = $this->gp;
 			}
+
 			$url = Tx_Formhandler_StaticFuncs::getHostname() . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $linkGP);
 			$config = $this->readWebkitPdfConf();
 			$config['fileOnly'] = 1;
@@ -72,7 +72,17 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 	}
 
 	protected function getComponentLinkParams($linkGP) {
-		return array();
+		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
+		$tempParams = array(
+			'action' => 'show'
+		);
+		$params = array();
+		if ($prefix) {
+			$params[$prefix] = $tempParams;
+		} else {
+			$params = $tempParams;
+		}
+		return $params;
 	}
 
 	protected function getLinkText() {
