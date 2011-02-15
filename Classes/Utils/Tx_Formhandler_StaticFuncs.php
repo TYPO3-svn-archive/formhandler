@@ -31,6 +31,15 @@ class Tx_Formhandler_StaticFuncs {
 	static public function getDocumentRoot() {
 		return t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 	}
+	
+	static public function getMergedGP() {
+		$gp = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
+		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
+		if ($prefix) {
+			$gp = $gp[$prefix];
+		}
+		return $gp;
+	}
 
 	/**
 	 * Returns the absolute path to the TYPO3 root

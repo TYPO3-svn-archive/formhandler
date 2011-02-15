@@ -263,6 +263,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 
 		Tx_Formhandler_Globals::$randomID = $this->gp['randomID'];
+		
+		$this->handleCheckBoxFields();
 
 		//run validation
 		$this->errors = array();
@@ -655,34 +657,14 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 */
 	protected function storeGPinSession() {
 
-		//merge GET/POST again to get a third version of submitted values.
-		//the values in $this->gp are not reliable because they got merged with session in initPreProcessor
-		$newGP = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
-		$prefix = Tx_Formhandler_Session::get('formValuesPrefix');
-		if ($prefix) {
-			$newGP = $newGP[$prefix];
-		}
-
+		$newGP = Tx_Formhandler_StaticFuncs::getMergedGP();
 		$data = Tx_Formhandler_Session::get('values');
 
 		//set the variables in session
 		if ($this->lastStep !== $this->currentStep) {
 			foreach ($newGP as $key => $value) {
 				if (!strstr($key, 'step-') && $key !== 'submitted' && $key !== 'randomID') {
-					$data[$this->lastStep][$key] = $value;
-				}
-			}
-		}
-
-		//check for checkbox fields using the values in $newGP
-		if ($this->settings['checkBoxFields']) {
-			$fields = t3lib_div::trimExplode(',', $this->settings['checkBoxFields']);
-			foreach ($fields as $idx => $field) {
-				if (!isset($newGP[$field]) && isset($this->gp[$field])) {
-					if($this->lastStep < $this->currentStep) {
-						$this->gp[$field] = array();
-					}
-					$data[$this->lastStep][$field] = array();
+					$data[$this->lastStep][$key] = $this->gp[$key];
 				}
 			}
 		}
@@ -876,7 +858,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->debugMode = (intval($this->settings['debug']) === 1);
 		Tx_Formhandler_Session::set('debug', $this->debugMode);
 		Tx_Formhandler_StaticFuncs::debugBeginSection('init_values');
-		$this->loadGP();
+		$this->gp = Tx_Formhandler_Staticfuncs::getMergedGP();
 
 		//read template file
 		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
@@ -988,13 +970,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 		if (!$this->gp['randomID']) {
 			$this->gp['randomID'] = Tx_Formhandler_Globals::$randomID;
-		}
-	}
-
-	protected function loadGP() {
-		$this->gp = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
-		if ($this->formValuesPrefix) {
-			$this->gp = $this->gp[$this->formValuesPrefix];
 		}
 	}
 
@@ -1214,6 +1189,23 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 		}
 		return $valid;
+	}
+	
+	protected function handleCheckBoxFields() {
+		
+		$newGP = Tx_Formhandler_StaticFuncs::getMergedGP();
+		
+		//check for checkbox fields using the values in $newGP
+		if ($this->settings['checkBoxFields']) {
+			$fields = t3lib_div::trimExplode(',', $this->settings['checkBoxFields']);
+			foreach ($fields as $idx => $field) {
+				if (!isset($newGP[$field]) && isset($this->gp[$field])) {
+					if($this->lastStep < $this->currentStep) {
+						$this->gp[$field] = array();
+					}
+				}
+			}
+		}
 	}
 
 	/**
