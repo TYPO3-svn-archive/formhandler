@@ -35,7 +35,7 @@ class Tx_Formhandler_Interceptor_TranslateFields extends Tx_Formhandler_Abstract
 				$newField = str_replace('.', '', $newField);
 				if (isset($options['langKey'])) {
 					$this->gp[$newField] = $this->translateFields($options);
-					Tx_Formhandler_StaticFuncs::debugMessage('translated', $newField, $this->gp[$newField]);
+					Tx_Formhandler_StaticFuncs::debugMessage('translated', array($newField, $this->gp[$newField]));
 				}
 			}
 		}

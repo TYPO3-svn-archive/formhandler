@@ -64,7 +64,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 		if ($this->settings['newFieldsSqlAttribs']) {
 			$this->newFieldsSqlAttribs = $this->settings['newFieldsSqlAttribs'];
 		}
-		
+
 		$this->db = $GLOBALS['TYPO3_DB'];
 	}
 
@@ -75,15 +75,15 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 		if ($this->settings['autoCreate'] && $GLOBALS['TSFE']->beUserLogin) {
 			$this->createTable();
 		}
-		
+
 		$dbFields = $this->db->admin_get_fields($this->table);
-		
+
 		foreach ($dbFields as $field => $properties) {
 			if ($field != $this->key && !isset($this->settings['fields.'][$field])) {
 				$this->settings['fields.'][$field.'.'] = array('mapping' => $field);
 			}
 		}
-		
+
 		$fields = parent::parseFields();
 		$escapedFields = array();
 		foreach ($fields as $field => $value) {
@@ -91,7 +91,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 		}
 		return $escapedFields;
 	}
-	
+
 	/**
 	 * Retrieve the fieldnames registered by the fluid form (those include
 	 * the prefix if set)
@@ -100,11 +100,11 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 	 */
 	protected function getFormFieldNames() {
 		$pattern = '/\<(?=input|select|textarea)[^\>]*name=("|\')([^"\']*)\1/i';
-    
-        $templateFile = Tx_Formhandler_Globals::$templateCode;
+
+		$templateFile = Tx_Formhandler_Globals::$templateCode;
 		preg_match_all($pattern, $templateFile, $matches);
-        
-        return (array) $matches[2];
+
+		return (array) $matches[2];
 	}
 	
 	/**
@@ -114,9 +114,9 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 	 */
 	protected function getFormFields() {
 		$invokePrefix = strlen(Tx_Formhandler_Globals::$formValuesPrefix) > 0;
-        $prefix = Tx_Formhandler_Globals::$formValuesPrefix;
-        $fields = array();
-        
+		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
+		$fields = array();
+
 		foreach ($this->getFormFieldNames() as $fieldName) {
 			$keys = explode('[', str_replace(']', '', $fieldName));
 			if ($invokePrefix && $keys[0] == $prefix && !empty($keys[1])) {
@@ -126,7 +126,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 				$fields[$keys[0]] = $keys[0];
 			}
 		}
-		
+
 		return $fields;
 	}
 	
@@ -153,10 +153,10 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 		
 		if (!$this->db->sql_num_rows($res)) {
 			$query = "CREATE TABLE `".$this->table."` (
-            	`".$this->key."` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
-            )";
+				`".$this->key."` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+			)";
 			$this->db->sql_query($query);
-			Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
+			Tx_Formhandler_StaticFuncs::debugMessage('sql_request', array($query));
 			$dbFields = array($this->key);
 		}else{
 			$dbFields = array_keys($this->db->admin_get_fields($this->table));
@@ -170,9 +170,9 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 			$sql .= '` '.$this->newFieldsSqlAttribs.'';
 			
 			$this->db->sql_query($sql);
-			Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $sql);
+			Tx_Formhandler_StaticFuncs::debugMessage('sql_request', array($sql));
 			if($this->db->sql_error()) {
-				Tx_Formhandler_StaticFuncs::debugMessage($GLOBALS['TYPO3_DB']->sql_error());
+				Tx_Formhandler_StaticFuncs::debugMessage('error', array($this->db->sql_error()), 3);
 			}
 		}
 	}

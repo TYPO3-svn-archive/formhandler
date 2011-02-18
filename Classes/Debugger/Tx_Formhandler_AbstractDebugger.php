@@ -11,38 +11,44 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id$
+ * $Id: Tx_Formhandler_AbstractLogger.php 27708 2009-12-15 09:22:07Z reinhardfuehricht $
  *                                                                        */
 
 /**
- * Abstract interceptor class
+ * An abstract debugger
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @package	Tx_Formhandler
- * @subpackage	Interceptor
+ * @subpackage	Debugger
  * @abstract
  */
-abstract class Tx_Formhandler_AbstractInterceptor extends Tx_Formhandler_AbstractComponent {
+abstract class Tx_Formhandler_AbstractDebugger extends Tx_Formhandler_AbstractComponent {
 
-	protected function log($markAsSpam = FALSE) {
-		$classesArray = $this->settings['loggers.'];
-		if (isset($classesArray) && is_array($classesArray)) {
-			foreach ($classesArray as $idx => $tsConfig) {
-				if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
-					$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
-					Tx_Formhandler_StaticFuncs::Message('calling_class', array($className));
-					$obj = $this->componentManager->getComponent($className);
-					if ($markAsSpam) {
-						$tsConfig['config.']['markAsSpam'] = 1;
-					}
-					$obj->init($this->gp, $tsConfig['config.']);
-					$obj->process();
-				} else {
-					Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
-				}
-			}
+	protected $debugLog = array();
+
+	public function process() {
+		//Not available for this type of component
+	}
+
+	public function addToDebugLog($message = '', $severity = 1, array $data = array()) {
+		$trace = debug_backtrace();
+		$section = '';
+		if (isset($trace[2])) {
+			$section = $trace[2]['class'];
+		}
+		if(!$message && !isset($this->debugLog[$section])) {
+			$this->debugLog[$section] = array();
+		}
+		if($message) {
+			$this->debugLog[$section][] = array('message' => $message, 'severity' => $severity, 'data' => $data);
 		}
 	}
 
+	abstract public function outputDebugLog();
+
+	public function validateConfig() {
+
+	}
 }
+
 ?>

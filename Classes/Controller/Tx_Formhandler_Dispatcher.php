@@ -95,9 +95,17 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			}
 
 			$result = $controller->process();
+			
 		} catch(Exception $e) {
 			$result = '<div style="color:red; font-weight: bold">Caught exception: ' . $e->getMessage() . '</div>';
 			$result .= '<div style="color:red; font-weight: bold">File: ' . $e->getFile() . '(' . $e->getLine() . ')</div>';
+			
+		}
+		$isDebug = Tx_Formhandler_Session::get('debug');
+		if ($isDebug) {
+			foreach(Tx_Formhandler_Globals::$debuggers as $idx => $debugger) {
+				$debugger->outputDebugLog();
+			}
 		}
 		return $result;
 	}

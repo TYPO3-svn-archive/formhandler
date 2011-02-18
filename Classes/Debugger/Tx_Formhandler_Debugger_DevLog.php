@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -11,38 +11,33 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id$
+ * $Id: Tx_Formhandler_AbstractLogger.php 27708 2009-12-15 09:22:07Z reinhardfuehricht $
  *                                                                        */
 
 /**
- * Abstract interceptor class
+ * A simple debugger writing messages into devlog
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @package	Tx_Formhandler
- * @subpackage	Interceptor
- * @abstract
+ * @subpackage	Debugger
  */
-abstract class Tx_Formhandler_AbstractInterceptor extends Tx_Formhandler_AbstractComponent {
+class Tx_Formhandler_Debugger_DevLog extends Tx_Formhandler_AbstractDebugger {
 
-	protected function log($markAsSpam = FALSE) {
-		$classesArray = $this->settings['loggers.'];
-		if (isset($classesArray) && is_array($classesArray)) {
-			foreach ($classesArray as $idx => $tsConfig) {
-				if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($tsConfig['disable']) !== 1) {
-					$className = Tx_Formhandler_StaticFuncs::prepareClassName($tsConfig['class']);
-					Tx_Formhandler_StaticFuncs::Message('calling_class', array($className));
-					$obj = $this->componentManager->getComponent($className);
-					if ($markAsSpam) {
-						$tsConfig['config.']['markAsSpam'] = 1;
-					}
-					$obj->init($this->gp, $tsConfig['config.']);
-					$obj->process();
-				} else {
-					Tx_Formhandler_StaticFuncs::throwException('classesarray_error');
+	public function outputDebugLog() {
+
+		foreach($this->debugLog as $section => $logData) {
+			foreach($logData as $messageData) {
+				$message = $section . ': ' . $messageData['message'];
+				$data = FALSE;
+				if(is_array($messageData['data'])) {
+					$data = $messageData['data'];
 				}
+				t3lib_div::devLog($message, 'formhandler', $severity, $data);
 			}
 		}
+
 	}
 
 }
+
 ?>

@@ -464,74 +464,28 @@ class Tx_Formhandler_StaticFuncs {
 	}
 
 	/**
-	 * Method to print a debug header to screen and open a section for message
+	 * Method to log a debug message.
+	 * The message will be handled by one or more configured "Debuggers".
 	 *
-	 * @param string $key The message or key in language file (locallang_debug.xml) to print
+	 * @param string $key The message or key in language file (locallang_debug.xml)
+	 * @param array $printfArgs If the messsage contains placeholders for usage with printf, pass the replacement values in this array.
+	 * @param int $severity The severity of the message. Valid values are 1,2 and 3 (1= info, 2 = warning, 3 = error)
+	 * @param array $data Additional debug data (e.g. the array of GET/POST values)
 	 * @return void
 	 * @static
 	 */
-	static public function debugBeginSection($key) {
-		$isDebug = Tx_Formhandler_Session::get('debug');
-		if ($isDebug) {
-			$message = Tx_Formhandler_Messages::getDebugMessage($key);
-			if (strlen($message) == 0) {
-				$message = Tx_Formhandler_Messages::formatDebugHeader($key);
-			} else {
-				if (func_num_args() > 1) {
-					$args = func_get_args();
-					array_shift($args);
-					if (is_bool($args[count($args) - 1])) {
-						array_pop($args);
-					}
-					$message = vsprintf($message, $args);
-				}
-				$message = Tx_Formhandler_Messages::formatDebugHeader($message);
-			}
-			print $message . '<div style="border:1px solid #ccc; padding:7px; background:#dedede;">' . "\n";
+	static public function debugMessage($key, array $printfArgs = array(), $severity = 1, array $data = array()) {
+		
+		$severity = intval($severity);
+		
+		$message = Tx_Formhandler_Messages::getDebugMessage($key);
+		if (strlen($message) == 0) {
+			$message = $key;
+		} elseif (count($printfArgs) > 0) {
+			$message = vsprintf($message, $printfArgs);
 		}
-	}
-
-	/**
-	 * Method to print an end tag for an opened debug section
-	 *
-	 * @return void
-	 * @static
-	 */
-	static public function debugEndSection() {
-		$isDebug = Tx_Formhandler_Session::get('debug');
-		if ($isDebug) {
-			print '</div>' . "\n";
-		}
-	}
-
-	/**
-	 * Method to print a debug message to screen
-	 *
-	 * @param string $key The message or key in language file (locallang_debug.xml) to print
-	 * @return void
-	 * @static
-	 */
-	static public function debugMessage($key) {
-		$isDebug = Tx_Formhandler_Session::get('debug');
-		if ($isDebug) {
-			$message = Tx_Formhandler_Messages::getDebugMessage($key);
-			if (strlen($message) == 0) {
-				$message = Tx_Formhandler_Messages::formatDebugMessage($key);
-				print $message;
-			} else {
-				if (func_num_args() > 1) {
-					$args = func_get_args();
-					array_shift($args);
-					if (is_bool($args[count($args) - 1])) {
-						array_pop($args);
-					}
-					if (count($args) > 0) {
-						$message = vsprintf($message, $args);
-					}
-				}
-				$message = Tx_Formhandler_Messages::formatDebugMessage($message);
-				print $message;
-			}
+		foreach(Tx_Formhandler_Globals::$debuggers as $idx => $debugger) {
+			$debugger->addToDebugLog($message, $severity, $data);
 		}
 	}
 
@@ -553,24 +507,6 @@ class Tx_Formhandler_StaticFuncs {
 				$message = vsprintf($message, $args);
 			}
 			throw new Exception($message);
-		}
-	}
-
-	/**
-	 * Method to print the contents of an array
-	 *
-	 * @param array $arr The array to print
-	 * @return void
-	 * @static
-	 */
-	static public function debugArray($arr) {
-		if (!is_array($arr)) {
-			$arr = array();
-		}
-		$isDebug = Tx_Formhandler_Session::get('debug');
-		if ($isDebug) {
-				t3lib_div::print_array($arr);
-				print '<br />';
 		}
 	}
 
@@ -672,7 +608,7 @@ class Tx_Formhandler_StaticFuncs {
 
 		//if the set directory doesn't exist, print a message and try to create
 		if (!is_dir(Tx_Formhandler_StaticFuncs::getTYPO3Root() . $uploadFolder)) {
-			Tx_Formhandler_StaticFuncs::debugMessage('folder_doesnt_exist', Tx_Formhandler_StaticFuncs::getTYPO3Root() . '/' . $uploadFolder);
+			Tx_Formhandler_StaticFuncs::debugMessage('folder_doesnt_exist', array(Tx_Formhandler_StaticFuncs::getTYPO3Root() . '/' . $uploadFolder), 2);
 			t3lib_div::mkdir_deep(Tx_Formhandler_StaticFuncs::getTYPO3Root() . '/', $uploadFolder);
 		}
 		return $uploadFolder;

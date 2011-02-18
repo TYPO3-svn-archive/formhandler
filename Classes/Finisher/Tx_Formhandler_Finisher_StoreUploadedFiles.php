@@ -84,7 +84,13 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 				foreach ($files as $key => $file) {
 					if ($file['uploaded_path'] != $uploadPath) {
 						$newFilename = $this->getNewFilename($file['uploaded_name']);
-						Tx_Formhandler_StaticFuncs::debugMessage('copy_file', ($file['uploaded_path'] . $file['uploaded_name']), ($uploadPath . $newFilename));
+						Tx_Formhandler_StaticFuncs::debugMessage(
+							'copy_file', 
+							array(
+								($file['uploaded_path'] . $file['uploaded_name']),
+								($uploadPath . $newFilename)
+							)
+						);
 						copy(($file['uploaded_path'] . $file['uploaded_name']), ($uploadPath . $newFilename));
 						unlink(($file['uploaded_path'] . $file['uploaded_name']));
 						$sessionFiles[$field][$key]['uploaded_path'] = $uploadPath;

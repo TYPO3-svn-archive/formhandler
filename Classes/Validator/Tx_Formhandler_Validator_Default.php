@@ -208,10 +208,10 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				$classNameFix = ucfirst($check['check']);
 				$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
 				if(!$errorCheckObject) {
-					Tx_Formhandler_StaticFuncs::debugMessage('check_not_found', 'Tx_Formhandler_ErrorCheck_' . $classNameFix);
+					Tx_Formhandler_StaticFuncs::debugMessage('check_not_found', array('Tx_Formhandler_ErrorCheck_' . $classNameFix), 2);
 				}
 				if(empty($this->restrictErrorChecks) || in_array($check['check'], $this->restrictErrorChecks)) {
-					Tx_Formhandler_StaticFuncs::debugMessage('calling_class', 'Tx_Formhandler_ErrorCheck_' . $classNameFix);
+					Tx_Formhandler_StaticFuncs::debugMessage('calling_class', array('Tx_Formhandler_ErrorCheck_' . $classNameFix));
 					$checkFailed = $errorCheckObject->check($check, $fieldName, $gp);
 					if(strlen($checkFailed) > 0) {
 						if(!is_array($errors[$errorFieldName])) {
@@ -220,7 +220,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 						$errors[$errorFieldName][] = $checkFailed;
 					}
 				} else {
-					Tx_Formhandler_StaticFuncs::debugMessage('check_skipped', $check['check']);
+					Tx_Formhandler_StaticFuncs::debugMessage('check_skipped', array($check['check']));
 				}
 			}
 		}

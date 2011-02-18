@@ -52,7 +52,7 @@ class Tx_Formhandler_Finisher_ClearCache extends Tx_Formhandler_AbstractFinisher
 			$cacheCmd = $GLOBALS['TSFE']->id;
 		}
 
-		Tx_Formhandler_StaticFuncs::debugMessage('cacheCmd', $cacheCmd);
+		Tx_Formhandler_StaticFuncs::debugMessage('cacheCmd', array($cacheCmd));
 
 		$tce = t3lib_div::makeInstance('t3lib_tcemain');
 		$tce->clear_cacheCmd($cacheCmd);

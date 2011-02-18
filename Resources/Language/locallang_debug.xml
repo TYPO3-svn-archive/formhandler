@@ -2,8 +2,8 @@
 <T3locallang>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="adding_html">Adding HTML: %s</label>
-			<label index="adding_pdf">Adding PDF: %s</label>
+			<label index="adding_html">Adding HTML:</label>
+			<label index="adding_pdf">Adding PDF:</label>
 			<label index="alert_mail_not_sent">Mails not sent because a mail has already been sent in defined interval!</label>
 			<label index="calling_class">Calling class "%s"</label>
 			<label index="calling_finisher">Calling finisher "%s"</label>
@@ -35,10 +35,10 @@
 			<label index="mail_bcc">BCC: %s</label>
 			<label index="mail_cc">CC: %s</label>
 			<label index="mail_disabled">Skipped %s mail because it is disabled in TypoScript!</label>
-			<label index="mail_html">Message HTML: %s</label>
-			<label index="mail_message">Message: %s</label>
+			<label index="mail_html">Message HTML:</label>
+			<label index="mail_message">Message:</label>
 			<label index="mail_not_sent">Mail NOT sent to: %s</label>
-			<label index="mail_plain">Message plain: %s</label>
+			<label index="mail_plain">Message plain:</label>
 			<label index="mail_replyto">Reply to: %s</label>
 			<label index="mail_returnpath">Return path: %s</label>
 			<label index="mail_sender">Sender: %s</label>
@@ -61,8 +61,8 @@
 			<label index="cacheCmd">Clearing cache user cacheCmd "%s"</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="adding_html">Füge HTML hinzu: %s</label>
-			<label index="adding_pdf">Füge PDF hinzu: %s</label>
+			<label index="adding_html">Füge HTML hinzu:</label>
+			<label index="adding_pdf">Füge PDF hinzu:</label>
 			<label index="alert_mail_not_sent">E-Mails nicht verschickt, da eine Benachrichtigungs-E-Mail für dieses Intervall schon verschickt wurde!</label>
 			<label index="calling_class">Rufe Klasse "%s" auf!</label>
 			<label index="calling_finisher">Rufe Finisher "%s" auf!</label>
@@ -89,10 +89,10 @@
 			<label index="mail_bcc">BCC: %s</label>
 			<label index="mail_cc">CC: %s</label>
 			<label index="mail_disabled">Überspringe %s E-Mail, weil abgeschalten in TypoScript!</label>
-			<label index="mail_html">Nachricht HTML: %s</label>
-			<label index="mail_message">Nachricht: %s</label>
+			<label index="mail_html">Nachricht HTML:</label>
+			<label index="mail_message">Nachricht:</label>
 			<label index="mail_not_sent">E-Mail NICHT verschickt an: %s</label>
-			<label index="mail_plain">Nachricht plain: %s</label>
+			<label index="mail_plain">Nachricht plain:</label>
 			<label index="mail_replyto">Reply to: %s</label>
 			<label index="mail_returnpath">Return path: %s</label>
 			<label index="mail_sender">Absender: %s</label>
@@ -114,8 +114,8 @@
 			<label index="cacheCmd">Cache wird gelöscht mit cacheCmd "%s"</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="adding_html">TRANSLATE: Adding HTML: %s</label>
-			<label index="adding_pdf">TRANSLATE: Adding PDF: %s</label>
+			<label index="adding_html">TRANSLATE: Adding HTML:</label>
+			<label index="adding_pdf">TRANSLATE: Adding PDF:</label>
 			<label index="alert_mail_not_sent">L'email n'a pas été envoyé, car un autre email à été envoyé dans l'interval de temps!</label>
 			<label index="calling_class">Appel de la class "%s"</label>
 			<label index="calling_finisher">Appel du finisher "%s"</label>
@@ -142,10 +142,10 @@
 			<label index="mail_bcc">TRANSLATE: BCC: %s</label>
 			<label index="mail_cc">CC: %s</label>
 			<label index="mail_disabled">L'email %s a été ignoré, car il est désactivé dans le TypoScript!</label>
-			<label index="mail_html">Message HTML: %s</label>
-			<label index="mail_message">Message: %s</label>
+			<label index="mail_html">Message HTML:</label>
+			<label index="mail_message">Message:</label>
 			<label index="mail_not_sent">L'email n'a pas été envoyé à : %s</label>
-			<label index="mail_plain">Message en text brute: %s</label>
+			<label index="mail_plain">Message en text brute:</label>
 			<label index="mail_replyto">Réponse à: %s</label>
 			<label index="mail_returnpath">Return path: %s</label>
 			<label index="mail_sender">Expéditeur: %s</label>

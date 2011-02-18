@@ -95,7 +95,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			$condition = $this->parseCondition($this->settings['condition']);
 			eval('$evaluation = ' . $condition . ';');
 			$evaluationMessage = ($evaluation === TRUE) ?  'TRUE' : 'FALSE';
-			Tx_Formhandler_StaticFuncs::debugMessage('condition', $evaluationMessage, $condition);
+			Tx_Formhandler_StaticFuncs::debugMessage('condition', array($evaluationMessage, $condition));
 		}
 
 		if ($evaluation) {
@@ -193,7 +193,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			} elseif($this->settings['insertIfNoUpdatePossible']) {
 				$this->doInsert($queryFields);
 			} else {
-				Tx_Formhandler_StaticFuncs::debugMessage('no_update_possible');
+				Tx_Formhandler_StaticFuncs::debugMessage('no_update_possible', array(), 2);
 			}
 		}
 	}
@@ -213,17 +213,17 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	
 	protected function doInsert($queryFields) {
 		$query = $GLOBALS['TYPO3_DB']->INSERTquery($this->table, $queryFields);
-		Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
+		Tx_Formhandler_StaticFuncs::debugMessage('sql_request', array($query));
 		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 		if ($GLOBALS['TYPO3_DB']->sql_error()) {
-			Tx_Formhandler_StaticFuncs::debugMessage($GLOBALS['TYPO3_DB']->sql_error());
+			Tx_Formhandler_StaticFuncs::debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 		}
 	}
 	
 	protected function doUpdate($uid, $queryFields) {
 		$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
 		$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
-		Tx_Formhandler_StaticFuncs::debugMessage('sql_request', $query);
+		Tx_Formhandler_StaticFuncs::debugMessage('sql_request', array($query));
 		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 	}
 

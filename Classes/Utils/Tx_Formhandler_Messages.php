@@ -43,27 +43,6 @@ class Tx_Formhandler_Messages {
 		return trim($GLOBALS['TSFE']->sL('LLL:EXT:formhandler/Resources/Language/locallang_exceptions.xml:' . $key));
 	}
 
-	/**
-	 * Returns a formatted debug message
-	 *
-	 * @param string The unformatted message
-	 * @return string The formatted message
-	 */
-	public static function formatDebugMessage($message) {
-		$message = str_replace("\n", '<br />', $message);
-		return '<div style="font-weight:bold;color:#333;">' . $message . '</div>' . "\n";	
-	}
-
-	/**
-	 * Returns a formatted debug section header
-	 *
-	 * @param string The unformatted message
-	 * @return string The formatted message
-	 */
-	public static function formatDebugHeader($message) {
-		return '<h2 style="background:#333; color:#cdcdcd;height:23px;padding:10px 7px 7px 7px;margin:0;">' . $message . '</h2>' . "\n";	
-	}
-
 }
 
 ?>

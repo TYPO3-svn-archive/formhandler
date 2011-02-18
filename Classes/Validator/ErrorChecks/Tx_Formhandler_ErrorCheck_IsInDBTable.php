@@ -46,7 +46,7 @@ class Tx_Formhandler_ErrorCheck_IsInDBTable extends Tx_Formhandler_AbstractError
 				if ($res && !$GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 					$checkFailed = $this->getCheckFailed($check);
 				} elseif (!$res) {
-					Tx_Formhandler_StaticFuncs::debugMessage($GLOBALS['TYPO3_DB']->sql_error());
+					Tx_Formhandler_StaticFuncs::debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}

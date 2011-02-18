@@ -30,43 +30,44 @@ Configuration	9
 Reference	9
 General Options	9
 Loggers	13
-PreProcessors	14
-Interceptors	16
-Validators	20
-Generators	22
-Finishers	24
-Backend Module	32
-Available error checks	33
-Available subparts to use in the template	35
-Available markers to use in subparts	35
-Tutorial	38
-How to set up a simple form	38
-How to set up an advanced form	38
-How to use predefined forms	38
-How to set up a multistep form	39
-How to set up a multistep form with conditions	39
-How to set up spam protection	40
-Enable captcha for your form	40
-Enable sr_freecap for your form	41
-Enable jm_recaptcha for your form	41
-Enable mathGuard for your form	41
-How to set up error checks	42
-How to use ###is_error### markers	43
-How to fill your own markers via TypoScript	43
-How to hide unfilled form field values in templates	44
-How to set up multi language forms	45
-How to load data from DB to use in Finisher_DB	46
-How to store data into more than one DB table	47
-How to use your own controller	47
-How to use your own component (Interceptor, Finisher, ...)	47
-How to XCLASS Formhandler	48
-How to use a master template	48
-How to use AJAX validation	49
-How to upgrade from th_mailformplus to Formhandler	50
-TypoScript:	50
-HTML:	51
-Known problems	53
-To-Do list	54
+Debuggers	14
+PreProcessors	15
+Interceptors	17
+Validators	21
+Generators	23
+Finishers	25
+Backend Module	33
+Available error checks	34
+Available subparts to use in the template	36
+Available markers to use in subparts	36
+Tutorial	39
+How to set up a simple form	39
+How to set up an advanced form	39
+How to use predefined forms	39
+How to set up a multistep form	40
+How to set up a multistep form with conditions	40
+How to set up spam protection	41
+Enable captcha for your form	41
+Enable sr_freecap for your form	42
+Enable jm_recaptcha for your form	42
+Enable mathGuard for your form	42
+How to set up error checks	43
+How to use ###is_error### markers	44
+How to fill your own markers via TypoScript	44
+How to hide unfilled form field values in templates	45
+How to set up multi language forms	46
+How to load data from DB to use in Finisher_DB	47
+How to store data into more than one DB table	48
+How to use your own controller	48
+How to use your own component (Interceptor, Finisher, ...)	48
+How to XCLASS Formhandler	49
+How to use a master template	49
+How to use AJAX validation	50
+How to upgrade from th_mailformplus to Formhandler	51
+TypoScript:	51
+HTML:	52
+Known problems	54
+To-Do list	55
 
 Introduction
 
@@ -543,6 +544,76 @@ Will log into tx_formhandler_log. Logging can be accessed via the “Formhandler
 Logger_DevLog
 
 Will log into the devlog table. Use an extension like “devlog” to access the logged messages.
+
+Debuggers
+Property:
+Data type:
+Description:
+Default:
+x.class
+String
+Enter as many debuggers as you like. Each entry requires a class name of the debugger. Optional you can enter specific configuration for the debugger in the confg section.
+
+Example:
+
+debuggers.1 {
+  class = Tx_Formhandler_Debugger_Print
+  config {
+    sectionWrap = <div class=”debug-section”>|</div>
+  }
+}
+
+x.config
+Array
+
+
+[plugin.Tx_Formhandler .settings.debuggers]
+
+
+Debugger_Print
+
+Will print out the debug messages to screen.
+
+[
+plugin.Tx_Formhandler.settings.debuggers.x.class = Tx_Formhandler_Debugger_Print
+plugin.Tx_Formhandler.settings.debuggers.x.config.[x].[fieldname].
+]
+Property:
+Data type:
+Description:
+Default:
+sectionWrap
+String
+Wrap for a section (e.g. all log messages of a component are wrapped in a section)
+<div style="border:1px solid #ccc; padding:7px; background:#dedede;">|</div>
+sectionHeaderWrap
+String
+Wrap for a section header
+<h2 style="background:#333; color:#cdcdcd;height:23px;padding:10px 7px 7px 7px;margin:0;">|</h2>
+messageWrap
+String
+Wrap for a single debug message
+<div style="font-weight:bold;">|</div>
+severityWrap
+Array
+Use this to configure different appearance of different log severity levels.
+The keys of the array are the log levels (1-3).
+Example:
+
+severityWrap {
+  0 = <span class=”level-info”>|</span>
+  1 = <span class=”level-warning”>|</span>
+  2 = <span class=”level-error”>|</span>
+}
+severityWrap {
+  0 = <span style="color:#000;">|</span>
+  1 = <span style="color:#ff8c00;">|</span>
+  2 = <span style="color:#ff2800;">|</span>
+}
+Debugger_DevLog
+
+Will save the debug message using t3lib_div::devLog(). The messages can be read using an appropriate extension like “devlog”.
+
 PreProcessors
 Property:
 Data type:

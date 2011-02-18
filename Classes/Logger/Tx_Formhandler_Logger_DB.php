@@ -58,9 +58,9 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		Tx_Formhandler_Session::set('inserted_tstamp', $fields['tstamp']);
 		Tx_Formhandler_Session::set('key_hash', $hash);
 		if (!$this->settings['nodebug']) {
-			Tx_Formhandler_StaticFuncs::debugMessage('logging', $table, implode(',', $fields));
+			Tx_Formhandler_StaticFuncs::debugMessage('logging', array($table, implode(',', $fields)));
 			if (strlen($GLOBALS['TYPO3_DB']->sql_error()) > 0) {
-				Tx_Formhandler_StaticFuncs::debugMessage('error', $GLOBALS['TYPO3_DB']->sql_error());
+				Tx_Formhandler_StaticFuncs::debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 			}
 		}
 	}

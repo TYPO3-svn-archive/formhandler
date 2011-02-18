@@ -134,13 +134,13 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 						$this->sendReport('global', $rows);
 					}
 				} else {
-					Tx_Formhandler_StaticFuncs::debugMessage('alert_mail_not_sent');
+					Tx_Formhandler_StaticFuncs::debugMessage('alert_mail_not_sent', array(), 2);
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($this->settings['redirectPage']) {
 				Tx_Formhandler_StaticFuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl']);
-				Tx_Formhandler_StaticFuncs::debugMessage('redirect_failed');
+				Tx_Formhandler_StaticFuncs::debugMessage('redirect_failed', array(), 2);
 				exit(0);
 			} else {
 				throw new Exception($message);
@@ -198,15 +198,15 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		foreach ($email as $idx => $mailto) {
 			$sent = $emailObj->send($mailto);
 			if ($sent) {
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sent', $mailto);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', $emailObj->from_email, FALSE);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject, FALSE);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', $message, FALSE);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_sent', array($mailto));
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', array($emailObj->from_email));
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', array($emailObj->subject));
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', array(), 1, array($message));
 			} else {
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_not_sent', $mailto);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', $emailObj->from_email, FALSE);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', $emailObj->subject, FALSE);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', $message, FALSE);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_not_sent', array($mailto), 2);
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', array($emailObj->from_email));
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', array($emailObj->subject));
+				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', array(), 1, array($message));
 			}
 		}
 	}

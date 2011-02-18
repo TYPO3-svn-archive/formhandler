@@ -205,7 +205,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			} elseif ($matches[6] == '!' && !$isset) {
 				$return = !$this->keyIsset($matches[7]);
 			} elseif (Tx_Formhandler_Session::get('debug')) {
-				Tx_Formhandler_StaticFuncs::debugMessage('invalid_isset', $matches[2]);
+				Tx_Formhandler_StaticFuncs::debugMessage('invalid_isset', array($matches[2]), 2);
 			}
 		} else {
 
@@ -896,7 +896,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					}
 					$errorMessages[] = $errorMessage;
 				} else {
-					Tx_Formhandler_StaticFuncs::debugMessage('no_error_message', 'error_' . $field . '_' . $type);
+					Tx_Formhandler_StaticFuncs::debugMessage('no_error_message', array('error_' . $field . '_' . $type), 2);
 				}
 			}
 			$errorMessage = implode('', $errorMessages);

@@ -25,6 +25,8 @@ class Tx_Formhandler_Globals {
 	static public $formID;
 
 	static public $ajaxHandler;
+	
+	static public $debuggers;
 }
 
 ?>

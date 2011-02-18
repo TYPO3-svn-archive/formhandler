@@ -73,7 +73,7 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 		//read files in directory
 		$tmpFiles = t3lib_div::getFilesInDir($path);
 
-		Tx_Formhandler_StaticFuncs::debugMessage('cleaning_temp_files', $path);
+		Tx_Formhandler_StaticFuncs::debugMessage('cleaning_temp_files', array($path));
 
 		//calculate threshold timestamp
 		//hours * 60 * 60 = millseconds
@@ -91,7 +91,7 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 
 			if ($creationTime < $threshold) {
 				unlink($path . $file);
-				Tx_Formhandler_StaticFuncs::debugMessage('deleting_file', $file);
+				Tx_Formhandler_StaticFuncs::debugMessage('deleting_file', array($file));
 			}
 		}
 	}
