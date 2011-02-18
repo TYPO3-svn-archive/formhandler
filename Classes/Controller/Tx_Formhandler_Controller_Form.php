@@ -72,6 +72,14 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	protected $templateFile;
 
 	/**
+	 * Array of configured translation files
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $langFiles;
+
+	/**
 	 * The cObj
 	 *
 	 * @access protected
