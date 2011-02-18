@@ -473,6 +473,23 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$prevName = ' name="' . str_replace('#action#', 'prev', $name) . '" ';
 		$prevName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') - 1, $prevName);
 		$markers['###submit_prevStep###'] = $prevName;
+		
+			// submits for next/prev steps with template suffix
+		preg_match_all('/###submit_nextStep_[^#]+?###/Ssm', $this->template, $allNextSubmits);
+		foreach($allNextSubmits[0] as $nextSubmitSuffix){
+			$nextSubmitSuffix = substr($nextSubmitSuffix, 19, -3);
+			$nextName = ' name="' . str_replace('#action#', 'next', $name) . '['. $nextSubmitSuffix .']" ';
+			$nextName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') + 1, $nextName);
+			$markers['###submit_nextStep_'. $nextSubmitSuffix .'###'] = $nextName;
+		}
+
+		preg_match_all('/###submit_prevStep_[^#]+?###/Ssm', $this->template, $allPrevSubmits);
+		foreach($allPrevSubmits[0] as $prevSubmitSuffix){
+			$prevSubmitSuffix = substr($prevSubmitSuffix, 19, -3);
+			$prevName = ' name="' . str_replace('#action#', 'prev', $name) . '['. $prevSubmitSuffix .']" ';
+			$prevName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') + 1, $prevName);
+			$markers['###submit_prevStep_'. $prevSubmitSuffix .'###'] = $prevName;
+		}
 
 		// submit name for reloading the same page/step
 		$reloadName = ' name="' . str_replace('#action#', 'reload', $name) . '" ';

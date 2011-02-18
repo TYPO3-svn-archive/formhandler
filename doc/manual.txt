@@ -40,34 +40,34 @@ Backend Module	33
 Available error checks	34
 Available subparts to use in the template	36
 Available markers to use in subparts	36
-Tutorial	39
-How to set up a simple form	39
-How to set up an advanced form	39
-How to use predefined forms	39
-How to set up a multistep form	40
-How to set up a multistep form with conditions	40
-How to set up spam protection	41
-Enable captcha for your form	41
-Enable sr_freecap for your form	42
-Enable jm_recaptcha for your form	42
-Enable mathGuard for your form	42
-How to set up error checks	43
-How to use ###is_error### markers	44
-How to fill your own markers via TypoScript	44
-How to hide unfilled form field values in templates	45
-How to set up multi language forms	46
-How to load data from DB to use in Finisher_DB	47
-How to store data into more than one DB table	48
-How to use your own controller	48
-How to use your own component (Interceptor, Finisher, ...)	48
-How to XCLASS Formhandler	49
-How to use a master template	49
-How to use AJAX validation	50
-How to upgrade from th_mailformplus to Formhandler	51
-TypoScript:	51
-HTML:	52
-Known problems	54
-To-Do list	55
+Tutorial	40
+How to set up a simple form	40
+How to set up an advanced form	40
+How to use predefined forms	40
+How to set up a multistep form	41
+How to set up a multistep form with conditions	41
+How to set up spam protection	42
+Enable captcha for your form	42
+Enable sr_freecap for your form	43
+Enable jm_recaptcha for your form	43
+Enable mathGuard for your form	43
+How to set up error checks	44
+How to use ###is_error### markers	45
+How to fill your own markers via TypoScript	45
+How to hide unfilled form field values in templates	46
+How to set up multi language forms	47
+How to load data from DB to use in Finisher_DB	48
+How to store data into more than one DB table	49
+How to use your own controller	49
+How to use your own component (Interceptor, Finisher, ...)	49
+How to XCLASS Formhandler	50
+How to use a master template	50
+How to use AJAX validation	51
+How to upgrade from th_mailformplus to Formhandler	52
+TypoScript:	52
+HTML:	53
+Known problems	55
+To-Do list	56
 
 Introduction
 
@@ -2238,22 +2238,81 @@ Relative URL to current page
 Absolute URL to current page
 ###submit_nextStep###
 Use this in multi step forms to add a submit button pointing to the next step.
+This will be replace by the name attribute for the submit button.
 
 Example:
 
 <input type”submit” ###submit_nextStep### value=”###LLL:next###” />
+
+Will result in 
+
+<input type”submit” name=”prefix[step-stepnumber-next]”  value=”###LLL:next###” />
+###submit_nextStep_[suffix]###
+Use this to submit the form to the next step and passing a special suffix. This is useful for multistep forms with different routes as you can use the suffix in conditions.
+This will be replace by the name attribute for the submit button.
+
+Example:
+
+<input type”submit” ###submit_nextStep_routeA### value=”###LLL:next###” />
+
+Will result in 
+
+<input type”submit” name=”prefix[step-stepnumber-next][routeA]”  value=”###LLL:next###” />
+
+Example for usage in conditions:
+
+3 {
+    conditions.OR1.AND1 = step-stepnumber-next|routeA
+    isTrue { 
+        1 { 
+            templateSuffix = _routeA
+        } 
+    }
+}
 ###submit_prevStep###
 Use this in multi step forms to add a submit button pointing to the previous step.
+This will be replace by the name attribute for the submit button.
 
 Example:
 
 <input type”submit” ###submit_prevStep### value=”###LLL:prev###” />
+
+Will result in 
+
+<input type”submit” name=”prefix[step-stepnumber-prev]”  value=”###LLL:prev###” />
+###submit_prevStep_[suffix]###
+Use this to submit the form to the previous step and passing a special suffix. This is useful for multistep forms with different routes as you can use the suffix in conditions.
+This will be replace by the name attribute for the submit button.
+
+Example:
+
+<input type”submit” ###submit_prevStep_routeA### value=”###LLL:prev###” />
+
+Will result in 
+
+<input type”submit” name=”prefix[step-stepnumber-prev][routeA]”  value=”###LLL:prev###” />
+
+Example for usage in conditions:
+
+3 {
+    conditions.OR1.AND1 = step-stepnumber-next|routeA
+    isTrue { 
+        1 { 
+            templateSuffix = _routeA
+        } 
+    }
+}
 ###submit_reload###
 Use this for upload fields in your form. By clicking the button, the user can upload a file directly.
+This will be replace by the name attribute for the submit button.
 
 Example:
 
 <input type”submit” ###submit_reload### value=”Upload file now” />
+
+Will result in 
+
+<input type”submit” name=”prefix[step-stepnumber-reload]”  value=”Upload file now” />
 ###FEUSER_[property]###
 You can access name, email, ... fields from the logged in user (frontend-user) and fill out the name or emailaddress automatically.
 Attention: the fieldname has to be written in CAPITAL letters. 
@@ -2453,6 +2512,7 @@ You can use the following operators:
 =, <, >, !=
 
 NOTE: If you don't use an operator, Formhandler will check if the field is set in GET/POST.
+NOTE: You can use the '|' operator to access values in an array like in normal TypoScript conditions.
 
 
 NOTE: Using the TypoScript setting 'templateSuffix', you can define different templates for your steps, emails and PDFs. If you have a form with 3 steps and you want to send emails and PDFs according to the chosen route, you can set the templateSuffix option for step 4 too to ensure that the correct template for emails and PDFs is set.

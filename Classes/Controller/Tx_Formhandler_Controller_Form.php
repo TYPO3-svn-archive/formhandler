@@ -773,19 +773,36 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				foreach ($andConditions as $subSubIdx => $andCondition) {
 					if (strstr($andCondition, '=')) {
 						list($field, $value) = t3lib_div::trimExplode('=', $andCondition);
-						$result = ($this->gp[$field] === $value);
+						$result = (Tx_Formhandler_Globals::$cObj->getGlobal($field, $this->gp) === $value);
 					} elseif (strstr($andCondition, '>')) {
 						list($field, $value) = t3lib_div::trimExplode('>', $andCondition);
-						$result = ($this->gp[$field] > $value);
+						$result = (Tx_Formhandler_Globals::$cObj->getGlobal($field, $this->gp) > $value);
 					} elseif (strstr($andCondition, '<')) {
 						list($field, $value) = t3lib_div::trimExplode('<', $andCondition);
-						$result = ($this->gp[$field] < $value);
+						$result = (Tx_Formhandler_Globals::$cObj->getGlobal($field, $this->gp) < $value);
 					} elseif (strstr($andCondition, '!=')) {
 						list($field, $value) = t3lib_div::trimExplode('!=', $andCondition);
-						$result = ($this->gp[$field] !== $value);
+						$result = (Tx_Formhandler_Globals::$cObj->getGlobal($field, $this->gp) !== $value);
 					} else {
 						$field = $andCondition;
-						$result = isset($this->gp[$field]);
+						$keys = explode('|', $field);
+						$numberOfLevels = count($keys);
+						$rootKey = trim($keys[0]);
+						$value = $this->gp[$rootKey];
+
+						$result = isset($this->gp[$rootKey]);
+						for ($i = 1; $i < $numberOfLevels && isset($value); $i++) {
+							$currentKey = trim($keys[$i]);
+							if (is_object($value)) {
+								$value = $value->$currentKey;
+								$result = isset($value->$currentKey);
+							} elseif (is_array($value)) {
+								$value = $value[$currentKey];
+								$result = isset($value[$currentKey]);
+							} else {
+								$result = FALSE;
+							}
+						}
 					}
 					
 					$results[] = ($result ? 'TRUE' : 'FALSE');
