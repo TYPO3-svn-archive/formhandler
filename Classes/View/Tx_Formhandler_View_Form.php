@@ -156,12 +156,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				}
 				foreach ($subpartsCodes as $subpart=>$code) {
 					$matchesSlave = array();
-					preg_match_all('/###' . $subpart . '([^#]*)###/', $this->template, $matchesSlave);
+					preg_match_all('/###' . $subpart . '(###|_([^#]*)###)/', $this->template, $matchesSlave);
 					if (!empty($matchesSlave[0])) {
 						foreach ($matchesSlave[0] as $key=>$markerName) {
-							$fieldName = $matchesSlave[1][$key];
+							$fieldName = $matchesSlave[2][$key];
 							if ($fieldName) {
-								$fieldName = substr($fieldName,1);
 								$markers = array(
 									'###fieldname###' => $fieldName,
 									'###formValuesPrefix###' => Tx_Formhandler_Globals::$formValuesPrefix
