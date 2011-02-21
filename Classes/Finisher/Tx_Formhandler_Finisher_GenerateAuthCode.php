@@ -55,7 +55,7 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $uidField . '=' . $uid);
 			if ($res) {
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-				$authCode = md5(serialize($row));
+				$authCode = $this->generateAuthCode($row);
 				$this->gp['generated_authCode'] = $authCode;
 
 				// looking for the page, which should be used for the authCode Link
@@ -77,7 +77,7 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 				if (!empty(Tx_Formhandler_Globals::$formValuesPrefix)) {
 					$paramsArray = array(Tx_Formhandler_Globals::$formValuesPrefix => $paramsArray);
 				}
-	
+
 				// create the link, using typolink function, use baseUrl if set, else use t3lib_div::getIndpEnv('TYPO3_SITE_URL')
 				$this->gp['authCodeUrl'] = '';
 				if (isset($GLOBALS['TSFE']->baseUrl)) {
@@ -89,5 +89,17 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 		}
 		return $this->gp;
 	}
+	
+	
+	/**
+	 * Return a hash value to send by email as an auth code.
+	 *
+	 * @param array The submitted form data
+	 * @return string The auth code
+	 */
+	protected function generateAuthCode($row) {
+		return md5(serialize($row));
+	}
+	
 }
 ?>
