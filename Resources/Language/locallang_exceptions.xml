@@ -9,6 +9,7 @@
 			<label index="no_config_confirmation">Missing config for %s! Please provide a '%s' either in the TypoScript configuration or in the Flexfom.</label>
 			<label index="no_pdf_template">No template for PDF found! Make sure subpart ###TEMPLATE_PDF### exists in your HTML template file!</label>
 			<label index="no_table">No table configured for %s!</label>
+			<label index="no_fields">No fields mapping configured for %s! Make sure the block "fields" is defined in TyposScript for this component!</label>
 			<label index="no_template">No template file found!</label>
 			<label index="no_template_file">No template file found. Check your TypoScript setup and/or your plugin settings and make sure you defined a template file!</label>
 			<label index="template_file_not_found">Template file "%s" not found!</label>
@@ -41,7 +42,7 @@ finishers {
 			<label index="missing_component">Il manque %s! Le Flexform contient '%s' mais la configuration TypoScript est incomplète. Ajouter: %s</label>
 			<label index="no_config_confirmation">Configuration manquante pour %s! Ajouter un '%s' soit dans la configuration TypoScript ou dans le Flexform.</label>
 			<label index="no_pdf_template">TRANSLAGE: No template for PDF found! Make sure subpart ###TEMPLATE_PDF### exists in your HTML template file!</label>
-			<label index="no_table">Pas de table configurée pour %s!</label>
+			<label index="no_fields">TRANSLATE: No fields mapping configured for %s! Make sure the block "fields" is defined in TyposScript for this component!</label>
 			<label index="no_template">TRANSLATE: No template file found!</label>
 			<label index="no_template_file">No template file found. Check your TypoScript setup and/or your plugin settings and make sure you defined a template file!</label>
 			<label index="template_file_not_found">Template file "%s" not found!</label>
@@ -57,6 +58,7 @@ finishers {
 			<label index="no_config_confirmation"><![CDATA[Fehlende Konfiguration für %s! Bitte geben Sie '%s' entweder in der TypoScript-Konfiguration oderr im Flexfom ein.]]></label>
 			<label index="no_pdf_template"><![CDATA[Kein Template für PDF gefunden! Bitte prüfen Sie ob der Subpart ###TEMPLATE_PDF### im HTML-Template existiert!]]></label>
 			<label index="no_table"><![CDATA[Keine Tabelle konfiguriert für %s!]]></label>
+			<label index="no_fields"><![CDATA[Kein Mapping konfiguriert für %s! Fügen Sie im TypoScript "fields" für diese Komponente hinzu]]></label>
 			<label index="no_template_file"><![CDATA[Keine Template-Datei gefunden. Überprüfen Sie die TypoScript-Konfiguration und/oder die Plugineinstellungen und vergewissern Sie sich, dass Sie eine Template-Datei angegeben haben!]]></label>
 			<label index="template_file_not_found"><![CDATA[Template-Datei "%s" nicht gefunden!]]></label>
 			<label index="empty_template_file"><![CDATA[Template-Datei "%s" ist leer!]]></label>

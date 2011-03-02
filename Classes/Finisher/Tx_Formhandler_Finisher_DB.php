@@ -237,8 +237,13 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 		//set table
 		$this->table = $this->settings['table'];
-		if (!$this->table || !is_array($this->settings['fields.'])) {
+		if (!$this->table) {
 			Tx_Formhandler_StaticFuncs::throwException('no_table', 'Tx_Formhandler_Finisher_DB');
+			return;
+		}
+		
+		if(!is_array($this->settings['fields.'])) {
+			Tx_Formhandler_StaticFuncs::throwException('no_fields', 'Tx_Formhandler_Finisher_DB');
 			return;
 		}
 
