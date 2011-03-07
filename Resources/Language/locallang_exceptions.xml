@@ -14,7 +14,7 @@
 			<label index="no_template_file">No template file found. Check your TypoScript setup and/or your plugin settings and make sure you defined a template file!</label>
 			<label index="template_file_not_found">Template file "%s" not found!</label>
 			<label index="empty_template_file">Template file "%s" is empty!</label>
-			<label index="invalid_template_file">Template file "%s" does not contain the subpart ###TEMPLATE_FORM1### and therefore is not a valid template!</label>
+			<label index="invalid_template_file">Template file "%s" does not contain a subpart ###TEMPLATE_ and therefore is not a valid template!</label>
 			<label index="classesarray_error"><![CDATA[
 				There is an error in your TypoScript setup! Make sure your setup for initInterceptors, finishers, validators, ... looks like this:<br />
 				<br /><pre>
@@ -47,7 +47,7 @@ finishers {
 			<label index="no_template_file">No template file found. Check your TypoScript setup and/or your plugin settings and make sure you defined a template file!</label>
 			<label index="template_file_not_found">Template file "%s" not found!</label>
 			<label index="empty_template_file">Template file "%s" is empty!</label>
-			<label index="invalid_template_file">Template file "%s" does not contain the subpart ###TEMPLATE_FORM1### and therefore is not a valid template!</label>
+			<label index="invalid_template_file">Template file "%s" does not contain a subpart ###TEMPLATE_ and therefore is not a valid template!</label>
 			<label index="spam_detected">TRANSLATE: Your request seems to be a spamming attempt, so it was blocked! This may have been a mistake by the system. Please try again!</label>
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -62,7 +62,7 @@ finishers {
 			<label index="no_template_file"><![CDATA[Keine Template-Datei gefunden. Überprüfen Sie die TypoScript-Konfiguration und/oder die Plugineinstellungen und vergewissern Sie sich, dass Sie eine Template-Datei angegeben haben!]]></label>
 			<label index="template_file_not_found"><![CDATA[Template-Datei "%s" nicht gefunden!]]></label>
 			<label index="empty_template_file"><![CDATA[Template-Datei "%s" ist leer!]]></label>
-			<label index="invalid_template_file"><![CDATA[Template-Datei "%s" beinhaltet den Subpart ###TEMPLATE_FORM1### nicht und ist daher keine valide Template-Datei!]]></label>
+			<label index="invalid_template_file"><![CDATA[Template-Datei "%s" beinhaltet keinen Subpart ###TEMPLATE_ und ist daher keine valide Template-Datei!]]></label>
 			<label index="no_template"><![CDATA[Keine Templatedatei gefunden!]]></label>
 			<label index="classesarray_error"><![CDATA[
 				Fehler im TypoScript Setup! Stellen Sie sicher, dass Ihr Setup für initInterceptors, finishers, validators, ... diesem Schema entspricht:<br />

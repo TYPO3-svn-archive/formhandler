@@ -251,17 +251,21 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		 */
 		if ($this->currentStep > $this->lastStep) {
 			$this->loadSettingsForStep($this->lastStep);
-			$this->parseConditions();
-			$this->view->setLangFiles($this->langFiles);
-			$this->view->setSettings($this->settings);
-			$this->setViewSubpart($this->currentStep);
 		} else {
 			$this->loadSettingsForStep($this->currentStep);
-			$this->parseConditions();
-			$this->view->setLangFiles($this->langFiles);
-			$this->view->setSettings($this->settings);
-			$this->setViewSubpart($this->currentStep);
 		}
+		
+		$this->parseConditions();
+		
+		//read template file
+		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
+		Tx_Formhandler_Globals::$templateCode = $this->templateFile;
+		$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
+		Tx_Formhandler_Globals::$langFiles = $this->langFiles;
+		
+		$this->view->setLangFiles($this->langFiles);
+		$this->view->setSettings($this->settings);
+		$this->setViewSubpart($this->currentStep);
 
 		//run init interceptors
 		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
@@ -436,8 +440,16 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	protected function processNotSubmitted() {
 		$this->loadSettingsForStep($this->currentStep);
 		$this->parseConditions();
-		$this->view->setLangFiles($this->langFiles);
+		
 		$this->view->setSettings($this->settings);
+		
+		//read template file
+		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
+		Tx_Formhandler_Globals::$templateCode = $this->templateFile;
+		$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
+		Tx_Formhandler_Globals::$langFiles = $this->langFiles;
+		
+		$this->view->setLangFiles($this->langFiles);
 		$this->setViewSubpart($this->currentStep);
 
 		//run preProcessors
@@ -868,9 +880,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		Tx_Formhandler_Session::set('debug', $this->debugMode);
 		$this->gp = Tx_Formhandler_Staticfuncs::getMergedGP();
 
-		//read template file
-		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
-
 		$randomID = $this->gp['randomID'];
 		if (!$randomID) {
 			$randomID = Tx_Formhandler_StaticFuncs::generateRandomID();
@@ -1165,7 +1174,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 			// set stylesheet
 			$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
-				'<link rel="stylesheet" href="' . Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($file) . '" type="text/css" media="screen" />';
+				'<link rel="stylesheet" href="' . Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($file) . '" type="text/css" media="screen" />' . "\n";
 		}
 	}
 
@@ -1189,7 +1198,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 			// set stylesheet
 			$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
-				'<script type="text/javascript" src="' . Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($file) . '"></script>';
+				'<script type="text/javascript" src="' . Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($file) . '"></script>' . "\n";
 		}
 	}
 

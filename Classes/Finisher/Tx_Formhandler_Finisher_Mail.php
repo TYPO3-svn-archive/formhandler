@@ -104,6 +104,13 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		$view->setPredefined($this->predefined);
 		$view->setComponentSettings($this->settings);
 		$templateCode = Tx_Formhandler_Globals::$templateCode;
+		if($this->settings['templateFile']) {
+			$templateCode = Tx_Formhandler_StaticFuncs::readTemplateFile(FALSE, $this->settings);
+		}
+		if($this->settings[$mode]['templateFile']) {
+			$templateCode = Tx_Formhandler_StaticFuncs::readTemplateFile(FALSE, $this->settings[$mode]);
+		}
+
 
 		$view->setTemplate($templateCode, ('EMAIL_' . strtoupper($mode) . '_' . strtoupper($suffix) . Tx_Formhandler_Globals::$templateSuffix));
 		if (!$view->hasTemplate()) {

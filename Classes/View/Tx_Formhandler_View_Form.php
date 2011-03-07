@@ -37,6 +37,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		//set template
 		$this->template = $this->subparts['template'];
+		if(!$this->template) {
+			Tx_Formhandler_StaticFuncs::throwException('no_template_file');
+		}
 
 		$this->errors = $errors;
 

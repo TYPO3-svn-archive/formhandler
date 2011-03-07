@@ -128,7 +128,7 @@ class Tx_Formhandler_StaticFuncs {
 		//template file was not set in flexform, search TypoScript for setting
 		if (!$templateFile) {
 			if (!$settings['templateFile']) {
-				Tx_Formhandler_StaticFuncs::throwException('no_template_file');
+				return '';
 			}
 			$templateFile = $settings['templateFile'];
 			if (isset($settings['templateFile.']) && is_array($settings['templateFile.'])) {
@@ -156,7 +156,7 @@ class Tx_Formhandler_StaticFuncs {
 		if (strlen($templateCode) === 0) {
 			Tx_Formhandler_StaticFuncs::throwException('empty_template_file', $templateFile);
 		}
-		if (stristr($templateCode, '###TEMPLATE_FORM1###') === FALSE) {
+		if (stristr($templateCode, '###TEMPLATE_') === FALSE) {
 			Tx_Formhandler_StaticFuncs::throwException('invalid_template_file', $templateFile);
 		}
 		return $templateCode;
@@ -565,6 +565,9 @@ class Tx_Formhandler_StaticFuncs {
 	 * @static
 	 */
 	static public function resolveRelPathFromSiteRoot($path) {
+		if(substr($path, 0, 7) === 'http://') {
+			return $path;
+		}
 		$path = explode('/', $path);
 		if (strpos($path[0], 'EXT') === 0) {
 			$parts = explode(':', $path[0]);
