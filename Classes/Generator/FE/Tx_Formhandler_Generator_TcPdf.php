@@ -10,6 +10,10 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 	public function process() {
 
 		$this->pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
+
+		$this->pdf->setHeaderText(Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'headerText'));
+		$this->pdf->setFooterText(Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'footerText'));
+
 		$this->pdf->AddPage();
 		$this->pdf->SetFont('Helvetica', '', 12);
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_PDF');
