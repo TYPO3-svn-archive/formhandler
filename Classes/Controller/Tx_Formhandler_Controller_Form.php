@@ -620,6 +620,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 									//move from temp folder to temp upload folder
 									move_uploaded_file($files['tmp_name'][$field], $uploadPath . $uploadedFileName);
+									t3lib_div::fixPermissions($uploadPath . $uploadedFileName);
 									$files['uploaded_name'][$field] = $uploadedFileName;
 
 									//set values for session

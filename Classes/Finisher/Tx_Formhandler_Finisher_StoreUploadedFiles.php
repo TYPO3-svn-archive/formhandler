@@ -92,6 +92,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 							)
 						);
 						copy(($file['uploaded_path'] . $file['uploaded_name']), ($uploadPath . $newFilename));
+						t3lib_div::fixPermissions($uploadPath . $newFilename);
 						unlink(($file['uploaded_path'] . $file['uploaded_name']));
 						$sessionFiles[$field][$key]['uploaded_path'] = $uploadPath;
 						$sessionFiles[$field][$key]['uploaded_name'] = $newFilename;
