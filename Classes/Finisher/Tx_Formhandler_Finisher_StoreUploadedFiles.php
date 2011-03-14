@@ -57,9 +57,8 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 	 *
 	 * TypoScript example:
 	 *
-	 * 1. Set the temporary upload folder and set cleaning
+	 * 1. Set the temporary upload folder
 	 * <code>
-	 * plugin.Tx_Formhandler.settings.files.clearTempFilesOlderThanHours = 24
 	 * plugin.Tx_Formhandler.settings.files.tmpUploadFolder = uploads/formhandler/tmp
 	 * </code>
 	 *
