@@ -148,6 +148,44 @@ abstract class Tx_Formhandler_AbstractController implements Tx_Formhandler_Contr
 			unset($settings['predef.'][$this->predefined]);
 			$settings = t3lib_div::array_merge_recursive_overrule($settings, $predefSettings);
 		}
+		
+		if($settings['packageConfig.']) {
+			$settings = $this->parsePackageConfig($settings);
+		}
+		return $settings;
+	}
+	
+	protected function parsePackageConfig($settings) {
+		if($settings['packageConfig.']['modules']) {
+			$modules = t3lib_div::trimExplode(',', $settings['packageConfig.']['modules']);
+			
+			$theme = $settings['packageConfig.']['theme'];
+			if(!$theme) {
+				$theme = 'default';
+			}
+			foreach($modules as $module) {
+				if(file_exists(t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/fileadmin/formkits/modules/' . $module)) {
+					if(is_array($GLOBALS['TSFE']->tmpl->setup['lib.']['formhandlerModules.'][$module . '.'])) {
+						$settings = $this->cObj->joinTSarrays($GLOBALS['TSFE']->tmpl->setup['lib.']['formhandlerModules.'][$module . '.'], $settings);
+					}
+					if(file_exists(t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/fileadmin/formkits/modules/' . $module . '/themes/' . $theme . '/css/styles.css')) {
+						$settings['cssFile.'][$module] = 'fileadmin/formkits/modules/' . $module . '/themes/' . $theme . '/css/styles.css';
+					} else {
+						$settings['cssFile.'][$module] = 'fileadmin/formkits/modules/' . $module . '/themes/default/css/styles.css';
+					}
+					
+					if(is_array($GLOBALS['TSFE']->tmpl->setup['lib.']['formhandlerModules.'][$module . '.']['additionalIncludePaths.'])) {
+						foreach($GLOBALS['TSFE']->tmpl->setup['lib.']['formhandlerModules.'][$module . '.']['additionalIncludePaths.'] as $path) {
+							Tx_Formhandler_Component_Manager::getInstance()->addIncludePath($path);
+						}
+					}
+					
+				} else {
+					Tx_Formhandler_StaticFuncs::throwException('Module ' . $module . ' not found!');
+				}
+			}
+		}
+		unset($settings['predef.']);
 		return $settings;
 	}
 }

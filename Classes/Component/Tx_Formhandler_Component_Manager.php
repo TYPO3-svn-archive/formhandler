@@ -32,6 +32,7 @@ class Tx_Formhandler_Component_Manager {
 
 	protected $classFiles;
 	protected $packagePath;
+	protected $parseAdditionalIncludePaths = TRUE;
 
 	protected $componentObjects = array(); // the object cache
 	protected $additionalIncludePaths = NULL;
@@ -301,19 +302,33 @@ class Tx_Formhandler_Component_Manager {
 				// Caches the $classFiles
 			if ($this->classFiles[$classNameParts[1]] === NULL || empty($this->classFiles[$classNameParts[1]])) {
 				$this->classFiles[$classNameParts[1]] = $this->buildArrayOfClassFiles($classNameParts[1]);
-				if (is_array($this->additionalIncludePaths)) {
-					foreach ($this->additionalIncludePaths as $idx => $dir) {
-						$temp = array();
-						$temp = $this->buildArrayOfClassFiles($dir);
-						$this->classFiles[$classNameParts[1]] = array_merge($temp, $this->classFiles[$classNameParts[1]]);
-					}
-				}
 			}
+			$this->runThroughAdditionalIncludePaths($classNameParts);
 			$classFilePathAndName = isset($this->classFiles[$classNameParts[1]][$className]) ? $this->classFiles[$classNameParts[1]][$className] : NULL;
 			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
 				require_once ($classFilePathAndName);
 			}
 		}
+
+	}
+	
+	protected function runThroughAdditionalIncludePaths($classNameParts) {
+		if (is_array($this->additionalIncludePaths) && $this->parseAdditionalIncludePaths) {
+			foreach ($this->additionalIncludePaths as $idx => $dir) {
+				$temp = array();
+				$temp = $this->buildArrayOfClassFiles($dir);
+				$this->classFiles[$classNameParts[1]] = array_merge($temp, $this->classFiles[$classNameParts[1]]);
+			}
+		}
+		$this->parseAdditionalIncludePaths = FALSE;
+	}
+	
+	public function addIncludePath($path) {
+		if(!is_array($this->additionalIncludePaths)) {
+			$this->additionalIncludePaths = array();
+		}
+		$this->parseAdditionalIncludePaths = TRUE;
+		$this->additionalIncludePaths[] = $path;
 	}
 
 	protected function getPackagePath($packageKey) {
