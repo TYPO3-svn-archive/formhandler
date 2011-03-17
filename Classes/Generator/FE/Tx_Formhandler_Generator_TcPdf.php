@@ -35,9 +35,14 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 			}
 		}
 
-		$this->formhandlerSettings = Tx_Formhandler_Globals::$settings;
-		$suffix = $this->formhandlerSettings['templateSuffix'];
-		$this->templateCode = Tx_Formhandler_StaticFuncs::readTemplateFile(FALSE, $this->formhandlerSettings);
+		if($this->settings['templateFile']) {
+			$this->templateCode = Tx_Formhandler_StaticFuncs::readTemplateFile(FALSE, $this->settings);
+		} else {
+			$this->formhandlerSettings = Tx_Formhandler_Globals::$settings;
+			$suffix = $this->formhandlerSettings['templateSuffix'];
+			$this->templateCode = Tx_Formhandler_StaticFuncs::readTemplateFile(FALSE, $this->formhandlerSettings);
+		}
+
 		if ($suffix) {
 			$view->setTemplate($this->templateCode, 'PDF' . $suffix);
 		}
