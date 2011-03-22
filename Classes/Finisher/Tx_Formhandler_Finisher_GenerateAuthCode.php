@@ -71,7 +71,7 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 				}
 
 				//create the parameter-array for the authCode Link
-				$paramsArray = array_merge($firstInsertInfo, array('authCode' => $authCode, 'submitted' => 1, 'step-2' => 1));
+				$paramsArray = array_merge($firstInsertInfo, array('authCode' => $authCode));
 
 				// If we have set a formValuesPrefix, add it to the parameter-array
 				if (!empty(Tx_Formhandler_Globals::$formValuesPrefix)) {
@@ -79,18 +79,17 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 				}
 
 				// create the link, using typolink function, use baseUrl if set, else use t3lib_div::getIndpEnv('TYPO3_SITE_URL')
-				$this->gp['authCodeUrl'] = '';
-				if (isset($GLOBALS['TSFE']->baseUrl)) {
-					$this->gp['authCodeUrl'] = $GLOBALS['TSFE']->baseUrl . $this->cObj->getTypoLink_URL($authCodePage, $paramsArray);
-				} else {
-					$this->gp['authCodeUrl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $this->cObj->getTypoLink_URL($authCodePage, $paramsArray);
+				$url = $this->cObj->getTypoLink_URL($authCodePage, $paramsArray);
+				$tmpArr = parse_url($url);
+				if (empty($tmpArr['scheme'])) {
+					$url = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . ltrim($url, '/');
 				}
+				$this->gp['authCodeUrl'] = $url;
 			}
 		}
 		return $this->gp;
 	}
-	
-	
+
 	/**
 	 * Return a hash value to send by email as an auth code.
 	 *
