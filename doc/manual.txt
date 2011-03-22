@@ -1386,6 +1386,16 @@ x.config.linkText
 String/cObj
 The text of the link
 Save
+x.config.footerText
+String/cObj
+The text to insert at the bottom of each PDF page. If this parameter is set, the standard footer text will not be inserted. You can use two special markers in the text:
+###PDF_PAGE_NUMBER### inserts the current page number.
+###PDF_TOTAL_PAGES### inserts the total page count
+
+x.config.headerText
+String/cObj
+The text to insert at the top of each PDF page. See x.config.footerText for a list of special markers.
+
 Generator_Csv
 
 Just enter the class name. No configuration required for this component.
@@ -2261,13 +2271,13 @@ Will result in
 
 Example for usage in conditions:
 
-3 {
-    conditions.OR1.AND1 = step-stepnumber-next|routeA
+3 { 
+    conditions.OR1.AND1 = step-stepnumber-next|routeA 
     isTrue { 
         1 { 
-            templateSuffix = _routeA
+            templateSuffix = _routeA 
         } 
-    }
+    } 
 }
 ###submit_prevStep###
 Use this in multi step forms to add a submit button pointing to the previous step.
@@ -2294,13 +2304,13 @@ Will result in
 
 Example for usage in conditions:
 
-3 {
-    conditions.OR1.AND1 = step-stepnumber-next|routeA
+3 { 
+    conditions.OR1.AND1 = step-stepnumber-next|routeA 
     isTrue { 
         1 { 
-            templateSuffix = _routeA
+            templateSuffix = _routeA 
         } 
-    }
+    } 
 }
 ###submit_reload###
 Use this for upload fields in your form. By clicking the button, the user can upload a file directly.
@@ -3133,43 +3143,39 @@ HTML:
 
 Upgrading the HTML from th_mailformplus to Formhandler is easier than you might think.
 Formhandler uses nearly the same markers and subparts as th_mailformplus.
-Compare these two HTML templates for a simple contact form.
+Have a look at this th_mailformplus HTML template for a simple contact form:
 
-th_mailformplus:
 <-- ###TEMPLATE_FORM### begin -->
 <div class="mailformplus_contactform">
 ###ERROR###
 <form name="contact_form" method="post" action="###REL_URL###">
-	<fieldset>
-		<legend>###LLL:legend###</legend>
-		<input type="hidden" name="id" value="###PID###" />
-		<input type="hidden" name="submitted" value="1" />
-		<input type="hidden" name="L" value="###value_L###" />
-		<input type="hidden" name="type" value="###value_type###" />
-		<div>
-			<label for="name">###LLL:name######required_name###</label>
-			<input type="text" name="name" id="name" value="###value_name###"/>
-			<br/>
-			<label for="subject">###LLL:subject###</label>
-			<input type="text" name="subject" id="subject" value="###value_subject###"/>
-			<br/>
-			<label for="email">###LLL:email######required_name###</label>
-			<input type="text" name="email" id="email" value="###value_email###"/>
-			<br/>
-			<label for="phone">###LLL:phone###</label>
-			<input type="text" name="phone" id="phone" value="###value_phone###"/>
-			<br/>
-			<label for="text">###LLL:text######required_name###</label>
-			<textarea cols="50" rows="5" name="text" id="text" style="width:320px;">###value_text###</textarea>
-			<br/>
-			<div class="caption">###LLL:contact_via###</div>
-			<input type="radio" name="contact_via" value="email" id="contact_email" style="border-style:none;" ###checked_contact_via_email### /><label class="radio_caption" for="contact_email">###LLL:contact_via_email###</label><br />
-			<input type="radio" name="contact_via" value="phone" id="contact_phone" style="border-style:none;" ###checked_contact_via_phone### /><label class="radio_caption" for="contact_phone">###LLL:contact_via_phone###</label>
-			<br/>
-			<p>###LLL:required_fields###</p>
-			<input type="submit" value="###LLL:submit###"/>
-		</div>
-	</fieldset>
+	<input type="hidden" name="id" value="###PID###" />
+	<input type="hidden" name="submitted" value="1" />
+	<input type="hidden" name="L" value="###value_L###" />
+	<input type="hidden" name="type" value="###value_type###" />
+	<div>
+		<label for="name">###LLL:name######required_name###</label>
+		<input type="text" name="name" id="name" value="###value_name###"/>
+		<br/>
+		<label for="subject">###LLL:subject###</label>
+		<input type="text" name="subject" id="subject" value="###value_subject###"/>
+		<br/>
+		<label for="email">###LLL:email######required_name###</label>
+		<input type="text" name="email" id="email" value="###value_email###"/>
+		<br/>
+		<label for="phone">###LLL:phone###</label>
+		<input type="text" name="phone" id="phone" value="###value_phone###"/>
+		<br/>
+		<label for="text">###LLL:text######required_name###</label>
+		<textarea cols="50" rows="5" name="text" id="text">###value_text###</textarea>
+		<br/>
+		<div class="caption">###LLL:contact_via###</div>
+		<input type="radio" name="contact_via" value="email" id="contact_email"  ###checked_contact_via_email### /><label for="contact_email">###LLL:contact_via_email###</label><br />
+		<input type="radio" name="contact_via" value="phone" id="contact_phone" ###checked_contact_via_phone### /><label for="contact_phone">###LLL:contact_via_phone###</label>
+		<br/>
+		<p>###LLL:required_fields###</p>
+		<input type="submit" value="###LLL:submit###"/>
+	</div>
 </form>
 </div>
 <!-- ###TEMPLATE_FORM### end -->
@@ -3178,6 +3184,7 @@ Now we take this template and make it compatible with Formhandler.
 The changes will be:
 Change subpart to ###TEMPLATE_FORM1###
 Add ###submit_nextStep### to submit button
+You can remove all the hidden fields on top of your form. Formhandler will add them for you automatically. If you want to control the position of the hidden fields, you can use the marker ###HIDDEN_FIELDS### in your template.
 
 No more changes are required. All other markers are exactly the same in Formhandler.
 ###value_[fieldname]###
