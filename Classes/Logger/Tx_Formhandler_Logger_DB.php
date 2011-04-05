@@ -39,7 +39,10 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		}
 		$fields['tstamp'] = time();
 		$fields['crdate'] = time();
-		$fields['pid'] = $GLOBALS['TSFE']->id;
+		$fields['pid'] = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'pid');
+		if (!$fields['pid']) {
+			$fields['pid'] = $GLOBALS['TSFE']->id;
+		}
 		ksort($this->gp);
 		$keys = array_keys($this->gp);
 		$serialized = serialize($this->gp);
