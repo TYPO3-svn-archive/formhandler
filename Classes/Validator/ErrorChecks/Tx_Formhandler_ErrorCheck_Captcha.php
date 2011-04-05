@@ -34,11 +34,19 @@ class Tx_Formhandler_ErrorCheck_Captcha extends Tx_Formhandler_AbstractErrorChec
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 
-			// get captcha sting
+		// get captcha sting
 		session_start();
-		$captchaStr = $_SESSION['tx_captcha_string'];
-		$_SESSION['tx_captcha_string'] = '';
-		if ($captchaStr != $gp[$name] || empty(trim($gp[$name]))) {
+
+		// make sure that an anticipated answer to the captcha actually exists
+		if ( isset( $_SESSION['tx_captcha_string'] ) && $_SESSION['tx_captcha_string'] > '' ) {
+			$captchaStr = $_SESSION['tx_captcha_string'];
+			$_SESSION['tx_captcha_string'] = '';
+
+			// make sure the answer given to the captcha is not empty
+			if ($captchaStr != $gp[$name] || empty(trim($gp[$name]))) {
+				$checkFailed = $this->getCheckFailed($check);
+			}
+		} else {
 			$checkFailed = $this->getCheckFailed($check);
 		}
 		return $checkFailed;
