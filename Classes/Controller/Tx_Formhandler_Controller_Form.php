@@ -1015,6 +1015,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					$submitted = TRUE;
 				}
 			}
+		} elseif (intval($this->settings['skipView']) === 1) {
+			$submitted = TRUE;
 		}
 		
 		return $submitted;
@@ -1029,17 +1031,20 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	protected function setViewSubpart($step) {
 		$this->finished = FALSE;
 
-		//search for ###TEMPLATE_FORM[step][suffix]###
-		if (strstr($this->templateFile, ('###TEMPLATE_FORM' . $step . $this->settings['templateSuffix'] . '###'))) {
+		if (intval($this->settings['skipView']) === 1) {
+			$this->finished = TRUE;
+		} elseif (strstr($this->templateFile, ('###TEMPLATE_FORM' . $step . $this->settings['templateSuffix'] . '###'))) {
+			
+			// search for ###TEMPLATE_FORM[step][suffix]###
 			Tx_Formhandler_StaticFuncs::debugMessage('using_subpart', array('###TEMPLATE_FORM' . $step . $this->settings['templateSuffix'] . '###'));
 			$this->view->setTemplate($this->templateFile, ('FORM' . $step . $this->settings['templateSuffix']));
-
-		//search for ###TEMPLATE_FORM[step]###
 		} elseif (!isset($this->settings['templateSuffix']) && strstr($this->templateFile, ('###TEMPLATE_FORM' . $step . '###'))) {
+			
+			//search for ###TEMPLATE_FORM[step]###
 			Tx_Formhandler_StaticFuncs::debugMessage('using_subpart', array('###TEMPLATE_FORM' . $step . '###'));
 			$this->view->setTemplate($this->templateFile, ('FORM' . $step));
 
-		} elseif (intval($step) === intval(Tx_Formhandler_Session::get('lastStep')) + 1) {
+		} elseif(intval($step) === intval(Tx_Formhandler_Session::get('lastStep')) + 1) {
 			$this->finished = TRUE;
 		}
 	}
