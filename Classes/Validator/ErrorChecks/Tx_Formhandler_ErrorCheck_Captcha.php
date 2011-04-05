@@ -38,7 +38,7 @@ class Tx_Formhandler_ErrorCheck_Captcha extends Tx_Formhandler_AbstractErrorChec
 		session_start();
 		$captchaStr = $_SESSION['tx_captcha_string'];
 		$_SESSION['tx_captcha_string'] = '';
-		if ($captchaStr != $gp[$name]) {
+		if ($captchaStr != $gp[$name] || empty(trim($gp[$name]))) {
 			$checkFailed = $this->getCheckFailed($check);
 		}
 		return $checkFailed;
