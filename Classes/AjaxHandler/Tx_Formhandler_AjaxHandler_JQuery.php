@@ -7,7 +7,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 	}
 
 	public function fillAjaxMarkers(&$markers) {
-		$settings = Tx_Formhandler_Session::get('settings');
+		$settings = Tx_Formhandler_Globals::$session->get('settings');
 		$initial = '';
 		if ($settings['ajax.']['config.']['initial']) {
 			$initial = Tx_Formhandler_StaticFuncs::getSingle($settings['ajax.']['config.'], 'initial');

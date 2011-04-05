@@ -15,8 +15,8 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 	protected function getDefaultLinkParams() {
 		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
 		$tempParams = array(
-			'tstamp' => Tx_Formhandler_Session::get('inserted_tstamp'),
-			'hash' => Tx_Formhandler_Session::get('key_hash')
+			'tstamp' => Tx_Formhandler_Globals::$session->get('inserted_tstamp'),
+			'hash' => Tx_Formhandler_Globals::$session->get('key_hash')
 		);
 		$params = array();
 		if ($prefix) {

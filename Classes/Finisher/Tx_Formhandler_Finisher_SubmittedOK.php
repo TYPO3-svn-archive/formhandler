@@ -59,7 +59,7 @@ class Tx_Formhandler_Finisher_SubmittedOK extends Tx_Formhandler_AbstractFinishe
 			}
 		}
 
-		$view->setSettings(Tx_Formhandler_Session::get('settings'));
+		$view->setSettings(Tx_Formhandler_Globals::$session->get('settings'));
 		$view->setComponentSettings($this->settings);
 		return $view->render($this->gp, array());
 	}

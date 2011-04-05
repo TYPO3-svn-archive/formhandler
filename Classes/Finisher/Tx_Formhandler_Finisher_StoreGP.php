@@ -63,7 +63,7 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 	protected function updateSession() {
 
 		//reset session
-		Tx_Formhandler_Session::set('values', array());
+		Tx_Formhandler_Globals::$session->set('values', array());
 		
 		$newValues = array();
 		
@@ -72,7 +72,7 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 		foreach ($this->gp as $key => $value) {
 			$newValues[1][$key] = $value;
 		}
-		Tx_Formhandler_Session::set('values', $newValues);
+		Tx_Formhandler_Globals::$session->set('values', $newValues);
 	}
 
 }

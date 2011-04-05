@@ -76,7 +76,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 		$newFolder = $this->settings['finishedUploadFolder'];
 		$newFolder = Tx_Formhandler_StaticFuncs::sanitizePath($newFolder);
 		$uploadPath = Tx_Formhandler_StaticFuncs::getDocumentRoot() . $newFolder;
-		$sessionFiles = Tx_Formhandler_Session::get('files');
+		$sessionFiles = Tx_Formhandler_Globals::$session->get('files');
 		if (is_array($sessionFiles) && !empty($sessionFiles) && strlen($newFolder) > 0 ) {
 			foreach ($sessionFiles as $field => $files) {
 				$this->gp[$field] = array();
@@ -104,7 +104,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 					}
 				}
 			}
-			Tx_Formhandler_Session::set('files', $sessionFiles);
+			Tx_Formhandler_Globals::$session->set('files', $sessionFiles);
 		}
 	}
 

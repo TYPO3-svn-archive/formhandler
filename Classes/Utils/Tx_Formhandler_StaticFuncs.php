@@ -600,11 +600,11 @@ class Tx_Formhandler_StaticFuncs {
 		$uploadFolder = '/uploads/formhandler/tmp/';
 
 		//if temp upload folder set in TypoScript, take that setting
-		$sessions = Tx_Formhandler_Session::get('settings');
-		if ($sessions['files.']['uploadFolder']) {
-			$uploadFolder = $sessions['files.']['uploadFolder'];
-			if ($sessions['files.']['uploadFolder.']) {
-				$uploadFolder = Tx_Formhandler_StaticFuncs::getSingle($sessions['files.'], 'uploadFolder');
+		$settings = Tx_Formhandler_Globals::$session->get('settings');
+		if ($settings['files.']['uploadFolder']) {
+			$uploadFolder = $settings['files.']['uploadFolder'];
+			if ($settings['files.']['uploadFolder.']) {
+				$uploadFolder = Tx_Formhandler_StaticFuncs::getSingle($settings['files.'], 'uploadFolder');
 			}
 			$uploadFolder = Tx_Formhandler_StaticFuncs::sanitizePath($uploadFolder);
 		}

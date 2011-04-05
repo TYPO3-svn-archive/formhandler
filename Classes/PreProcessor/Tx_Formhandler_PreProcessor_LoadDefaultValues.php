@@ -91,7 +91,7 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 	 */
 	private function loadDefaultValuesToSession($settings, $step){
 		if (is_array($settings) && $step) {
-			$values = Tx_Formhandler_Session::get('values');
+			$values = Tx_Formhandler_Globals::$session->get('values');
 			$arrKeys = array_keys($settings);
 			foreach ($arrKeys as $idx => $fieldName) {
 				$fieldName = preg_replace('/\.$/', '', $fieldName);
@@ -103,7 +103,7 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 					}
 				}
 			}
-			Tx_Formhandler_Session::set('values', $values);
+			Tx_Formhandler_Globals::$session->set('values', $values);
 		}
 	}
 }

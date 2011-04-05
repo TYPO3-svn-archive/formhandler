@@ -403,7 +403,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		} elseif ($settings[$key]) {
 			$files = t3lib_div::trimExplode(',', $settings[$key]);
 			$parsed = array();
-			$sessionFiles = Tx_Formhandler_Session::get('files');
+			$sessionFiles = Tx_Formhandler_Globals::$session->get('files');
 			foreach ($files as $idx => $file) {
 				if (isset($sessionFiles[$file])) {
 					foreach ($sessionFiles[$file] as $subIdx => $uploadedFile) {

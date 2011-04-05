@@ -129,7 +129,7 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 
 		session_start();
 		if (is_array($settings) && $step) {
-			$values = Tx_Formhandler_Session::get('values');
+			$values = Tx_Formhandler_Globals::$session->get('values');
 			$arrKeys = array_keys($settings);
 			foreach ($arrKeys as $idx => $fieldname) {
 
@@ -154,7 +154,7 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 					$values[$step][$fieldname] = Tx_Formhandler_StaticFuncs::getSingle($settings[$fieldname . '.'], 'postProcessing');
 				}
 			}
-			Tx_Formhandler_Session::set('values', $values);
+			Tx_Formhandler_Globals::$session->set('values', $values);
 		}
 	}
 

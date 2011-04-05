@@ -76,7 +76,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$this->substituteHasTranslationSubparts();
 		if (!$this->gp['submitted']) {
 			$this->storeStartEndBlock();
-		} elseif (intval(Tx_Formhandler_Session::get('currentStep')) !== 1) {
+		} elseif (intval(Tx_Formhandler_Globals::$session->get('currentStep')) !== 1) {
 			$this->fillStartEndBlock();
 		}
 
@@ -207,7 +207,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				$return = FALSE;
 			} elseif ($matches[6] == '!' && !$isset) {
 				$return = !$this->keyIsset($matches[7]);
-			} elseif (Tx_Formhandler_Session::get('debug')) {
+			} elseif (Tx_Formhandler_Globals::$session->get('debug')) {
 				Tx_Formhandler_StaticFuncs::debugMessage('invalid_isset', array($matches[2]), 2);
 			}
 		} else {
@@ -315,16 +315,16 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return void
 	 */
 	protected function storeStartEndBlock() {
-		$startblock = Tx_Formhandler_Session::get('startblock');
-		$endblock = Tx_Formhandler_Session::get('endblock');
+		$startblock = Tx_Formhandler_Globals::$session->get('startblock');
+		$endblock = Tx_Formhandler_Globals::$session->get('endblock');
 		if (empty($startblock)) {
 			$startblock = $this->cObj->getSubpart($this->template, '###FORM_STARTBLOCK###');
 		}
 		if (empty($endblock)) {
 			$endblock = $this->cObj->getSubpart($this->template, '###FORM_ENDBLOCK###');
 		}
-		Tx_Formhandler_Session::set('startblock', $startblock);
-		Tx_Formhandler_Session::set('endblock', $endblock);
+		Tx_Formhandler_Globals::$session->set('startblock', $startblock);
+		Tx_Formhandler_Globals::$session->set('endblock', $endblock);
 	}
 
 	/**
@@ -334,8 +334,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillStartEndBlock() {
 		$markers = array (
-			'###FORM_STARTBLOCK###' => Tx_Formhandler_Session::get('startblock'),
-			'###FORM_ENDBLOCK###' => Tx_Formhandler_Session::get('endblock')
+			'###FORM_STARTBLOCK###' => Tx_Formhandler_Globals::$session->get('startblock'),
+			'###FORM_ENDBLOCK###' => Tx_Formhandler_Globals::$session->get('endblock')
 		);
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
 	}
@@ -346,7 +346,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return array The settings
 	 */
 	protected function parseSettings() {
-		return Tx_Formhandler_Session::get('settings');
+		return Tx_Formhandler_Globals::$session->get('settings');
 	}
 
 	/**
@@ -451,13 +451,14 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers['###PID###'] = $markers['###pid###'];
 
 		// current step
-		$markers['###curStep###'] = Tx_Formhandler_Session::get('currentStep');
+		$currentStepFromSession = Tx_Formhandler_Globals::$session->get('currentStep');
+		$markers['###curStep###'] = $currentStepFromSession;
 
 		// maximum step/number of steps
-		$markers['###maxStep###'] = Tx_Formhandler_Session::get('totalSteps');
+		$markers['###maxStep###'] = Tx_Formhandler_Globals::$session->get('totalSteps');
 
 		// the last step shown
-		$markers['###lastStep###'] = Tx_Formhandler_Session::get('lastStep');
+		$markers['###lastStep###'] = Tx_Formhandler_Globals::$session->get('lastStep');
 
 		$name = 'step-';
 		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
@@ -469,12 +470,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		// submit name for next page
 		$nextName = ' name="' . str_replace('#action#', 'next', $name) . '" ';
-		$nextName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') + 1, $nextName);
+		$nextName = str_replace('#step#', $currentStepFromSession + 1, $nextName);
 		$markers['###submit_nextStep###'] = $nextName;
 
 		// submit name for previous page
 		$prevName = ' name="' . str_replace('#action#', 'prev', $name) . '" ';
-		$prevName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') - 1, $prevName);
+		$prevName = str_replace('#step#', $currentStepFromSession - 1, $prevName);
 		$markers['###submit_prevStep###'] = $prevName;
 		
 			// submits for next/prev steps with template suffix
@@ -482,7 +483,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		foreach($allNextSubmits[0] as $nextSubmitSuffix){
 			$nextSubmitSuffix = substr($nextSubmitSuffix, 19, -3);
 			$nextName = ' name="' . str_replace('#action#', 'next', $name) . '['. $nextSubmitSuffix .']" ';
-			$nextName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') + 1, $nextName);
+			$nextName = str_replace('#step#', $currentStepFromSession + 1, $nextName);
 			$markers['###submit_nextStep_'. $nextSubmitSuffix .'###'] = $nextName;
 		}
 
@@ -490,23 +491,23 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		foreach($allPrevSubmits[0] as $prevSubmitSuffix){
 			$prevSubmitSuffix = substr($prevSubmitSuffix, 19, -3);
 			$prevName = ' name="' . str_replace('#action#', 'prev', $name) . '['. $prevSubmitSuffix .']" ';
-			$prevName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') + 1, $prevName);
+			$prevName = str_replace('#step#', $currentStepFromSession + 1, $prevName);
 			$markers['###submit_prevStep_'. $prevSubmitSuffix .'###'] = $prevName;
 		}
 
 		// submit name for reloading the same page/step
 		$reloadName = ' name="' . str_replace('#action#', 'reload', $name) . '" ';
-		$reloadName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep'), $reloadName);
+		$reloadName = str_replace('#step#', $currentStepFromSession, $reloadName);
 		$markers['###submit_reload###'] = $reloadName;
 
 		// step bar
 		$prevName = str_replace('#action#', 'prev', $name);
-		$prevName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') - 1, $prevName);
+		$prevName = str_replace('#step#', $currentStepFromSession - 1, $prevName);
 		$nextName = str_replace('#action#', 'next', $name);
-		$nextName = str_replace('#step#', Tx_Formhandler_Session::get('currentStep') + 1, $nextName);
+		$nextName = str_replace('#step#', $currentStepFromSession + 1, $nextName);
 		$markers['###step_bar###'] = $this->createStepBar(
-			Tx_Formhandler_Session::get('currentStep'),
-			Tx_Formhandler_Session::get('totalSteps'),
+			$currentStepFromSession,
+			Tx_Formhandler_Globals::$session->get('totalSteps'),
 			$prevName,
 			$nextName
 		);
@@ -633,6 +634,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			}
 		}
 
+		$sessionFiles = Tx_Formhandler_Globals::$session->get('files');
+
 		//parse validation settings
 		if (is_array($settings['validators.'])) {
 			foreach ($settings['validators.'] as $key => $validatorSettings) {
@@ -657,10 +660,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 									case 'fileMaxCount':
 										$maxCount = $fieldSettings['errorCheck.'][$key . '.']['maxCount'];
 										$markers['###' . $replacedFieldname . '_maxCount###'] = $maxCount;
-										$files = Tx_Formhandler_Session::get('files');
-										$fileCount = count($files[str_replace( '.', '', $fieldname)]);
+										
+										$fileCount = count($sessionFiles[str_replace( '.', '', $fieldname)]);
 										$markers['###' . $replacedFieldname . '_fileCount###'] = $fileCount;
-											
+
 										$remaining = $maxCount - $fileCount;
 										$markers['###' . $replacedFieldname . '_remainingCount###'] = $remaining;
 										break;
@@ -682,7 +685,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				}
 			}
 		}
-		$sessionFiles = Tx_Formhandler_Session::get('files');
 		if (is_array($sessionFiles)) {
 			$singleWrap = $settings['singleFileMarkerTemplate.']['singleWrap'];
 			$totalMarkerSingleWrap = $settings['totalFilesMarkerTemplate.']['singleWrap'];
@@ -712,7 +714,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					if (Tx_Formhandler_Globals::$ajaxHandler && $settings['files.']['enableAjaxFileRemoval']) {
 						$link= Tx_Formhandler_Globals::$ajaxHandler->getFileRemovalLink($text, $field, $uploadedFileName);
 					} elseif ($settings['files.']['enableFileRemoval']) {
-						$submitName = 'step-' . Tx_Formhandler_Session::get('currentStep') . '-reload';
+						$submitName = 'step-' . Tx_Formhandler_Globals::$session->get('currentStep') . '-reload';
 						if (Tx_Formhandler_Globals::$formValuesPrefix) {
 							$submitName = Tx_Formhandler_Globals::$formValuesPrefix . '[' . $submitName . ']';
 						}

@@ -77,7 +77,6 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 				$controller = $setup['controller'];
 			}
 
-			//Tx_Formhandler_StaticFuncs::debugMessage('using_controller', $controller);
 			$controller = Tx_Formhandler_StaticFuncs::prepareClassName($controller);
 			$controller = $this->componentManager->getComponent($controller);
 
@@ -101,8 +100,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			$result .= '<div style="color:red; font-weight: bold">File: ' . $e->getFile() . '(' . $e->getLine() . ')</div>';
 			
 		}
-		$isDebug = Tx_Formhandler_Session::get('debug');
-		if ($isDebug) {
+		if (Tx_Formhandler_Globals::$session->get('debug')) {
 			foreach(Tx_Formhandler_Globals::$debuggers as $idx => $debugger) {
 				$debugger->outputDebugLog();
 			}

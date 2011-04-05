@@ -43,7 +43,7 @@ class Tx_Formhandler_Finisher_Redirect extends Tx_Formhandler_AbstractFinisher {
 		if (!isset($redirectPage)) {
 			return $this->gp;
 		}
-		Tx_Formhandler_Session::reset();
+		Tx_Formhandler_Globals::$session->reset();
 		Tx_Formhandler_Staticfuncs::doRedirect($redirectPage, $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
 		exit();
 	}

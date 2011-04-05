@@ -1,22 +1,9 @@
 <?php
 
-class Tx_Formhandler_Session {
+class Tx_Formhandler_Session_PHP extends Tx_Formhandler_AbstractSession {
 
-	static protected $started = FALSE;
-
-	static protected function start() {
-
-		if (!self::$started) {
-			$current_session_id = session_id();
-			if (empty($current_session_id)) {
-				session_start();
-			}
-			self::$started = TRUE;
-		}
-	}
-
-	static public function set($key, $value) {
-		self::start();
+	public function set($key, $value) {
+		$this->start();
 		$data = $_SESSION['formhandler'];
 		if (!is_array($data[Tx_Formhandler_Globals::$randomID])) {
 			$data[Tx_Formhandler_Globals::$randomID] = array();
@@ -25,8 +12,8 @@ class Tx_Formhandler_Session {
 		$_SESSION['formhandler'] = $data;
 	}
 
-	static public function get($key) {
-		self::start();
+	public function get($key) {
+		$this->start();
 		$data = $_SESSION['formhandler'];
 		if (!is_array($data[Tx_Formhandler_Globals::$randomID])) {
 			$data[Tx_Formhandler_Globals::$randomID] = array();
@@ -34,16 +21,17 @@ class Tx_Formhandler_Session {
 		return $data[Tx_Formhandler_Globals::$randomID][$key];
 	}
 
-	static public function sessionExists() {
-		self::start();
-		$data = $data = $_SESSION['formhandler'];
+	public function exists() {
+		$this->start();
+		$data = $_SESSION['formhandler'];
 		return is_array($data[Tx_Formhandler_Globals::$randomID]);
 	}
 
-	static public function reset() {
-		self::start();
+	public function reset() {
+		$this->start();
 		unset($_SESSION['formhandler'][Tx_Formhandler_Globals::$randomID]);
 	}
+
 }
 
 ?>

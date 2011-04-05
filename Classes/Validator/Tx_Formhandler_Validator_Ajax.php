@@ -36,11 +36,10 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 	 */
 	public function validateAjax($field, $value) {
 
-		$ts = Tx_Formhandler_Session::get('settings');
 		$errors = array();
 		$found = FALSE;
 
-		$this->loadConfig($ts);
+		$this->loadConfig();
 		if (is_array($this->settings['fieldConf.'])) {
 			$disableErrorCheckFields = array();
 			if (isset($this->settings['disableErrorCheckFields'])) {
@@ -121,7 +120,16 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 		}
 	}
 
-	public function loadConfig($tsConfig) {
+	public function loadConfig() {
+		if(!Tx_Formhandler_Globals::$session) {
+			$ts = $GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.'];
+			$sessionClass = 'Tx_Formhandler_Session_PHP';
+			if($ts['session.']) {
+				$sessionClass = Tx_Formhandler_StaticFuncs::prepareClassName($ts['session.']['class']);
+			}
+			Tx_Formhandler_Globals::$session = $this->componentManager->getComponent($sessionClass);
+		}
+		$tsConfig = Tx_Formhandler_Globals::$session->get('settings');
 		$this->settings = array();
 		if ($tsConfig['validators.']) {
 			foreach ($tsConfig['validators.'] as $idx => $settings) {

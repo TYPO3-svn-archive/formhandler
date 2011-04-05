@@ -1,9 +1,9 @@
 <?php
 
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Session.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_StaticFuncs.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
+
 class Tx_Formhandler_Utils_AjaxRemoveFile {
 
 	public function main() {
@@ -11,7 +11,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		$content = '';
 
 		if ($this->fieldName) {
-			$sessionFiles = Tx_Formhandler_Session::get('files');
+			$sessionFiles = Tx_Formhandler_Globals::$session->get('files');
 			if (is_array($sessionFiles)) {
 				foreach ($sessionFiles as $field => $files) {
 
@@ -35,7 +35,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 				}
 			}
 
-			Tx_Formhandler_Session::set('files', $sessionFiles);
+			Tx_Formhandler_Globals::$session->set('files', $sessionFiles);
 
 			// Add the content to or Result Box: #formResult
 			if (is_array($sessionFiles)) {
@@ -59,7 +59,17 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		Tx_Formhandler_Globals::$cObj = $GLOBALS['TSFE']->cObj;
 		$randomID = t3lib_div::_GP('randomID');
 		Tx_Formhandler_Globals::$randomID = $randomID;
-		$this->settings = Tx_Formhandler_Session::get('settings');
+		
+		if(!Tx_Formhandler_Globals::$session) {
+			$ts = $GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.'];
+			$sessionClass = 'Tx_Formhandler_Session_PHP';
+			if($ts['session.']) {
+				$sessionClass = Tx_Formhandler_StaticFuncs::prepareClassName($ts['session.']['class']);
+			}
+			Tx_Formhandler_Globals::$session = $this->componentManager->getComponent($sessionClass);
+		}
+		
+		$this->settings = Tx_Formhandler_Globals::$session->get('settings');
 
 		//init ajax
 		if ($this->settings['ajax.']) {
