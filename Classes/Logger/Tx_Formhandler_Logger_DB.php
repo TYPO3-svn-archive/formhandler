@@ -62,7 +62,7 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 			'inserted_tstamp' => $fields['tstamp'],
 			'key_hash' => $hash
 		);
-		Tx_Formhandler_Globals::$session->setMultiple($values);
+		Tx_Formhandler_Globals::$session->setMultiple($sessionValues);
 		if (!$this->settings['nodebug']) {
 			Tx_Formhandler_StaticFuncs::debugMessage('logging', array($table, implode(',', $fields)));
 			if (strlen($GLOBALS['TYPO3_DB']->sql_error()) > 0) {
