@@ -12,6 +12,22 @@ class Tx_Formhandler_Session_TYPO3 extends Tx_Formhandler_AbstractSession {
 		$GLOBALS['TSFE']->fe_user->storeSessionData();
 	}
 
+	public function setMultiple($values) {
+		if(is_array($values) && !empty($values)) {
+			$data = $GLOBALS['TSFE']->fe_user->getKey('ses', 'formhandler');
+			if (!is_array($data[Tx_Formhandler_Globals::$randomID])) {
+				$data[Tx_Formhandler_Globals::$randomID] = array();
+			}
+
+			foreach($values as $key => $value) {
+				$data[Tx_Formhandler_Globals::$randomID][$key] = $value;
+			}
+
+			$GLOBALS['TSFE']->fe_user->setKey('ses', 'formhandler', $data);
+			$GLOBALS['TSFE']->fe_user->storeSessionData();
+		}
+	}
+
 	public function get($key) {
 		$data = $GLOBALS['TSFE']->fe_user->getKey('ses', 'formhandler');
 		if (!is_array($data[Tx_Formhandler_Globals::$randomID])) {

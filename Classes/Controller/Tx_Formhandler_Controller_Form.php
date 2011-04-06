@@ -680,16 +680,19 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	}
 
 	protected function reset() {
-		Tx_Formhandler_Globals::$session->set('values', NULL);
-		Tx_Formhandler_Globals::$session->set('files', NULL);
-		Tx_Formhandler_Globals::$session->set('lastStep', NULL);
-		Tx_Formhandler_Globals::$session->set('startblock', NULL);
-		Tx_Formhandler_Globals::$session->set('endblock', NULL);
-		Tx_Formhandler_Globals::$session->set('currentStep', 1);
-		Tx_Formhandler_Globals::$session->set('inserted_uid', NULL);
-		Tx_Formhandler_Globals::$session->set('inserted_tstamp', NULL);
-		Tx_Formhandler_Globals::$session->set('key_hash', NULL);
-		Tx_Formhandler_Globals::$session->set('finished', NULL);
+		$values = array (
+			'values' => NULL,
+			'files' => NULL,
+			'lastStep' => NULL,
+			'currentStep' => 1,
+			'startblock' => NULL,
+			'endblock' => NULL,
+			'inserted_uid' => NULL,
+			'inserted_tstamp' => NULL,
+			'key_hash' => NULL,
+			'finished' => NULL
+		);
+		Tx_Formhandler_Globals::$session->setMultiple($values);
 		$this->gp = array();
 		$this->currentStep = 1;
 		Tx_Formhandler_Globals::$gp = $this->gp;
@@ -1057,13 +1060,16 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	}
 
 	protected function storeSettingsInSession() {
-		Tx_Formhandler_Globals::$session->set('formValuesPrefix', $this->formValuesPrefix);
-		Tx_Formhandler_Globals::$session->set('settings', $this->settings);
-		Tx_Formhandler_Globals::$session->set('debug', $this->debugMode);
-		Tx_Formhandler_Globals::$session->set('currentStep', $this->currentStep);
-		Tx_Formhandler_Globals::$session->set('totalSteps', $this->totalSteps);
-		Tx_Formhandler_Globals::$session->set('lastStep', $this->lastStep);
-		Tx_Formhandler_Globals::$session->set('templateSuffix', $this->settings['templateSuffix']);
+		$values = array (
+			'formValuesPrefix' => $this->formValuesPrefix,
+			'settings' => $this->settings,
+			'debug' => $this->debugMode,
+			'currentStep' => $this->currentStep,
+			'totalSteps' => $this->totalSteps,
+			'lastStep' => $this->lastStep,
+			'templateSuffix' => $this->settings['templateSuffix']
+		);
+		Tx_Formhandler_Globals::$session->setMultiple($values);
 		
 		Tx_Formhandler_Globals::$formValuesPrefix = $this->formValuesPrefix;
 		Tx_Formhandler_Globals::$templateSuffix = $this->settings['templateSuffix'];

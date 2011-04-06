@@ -16,6 +16,8 @@ abstract class Tx_Formhandler_AbstractSession {
 
 	abstract public function set($key, $value);
 
+	abstract public function setMultiple($values);
+
 	abstract public function get($key);
 
 	abstract public function exists();

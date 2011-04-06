@@ -62,9 +62,6 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function updateSession() {
 
-		//reset session
-		Tx_Formhandler_Globals::$session->set('values', array());
-		
 		$newValues = array();
 		
 		//set the variables in session

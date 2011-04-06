@@ -323,8 +323,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if (empty($endblock)) {
 			$endblock = $this->cObj->getSubpart($this->template, '###FORM_ENDBLOCK###');
 		}
-		Tx_Formhandler_Globals::$session->set('startblock', $startblock);
-		Tx_Formhandler_Globals::$session->set('endblock', $endblock);
+		Tx_Formhandler_Globals::$session->setMultiple(array ('startblock' => $startblock, 'endblock', $endblock));
 	}
 
 	/**
