@@ -58,7 +58,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return string
 	 */
 	static public function prepareClassName($className) {
-		if (!preg_match('/^Tx_/', $className)) {
+		if (substr($className, 0, 3) !== 'Tx_') {
 			$className = 'Tx_Formhandler_' . $className;
 		}
 		return $className;

@@ -1092,7 +1092,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->lastStep = Tx_Formhandler_Globals::$session->get('currentStep');
 		if (!$this->lastStep) {
 			$this->lastStep = 1;
-			
 		}
 
 		//total steps
