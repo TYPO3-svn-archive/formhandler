@@ -286,10 +286,8 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		foreach ($mailSettings['to_email'] as $idx => $mailto) {
 			$sent = FALSE;
 			if ($count < $max) {
-				if (FALSE === strpos($mailto, '@')) {
-					if ($doSend) {
-						$sent = $emailObj->send($mailto);
-					}
+				if (strpos($mailto, '@') && $doSend) {
+					$sent = $emailObj->send($mailto);
 				}
 				$count++;
 			}
