@@ -2,6 +2,157 @@
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+---------------------------- Version 0.9.13 ----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+r46261 | reinhardfuehricht | 2011-04-06 10:05:31 +0200 (Mit, 06. Apr 2011) | 1 Zeile
+
+Corrected error in Finisher_Mail
+------------------------------------------------------------------------
+r46260 | reinhardfuehricht | 2011-04-06 10:01:12 +0200 (Mit, 06. Apr 2011) | 1 Zeile
+
+Replaced preg_match where it is not necessary
+------------------------------------------------------------------------
+r46259 | reinhardfuehricht | 2011-04-06 09:52:14 +0200 (Mit, 06. Apr 2011) | 1 Zeile
+
+Corrected typo in Logger_DB
+------------------------------------------------------------------------
+r46258 | reinhardfuehricht | 2011-04-06 09:44:26 +0200 (Mit, 06. Apr 2011) | 1 Zeile
+
+New Method for Session classes: setMultiple. This way multiple values can be stored at once, which should slightly increase performance.
+------------------------------------------------------------------------
+r46257 | reinhardfuehricht | 2011-04-06 09:30:28 +0200 (Mit, 06. Apr 2011) | 1 Zeile
+
+Reset session in Interceptor_AntiSpamFormTime after SPAM is detected (fixes #13163)
+------------------------------------------------------------------------
+r46245 | reinhardfuehricht | 2011-04-05 17:27:29 +0200 (Die, 05. Apr 2011) | 1 Zeile
+
+Follow-Up: Prevent race condition in captcha validation
+------------------------------------------------------------------------
+r46244 | reinhardfuehricht | 2011-04-05 17:24:39 +0200 (Die, 05. Apr 2011) | 1 Zeile
+
+Prevent race condition in captcha validation
+------------------------------------------------------------------------
+r46243 | reinhardfuehricht | 2011-04-05 17:17:49 +0200 (Die, 05. Apr 2011) | 1 Zeile
+
+New Component "Session" to write your own session storage.
+------------------------------------------------------------------------
+r46237 | reinhardfuehricht | 2011-04-05 16:46:34 +0200 (Die, 05. Apr 2011) | 1 Zeile
+
+Make pid for Logger_DB configurable (fixes #25756)
+------------------------------------------------------------------------
+r46236 | reinhardfuehricht | 2011-04-05 16:43:45 +0200 (Die, 05. Apr 2011) | 1 Zeile
+
+New TS setting skipView = 1 lets you skip the view and jump right to the finishing tasks
+------------------------------------------------------------------------
+r45470 | reinhardfuehricht | 2011-03-22 18:40:12 +0100 (Die, 22. Mär 2011) | 1 Zeile
+
+Text changes in the How to upgrade from th_mailformplus in the manual (fixes #13092)
+------------------------------------------------------------------------
+r45455 | reinhardfuehricht | 2011-03-22 17:01:41 +0100 (Die, 22. Mär 2011) | 1 Zeile
+
+Fixed generation of authCodeUrl in Finisher_GenerateAuthCode to work without baseUrl (fixes #13927)
+------------------------------------------------------------------------
+r45108 | reinhardfuehricht | 2011-03-16 09:51:23 +0100 (Mit, 16. Mär 2011) | 1 Zeile
+
+Overwrite automatically added classes like Interceptor_Filtreatment using either Tx_Formhandler_Interceptor_Filtreatment in your TS setup or Interceptor_Filtreatment (#13780)
+------------------------------------------------------------------------
+r45014 | erep | 2011-03-14 14:09:26 +0100 (Mon, 14. Mär 2011) | 1 Zeile
+
+- Removed outdated comment
+------------------------------------------------------------------------
+r45013 | erep | 2011-03-14 12:19:54 +0100 (Mon, 14. Mär 2011) | 1 Zeile
+
+Fixed uploaded files have wrong permissions (fixes #13817)
+------------------------------------------------------------------------
+r44984 | mabolek | 2011-03-13 14:35:12 +0100 (Son, 13. Mär 2011) | 1 Zeile
+
+Feature #13587 TS configurable Header and Footer in Generator_TcPdf
+------------------------------------------------------------------------
+r44738 | reinhardfuehricht | 2011-03-07 17:44:07 +0100 (Mon, 07. Mär 2011) | 1 Zeile
+
+- Added ability to use a separate template for each step and the different mail modes. PDF and SUBMITTED_OK will follow
+------------------------------------------------------------------------
+r44503 | reinhardfuehricht | 2011-03-02 17:44:43 +0100 (Mit, 02. Mär 2011) | 1 Zeile
+
+- New exception message if Finisher_DB has insufficient config
+------------------------------------------------------------------------
+r43933 | reinhardfuehricht | 2011-02-21 11:09:19 +0100 (Mon, 21. Feb 2011) | 1 Zeile
+
+Follow-Up for #12751: Debuggers didn't work because they weren't initialized.
+------------------------------------------------------------------------
+r43932 | reinhardfuehricht | 2011-02-21 10:38:03 +0100 (Mon, 21. Feb 2011) | 1 Zeile
+
+Moved auth code generation in Finisher_GenerateAuthCode to a separate function (fixes #13080).
+------------------------------------------------------------------------
+r43851 | reinhardfuehricht | 2011-02-18 18:19:43 +0100 (Fre, 18. Feb 2011) | 1 Zeile
+
+Added undefined variable $langFiles to Controller_Form
+------------------------------------------------------------------------
+r43840 | reinhardfuehricht | 2011-02-18 17:21:26 +0100 (Fre, 18. Feb 2011) | 1 Zeile
+
+New feature: Use markers like ###submit_nextStep_suffix### to pass a special suffix value via the submit button (fixes #11663)
+------------------------------------------------------------------------
+r43837 | reinhardfuehricht | 2011-02-18 16:46:46 +0100 (Fre, 18. Feb 2011) | 1 Zeile
+
+New component: Debuggers (fixes #12751)
+------------------------------------------------------------------------
+r43827 | reinhardfuehricht | 2011-02-18 16:08:37 +0100 (Fre, 18. Feb 2011) | 1 Zeile
+
+Changed regular expression for replacement of master template markers (fixes #13165)
+------------------------------------------------------------------------
+r43637 | reinhardfuehricht | 2011-02-15 16:13:14 +0100 (Die, 15. Feb 2011) | 1 Zeile
+
+Additional fixes in handling of checkboxes (fixes #12943)
+------------------------------------------------------------------------
+r43465 | reinhardfuehricht | 2011-02-11 14:23:45 +0100 (Fre, 11. Feb 2011) | 1 Zeile
+
+Added the full manual.sxw to SVN again (fixes #12975)
+------------------------------------------------------------------------
+r43458 | reinhardfuehricht | 2011-02-11 12:15:43 +0100 (Fre, 11. Feb 2011) | 1 Zeile
+
+Documentation update (fixes #12937, #12936, #12763, #12762, #12737, #12674)
+------------------------------------------------------------------------
+r43454 | reinhardfuehricht | 2011-02-11 11:54:54 +0100 (Fre, 11. Feb 2011) | 1 Zeile
+
+Fixed storing of checkbox values (fixes #12943)
+------------------------------------------------------------------------
+r43453 | reinhardfuehricht | 2011-02-11 11:44:17 +0100 (Fre, 11. Feb 2011) | 1 Zeile
+
+Small security tweak for URL of Generators.
+------------------------------------------------------------------------
+r43452 | reinhardfuehricht | 2011-02-11 11:32:43 +0100 (Fre, 11. Feb 2011) | 3 Zeilen
+
+Removed unneeded condition for GP parameter "dontReset" (fixes #12755)
+Fixed PDF output using WebkitPDF
+
+------------------------------------------------------------------------
+r43451 | reinhardfuehricht | 2011-02-11 10:57:14 +0100 (Fre, 11. Feb 2011) | 1 Zeile
+
+Error checks isInDBTable and isNotInDBTable will show an occurring SQL error in debug mode now (fixes #12764)
+------------------------------------------------------------------------
+r43448 | reinhardfuehricht | 2011-02-11 10:33:50 +0100 (Fre, 11. Feb 2011) | 1 Zeile
+
+Changed a header('location ...') call to use StaticFuncs::doRedirect (fixes #12925)
+------------------------------------------------------------------------
+r43035 | reinhardfuehricht | 2011-02-03 14:52:44 +0100 (Don, 03. Feb 2011) | 1 Zeile
+
+Changed labels containing "$s" instead of "%s" (fixes #12757)
+------------------------------------------------------------------------
+r43028 | reinhardfuehricht | 2011-02-03 14:37:30 +0100 (Don, 03. Feb 2011) | 1 Zeile
+
+Added docblock for AbstractComponent (fixes #12736)
+------------------------------------------------------------------------
+r43027 | reinhardfuehricht | 2011-02-03 14:35:36 +0100 (Don, 03. Feb 2011) | 1 Zeile
+
+Version number and changelog update due to TER update
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 ---------------------------- Version 0.9.12 ----------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
