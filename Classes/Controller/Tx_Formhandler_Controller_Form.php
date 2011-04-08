@@ -882,7 +882,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		Tx_Formhandler_Globals::$formValuesPrefix = $this->formValuesPrefix;
 
 		//set debug mode
-		$this->debugMode = (intval($this->settings['debug']) === 1);
+		$isDebugMode = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'debug');
+		$this->debugMode = (intval($isDebugMode) === 1);
 
 		$sessionClass = 'Tx_Formhandler_Session_PHP';
 		if($this->settings['session.']) {
