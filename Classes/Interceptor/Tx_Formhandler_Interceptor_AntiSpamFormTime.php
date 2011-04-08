@@ -48,7 +48,7 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 			$this->log(TRUE);
 			if ($this->settings['redirectPage']) {
 				Tx_Formhandler_Globals::$session->reset();
-				Tx_Formhandler_Staticfuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl']);
+				Tx_Formhandler_Staticfuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
 				return 'Lousy spammer!';
 			} else {
 				$view = $this->componentManager->getComponent('Tx_Formhandler_View_AntiSpam');

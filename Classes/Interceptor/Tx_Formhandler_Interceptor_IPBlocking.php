@@ -139,7 +139,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($this->settings['redirectPage']) {
-				Tx_Formhandler_StaticFuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl']);
+				Tx_Formhandler_StaticFuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
 				Tx_Formhandler_StaticFuncs::debugMessage('redirect_failed', array(), 2);
 				exit(0);
 			} else {
