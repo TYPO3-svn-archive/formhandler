@@ -87,9 +87,9 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 
 	protected function getLinkText() {
 		$config = $this->readWebkitPdfConf();
-		$text = 'Save as PDF';
-		if ($config['linkText']) {
-			$text = Tx_Formhandler_StaticFuncs::getSingle($config, 'linkText');
+		$text = Tx_Formhandler_StaticFuncs::getSingle($config, 'linkText');
+		if (strlen($text) === 0) {
+			$text = 'Save as PDF';
 		}
 		return $text;
 	}

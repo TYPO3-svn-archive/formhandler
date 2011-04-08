@@ -249,7 +249,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 		//set primary key field
 		$this->key = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'key');
-		if (!$this->key) {
+		if (strlen($this->key) === 0) {
 			$this->key = 'uid';
 		}
 
@@ -279,9 +279,9 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 					$mapping = $fieldname;
 				}
 
-				$fieldValue = $this->gp[$mapping];
-				if ($options['mapping.']) {
-					$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'mapping');
+				$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'mapping');
+				if(strlen($fieldValue) === 0) {
+					$fieldValue = $this->gp[$mapping];
 				}
 
 				//pre process the field value. e.g. to format a date

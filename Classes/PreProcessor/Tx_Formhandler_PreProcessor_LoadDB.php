@@ -166,9 +166,8 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 	 * @param int $step
 	 */
 	protected function loadDB($settings) {
-		if (Tx_Formhandler_StaticFuncs::getSingle($settings, 'selectFields')) {
-			$selectFields = Tx_Formhandler_StaticFuncs::getSingle($settings, 'selectFields');
-		} else {
+		$selectFields = Tx_Formhandler_StaticFuncs::getSingle($settings, 'selectFields');
+		if(strlen($selectFields) === 0) {
 			$selectFields = '*';
 		}
 

@@ -30,17 +30,17 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 	abstract protected function getComponentLinkParams($linkGP);
 	
 	protected function getLinkText() {
-		$text = 'Save';
-		if ($this->settings['linkText']) {
-			$text = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'linkText');
+		$text = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'linkText');
+		if(strlen($text) === 0) {
+			$text = 'Save';
 		}
 		return $text;
 	}
 
 	protected function getLinkTarget() {
-		$target = '_self';
-		if ($this->settings['linkTarget']) {
-			$target = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'linkTarget');
+		$target = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'linkTarget');
+		if(strlen($target) === 0) {
+			$target = '_self';
 		}
 		return $target;
 	}

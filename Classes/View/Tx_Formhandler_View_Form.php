@@ -671,9 +671,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 										$markers['###' . $replacedFieldname . '_minCount###'] = $minCount;
 										break;
 									case 'required':case 'fileRequired':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathguard':
-										$requiredSign = '*';
-										if (isset($settings['requiredSign'])) {
-											$requiredSign = Tx_Formhandler_StaticFuncs::getSingle($settings, 'requiredSign');
+										$requiredSign = Tx_Formhandler_StaticFuncs::getSingle($settings, 'requiredSign');
+										if(strlen($requiredSign) === 0) {
+											$requiredSign = '*';
 										}
 										$markers['###required_' . $replacedFieldname . '###'] = $requiredSign;
 										break;
@@ -697,13 +697,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
 					}
-					$text = 'X';
-					if ($settings['files.']['customRemovalText']) {
-						if ($settings['files.']['customRemovalText.']) {
-							$text = Tx_Formhandler_StaticFuncs::getSingle($settings['files.'], 'customRemovalText');
-						} else {
-							$text = $settings['files.']['customRemovalText'];
- 						}
+					$text = Tx_Formhandler_StaticFuncs::getSingle($settings['files.'], 'customRemovalText');
+					if(strlen($text) === 0) {
+						$text = 'X';
 					}
 					$link = '';
 					$uploadedFileName = $fileInfo['uploaded_name'];
@@ -796,9 +792,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers['###total_uploadedfiles###'] = $markers['###total_uploadedFiles###'];
 		}
 
-		$requiredSign = '*';
-		if (isset($settings['requiredSign'])) {
-			$requiredSign = Tx_Formhandler_StaticFuncs::getSingle($settings, 'requiredSign');
+		$requiredSign = Tx_Formhandler_StaticFuncs::getSingle($settings, 'requiredSign');
+		if (strlen($requiredSign) === 0) {
+			$requiredSign = '*';
 		}
 		$markers['###required###'] = $requiredSign;
 		$markers['###REQUIRED###'] = $markers['###required###'];
@@ -836,30 +832,18 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers = array();
 		foreach ($errors as $field => $types) {
 			if ($this->settings['isErrorMarker.'][$field]) {
-				if ($this->settings['isErrorMarker.'][$field . '.']) {
-					$errorMessage = Tx_Formhandler_StaticFuncs::getSingle($this->settings['isErrorMarker.'], $field);
-				} else {
-					$errorMessage = $this->settings['isErrorMarker.'][$field];
-				}
+				$errorMessage = Tx_Formhandler_StaticFuncs::getSingle($this->settings['isErrorMarker.'], $field);
 			} elseif (strlen($temp = trim(Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'is_error_' . $field))) > 0) {
 				$errorMessage = $temp;
 			} elseif ($this->settings['isErrorMarker.']['default']) {
-				if ($this->settings['isErrorMarker.']['default.']) {
-					$errorMessage = Tx_Formhandler_StaticFuncs::getSingle($this->settings['isErrorMarker.'], 'default');
-				} else {
-					$errorMessage = $this->settings['isErrorMarker.']['default'];
-				}
+				$errorMessage = Tx_Formhandler_StaticFuncs::getSingle($this->settings['isErrorMarker.'], 'default');
 			} elseif (strlen($temp = trim(Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'is_error_default'))) > 0) {
 				$errorMessage = $temp;
 			} 
 			$markers['###is_error_' . $field . '###'] = $errorMessage;
 		}
 		if ($this->settings['isErrorMarker.']['global']) {
-			if ($this->settings['isErrorMarker.']['global.']) {
-				$errorMessage = Tx_Formhandler_StaticFuncs::getSingle($this->settings['isErrorMarker.'], 'global');
-			} else {
-				$errorMessage = $this->settings['isErrorMarker.']['global'];
-			}
+			$errorMessage = Tx_Formhandler_StaticFuncs::getSingle($this->settings['isErrorMarker.'], 'global');
 		} elseif (strlen($temp = trim(Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'is_error'))) > 0) {
 			$errorMessage = $temp;
 		}
@@ -993,9 +977,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 	protected function getValueMarkers($values, $level = 0, $prefix = 'value_') {
 		$markers = array();
-		$arrayValueSeparator = ',';
-		if ($this->settings['arrayValueSeparator']) {
-			$arrayValueSeparator = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'arrayValueSeparator');
+		
+		$arrayValueSeparator = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'arrayValueSeparator');
+		if(strlen($arrayValueSeparator) === 0) {
+			$arrayValueSeparator = ',';
 		}
 		if (is_array($values)) {
 			foreach ($values as $k => $v) {
