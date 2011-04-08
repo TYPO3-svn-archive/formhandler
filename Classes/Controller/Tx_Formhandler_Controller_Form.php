@@ -915,9 +915,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		$currentStepFromSession = Tx_Formhandler_Globals::$session->get('currentStep');
 		$prevStep = $currentStepFromSession;
-		if ($this->settings['prevStep']) {
-			$prevStep = $this->settings['prevStep'];
-		}
 		if (intval($prevStep) !== intval($currentStepFromSession)) {
 			$this->currentStep = 1;
 			$this->lastStep = 1;
