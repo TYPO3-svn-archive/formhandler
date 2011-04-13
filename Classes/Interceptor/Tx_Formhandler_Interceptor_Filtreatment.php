@@ -77,9 +77,9 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 		}
 		$filter = new Filtreatment();
 		foreach ($values as $key => $value) {
-			if (is_array($value)) {
+			if (!in_array($key, $this->doNotSanitizeFields) && is_array($value)) {
 				$sanitizedArray[$key] = $this->sanitizeValues($value);
-			} elseif (strlen(trim($value)) > 0)  {
+			} elseif (!in_array($key, $this->doNotSanitizeFields) && strlen(trim($value)) > 0)  {
 				$removeChars = $this->removeChars;
 
 				//search for a specific setting for this field
@@ -172,6 +172,14 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 			}
 		}
 		return TRUE;
+	}
+	
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$this->doNotSanitizeFields = array();
+		if($this->settings['doNotSanitizeFields']) {
+			$this->doNotSanitizeFields = t3lib_div::trimExplode(',', Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'doNotSanitizeFields'));
+		}
 	}
 
 }
