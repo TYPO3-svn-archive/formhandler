@@ -52,7 +52,12 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 	protected function init() {
 		$this->fieldName = $_GET['field'];
 		$this->uploadedFileName = $_GET['uploadedFileName'];
-		$this->id = intval($_GET['id']);
+		if (isset($_GET['pid'])) {
+			$this->id = intval($_GET['pid']);
+		} else {
+			$this->id = intval($_GET['id']);
+		}
+		
 		$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 		tslib_eidtools::connectDB();
 		$this->initializeTSFE($this->id);

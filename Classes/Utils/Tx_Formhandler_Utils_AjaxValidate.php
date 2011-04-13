@@ -19,7 +19,11 @@ class Tx_Formhandler_Utils_AjaxValidate {
 	protected function init() {
 		$this->fieldname = $_GET['field'];
 		$this->value = $_GET['value'];
-		$this->id = intval($_GET['id']);
+		if (isset($_GET['pid'])) {
+			$this->id = intval($_GET['pid']);
+		} else {
+			$this->id = intval($_GET['id']);
+		}
 		tslib_eidtools::connectDB();
 		$this->initializeTSFE($this->id);
 	}

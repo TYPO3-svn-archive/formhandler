@@ -26,6 +26,14 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 						if (Tx_Formhandler_Globals::$formValuesPrefix) {
 							$fieldname = Tx_Formhandler_Globals::$formValuesPrefix . '[' . $fieldname . ']';
 						}
+						$params = array(
+							'eID' => 'formhandler',
+							'pid' => $GLOBALS['TSFE']->id,
+							'randomID' => Tx_Formhandler_Globals::$randomID,
+							'field' => $replacedFieldname,
+							'value' => ''
+						);
+						$url = Tx_Formhandler_Globals::$cObj->getTypoLink_Url($GLOBALS['TSFE']->id, $params);
 						$markers['###validate_' . $replacedFieldname . '###'] = '
 							<span class="loading" id="loading_' . $replacedFieldname . '" style="display:none">' . $loadingImg . '</span>
 							<span id="result_' . $replacedFieldname . '">' . str_replace('###fieldname###', $replacedFieldname, $initial) . '</span>
@@ -40,7 +48,8 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 										}
 										$("#loading_' . $replacedFieldname . '").show();
 										$("#result_' . $replacedFieldname . '").hide();
-										var url = "/index.php?id=' . $GLOBALS['TSFE']->id . '&eID=formhandler&randomID=' . Tx_Formhandler_Globals::$randomID . '&field=' . $replacedFieldname . '&value=" + fieldVal;
+										var url = "' . $url . '";
+										url = url.replace("value=", "value=" + fieldVal);
 										$("#result_' . $replacedFieldname . '").load(url,
 										function() {
 										
@@ -60,6 +69,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 	public function getFileRemovalLink($text, $field, $uploadedFileName) {
 		$params = array(
 			'eID' => 'formhandler-removefile',
+			'pid' => $GLOBALS['TSFE']->id,
 			'field' => $field,
 			'uploadedFileName' => $uploadedFileName,
 			'randomID' => Tx_Formhandler_Globals::$randomID
