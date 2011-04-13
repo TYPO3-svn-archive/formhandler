@@ -417,6 +417,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 
 						$finisher->init($this->gp, $tsConfig['config.']);
+						$finisher->validateConfig();
 						$this->storeGPinSession();
 						$this->mergeGPWithSession(FALSE, $this->currentStep);
 
@@ -1137,6 +1138,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						$obj = $this->componentManager->getComponent($className);
 						$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 						$obj->init($this->gp, $tsConfig['config.']);
+						$obj->validateConfig();
 						$return = $obj->process();
 						if (is_array($return)) {
 

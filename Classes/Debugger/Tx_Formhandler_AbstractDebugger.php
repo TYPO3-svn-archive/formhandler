@@ -45,10 +45,6 @@ abstract class Tx_Formhandler_AbstractDebugger extends Tx_Formhandler_AbstractCo
 	}
 
 	abstract public function outputDebugLog();
-
-	public function validateConfig() {
-
-	}
 }
 
 ?>

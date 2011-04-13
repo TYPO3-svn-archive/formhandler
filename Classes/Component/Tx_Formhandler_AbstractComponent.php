@@ -77,6 +77,10 @@ abstract class Tx_Formhandler_AbstractComponent {
 	 */
 	abstract public function process();
 
+	public function validateConfig() {
+
+	}
+
 }
 
 ?>
