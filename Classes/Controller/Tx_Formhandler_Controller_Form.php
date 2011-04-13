@@ -912,6 +912,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			exit();
 		}
 		$this->parseConditions();
+
+		$this->initializeDebuggers();
+
 		$this->getStepInformation();
 
 		$currentStepFromSession = Tx_Formhandler_Globals::$session->get('currentStep');
@@ -938,25 +941,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//set debug mode again cause it may have changed in specific step settings
 		$this->debugMode = (intval($this->settings['debug']) === 1);
 		Tx_Formhandler_Globals::$session->set('debug', $this->debugMode);
-		
-		if (!is_array($this->settings['debuggers.'])) {
-			$this->settings['debuggers.'] = array(
-				'1.' => array(
-					'class' => 'Tx_Formhandler_Debugger_Print'
-				)
-			);
-		}
-		
-		foreach ($this->settings['debuggers.'] as $idx => $options) {
-			if(intval($options['disable']) !== 1) {
-				$debuggerClass = $options['class'];
-				$debuggerClass = Tx_Formhandler_StaticFuncs::prepareClassName($debuggerClass);
-				$debugger = $this->componentManager->getComponent($debuggerClass);
-				$debugger->init($this->gp, $options['config.']);
-				$debugger->validateConfig();
-				Tx_Formhandler_Globals::$debuggers[] = $debugger;
-			}
-		}
 
 		Tx_Formhandler_StaticFuncs::debugMessage('using_prefix', array($this->formValuesPrefix));
 
@@ -1252,6 +1236,21 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						$this->gp[$field] = array();
 					}
 				}
+			}
+		}
+	}
+
+	protected function initializeDebuggers() {
+		$this->addFormhandlerClass($this->settings['debuggers.'], 'Tx_Formhandler_Debugger_Print');
+
+		foreach ($this->settings['debuggers.'] as $idx => $options) {
+			if(intval($options['disable']) !== 1) {
+				$debuggerClass = $options['class'];
+				$debuggerClass = Tx_Formhandler_StaticFuncs::prepareClassName($debuggerClass);
+				$debugger = $this->componentManager->getComponent($debuggerClass);
+				$debugger->init($this->gp, $options['config.']);
+				$debugger->validateConfig();
+				Tx_Formhandler_Globals::$debuggers[] = $debugger;
 			}
 		}
 	}
