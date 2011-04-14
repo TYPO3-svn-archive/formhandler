@@ -182,7 +182,7 @@ class Tx_Formhandler_StaticFuncs {
 				foreach ($settings['langFile.'] as $key => $langFile) {
 					if (FALSE === strpos($key, '.')) {
 						if (is_array($settings['langFile.'][$key . '.'])) {
-							array_push($langFiles, Tx_Formhandler_Globals::getSingle($settings['langFile.'], $key));
+							array_push($langFiles, Tx_Formhandler_StaticFuncs::getSingle($settings['langFile.'], $key));
 						} else {
 							array_push($langFiles, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($langFile));
 						}
