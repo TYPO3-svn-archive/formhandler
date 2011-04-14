@@ -124,15 +124,22 @@ class Tx_Formhandler_StaticFuncs {
 	 */
 	static public function readTemplateFile($templateFile, &$settings) {
 		$templateCode = FALSE;
-
 		//template file was not set in flexform, search TypoScript for setting
 		if (!$templateFile) {
-			if (!$settings['templateFile']) {
+			if (!$settings['templateFile'] && !!$settings['templateFile.']) {
 				return '';
 			}
 			$templateFile = $settings['templateFile'];
+
 			if (isset($settings['templateFile.']) && is_array($settings['templateFile.'])) {
-				$templateCode = Tx_Formhandler_StaticFuncs::getSingle($settings, 'templateFile');
+				$templateFile = Tx_Formhandler_StaticFuncs::getSingle($settings, 'templateFile');
+				if (strpos($templateFile, "\n") === FALSE) {
+					$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
+					if (!@file_exists($templateFile)) {
+						Tx_Formhandler_StaticFuncs::throwException('template_file_not_found', $templateFile);
+					}
+					$templateCode = t3lib_div::getURL($templateFile);
+				}
 			} else {
 				$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
 				if (!@file_exists($templateFile)) {
@@ -148,7 +155,6 @@ class Tx_Formhandler_StaticFuncs {
 				}
 				$templateCode = t3lib_div::getURL($templateFile);
 			} else {
-
 				// given variable $templateFile already contains the template code
 				$templateCode = $templateFile;
 			}
