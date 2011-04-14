@@ -1169,16 +1169,19 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$cssFiles = array();
 		if ($this->settings['cssFile.']) {
 			foreach ($this->settings['cssFile.'] as $idx => $file) {
-				$cssFiles[] = $file;
+				if(strpos($idx, '.') === FALSE) {
+					$file = Tx_Formhandler_StaticFuncs::getSingle($this->settings['cssFile.'], $idx);
+					$cssFiles[] = $file;
+				}
 			}
 		} elseif (strlen($stylesheetFile) > 0) {
-			$cssFiles[] = $stylesheetFile;
+			$cssFiles[] = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'cssFile');
 		}
 		foreach ($cssFiles as $idx => $file) {
 
-			// set stylesheet
-			$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
-				'<link rel="stylesheet" href="' . Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($file) . '" type="text/css" media="screen" />' . "\n";
+				// set stylesheet
+				$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
+					'<link rel="stylesheet" href="' . Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($file) . '" type="text/css" media="screen" />' . "\n";
 		}
 	}
 
@@ -1193,10 +1196,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$jsFiles = array();
 		if ($this->settings['jsFile.']) {
 			foreach ($this->settings['jsFile.'] as $idx => $file) {
-				$jsFiles[] = $file;
+				if(strpos($idx, '.') === FALSE) {
+					$file = Tx_Formhandler_StaticFuncs::getSingle($this->settings['jsFile.'], $idx);
+					$jsFiles[] = $file;
+				}
 			}
 		} elseif (strlen($jsFile) > 0) {
-			$jsFiles[] = $jsFile;
+			$jsFiles[] = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'jsFile');;
 		}
 		foreach ($jsFiles as $idx => $file) {
 
