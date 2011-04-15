@@ -2,6 +2,99 @@
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+---------------------------- Version 0.9.14 ----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+r46556 | reinhardfuehricht | 2011-04-15 10:51:00 +0200 (Fre, 15. Apr 2011) | 1 Zeile
+
+Bugfix: Classes which are added to the configuration automatically by Formhandler didn't check properly if the class is already configured in TypoScript.
+------------------------------------------------------------------------
+r46555 | reinhardfuehricht | 2011-04-15 10:17:27 +0200 (Fre, 15. Apr 2011) | 1 Zeile
+
+Fixed occasional fatal error in dispatcher.
+------------------------------------------------------------------------
+r46554 | reinhardfuehricht | 2011-04-15 09:46:19 +0200 (Fre, 15. Apr 2011) | 1 Zeile
+
+Corrected bug in the processing of the mapping in Finisher_DB (fixes #25950)
+------------------------------------------------------------------------
+r46553 | reinhardfuehricht | 2011-04-15 09:41:51 +0200 (Fre, 15. Apr 2011) | 1 Zeile
+
+Added possibility to configure a separate template file for each step and each finisher/interceptor.
+------------------------------------------------------------------------
+r46533 | reinhardfuehricht | 2011-04-14 17:06:28 +0200 (Don, 14. Apr 2011) | 1 Zeile
+
+Allow cssFile and jsFile to be a String / cObject or Array. If it is an Array, allow each item to be a cObject.
+------------------------------------------------------------------------
+r46532 | reinhardfuehricht | 2011-04-14 17:01:09 +0200 (Don, 14. Apr 2011) | 1 Zeile
+
+Fixed bug in readTemplateFile(). No cObject was possible as value.
+------------------------------------------------------------------------
+r46531 | reinhardfuehricht | 2011-04-14 16:54:33 +0200 (Don, 14. Apr 2011) | 1 Zeile
+
+Corrected typo in StaticFuncs. Formhandler_Globals was used instead of Formhandler_StaticFuncs
+------------------------------------------------------------------------
+r46493 | reinhardfuehricht | 2011-04-13 18:42:01 +0200 (Mit, 13. Apr 2011) | 1 Zeile
+
+New TS setting "doNotSanitizeFields" for Interceptor_Filtreatment (fixes #25951)
+------------------------------------------------------------------------
+r46491 | reinhardfuehricht | 2011-04-13 16:51:06 +0200 (Mit, 13. Apr 2011) | 1 Zeile
+
+New Finishers "SetLanguage" and "RestoreLanguage" (closes #25822)
+------------------------------------------------------------------------
+r46490 | reinhardfuehricht | 2011-04-13 16:05:28 +0200 (Mit, 13. Apr 2011) | 1 Zeile
+
+Move validateConfig() to AbstractComponent and call it in the right places in the Controller
+------------------------------------------------------------------------
+r46484 | reinhardfuehricht | 2011-04-13 10:04:29 +0200 (Mit, 13. Apr 2011) | 1 Zeile
+
+Removed unused field in multistep conditions example
+------------------------------------------------------------------------
+r46483 | reinhardfuehricht | 2011-04-13 09:53:57 +0200 (Mit, 13. Apr 2011) | 1 Zeile
+
+Built correct AJAX URL to prevent error when using EXT:realurl (fixes #25889)
+------------------------------------------------------------------------
+r46482 | reinhardfuehricht | 2011-04-13 09:44:42 +0200 (Mit, 13. Apr 2011) | 1 Zeile
+
+Initialize debuggers before the first debug message gets logged (fixes #25932)
+------------------------------------------------------------------------
+r46481 | reinhardfuehricht | 2011-04-13 09:38:20 +0200 (Mit, 13. Apr 2011) | 1 Zeile
+
+Replaced empty() with strlen() in ErrorCheck_Captcha (fixes #25930)
+------------------------------------------------------------------------
+r46386 | reinhardfuehricht | 2011-04-08 16:26:07 +0200 (Fre, 08. Apr 2011) | 1 Zeile
+
+Corrected typo which resulted in a not replaced FORM_ENDBLOCK (fixes #25855)
+------------------------------------------------------------------------
+r46382 | reinhardfuehricht | 2011-04-08 15:45:45 +0200 (Fre, 08. Apr 2011) | 1 Zeile
+
+Make setting "authCodePage" of Finisher_GenerateAuthCode be a String or cObject.
+------------------------------------------------------------------------
+r46379 | reinhardfuehricht | 2011-04-08 15:13:07 +0200 (Fre, 08. Apr 2011) | 1 Zeile
+
+Added "additionalParams" setting to Interceptor_AntiSpamFormTime and Interceptor_IPBlocking
+------------------------------------------------------------------------
+r46368 | reinhardfuehricht | 2011-04-08 14:55:16 +0200 (Fre, 08. Apr 2011) | 1 Zeile
+
+Removed redundant if-else stuff when using StaticFuncs::getSingle
+------------------------------------------------------------------------
+r46359 | reinhardfuehricht | 2011-04-08 12:09:04 +0200 (Fre, 08. Apr 2011) | 1 Zeile
+
+Make "debug" setting 1,0 or cObj.
+------------------------------------------------------------------------
+r46358 | reinhardfuehricht | 2011-04-08 12:03:05 +0200 (Fre, 08. Apr 2011) | 1 Zeile
+
+Removed TS setting "prevStep" as it didn't really have any purpose.
+------------------------------------------------------------------------
+r46327 | reinhardfuehricht | 2011-04-07 15:19:36 +0200 (Don, 07. Apr 2011) | 1 Zeile
+
+- changelog and ext_emconf update due to TER upload
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 ---------------------------- Version 0.9.13 ----------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
