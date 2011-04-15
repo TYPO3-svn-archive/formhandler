@@ -472,16 +472,6 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	}
 
 	/**
-	 * Method to define whether the config is valid or not. If no, an exception is thrown.
-	 *
-	 */
-	public function validateConfig() {
-		if ($this->settings['templateFile'] == '') {
-			Tx_Formhandler_StaticFuncs::throwException('no_template');
-		}
-	}
-
-	/**
 	 * Parses the email settings in flexform and stores them in an array.
 	 *
 	 * @param array The TypoScript configuration

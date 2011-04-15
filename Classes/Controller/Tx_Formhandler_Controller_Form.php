@@ -324,14 +324,17 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			if ($this->currentStep > $this->lastStep) {
 				$this->loadSettingsForStep($this->currentStep);
 				$this->parseConditions();
-				$this->view->setLangFiles($this->langFiles);
-				$this->view->setSettings($this->settings);
-				$this->setViewSubpart($this->currentStep);
-			} else {
-				$this->view->setLangFiles($this->langFiles);
-				$this->view->setSettings($this->settings);
-				$this->setViewSubpart($this->currentStep);
 			}
+			
+					//read template file
+			$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
+			Tx_Formhandler_Globals::$templateCode = $this->templateFile;
+			$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
+			Tx_Formhandler_Globals::$langFiles = $this->langFiles;
+
+			$this->view->setLangFiles($this->langFiles);
+			$this->view->setSettings($this->settings);
+			$this->setViewSubpart($this->currentStep);
 
 			//if no more steps
 			if ($this->finished) {
@@ -362,6 +365,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//load settings from last step again because an error occurred
 		$this->loadSettingsForStep($this->currentStep);
 		Tx_Formhandler_Globals::$session->set('settings', $this->settings);
+		
+		//read template file
+		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
+		Tx_Formhandler_Globals::$templateCode = $this->templateFile;
+		$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
+		Tx_Formhandler_Globals::$langFiles = $this->langFiles;
 
 		$this->view->setLangFiles($this->langFiles);
 		$this->view->setSettings($this->settings);
@@ -977,7 +986,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->view = $this->componentManager->getComponent($viewClass);
 		$this->view->setLangFiles($this->langFiles);
 		$this->view->setSettings($this->settings);
-		$this->setViewSubpart($this->currentStep);
 
 		Tx_Formhandler_Globals::$gp = $this->gp;
 
