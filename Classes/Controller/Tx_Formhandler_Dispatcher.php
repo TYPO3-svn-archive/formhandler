@@ -100,7 +100,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			$result .= '<div style="color:red; font-weight: bold">File: ' . $e->getFile() . '(' . $e->getLine() . ')</div>';
 			
 		}
-		if (Tx_Formhandler_Globals::$session->get('debug')) {
+		if (Tx_Formhandler_Globals::$session && Tx_Formhandler_Globals::$session->get('debug')) {
 			foreach(Tx_Formhandler_Globals::$debuggers as $idx => $debugger) {
 				$debugger->outputDebugLog();
 			}
