@@ -525,9 +525,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		} else {
 			$found = FALSE;
 			foreach ($classesArray as $idx => $classOptions) {
-				if (strpos($className, $classOptions['class']) !== FALSE) {
+				if ($className === $classOptions['class']) {
 					$found = TRUE;
-				} elseif (strpos(str_replace('Tx_Formhandler_', '', $className), $classOptions['class']) !== FALSE) {
+				} elseif ($className === str_replace('Tx_Formhandler_', '', $classOptions['class'])) {
 					$found = TRUE;
 				}
 			}
