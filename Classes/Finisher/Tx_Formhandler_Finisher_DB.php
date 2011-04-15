@@ -274,15 +274,13 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			if (isset($options) && is_array($options) && !isset($options['special'])) {
 
 				$mapping = $options['mapping'];
+
 				//if no mapping default to the name of the form field
 				if (!$mapping) {
 					$mapping = $fieldname;
 				}
 
-				$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'mapping');
-				if(strlen($fieldValue) === 0) {
-					$fieldValue = $this->gp[$mapping];
-				}
+				$fieldValue = $this->gp[$mapping];
 
 				//pre process the field value. e.g. to format a date
 				if (is_array($options['preProcessing.'])) {
