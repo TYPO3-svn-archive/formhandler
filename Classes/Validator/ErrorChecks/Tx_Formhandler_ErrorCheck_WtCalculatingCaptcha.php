@@ -11,7 +11,7 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id$
+ * $Id: Tx_Formhandler_ErrorCheck_SimpleCaptcha.php 40269 2010-11-16 15:23:54Z reinhardfuehricht $
  *                                                                        */
 
 /**
@@ -21,7 +21,7 @@
  * @package	Tx_Formhandler
  * @subpackage	ErrorChecks
  */
-class Tx_Formhandler_ErrorCheck_SimpleCaptcha extends Tx_Formhandler_AbstractErrorCheck {
+class Tx_Formhandler_ErrorCheck_WtCalculatingCaptcha extends Tx_Formhandler_AbstractErrorCheck {
 
 	/**
 	 * Validates that the correct image of possible images displayed by the extension "simple_captcha" got selected.
@@ -33,11 +33,11 @@ class Tx_Formhandler_ErrorCheck_SimpleCaptcha extends Tx_Formhandler_AbstractErr
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		if (t3lib_extMgm::isLoaded('simple_captcha')) {
-			require_once(t3lib_extMgm::extPath('simple_captcha') . 'class.tx_simplecaptcha.php');
-			$simpleCaptcha_className = t3lib_div::makeInstanceClassName('tx_simplecaptcha');
-			$this->simpleCaptcha = new $simpleCaptcha_className();
-			if (!$this->simpleCaptcha->checkCaptcha()) {
+		if (t3lib_extMgm::isLoaded('wt_calculating_captcha')) {
+			require_once(t3lib_extMgm::extPath('wt_calculating_captcha') . 'class.tx_wtcalculatingcaptcha.php');
+
+			$captcha = t3lib_div::makeInstance('tx_wtcalculatingcaptcha');
+			if (!$captcha->correctCode($gp[$name])) {
 				$checkFailed = $this->getCheckFailed($check);
 			}
 		}

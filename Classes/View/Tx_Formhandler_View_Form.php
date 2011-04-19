@@ -538,14 +538,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers['###CAPTCHA###'] = '<img src="' . t3lib_extMgm::siteRelPath('captcha') . 'captcha/captcha.php" alt="" />';
 			$markers['###captcha###'] = $markers['###CAPTCHA###'];
 		}
-		if (t3lib_extMgm::isLoaded('simple_captcha')) {
-			require_once(t3lib_extMgm::extPath('simple_captcha') . 'class.tx_simplecaptcha.php');
-			$simpleCaptcha_className = t3lib_div::makeInstanceClassName('tx_simplecaptcha');
-			$this->simpleCaptcha = new $simpleCaptcha_className();
-			$captcha = $this->simpleCaptcha->getCaptcha();
-			$markers['###simple_captcha###'] = $captcha;
-			$markers['###SIMPLE_CAPTCHA###'] = $captcha;
-		}
 		if (t3lib_extMgm::isLoaded('sr_freecap')){
 			require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
 			$this->freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
