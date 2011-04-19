@@ -821,7 +821,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						$result = (Tx_Formhandler_Globals::$cObj->getGlobal($field, $this->gp) < $value);
 					} elseif (strstr($andCondition, '!=')) {
 						list($field, $value) = t3lib_div::trimExplode('!=', $andCondition);
-						print Tx_Formhandler_Globals::$cObj->getGlobal($field, $this->gp) . ' !== ' . $value;
 						$result = (Tx_Formhandler_Globals::$cObj->getGlobal($field, $this->gp) !== $value);
 					} else {
 						$field = $andCondition;
