@@ -38,11 +38,13 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 			Tx_Formhandler_Globals::$session->set('files', $sessionFiles);
 
 			// Add the content to or Result Box: #formResult
-			if (is_array($sessionFiles)) {
+			if (is_array($sessionFiles) && !empty($sessionFiles[$field])) {
 				$markers = array();
 				$view = $this->componentManager->getComponent('Tx_Formhandler_View_Form');
 				$view->setSettings($this->settings);
 				$view->fillFileMarkers($markers);
+				$langMarkers = Tx_Formhandler_StaticFuncs::getFilledLangMarkers($markers['###'. $this->fieldName . '_uploadedFiles###'], $this->langFiles);
+				$markers['###'. $this->fieldName . '_uploadedFiles###'] = Tx_Formhandler_Globals::$cObj->substituteMarkerArray($markers['###'. $this->fieldName . '_uploadedFiles###'], $langMarkers);
 				$content = $markers['###'. $this->fieldName . '_uploadedFiles###'];
 			}
 		}
@@ -75,6 +77,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		}
 		
 		$this->settings = Tx_Formhandler_Globals::$session->get('settings');
+		$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles(array(), $this->settings);
 
 		//init ajax
 		if ($this->settings['ajax.']) {
