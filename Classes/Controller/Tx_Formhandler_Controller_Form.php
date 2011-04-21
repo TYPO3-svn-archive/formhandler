@@ -256,16 +256,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 		
 		$this->parseConditions();
-		
-		//read template file
-		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
-		Tx_Formhandler_Globals::$templateCode = $this->templateFile;
-		$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
-		Tx_Formhandler_Globals::$langFiles = $this->langFiles;
-		
-		$this->view->setLangFiles($this->langFiles);
-		$this->view->setSettings($this->settings);
-		$this->setViewSubpart($this->currentStep);
 
 		//run init interceptors
 		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
@@ -320,13 +310,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			//process files
 			$this->processFiles();
 
-			//now set the settings to the current step again
-			if ($this->currentStep > $this->lastStep) {
-				$this->loadSettingsForStep($this->currentStep);
-				$this->parseConditions();
-			}
-			
-					//read template file
+			$this->loadSettingsForStep($this->currentStep);
+			$this->parseConditions();
+
+
+			//read template file
 			$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
 			Tx_Formhandler_Globals::$templateCode = $this->templateFile;
 			$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
@@ -348,6 +336,16 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				return $this->view->render($this->gp, $this->errors);
 			}
 		} else {
+
+			//read template file
+			$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
+			Tx_Formhandler_Globals::$templateCode = $this->templateFile;
+			$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
+			Tx_Formhandler_Globals::$langFiles = $this->langFiles;
+
+			$this->view->setLangFiles($this->langFiles);
+			$this->view->setSettings($this->settings);
+			$this->setViewSubpart($this->currentStep);
 			return $this->processNotValid();
 		}
 	}
@@ -941,12 +939,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->mergeGPWithSession(FALSE, $this->currentStep);
 
 		$this->parseConditions();
-
-		//read template file
-		$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
-		Tx_Formhandler_Globals::$templateCode = $this->templateFile;
-		$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
-		Tx_Formhandler_Globals::$langFiles = $this->langFiles;
 
 		$this->validateConfig();
 		Tx_Formhandler_Globals::$settings = $this->settings;
