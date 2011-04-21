@@ -398,6 +398,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		$this->storeGPinSession();
 		$this->mergeGPWithSession(FALSE, $this->currentStep);
+		$this->storeSettingsInSession();
 
 		//run loggers
 		$this->addFormhandlerClass($this->settings['loggers.'], 'Logger_DB');
