@@ -104,17 +104,16 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 				}
 			}
 		}
-
 		if (empty($errors)) {
 			
-			$okImg = Tx_Formhandler_StaticFuncs::getSingle($ts['ajax.']['config.'], 'ok');
+			$okImg = Tx_Formhandler_StaticFuncs::getSingle($this->settings['ajax.']['config.'], 'ok');
 			if(strlen($okImg) === 0) {
 				$okImg = '<img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ok.png' . '" />';
 			}
 			return $okImg;
 		} else {
 			
-			$notOkImg = Tx_Formhandler_StaticFuncs::getSingle($ts['ajax.']['config.'], 'notOk');
+			$notOkImg = Tx_Formhandler_StaticFuncs::getSingle($this->settings['ajax.']['config.'], 'notOk');
 			if(strlen($notOkImg) === 0) {
 				$notOkImg = '<img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/notok.png' . '" />';
 			}
@@ -139,6 +138,9 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 					$this->settings = array_merge($this->settings, $settings['config.']);
 				}
 			}
+		}
+		if($tsConfig['ajax.']) {
+			$this->settings['ajax.'] = $tsConfig['ajax.'];
 		}
 	}
 
