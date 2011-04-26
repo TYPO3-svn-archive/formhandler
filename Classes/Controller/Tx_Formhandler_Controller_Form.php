@@ -181,6 +181,18 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$action = $temp['action'];
 		}
 		if ($action) {
+
+			//read template file
+			$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
+			Tx_Formhandler_Globals::$templateCode = $this->templateFile;
+			$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles($this->langFiles, $this->settings);
+			Tx_Formhandler_Globals::$langFiles = $this->langFiles;
+
+			$this->view->setLangFiles($this->langFiles);
+			$this->view->setSettings($this->settings);
+
+			//reset the template because step had probably been decreased
+			$this->setViewSubpart($this->currentStep);
 			$content = $this->processAction($action);
 			if(strlen(trim($content)) > 0) {
 				return $content;
@@ -312,7 +324,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 			$this->loadSettingsForStep($this->currentStep);
 			$this->parseConditions();
-
 
 			//read template file
 			$this->templateFile = Tx_Formhandler_StaticFuncs::readTemplateFile($this->templateFile, $this->settings);
@@ -818,9 +829,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					} elseif (strstr($andCondition, '<')) {
 						list($field, $value) = t3lib_div::trimExplode('<', $andCondition);
 						$result = (Tx_Formhandler_Globals::$cObj->getGlobal($field, $this->gp) < $value);
-					} elseif (strstr($andCondition, '!=')) {
-						list($field, $value) = t3lib_div::trimExplode('!=', $andCondition);
-						$result = (Tx_Formhandler_Globals::$cObj->getGlobal($field, $this->gp) !== $value);
 					} else {
 						$field = $andCondition;
 						$keys = explode('|', $field);

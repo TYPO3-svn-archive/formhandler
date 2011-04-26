@@ -126,7 +126,7 @@ class Tx_Formhandler_StaticFuncs {
 		$templateCode = FALSE;
 		//template file was not set in flexform, search TypoScript for setting
 		if (!$templateFile) {
-			if (!$settings['templateFile'] && !!$settings['templateFile.']) {
+			if (!$settings['templateFile'] && !$settings['templateFile.']) {
 				return '';
 			}
 			$templateFile = $settings['templateFile'];

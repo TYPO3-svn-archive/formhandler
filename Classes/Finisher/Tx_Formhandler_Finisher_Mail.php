@@ -558,6 +558,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 								$generatorClass = Tx_Formhandler_StaticFuncs::prepareClassName($generatorClass);
 								$generator = $this->componentManager->getComponent($generatorClass);
 								$generator->init($this->gp, $currentSettings['attachPDF.']['config.']);
+								$generator->getLink();
 								$file = $generator->process();
 								unset($currentSettings['attachPDF.']);
 								$emailSettings['attachPDF'] = $file;
