@@ -271,95 +271,89 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		//parse mapping
 		foreach ($this->settings['fields.'] as $fieldname => $options) {
 			$fieldname = str_replace('.', '', $fieldname);
-			if (isset($options) && is_array($options) && !isset($options['special'])) {
+			if (isset($options) && is_array($options)) {
+				if(!isset($options['special'])) {
+					$mapping = $options['mapping'];
 
-				$mapping = $options['mapping'];
+					//if no mapping default to the name of the form field
+					if (!$mapping) {
+						$mapping = $fieldname;
+					}
 
-				//if no mapping default to the name of the form field
-				if (!$mapping) {
-					$mapping = $fieldname;
-				}
+					$fieldValue = $this->gp[$mapping];
 
-				$fieldValue = $this->gp[$mapping];
+					//pre process the field value. e.g. to format a date
+					if (isset($options['preProcessing.']) && is_array($options['preProcessing.'])) {
+						$options['preProcessing.']['value'] = $fieldValue;
+						$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'preProcessing');
+					}
 
-				//pre process the field value. e.g. to format a date
-				if (is_array($options['preProcessing.'])) {
-					$options['preProcessing.']['value'] = $fieldValue;
-					$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'preProcessing');
-				}
+					if (isset($options['mapping.']) && is_array($options['mapping.'])) {
+						$options['mapping.']['value'] = $fieldValue;
+						$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'mapping');
+					}
 
-				if ($options['mapping.']) {
-					$queryFields[$fieldname] = Tx_Formhandler_StaticFuncs::getSingle($options, 'mapping');
+					//process empty value handling
+					if ($options['ifIsEmpty'] && strlen($fieldValue) == 0) {
+						$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'ifIsEmpty');
+					}
+
+					if ($options['zeroIfEmpty'] && strlen($fieldValue) == 0) {
+						$fieldValue = 0;
+					}
+
+					//process array handling
+					if (is_array($fieldValue)) {
+						$separator = ',';
+						if ($options['separator']) {
+							$separator = $options['separator'];
+						}
+						$fieldValue = implode($separator, $fieldValue);
+					}
+
+					//process uploaded files
+					$files = Tx_Formhandler_Globals::$session->get('files');
+					if (isset($files[$fieldname]) && is_array($files[$fieldname])) {
+						$fieldValue = $this->getFileList($files, $fieldname);
+					}
 				} else {
-					$queryFields[$fieldname] = $fieldValue;
-				}
-
-				//process empty value handling
-				if ($options['ifIsEmpty'] && strlen($this->gp[$options['mapping']]) == 0) {
-
-					//if given settings is a TypoScript object
-					if (isset($options['ifIsEmpty.']) && is_array($options['ifIsEmpty.'])) {
-						$queryFields[$fieldname] = Tx_Formhandler_StaticFuncs::getSingle($options, 'ifIsEmpty');
-					} else {
-						$queryFields[$fieldname] = $options['ifIsEmpty'];
-					}
-				}
-
-				if ($options['nullIfEmpty'] && strlen($this->gp[$options['mapping']]) == 0) {
-					unset($queryFields[$fieldname]);
-				}
-
-				if ($options['zeroIfEmpty'] && strlen($this->gp[$options['mapping']]) == 0) {
-					$queryFields[$fieldname] = 0;
-				}
-
-				//process array handling
-				if (isset($this->gp[$options['mapping']]) && is_array($this->gp[$options['mapping']])) {
-					$separator = ',';
-					if ($options['separator']) {
-						$separator = $options['separator'];
-					}
-					$queryFields[$fieldname] = implode($separator, $this->gp[$options['mapping']]);
-				}
-
-				//process uploaded files
-				$files = Tx_Formhandler_Globals::$session->get('files');
-				if (isset($files[$fieldname]) && is_array($files[$fieldname])) {
-					$queryFields[$fieldname] = $this->getFileList($files, $fieldname);
-				}
-
-				//special mapping
-			} elseif (isset($options) && is_array($options) && isset($options['special'])) {
-				switch ($options['special']) {
-					case 'sub_datetime':
-						$now = date('Y-m-d H:i:s', time());
-						$queryFields[$fieldname] = $now;
-						break;
-					case 'sub_tstamp':
-						$queryFields[$fieldname] = time();
-						break;
-					case 'ip':
-						$queryFields[$fieldname] = t3lib_div::getIndpEnv('REMOTE_ADDR');
-						break;
-					case 'inserted_uid':
-						$table = $options['special.']['table'];
-						if (is_array($this->gp['saveDB'])) {
-							foreach ($this->gp['saveDB'] as $idx => $info) {
-								if ($info['table'] === $table) {
-									$queryFields[$fieldname] = $info['uid'];
+					switch ($options['special']) {
+						case 'sub_datetime':
+							$now = date('Y-m-d H:i:s', time());
+							$fieldValue = $now;
+							break;
+						case 'sub_tstamp':
+							$fieldValue = time();
+							break;
+						case 'ip':
+							$fieldValue = t3lib_div::getIndpEnv('REMOTE_ADDR');
+							break;
+						case 'inserted_uid':
+							$table = $options['special.']['table'];
+							if (is_array($this->gp['saveDB'])) {
+								foreach ($this->gp['saveDB'] as $idx => $info) {
+									if ($info['table'] === $table) {
+										$fieldValue = $info['uid'];
+									}
 								}
 							}
-						}
-						break;
+							break;
+					}
 				}
 			} else {
-				$queryFields[$fieldname] = $options;
+				$fieldValue = $options;
 			}
 
 			//post process the field value after formhandler did it's magic.
 			if (is_array($options['postProcessing.'])) {
-				$options['postProcessing.']['value'] = $queryFields[$fieldname];
-				$queryFields[$fieldname] = Tx_Formhandler_StaticFuncs::getSingle($options, 'postProcessing');
+				$options['postProcessing.']['value'] = $fieldValue;
+				$fieldValue = Tx_Formhandler_StaticFuncs::getSingle($options, 'postProcessing');
+			}
+
+			$queryFields[$fieldname] = $fieldValue;
+
+			if ($options['nullIfEmpty'] && strlen($queryFields[$fieldname]) == 0) {
+				unset($queryFields[$fieldname]);
 			}
 		}
 		return $queryFields;
