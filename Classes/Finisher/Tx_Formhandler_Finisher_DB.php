@@ -319,8 +319,11 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 				} else {
 					switch ($options['special']) {
 						case 'sub_datetime':
-							$now = date('Y-m-d H:i:s', time());
-							$fieldValue = $now;
+							$dateFormat = 'Y-m-d H:i:s';
+							if($options['special.']['dateFormat']) {
+								$dateFormat = Tx_Formhandler_StaticFuncs::getSingle($options['special.'], 'dateFormat');
+							}
+							$fieldValue = date($dateFormat, time());
 							break;
 						case 'sub_tstamp':
 							$fieldValue = time();
