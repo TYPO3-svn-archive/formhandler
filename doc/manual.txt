@@ -311,6 +311,12 @@ controller
 String
 Classname of the controller to be used
 Tx_Formhandler_Controller_Default
+formID
+String
+Value of the id attribute of the form tag. This is mandatory, if you use enableFileRemoval and have more than one form on a page.
+
+Without formID the JavaScript code to remove a file from the uploaded files list submits the first form on the page.
+
 formValuesPrefix
 String
 Prefix of form fields. Use this if you use a prefix for your forms to avoid conflicts with other plugins. Settings this option you will be able to use only the fieldname in all markers and do not need to add prefix.
@@ -3109,7 +3115,7 @@ plugin.Tx_Formhandler.settings {
 	langFile = typo3conf/ext/th_mailformplus/example_form/singlepage_forms/improved_demo_lang.php
 
 	validators.1.class = Validator_Default
-	validators.1.config {
+	validators.1.config.fieldConf {
 		name {
 			errorCheck.1 = required
 		}
@@ -3118,7 +3124,7 @@ plugin.Tx_Formhandler.settings {
 			errorCheck.2 = email
 		}
 		text {
-			errorCheck = required
+			errorCheck.1 = required
 		}
 	}
 	
@@ -3185,6 +3191,12 @@ The changes will be:
 Change subpart to ###TEMPLATE_FORM1###
 Add ###submit_nextStep### to submit button
 You can remove all the hidden fields on top of your form. Formhandler will add them for you automatically. If you want to control the position of the hidden fields, you can use the marker ###HIDDEN_FIELDS### in your template.
+Rename subpart ###TEMPLATE_SUBMITTED_OK### to ###TEMPLATE_SUBMITTEDOK###, if you use it.
+E-Mail subparts are now named:
+###TEMPLATE_EMAIL_USER_PLAIN###
+###TEMPLATE_EMAIL_USER_HTML###
+###TEMPLATE_EMAIL_ADMIN_PLAIN###
+###TEMPLATE_EMAIL_ADMIN_HTML###
 
 No more changes are required. All other markers are exactly the same in Formhandler.
 ###value_[fieldname]###
