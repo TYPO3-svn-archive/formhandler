@@ -108,7 +108,7 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 			} else {
 
 				//check if uid of record to update is in GP
-				$uid = $this->gp[$this->key];
+				$uid = $this->getUpdateUid();
 				if ($uid) {
 					$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
 					Tx_Formhandler_StaticFuncs::debugMessage('sql_request', array($query));

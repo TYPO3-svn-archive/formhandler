@@ -313,7 +313,7 @@ Classname of the controller to be used
 Tx_Formhandler_Controller_Default
 formID
 String
-Value of the id attribute of the form tag. This is mandatory, if you use enableFileRemoval and have more than one form on a page.
+Value of the id attribute of the form tag. This is mandatory, if you use enableFileRemoval and have more than one form on a page. 
 
 Without formID the JavaScript code to remove a file from the uploaded files list submits the first form on the page.
 
@@ -1635,6 +1635,14 @@ The field with primary key
 Example:
 key = uid
 uid
+key_value
+String / cObject
+Use this to use your own value for the key field in an UPDATE query.
+
+The query will look like this:
+
+UPDATE table SET field=value WHERE key=key_value
+
 updateInsteadOfInsert
 int(1/0)
 Does not store the values as a new row in the table, but tries to update an existing record. 
