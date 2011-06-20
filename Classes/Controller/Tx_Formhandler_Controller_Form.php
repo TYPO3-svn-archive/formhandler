@@ -1255,6 +1255,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					if($this->lastStep < $this->currentStep) {
 						$this->gp[$field] = array();
 					}
+				//Insert default checkbox values
+				} elseif(!isset($newGP[$field])) {
+					if(is_array($this->settings['checkBoxUncheckedValue.']) && isset($this->settings['checkBoxUncheckedValue.'][$field])) {
+						$this->gp[$field] = $this->settings['checkBoxUncheckedValue.'][$field];
+					} elseif(isset($this->settings['checkBoxUncheckedValue'])) {
+						$this->gp[$field] = $this->settings['checkBoxUncheckedValue'];
+					}
 				}
 			}
 		}
