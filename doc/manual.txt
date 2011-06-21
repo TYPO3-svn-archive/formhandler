@@ -428,6 +428,21 @@ plugin.Tx_Formhandler.settings {
   2.checkBoxFields = work_experience,accounts
 }
 
+checkBoxUncheckedValue
+string / array
+Lets you define values for unchecked checkboxes listed in checkBoxFields. 
+
+Example:
+
+plugin.Tx_Formhandler.settings {
+
+  # Default value for ALL checkboxes
+  checkBoxUncheckedValue = no
+
+  # Default value for a specific checkbox
+  checkBoxUncheckedValue.myCheckBox = yes
+}
+
 addErrorAnchors
 Boolean (0/1)
 If you use ###error### and error markers for each field, you can enable 
@@ -1843,10 +1858,10 @@ Property:
 Data type:
 Description:
 Default:
-limitMailstoUser
+limitMailsToUser
 int
 Limit the amount of mails sent to users. If more addresses are specified than this value, emails are sent only to the first x recipients.
-unlimited
+2
 checkBinaryCrLf
 string
 Comma seperated list of fields. Converts chr(13) line breaks to <br/>
