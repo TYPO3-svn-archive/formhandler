@@ -679,6 +679,27 @@ class Tx_Formhandler_StaticFuncs {
 		$randomID = md5(Tx_Formhandler_Globals::$formValuesPrefix . $GLOBALS['ACCESS_TIME']);
 		return $randomID;
 	}
+	
+	static public function initializeTSFE($pid) {
+		global $TSFE;
+
+			// create object instances:
+		$TSFE = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $pid, 0, TRUE);
+		$TSFE->tmpl = t3lib_div::makeInstance('t3lib_tstemplate');
+		$TSFE->tmpl->init();
+
+			// then initialize fe user
+		$TSFE->initFEuser();
+		$TSFE->fe_user->fetchGroupData();
+
+			// Include the TCA
+		$TSFE->includeTCA();
+
+			// Get the page
+		$TSFE->fetch_the_id();
+		$TSFE->getConfigArray();
+		$TSFE->newCObj();
+	}
 
 }
 
