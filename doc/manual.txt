@@ -334,6 +334,10 @@ debug
 Boolean (0,1)
 Toggle debug mode, which will print debug messages to screen
 0
+disableConfigValidation
+Boolean (0,1)
+Formhandler will check if all needed classes are used in TypoScript for the values entered in Flexform. If you have your own components using the Flexform values, you can disable this check using disableConfigValidation = 1
+0
 storeGP
 Boolean
 (0,1)

@@ -17,9 +17,9 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		}
 
 		//parse validation settings
-		if (is_array($settings['validators.'])) {
+		if (is_array($settings['validators.']) && intval($settings['validators.']['disable']) !== 1) {
 			foreach ($settings['validators.'] as $key => $validatorSettings) {
-				if (is_array($validatorSettings['config.']['fieldConf.'])) {
+				if (is_array($validatorSettings['config.']['fieldConf.']) && intval($validatorSettings['config.']['disable']) !== 1) {
 					foreach ($validatorSettings['config.']['fieldConf.'] as $fieldname => $fieldSettings) {
 						$replacedFieldname = str_replace('.', '', $fieldname);
 						$fieldname = $replacedFieldname;
