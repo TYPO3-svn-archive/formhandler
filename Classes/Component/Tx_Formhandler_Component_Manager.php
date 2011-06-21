@@ -36,6 +36,8 @@ class Tx_Formhandler_Component_Manager {
 	protected $componentObjects = array(); // the object cache
 	protected $additionalIncludePaths = NULL;
 
+	protected $cacheFilePath = '';
+
 	public static function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new Tx_Formhandler_Component_Manager();
@@ -44,6 +46,12 @@ class Tx_Formhandler_Component_Manager {
 	}
 
 	protected function __construct() {
+		$this->cacheFilePath = PATH_site . 'typo3temp/formhandlerClassesCache.txt';
+		if(file_exists($this->cacheFilePath)) {
+			$this->classFiles = unserialize(file_get_contents($this->cacheFilePath));
+		} else {
+			$this->classFiles = array();
+		}
 		$this->loadTypoScriptConfig();
 		spl_autoload_register(array($this, 'loadClass'));
 	}
@@ -299,7 +307,7 @@ class Tx_Formhandler_Component_Manager {
 		if ($classNameParts[0] === self::PACKAGE_PREFIX) {
 
 				// Caches the $classFiles
-			if ($this->classFiles[$classNameParts[1]] === NULL || empty($this->classFiles[$classNameParts[1]])) {
+			if (!is_array($this->classFiles[$classNameParts[1]]) || empty($this->classFiles[$classNameParts[1]])) {
 				$this->classFiles[$classNameParts[1]] = $this->buildArrayOfClassFiles($classNameParts[1]);
 				if (is_array($this->additionalIncludePaths)) {
 					foreach ($this->additionalIncludePaths as $idx => $dir) {
@@ -308,6 +316,7 @@ class Tx_Formhandler_Component_Manager {
 						$this->classFiles[$classNameParts[1]] = array_merge($temp, $this->classFiles[$classNameParts[1]]);
 					}
 				}
+				t3lib_div::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
 			}
 			$classFilePathAndName = isset($this->classFiles[$classNameParts[1]][$className]) ? $this->classFiles[$classNameParts[1]][$className] : NULL;
 			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
