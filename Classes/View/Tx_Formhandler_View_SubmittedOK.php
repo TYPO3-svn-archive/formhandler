@@ -34,18 +34,25 @@ class Tx_Formhandler_View_SubmittedOK extends Tx_Formhandler_View_Form {
 	 */
 	protected function fillDefaultMarkers() {
 		parent::fillDefaultMarkers();
-		if (Tx_Formhandler_Globals::$formValuesPrefix) {
-			$params[Tx_Formhandler_Globals::$formValuesPrefix] = $this->gp;
-		} else {
-			$params = $this->gp;
-		}
-		$params['type'] = 98;
+		$params = array (
+			Tx_Formhandler_Globals::$formValuesPrefix => array (
+				'tstamp' => Tx_Formhandler_Globals::$session->get('inserted_tstamp'),
+				'hash' => Tx_Formhandler_Globals::$session->get('key_hash'),
+				'action' => 'show'
+			),
+			'type' => 98
+		);
 		$label = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'print');
 		if (strlen($label) == 0) {
 			$label = 'print';
 		}
 		$markers['###PRINT_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $params);
-		unset($params['type']);
+		$params = array();
+		if (Tx_Formhandler_Globals::$formValuesPrefix) {
+			$params[Tx_Formhandler_Globals::$formValuesPrefix] = $this->gp;
+		} else {
+			$params = $this->gp;
+		}
 		if ($this->componentSettings['actions.']) {
 			foreach ($this->componentSettings['actions.'] as $action=>$options) {
 				$sanitizedAction = str_replace('.', '', $action);
