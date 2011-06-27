@@ -33,7 +33,7 @@ class Tx_Formhandler_ErrorCheck_FileMaxSize extends Tx_Formhandler_AbstractError
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		$maxSize = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'maxSize');
+		$maxSize = $this->utilityFuncs->getSingle($check['params'], 'maxSize');
 		foreach ($_FILES as $sthg => &$files) {
 			if (strlen($files['name'][$name]) > 0 &&
 				$maxSize &&

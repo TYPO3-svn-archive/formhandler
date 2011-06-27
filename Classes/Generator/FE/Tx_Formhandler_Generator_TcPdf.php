@@ -11,8 +11,8 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 
 		$this->pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
 
-		$this->pdf->setHeaderText(Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'headerText'));
-		$this->pdf->setFooterText(Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'footerText'));
+		$this->pdf->setHeaderText($this->utilityFuncs->getSingle($this->settings, 'headerText'));
+		$this->pdf->setFooterText($this->utilityFuncs->getSingle($this->settings, 'footerText'));
 
 		$this->pdf->AddPage();
 		$this->pdf->SetFont('Helvetica', '', 12);
@@ -21,21 +21,21 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 		if (intval($this->settings['storeInTempFile']) === 1) {
 			$this->outputPath = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 			if ($this->settings['customTempOutputPath']) {
-				$this->outputPath .= Tx_Formhandler_StaticFuncs::sanitizePath($this->settings['customTempOutputPath']);
+				$this->outputPath .= $this->utilityFuncs->sanitizePath($this->settings['customTempOutputPath']);
 			} else {
 				$this->outputPath .= '/typo3temp/';
 			}
-			$this->filename = $this->outputPath . $this->settings['filePrefix'] . Tx_Formhandler_StaticFuncs::generateHash() . '.pdf';
+			$this->filename = $this->outputPath . $this->settings['filePrefix'] . $this->utilityFuncs->generateHash() . '.pdf';
 
-			$this->filenameOnly = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'staticFileName');
+			$this->filenameOnly = $this->utilityFuncs->getSingle($this->settings, 'staticFileName');
 			if(strlen($this->filenameOnly) === 0) {
 				$this->filenameOnly = basename($this->filename);
 			}
 		}
 
-		$this->formhandlerSettings = Tx_Formhandler_Globals::$settings;
+		$this->formhandlerSettings = $this->globals->getSettings();
 		$suffix = $this->formhandlerSettings['templateSuffix'];
-		$this->templateCode = Tx_Formhandler_StaticFuncs::readTemplateFile(FALSE, $this->formhandlerSettings);
+		$this->templateCode = $this->utilityFuncs->readTemplateFile(FALSE, $this->formhandlerSettings);
 		if ($suffix) {
 			$view->setTemplate($this->templateCode, 'PDF' . $suffix);
 		}
@@ -43,7 +43,7 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 			$view->setTemplate($this->templateCode, 'PDF');
 		}
 		if (!$view->hasTemplate()) {
-			Tx_Formhandler_StaticFuncs::throwException('no_pdf_template');
+			$this->utilityFuncs->throwException('no_pdf_template');
 		}
 
 		$view->setComponentSettings($this->settings);
@@ -69,7 +69,7 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 	}
 
 	protected function getComponentLinkParams($linkGP) {
-		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
+		$prefix = $this->globals->getFormValuesPrefix();
 		$tempParams = array(
 			'action' => 'pdf'
 		);

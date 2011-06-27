@@ -33,8 +33,8 @@ class Tx_Formhandler_ErrorCheck_BetweenItems extends Tx_Formhandler_AbstractErro
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		$min = intval(Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'minValue'));
-		$max = intval(Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'maxValue'));
+		$min = intval($this->utilityFuncs->getSingle($check['params'], 'minValue'));
+		$max = intval($this->utilityFuncs->getSingle($check['params'], 'maxValue'));
 		if (isset($gp[$name]) &&
 			is_array($gp[$name]) &&
 			(count($gp[$name]) < intval($min) || 

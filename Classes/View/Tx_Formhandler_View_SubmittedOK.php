@@ -35,21 +35,21 @@ class Tx_Formhandler_View_SubmittedOK extends Tx_Formhandler_View_Form {
 	protected function fillDefaultMarkers() {
 		parent::fillDefaultMarkers();
 		$params = array (
-			Tx_Formhandler_Globals::$formValuesPrefix => array (
-				'tstamp' => Tx_Formhandler_Globals::$session->get('inserted_tstamp'),
-				'hash' => Tx_Formhandler_Globals::$session->get('key_hash'),
+			$this->globals->getFormValuesPrefix() => array (
+				'tstamp' => $this->globals->getSession()->get('inserted_tstamp'),
+				'hash' => $this->globals->getSession()->get('key_hash'),
 				'action' => 'show'
 			),
 			'type' => 98
 		);
-		$label = Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, 'print');
+		$label = $this->utilityFuncs->getTranslatedMessage($this->langFiles, 'print');
 		if (strlen($label) == 0) {
 			$label = 'print';
 		}
 		$markers['###PRINT_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $params);
 		$params = array();
-		if (Tx_Formhandler_Globals::$formValuesPrefix) {
-			$params[Tx_Formhandler_Globals::$formValuesPrefix] = $this->gp;
+		if ($this->globals->getFormValuesPrefix()) {
+			$params[$this->globals->getFormValuesPrefix()] = $this->gp;
 		} else {
 			$params = $this->gp;
 		}
@@ -58,7 +58,7 @@ class Tx_Formhandler_View_SubmittedOK extends Tx_Formhandler_View_Form {
 				$sanitizedAction = str_replace('.', '', $action);
 				$class = $options['class'];
 				if ($class) {
-					$class = Tx_Formhandler_StaticFuncs::prepareClassName($class);
+					$class = $this->utilityFuncs->prepareClassName($class);
 					$generator = $this->componentManager->getComponent($class);
 					$generator->init($this->gp, $options['config.']);
 					$markers['###' . strtoupper($sanitizedAction) . '_LINK###'] = $generator->getLink($params);

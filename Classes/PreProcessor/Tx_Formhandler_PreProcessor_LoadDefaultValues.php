@@ -72,7 +72,7 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 			foreach ($arrKeys as $idx => $fieldName) {
 				$fieldName = preg_replace('/\.$/', '', $fieldName);
 				if (!isset($this->gp[$fieldName])) {
-					$this->gp[$fieldName] = Tx_Formhandler_StaticFuncs::getSingle($settings[$fieldName . '.'], 'defaultValue');
+					$this->gp[$fieldName] = $this->utilityFuncs->getSingle($settings[$fieldName . '.'], 'defaultValue');
 					if ($settings[$fieldName . '.']['defaultValue.']['separator']) {
 						$separator = $settings[$fieldName . '.']['defaultValue.']['separator'];
 						$this->gp[$fieldName] = t3lib_div::trimExplode($separator, $this->gp[$fieldName]);
@@ -91,19 +91,19 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 	 */
 	private function loadDefaultValuesToSession($settings, $step){
 		if (is_array($settings) && $step) {
-			$values = Tx_Formhandler_Globals::$session->get('values');
+			$values = $this->globals->getSession()->get('values');
 			$arrKeys = array_keys($settings);
 			foreach ($arrKeys as $idx => $fieldName) {
 				$fieldName = preg_replace('/\.$/', '', $fieldName);
 				if (!isset($values[$step][$fieldName])) {
-					$values[$step][$fieldName] = Tx_Formhandler_StaticFuncs::getSingle($settings[$fieldName . '.'], 'defaultValue');
+					$values[$step][$fieldName] = $this->utilityFuncs->getSingle($settings[$fieldName . '.'], 'defaultValue');
 					if ($settings[$fieldName . '.']['defaultValue.']['separator']) {
 						$separator = $settings[$fieldName . '.']['defaultValue.']['separator'];
 						$values[$step][$fieldName] = t3lib_div::trimExplode($separator, $this->gp[$fieldName]);
 					}
 				}
 			}
-			Tx_Formhandler_Globals::$session->set('values', $values);
+			$this->globals->getSession()->set('values', $values);
 		}
 	}
 }

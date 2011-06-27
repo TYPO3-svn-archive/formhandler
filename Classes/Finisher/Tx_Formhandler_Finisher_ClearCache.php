@@ -47,12 +47,12 @@ class Tx_Formhandler_Finisher_ClearCache extends Tx_Formhandler_AbstractFinisher
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		$cacheCmd = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'cacheCmd');
+		$cacheCmd = $this->utilityFuncs->getSingle($this->settings, 'cacheCmd');
 		if (empty($cacheCmd)) {
 			$cacheCmd = $GLOBALS['TSFE']->id;
 		}
 
-		Tx_Formhandler_StaticFuncs::debugMessage('cacheCmd', array($cacheCmd));
+		$this->utilityFuncs->debugMessage('cacheCmd', array($cacheCmd));
 
 		$tce = t3lib_div::makeInstance('t3lib_tcemain');
 		$tce->clear_cacheCmd($cacheCmd);

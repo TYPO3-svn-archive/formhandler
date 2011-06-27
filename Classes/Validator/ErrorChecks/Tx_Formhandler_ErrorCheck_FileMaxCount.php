@@ -34,11 +34,11 @@ class Tx_Formhandler_ErrorCheck_FileMaxCount extends Tx_Formhandler_AbstractErro
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 
-		$files = Tx_Formhandler_Globals::$session->get('files');
-		$settings = Tx_Formhandler_Globals::$session->get('settings');
-		$currentStep = Tx_Formhandler_Globals::$session->get('currentStep');
-		$lastStep = Tx_Formhandler_Globals::$session->get('lastStep');
-		$maxCount = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'maxCount');
+		$files = $this->globals->getSession()->get('files');
+		$settings = $this->globals->getSession()->get('settings');
+		$currentStep = $this->globals->getSession()->get('currentStep');
+		$lastStep = $this->globals->getSession()->get('lastStep');
+		$maxCount = $this->utilityFuncs->getSingle($check['params'], 'maxCount');
 		if (is_array($files[$name]) &&
 			count($files[$name]) >= $maxCount &&
 			$currentStep == $lastStep) {

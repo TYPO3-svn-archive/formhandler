@@ -35,7 +35,7 @@ class Tx_Formhandler_ErrorCheck_Time extends Tx_Formhandler_AbstractErrorCheck {
 		$checkFailed = '';
 
 		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
-			$pattern = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'pattern');
+			$pattern = $this->utilityFuncs->getSingle($check['params'], 'pattern');
 			preg_match('/^[h|m]*(.)[h|m]*/i', $pattern, $res);
 			$sep = $res[1];
 			$timeCheck = t3lib_div::trimExplode($sep, $gp[$name]);

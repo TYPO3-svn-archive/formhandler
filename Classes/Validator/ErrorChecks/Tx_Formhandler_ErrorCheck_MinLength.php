@@ -33,7 +33,7 @@ class Tx_Formhandler_ErrorCheck_MinLength extends Tx_Formhandler_AbstractErrorCh
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		$min = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'value');
+		$min = $this->utilityFuncs->getSingle($check['params'], 'value');
 		if (isset($gp[$name]) &&
 			mb_strlen(trim($gp[$name]), $GLOBALS['TSFE']->renderCharset) > 0 &&
 			intVal($min) > 0 &&

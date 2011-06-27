@@ -29,7 +29,7 @@ class Tx_Formhandler_PreProcessor_LoadGetPost extends Tx_Formhandler_AbstractPre
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		$this->formValuesPrefix = Tx_Formhandler_Globals::$formValuesPrefix;
+		$this->formValuesPrefix = $this->globals->getFormValuesPrefix();
 		$loadedGP = $this->loadGP();
 		$this->gp = array_merge($loadedGP, $this->gp);
 		return $this->gp;

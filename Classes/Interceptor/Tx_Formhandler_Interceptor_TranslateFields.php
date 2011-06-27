@@ -29,13 +29,13 @@ class Tx_Formhandler_Interceptor_TranslateFields extends Tx_Formhandler_Abstract
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		$this->langFiles = Tx_Formhandler_Globals::$langFiles;
+		$this->langFiles = $this->globals->getLangFiles();
 		if (is_array($this->settings['translateFields.'])) {
 			foreach ($this->settings['translateFields.'] as $newField=>$options) {
 				$newField = str_replace('.', '', $newField);
 				if (isset($options['langKey'])) {
 					$this->gp[$newField] = $this->translateFields($options);
-					Tx_Formhandler_StaticFuncs::debugMessage('translated', array($newField, $this->gp[$newField]));
+					$this->utilityFuncs->debugMessage('translated', array($newField, $this->gp[$newField]));
 				}
 			}
 		}
@@ -48,7 +48,7 @@ class Tx_Formhandler_Interceptor_TranslateFields extends Tx_Formhandler_Abstract
 		if ($field) {
 			$key = str_replace('|', $this->gp[$field], $key);
 		}
-		return Tx_Formhandler_StaticFuncs::getTranslatedMessage($this->langFiles, $key); 
+		return $this->utilityFuncs->getTranslatedMessage($this->langFiles, $key); 
 	}
 
 }

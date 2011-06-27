@@ -1,7 +1,7 @@
 <?php
 
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_StaticFuncs.php');
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 class Tx_Formhandler_Utils_AjaxRemoveFile {
@@ -11,7 +11,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		$content = '';
 
 		if ($this->fieldName) {
-			$sessionFiles = Tx_Formhandler_Globals::$session->get('files');
+			$sessionFiles = $this->globals->getSession()->get('files');
 			if (is_array($sessionFiles)) {
 				foreach ($sessionFiles as $field => $files) {
 
@@ -35,7 +35,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 				}
 			}
 
-			Tx_Formhandler_Globals::$session->set('files', $sessionFiles);
+			$this->globals->getSession()->set('files', $sessionFiles);
 
 			// Add the content to or Result Box: #formResult
 			if (is_array($sessionFiles) && !empty($sessionFiles[$field])) {
@@ -43,8 +43,8 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 				$view = $this->componentManager->getComponent('Tx_Formhandler_View_Form');
 				$view->setSettings($this->settings);
 				$view->fillFileMarkers($markers);
-				$langMarkers = Tx_Formhandler_StaticFuncs::getFilledLangMarkers($markers['###'. $this->fieldName . '_uploadedFiles###'], $this->langFiles);
-				$markers['###'. $this->fieldName . '_uploadedFiles###'] = Tx_Formhandler_Globals::$cObj->substituteMarkerArray($markers['###'. $this->fieldName . '_uploadedFiles###'], $langMarkers);
+				$langMarkers = $this->utilityFuncs->getFilledLangMarkers($markers['###'. $this->fieldName . '_uploadedFiles###'], $this->langFiles);
+				$markers['###'. $this->fieldName . '_uploadedFiles###'] = $this->globals->getCObj()->substituteMarkerArray($markers['###'. $this->fieldName . '_uploadedFiles###'], $langMarkers);
 				$content = $markers['###'. $this->fieldName . '_uploadedFiles###'];
 			}
 		}
@@ -61,23 +61,25 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		}
 		
 		$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
+		$this->globals = Tx_Formhandler_Globals::getInstance();
+		$this->utilityFuncs = Tx_Formhandler_UtilityFuncs::getInstance();
 		tslib_eidtools::connectDB();
-		Tx_Formhandler_StaticFuncs::initializeTSFE($this->id);
-		Tx_Formhandler_Globals::$cObj = $GLOBALS['TSFE']->cObj;
+		$this->utilityFuncs->initializeTSFE($this->id);
+		$this->globals->setCObj($GLOBALS['TSFE']->cObj);
 		$randomID = t3lib_div::_GP('randomID');
-		Tx_Formhandler_Globals::$randomID = $randomID;
+		$this->globals->setRandomID($randomID);
 		
-		if(!Tx_Formhandler_Globals::$session) {
+		if(!$this->globals->getSession()) {
 			$ts = $GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.'];
 			$sessionClass = 'Tx_Formhandler_Session_PHP';
 			if($ts['session.']) {
-				$sessionClass = Tx_Formhandler_StaticFuncs::prepareClassName($ts['session.']['class']);
+				$sessionClass = $this->utilityFuncs->prepareClassName($ts['session.']['class']);
 			}
-			Tx_Formhandler_Globals::$session = $this->componentManager->getComponent($sessionClass);
+			$this->globals->setSession($this->componentManager->getComponent($sessionClass));
 		}
 		
-		$this->settings = Tx_Formhandler_Globals::$session->get('settings');
-		$this->langFiles = Tx_Formhandler_StaticFuncs::readLanguageFiles(array(), $this->settings);
+		$this->settings = $this->globals->getSession()->get('settings');
+		$this->langFiles = $this->utilityFuncs->readLanguageFiles(array(), $this->settings);
 
 		//init ajax
 		if ($this->settings['ajax.']) {
@@ -85,10 +87,10 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 			if (!$class) {
 				$class = 'Tx_Formhandler_AjaxHandler_JQuery';
 			}
-			$class = Tx_Formhandler_StaticFuncs::prepareClassName($class);
+			$class = $this->utilityFuncs->prepareClassName($class);
 			$ajaxHandler = $this->componentManager->getComponent($class);
-			Tx_Formhandler_Globals::$ajaxHandler = $ajaxHandler;
-			
+			$this->globals->setAjaxHandler($ajaxHandler);
+
 			$ajaxHandler->init($this->settings['ajax.']['config.']);
 			$ajaxHandler->initAjax();
 		}

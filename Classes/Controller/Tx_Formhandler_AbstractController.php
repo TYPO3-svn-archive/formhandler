@@ -22,7 +22,7 @@
  * @subpackage	Controller
  * @abstract
  */
-abstract class Tx_Formhandler_AbstractController implements Tx_Formhandler_ControllerInterface {
+abstract class Tx_Formhandler_AbstractController extends Tx_Formhandler_AbstractClass implements Tx_Formhandler_ControllerInterface {
 
 	/**
 	 * The content returned by the controller

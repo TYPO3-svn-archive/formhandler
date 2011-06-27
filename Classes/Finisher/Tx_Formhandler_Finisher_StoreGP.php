@@ -69,7 +69,7 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 		foreach ($this->gp as $key => $value) {
 			$newValues[1][$key] = $value;
 		}
-		Tx_Formhandler_Globals::$session->set('values', $newValues);
+		$this->globals->getSession()->set('values', $newValues);
 	}
 
 }

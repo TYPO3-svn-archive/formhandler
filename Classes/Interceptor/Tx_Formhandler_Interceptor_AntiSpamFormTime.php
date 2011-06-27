@@ -47,22 +47,22 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 		if ($isSpam) {
 			$this->log(TRUE);
 			if ($this->settings['redirectPage']) {
-				Tx_Formhandler_Globals::$session->reset();
-				Tx_Formhandler_Staticfuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
+				$this->globals->getSession()->reset();
+				$this->utilityFuncs->doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
 				return 'Lousy spammer!';
 			} else {
 				$view = $this->componentManager->getComponent('Tx_Formhandler_View_AntiSpam');
-				$view->setLangFiles(Tx_Formhandler_Globals::$langFiles);
+				$view->setLangFiles($this->globals->getLangFiles());
 				$view->setPredefined($this->predefined);
 				
-				$templateCode = Tx_Formhandler_Globals::$templateCode;
+				$templateCode = $this->globals->getTemplateCode();
 				$view->setTemplate($templateCode, 'ANTISPAM');
 				if (!$view->hasTemplate()) {
-					Tx_Formhandler_StaticFuncs::throwException('spam_detected');
+					$this->utilityFuncs->throwException('spam_detected');
 					return 'Lousy spammer!';
 				}
 				$content = $view->render($this->gp, array());
-				Tx_Formhandler_Globals::$session->reset();
+				$this->globals->getSession()->reset();
 				return $content;
 			}
 		}
@@ -77,11 +77,11 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 	protected function doCheck() {
 		$value = $this->settings['minTime.']['value'];
 		$unit = $this->settings['minTime.']['unit'];
-		$minTime = Tx_Formhandler_StaticFuncs::convertToSeconds($value, $unit);
+		$minTime = $this->utilityFuncs->convertToSeconds($value, $unit);
 
 		$value = $this->settings['maxTime.']['value'];
 		$unit = $this->settings['maxTime.']['unit'];
-		$maxTime = Tx_Formhandler_StaticFuncs::convertToSeconds($value, $unit);
+		$maxTime = $this->utilityFuncs->convertToSeconds($value, $unit);
 		$spam = FALSE;
 		if (!isset($this->gp['formtime']) || 
 			!is_numeric($this->gp['formtime'])) {

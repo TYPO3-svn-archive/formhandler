@@ -33,7 +33,7 @@ class Tx_Formhandler_ErrorCheck_FileAllowedTypes extends Tx_Formhandler_Abstract
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		$allowed = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'allowedTypes');
+		$allowed = $this->utilityFuncs->getSingle($check['params'], 'allowedTypes');
 		foreach ($_FILES as $sthg => &$files) {
 			if (strlen($files['name'][$name]) > 0) {
 				if ($allowed) {

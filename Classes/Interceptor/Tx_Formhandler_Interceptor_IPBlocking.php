@@ -94,7 +94,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	 * @return void
 	 */
 	private function check($value, $unit, $maxValue, $addIPToWhere = TRUE) {
-		$timestamp = Tx_Formhandler_StaticFuncs::getTimestamp($value, $unit);
+		$timestamp = $this->utilityFuncs->getTimestamp($value, $unit);
 		$where = 'crdate >= ' . $timestamp;
 		if ($addIPToWhere) {
 			$where = 'ip=\'' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '\' AND ' . $where;
@@ -115,7 +115,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 				$intervalUnit = $this->settings['report.']['interval.']['unit'];
 				$send = TRUE;
 				if ($intervalUnit && $intervalValue) {
-					$intervalTstamp = Tx_Formhandler_StaticFuncs::getTimestamp($intervalValue, $intervalUnit);
+					$intervalTstamp = $this->utilityFuncs->getTimestamp($intervalValue, $intervalUnit);
 					$where = 'pid=' . $GLOBALS['TSFE']->id . ' AND crdate>' . $intervalTstamp;
 					if ($addIPToWhere) {
 						$where .= ' AND ip=\'' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '\'';
@@ -134,13 +134,13 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 						$this->sendReport('global', $rows);
 					}
 				} else {
-					Tx_Formhandler_StaticFuncs::debugMessage('alert_mail_not_sent', array(), 2);
+					$this->utilityFuncs->debugMessage('alert_mail_not_sent', array(), 2);
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($this->settings['redirectPage']) {
-				Tx_Formhandler_StaticFuncs::doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
-				Tx_Formhandler_StaticFuncs::debugMessage('redirect_failed', array(), 2);
+				$this->utilityFuncs->doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
+				$this->utilityFuncs->debugMessage('redirect_failed', array(), 2);
 				exit(0);
 			} else {
 				throw new Exception($message);
@@ -198,15 +198,15 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		foreach ($email as $idx => $mailto) {
 			$sent = $emailObj->send($mailto);
 			if ($sent) {
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sent', array($mailto));
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', array($emailObj->from_email));
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', array($emailObj->subject));
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', array(), 1, array($message));
+				$this->utilityFuncs->debugMessage('mail_sent', array($mailto));
+				$this->utilityFuncs->debugMessage('mail_sender', array($emailObj->from_email));
+				$this->utilityFuncs->debugMessage('mail_subject', array($emailObj->subject));
+				$this->utilityFuncs->debugMessage('mail_message', array(), 1, array($message));
 			} else {
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_not_sent', array($mailto), 2);
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_sender', array($emailObj->from_email));
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_subject', array($emailObj->subject));
-				Tx_Formhandler_StaticFuncs::debugMessage('mail_message', array(), 1, array($message));
+				$this->utilityFuncs->debugMessage('mail_not_sent', array($mailto), 2);
+				$this->utilityFuncs->debugMessage('mail_sender', array($emailObj->from_email));
+				$this->utilityFuncs->debugMessage('mail_subject', array($emailObj->subject));
+				$this->utilityFuncs->debugMessage('mail_message', array(), 1, array($message));
 			}
 		}
 	}

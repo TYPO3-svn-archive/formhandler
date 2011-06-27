@@ -36,7 +36,7 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 
 		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
 			# find out separator
-			$pattern = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'pattern');
+			$pattern = $this->utilityFuncs->getSingle($check['params'], 'pattern');
 			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
 			$sep = $res[1];
 

@@ -15,26 +15,40 @@
  *                                                                        */
 
 /**
- * A class providing static helper functions for Formhandler
+ * A class providing helper functions for Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @package	Tx_Formhandler
  * @subpackage	Utils
  */
-class Tx_Formhandler_StaticFuncs {
+class Tx_Formhandler_UtilityFuncs {
+
+	static private $instance = NULL;
+
+	static public function getInstance() {
+		if (self::$instance === NULL) {
+			self::$instance = new Tx_Formhandler_UtilityFuncs();
+			self::$instance->globals = Tx_Formhandler_Globals::getInstance();
+		}
+		return self::$instance;
+	}
+
+	protected function __construct() {}
+
+	private function __clone() {}
 
 	/**
 	 * Returns the absolute path to the document root
 	 *
 	 * @return string
 	 */
-	static public function getDocumentRoot() {
+	public function getDocumentRoot() {
 		return t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 	}
 	
-	static public function getMergedGP() {
+	public function getMergedGP() {
 		$gp = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
-		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
+		$prefix = $this->globals->getFormValuesPrefix();
 		if ($prefix) {
 			$gp = $gp[$prefix];
 		}
@@ -46,7 +60,7 @@ class Tx_Formhandler_StaticFuncs {
 	 *
 	 * @return string
 	 */
-	static public function getTYPO3Root() {
+	public function getTYPO3Root() {
 		$path = t3lib_div::getIndpEnv('SCRIPT_FILENAME');
 		$path = str_replace('/index.php', '', $path);
 		return $path;
@@ -57,7 +71,7 @@ class Tx_Formhandler_StaticFuncs {
 	 *
 	 * @return string
 	 */
-	static public function prepareClassName($className) {
+	public function prepareClassName($className) {
 		if (substr($className, 0, 3) !== 'Tx_') {
 			$className = 'Tx_Formhandler_' . $className;
 		}
@@ -73,7 +87,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @param	array
 	 * @return	string
 	 */
-	static public function substituteMarkerArray($content,$markContentArray) {
+	public function substituteMarkerArray($content,$markContentArray) {
 		if (is_array($markContentArray)) {
 			reset($markContentArray);
 			foreach ($markContentArray as $marker => $markContent) {
@@ -92,7 +106,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @param	string		Marker string, eg. "###CONTENT_PART###"
 	 * @return	string
 	 */
-	static public function getSubpart($content, $marker) {
+	public function getSubpart($content, $marker) {
 		$start = strpos($content, $marker);
 		if ($start === FALSE)	{
 			return '';
@@ -122,7 +136,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return void
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
-	static public function readTemplateFile($templateFile, &$settings) {
+	public function readTemplateFile($templateFile, &$settings) {
 		$templateCode = FALSE;
 		//template file was not set in flexform, search TypoScript for setting
 		if (!$templateFile) {
@@ -132,26 +146,26 @@ class Tx_Formhandler_StaticFuncs {
 			$templateFile = $settings['templateFile'];
 
 			if (isset($settings['templateFile.']) && is_array($settings['templateFile.'])) {
-				$templateFile = Tx_Formhandler_StaticFuncs::getSingle($settings, 'templateFile');
+				$templateFile = $this->getSingle($settings, 'templateFile');
 				if (strpos($templateFile, "\n") === FALSE) {
-					$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
+					$templateFile = $this->resolvePath($templateFile);
 					if (!@file_exists($templateFile)) {
-						Tx_Formhandler_StaticFuncs::throwException('template_file_not_found', $templateFile);
+						$this->throwException('template_file_not_found', $templateFile);
 					}
 					$templateCode = t3lib_div::getURL($templateFile);
 				}
 			} else {
-				$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
+				$templateFile = $this->resolvePath($templateFile);
 				if (!@file_exists($templateFile)) {
-					Tx_Formhandler_StaticFuncs::throwException('template_file_not_found', $templateFile);
+					$this->throwException('template_file_not_found', $templateFile);
 				}
 				$templateCode = t3lib_div::getURL($templateFile);
 			}
 		} else {
 			if (strpos($templateFile, "\n") === FALSE) {
-				$templateFile = Tx_Formhandler_StaticFuncs::resolvePath($templateFile);
+				$templateFile = $this->resolvePath($templateFile);
 				if (!@file_exists($templateFile)) {
-					Tx_Formhandler_StaticFuncs::throwException('template_file_not_found', $templateFile);
+					$this->throwException('template_file_not_found', $templateFile);
 				}
 				$templateCode = t3lib_div::getURL($templateFile);
 			} else {
@@ -160,10 +174,10 @@ class Tx_Formhandler_StaticFuncs {
 			}
 		}
 		if (strlen($templateCode) === 0) {
-			Tx_Formhandler_StaticFuncs::throwException('empty_template_file', $templateFile);
+			$this->throwException('empty_template_file', $templateFile);
 		}
 		if (stristr($templateCode, '###TEMPLATE_') === FALSE) {
-			Tx_Formhandler_StaticFuncs::throwException('invalid_template_file', $templateFile);
+			$this->throwException('invalid_template_file', $templateFile);
 		}
 		return $templateCode;
 	}
@@ -175,34 +189,34 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return void
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
-	static public function readLanguageFiles($langFiles, &$settings) {
+	public function readLanguageFiles($langFiles, &$settings) {
 
 		//language file was not set in flexform, search TypoScript for setting
 		if (!$langFiles) {
 			$langFiles = array();
 			if (isset($settings['langFile']) && !isset($settings['langFile.'])) {
-				array_push($langFiles, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($settings['langFile']));
+				array_push($langFiles, $this->resolveRelPathFromSiteRoot($settings['langFile']));
 			} elseif (isset($settings['langFile']) && isset($settings['langFile.'])) {
-				array_push($langFiles, Tx_Formhandler_Globals::getSingle($settings, 'langFile'));
+				array_push($langFiles, $this->globals->getSingle($settings, 'langFile'));
 			} elseif (isset($settings['langFile.']) && is_array($settings['langFile.'])) {
 				foreach ($settings['langFile.'] as $key => $langFile) {
 					if (FALSE === strpos($key, '.')) {
 						if (is_array($settings['langFile.'][$key . '.'])) {
-							array_push($langFiles, Tx_Formhandler_StaticFuncs::getSingle($settings['langFile.'], $key));
+							array_push($langFiles, $this->getSingle($settings['langFile.'], $key));
 						} else {
-							array_push($langFiles, Tx_Formhandler_StaticFuncs::resolveRelPathFromSiteRoot($langFile));
+							array_push($langFiles, $this->resolveRelPathFromSiteRoot($langFile));
 						}
 					}
 				}
 			}
 		}
 		foreach ($langFiles as $idx => &$langFile) {
-			$langFile = Tx_Formhandler_StaticFuncs::convertToRelativePath($langFile);
+			$langFile = $this->convertToRelativePath($langFile);
 		}
 		return $langFiles;
 	}
 
-	static public function getTranslatedMessage($langFiles, $key) {
+	public function getTranslatedMessage($langFiles, $key) {
 		$message = '';
 		if (!is_array($langFiles)) {
 			$message = trim($GLOBALS['TSFE']->sL('LLL:' . $langFiles . ':' . $key));
@@ -216,14 +230,14 @@ class Tx_Formhandler_StaticFuncs {
 		return $message;
 	}
 
-	static public function getSingle($arr, $key) {
+	public function getSingle($arr, $key) {
 		if (!isset($arr[$key . '.'])) {
 			return $arr[$key];
 		}
 		if (!isset($arr[$key . '.']['sanitize'])) {
 			$arr[$key . '.']['sanitize'] = 1;
 		}
-		return Tx_Formhandler_Globals::$cObj->cObjGetSingle($arr[$key], $arr[$key . '.']);
+		return $this->globals->getCObj()->cObjGetSingle($arr[$key], $arr[$key . '.']);
 	}
 
 	/**
@@ -233,7 +247,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @param boolean $correctRedirectUrl replace &amp; with & in URL 
 	 * @return void
 	 */
-	static public function doRedirect($redirect, $correctRedirectUrl, $additionalParams = array()) {
+	public function doRedirect($redirect, $correctRedirectUrl, $additionalParams = array()) {
 
 		// these parameters have to be added to the redirect url
 		$addparams = array();
@@ -245,14 +259,14 @@ class Tx_Formhandler_StaticFuncs {
 			foreach ($additionalParams as $param=>$value) {
 				if (FALSE === strpos($param, '.')) {
 					if (is_array($additionalParams[$param . '.'])) {
-						$value = Tx_Formhandler_StaticFuncs::getSingle($additionalParams, $param);
+						$value = $this->getSingle($additionalParams, $param);
 					}
 					$addparams[$param] = $value;
 				}
 			}
 		}
 
-		$url = Tx_Formhandler_Globals::$cObj->getTypoLink_URL($redirect, $addparams);
+		$url = $this->globals->getCObj()->getTypoLink_URL($redirect, $addparams);
 
 		//correct the URL by replacing &amp;
 		if ($correctRedirectUrl) {
@@ -275,7 +289,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @param	string		Value pointer, eg. "vDEF"
 	 * @return	string		The content.
 	 */
-	static public function pi_getFFvalue($T3FlexForm_array, $fieldName, $sheet  ='sDEF', $lang = 'lDEF', $value = 'vDEF') {
+	public function pi_getFFvalue($T3FlexForm_array, $fieldName, $sheet  ='sDEF', $lang = 'lDEF', $value = 'vDEF') {
 		$sheetArray = '';
 		if (is_array($T3FlexForm_array)) {
 			$sheetArray = $T3FlexForm_array['data'][$sheet][$lang];
@@ -283,7 +297,7 @@ class Tx_Formhandler_StaticFuncs {
 			$sheetArray = '';
 		}
 		if (is_array($sheetArray))	{
-			return Tx_Formhandler_StaticFuncs::pi_getFFvalueFromSheetArray($sheetArray, t3lib_div::trimExplode('/', $fieldName), $value);
+			return $this->pi_getFFvalueFromSheetArray($sheetArray, t3lib_div::trimExplode('/', $fieldName), $value);
 		}
 	}
 
@@ -297,7 +311,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @access private
 	 * @see pi_getFFvalue()
 	 */
-	static public function pi_getFFvalueFromSheetArray($sheetArray, $fieldNameArr, $value) {
+	public function pi_getFFvalueFromSheetArray($sheetArray, $fieldNameArr, $value) {
 		$tempArr = $sheetArray;
 		foreach ($fieldNameArr as $k => $v) {
 			if (t3lib_div::testInt($v)) {
@@ -326,7 +340,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return string formatted date
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
-	static public function dateToTimestamp($date,$end = FALSE) {
+	public function dateToTimestamp($date,$end = FALSE) {
 		$dateArr = t3lib_div::trimExplode('.', $date);
 		if ($end) {
 			return mktime(23, 59, 59, $dateArr[1], $dateArr[0], $dateArr[2]);
@@ -339,7 +353,7 @@ class Tx_Formhandler_StaticFuncs {
 	 *
 	 * @return string
 	 */
-	static public function getHostname() {
+	public function getHostname() {
 		return t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 	}
 
@@ -355,7 +369,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @param string $path
 	 * @return string Sanitized path
 	 */
-	static public function sanitizePath($path) {
+	public function sanitizePath($path) {
 		if (substr($path, 0, 1) != '/') {
 			$path = '/' . $path;
 		}
@@ -365,7 +379,7 @@ class Tx_Formhandler_StaticFuncs {
 		return $path;
 	}
 	
-	static public function generateHash() {
+	public function generateHash() {
 		$result = '';
 		$charPool = '0123456789abcdefghijklmnopqrstuvwxyz';
 		for($p = 0; $p < 15; $p++) {
@@ -387,7 +401,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return array The filled language markers
 	 * @static
 	 */
-	static public function convertToRelativePath($absPath) {
+	public function convertToRelativePath($absPath) {
 
 		//C:/xampp/htdocs/typo3/index.php
 		$scriptPath =  t3lib_div::getIndpEnv('SCRIPT_FILENAME');
@@ -406,7 +420,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return array The filled language markers
 	 * @static
 	 */
-	static public function getFilledLangMarkers(&$template,$langFiles) {
+	public function getFilledLangMarkers(&$template,$langFiles) {
 		$langMarkers = array();
 		if (is_array($langFiles)) {
 			$aLLMarkerList = array();
@@ -432,7 +446,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return array The filled value markers
 	 * @static
 	 */
-	static public function getFilledValueMarkers(&$gp) {
+	public function getFilledValueMarkers(&$gp) {
 		if (isset($gp) && is_array($gp)) {
 			foreach ($gp as $k=>$v) {
 				if (is_array($v)) {
@@ -461,7 +475,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return string The processed value
 	 * @static
 	 */
-	static public function reverse_htmlspecialchars($mixed) {
+	public function reverse_htmlspecialchars($mixed) {
 		$htmltable = get_html_translation_table(HTML_ENTITIES);
 		foreach ($htmltable as $key => $value) {
 			$mixed = preg_replace('/' . addslashes($value) . '/', $key, $mixed);
@@ -480,17 +494,17 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return void
 	 * @static
 	 */
-	static public function debugMessage($key, array $printfArgs = array(), $severity = 1, array $data = array()) {
+	public function debugMessage($key, array $printfArgs = array(), $severity = 1, array $data = array()) {
 		
 		$severity = intval($severity);
 		
-		$message = Tx_Formhandler_Messages::getDebugMessage($key);
+		$message = $this->getDebugMessage($key);
 		if (strlen($message) == 0) {
 			$message = $key;
 		} elseif (count($printfArgs) > 0) {
 			$message = vsprintf($message, $printfArgs);
 		}
-		foreach(Tx_Formhandler_Globals::$debuggers as $idx => $debugger) {
+		foreach($this->globals->getDebuggers() as $idx => $debugger) {
 			$debugger->addToDebugLog($message, $severity, $data);
 		}
 	}
@@ -502,8 +516,8 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return void
 	 * @static
 	 */
-	static public function throwException($key) {
-		$message = Tx_Formhandler_Messages::getExceptionMessage($key);
+	public function throwException($key) {
+		$message = $this->getExceptionMessage($key);
 		if (strlen($message) == 0) {
 			throw new Exception($key);
 		} else {
@@ -523,7 +537,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return string The template code without markers
 	 * @static
 	 */
-	static public function removeUnfilledMarkers($content) {
+	public function removeUnfilledMarkers($content) {
 		return preg_replace('/###.*?###/', '', $content);
 	}
 
@@ -534,7 +548,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return string The resolved path
 	 * @static
 	 */
-	static public function resolvePath($path) {
+	public function resolvePath($path) {
 		$path = explode('/', $path);
 		if (strpos($path[0], 'EXT') === 0) {
 			$parts = explode(':', $path[0]);
@@ -552,7 +566,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return string The resolved path
 	 * @static
 	 */
-	static public function resolveRelPath($path) {
+	public function resolveRelPath($path) {
 		$path = explode('/', $path);
 		if (strpos($path[0], 'EXT') === 0) {
 			$parts = explode(':', $path[0]);
@@ -570,7 +584,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @return string The resolved path
 	 * @static
 	 */
-	static public function resolveRelPathFromSiteRoot($path) {
+	public function resolveRelPathFromSiteRoot($path) {
 		if(substr($path, 0, 7) === 'http://') {
 			return $path;
 		}
@@ -600,22 +614,22 @@ class Tx_Formhandler_StaticFuncs {
 	 * @static
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
-	static public function getTempUploadFolder() {
+	public function getTempUploadFolder() {
 
 		//set default upload folder
 		$uploadFolder = '/uploads/formhandler/tmp/';
 
 		//if temp upload folder set in TypoScript, take that setting
-		$settings = Tx_Formhandler_Globals::$session->get('settings');
+		$settings = $this->globals->getSession()->get('settings');
 		if ($settings['files.']['uploadFolder']) {
-			$uploadFolder = Tx_Formhandler_StaticFuncs::getSingle($settings['files.'], 'uploadFolder');
-			$uploadFolder = Tx_Formhandler_StaticFuncs::sanitizePath($uploadFolder);
+			$uploadFolder = $this->getSingle($settings['files.'], 'uploadFolder');
+			$uploadFolder = $this->sanitizePath($uploadFolder);
 		}
 
 		//if the set directory doesn't exist, print a message and try to create
-		if (!is_dir(Tx_Formhandler_StaticFuncs::getTYPO3Root() . $uploadFolder)) {
-			Tx_Formhandler_StaticFuncs::debugMessage('folder_doesnt_exist', array(Tx_Formhandler_StaticFuncs::getTYPO3Root() . '/' . $uploadFolder), 2);
-			t3lib_div::mkdir_deep(Tx_Formhandler_StaticFuncs::getTYPO3Root() . '/', $uploadFolder);
+		if (!is_dir($this->getTYPO3Root() . $uploadFolder)) {
+			$this->debugMessage('folder_doesnt_exist', array($this->getTYPO3Root() . '/' . $uploadFolder), 2);
+			t3lib_div::mkdir_deep($this->getTYPO3Root() . '/', $uploadFolder);
 		}
 		return $uploadFolder;
 	}
@@ -628,7 +642,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @static
 	 * @return long The timestamp
 	 */
-	static public function getTimestamp($value, $unit) {
+	public function getTimestamp($value, $unit) {
 		$now = time();
 		$convertedValue = 0;
 		switch ($unit) {
@@ -656,7 +670,7 @@ class Tx_Formhandler_StaticFuncs {
 	 * @static
 	 * @return long The seconds
 	 */
-	static public function convertToSeconds($value,$unit) {
+	public function convertToSeconds($value,$unit) {
 		$convertedValue = 0;
 		switch ($unit) {
 			case 'days':
@@ -675,12 +689,12 @@ class Tx_Formhandler_StaticFuncs {
 		return $convertedValue;
 	}
 	
-	static public function generateRandomID() {
-		$randomID = md5(Tx_Formhandler_Globals::$formValuesPrefix . $GLOBALS['ACCESS_TIME']);
+	public function generateRandomID() {
+		$randomID = md5($this->globals->getFormValuesPrefix() . $GLOBALS['ACCESS_TIME']);
 		return $randomID;
 	}
 	
-	static public function initializeTSFE($pid) {
+	public function initializeTSFE($pid) {
 		global $TSFE;
 
 			// create object instances:
@@ -699,6 +713,26 @@ class Tx_Formhandler_StaticFuncs {
 		$TSFE->fetch_the_id();
 		$TSFE->getConfigArray();
 		$TSFE->newCObj();
+	}
+	
+	/**
+	 * Returns a debug message according to given key
+	 *
+	 * @param string The key in translation file
+	 * @return string
+	 */
+	public function getDebugMessage($key) {
+		return trim($GLOBALS['TSFE']->sL('LLL:EXT:formhandler/Resources/Language/locallang_debug.xml:' . $key));
+	}
+
+	/**
+	 * Returns an exception message according to given key
+	 *
+	 * @param string The key in translation file
+	 * @return string
+	 */
+	public function getExceptionMessage($key) {
+		return trim($GLOBALS['TSFE']->sL('LLL:EXT:formhandler/Resources/Language/locallang_exceptions.xml:' . $key));
 	}
 
 }

@@ -33,7 +33,7 @@ class Tx_Formhandler_ErrorCheck_FileMinSize extends Tx_Formhandler_AbstractError
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		$minSize = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'minSize');
+		$minSize = $this->utilityFuncs->getSingle($check['params'], 'minSize');
 		foreach ($_FILES as $sthg => &$files) {
 			if (strlen($files['name'][$name]) > 0 &&
 				$minSize &&

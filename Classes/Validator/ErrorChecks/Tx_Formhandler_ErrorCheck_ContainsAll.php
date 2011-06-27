@@ -36,7 +36,7 @@ class Tx_Formhandler_ErrorCheck_ContainsAll extends Tx_Formhandler_AbstractError
 		$formValue = trim($gp[$name]);
 
 		if (strlen($formValue) > 0) {
-			$checkValue = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'words');
+			$checkValue = $this->utilityFuncs->getSingle($check['params'], 'words');
 			if (!is_array($checkValue)) {
 				$checkValue = t3lib_div::trimExplode(',', $checkValue);
 			}

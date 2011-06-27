@@ -104,14 +104,14 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 		$returnCode = '';
 		if (empty($errors)) {
 			
-			$okImg = Tx_Formhandler_StaticFuncs::getSingle($this->settings['ajax.']['config.'], 'ok');
+			$okImg = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'ok');
 			if(strlen($okImg) === 0) {
 				$okImg = '<img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ok.png' . '" />';
 			}
 			$returnCode = $okImg;
 		} else {
 			
-			$notOkImg = Tx_Formhandler_StaticFuncs::getSingle($this->settings['ajax.']['config.'], 'notOk');
+			$notOkImg = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'notOk');
 			if(strlen($notOkImg) === 0) {
 				$notOkImg = '<img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/notok.png' . '" />';
 			}
@@ -121,7 +121,7 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 	}
 
 	public function loadConfig() {
-		$tsConfig = Tx_Formhandler_Globals::$session->get('settings');
+		$tsConfig = $this->globals->getSession()->get('settings');
 		$this->settings = array();
 		if ($tsConfig['validators.']) {
 			foreach ($tsConfig['validators.'] as $idx => $settings) {

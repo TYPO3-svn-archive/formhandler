@@ -13,10 +13,10 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 	}
 
 	protected function getDefaultLinkParams() {
-		$prefix = Tx_Formhandler_Globals::$formValuesPrefix;
+		$prefix = $this->globals->getFormValuesPrefix();
 		$tempParams = array(
-			'tstamp' => Tx_Formhandler_Globals::$session->get('inserted_tstamp'),
-			'hash' => Tx_Formhandler_Globals::$session->get('key_hash')
+			'tstamp' => $this->globals->getSession()->get('inserted_tstamp'),
+			'hash' => $this->globals->getSession()->get('key_hash')
 		);
 		$params = array();
 		if ($prefix) {
@@ -30,7 +30,7 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 	abstract protected function getComponentLinkParams($linkGP);
 	
 	protected function getLinkText() {
-		$text = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'linkText');
+		$text = $this->utilityFuncs->getSingle($this->settings, 'linkText');
 		if(strlen($text) === 0) {
 			$text = 'Save';
 		}
@@ -38,7 +38,7 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 	}
 
 	protected function getLinkTarget() {
-		$target = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'linkTarget');
+		$target = $this->utilityFuncs->getSingle($this->settings, 'linkTarget');
 		if(strlen($target) === 0) {
 			$target = '_self';
 		}

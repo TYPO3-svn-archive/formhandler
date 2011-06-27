@@ -33,7 +33,7 @@ class Tx_Formhandler_ErrorCheck_MaxValue extends Tx_Formhandler_AbstractErrorChe
 	 */
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
-		$max = floatval(str_replace(',', '.', Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'value')));
+		$max = floatval(str_replace(',', '.', $this->utilityFuncs->getSingle($check['params'], 'value')));
 		$check['params']['value'] = $max;
 		$valueToCheck = floatval(str_replace(',', '.', $gp[$name]));
 		if (isset($gp[$name]) &&

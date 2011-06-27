@@ -34,11 +34,11 @@ class Tx_Formhandler_ErrorCheck_FileMinCount extends Tx_Formhandler_AbstractErro
 	public function check(&$check, $name, &$gp) {
 		$checkFailed = '';
 
-		$files = Tx_Formhandler_Globals::$session->get('files');
-		$settings = Tx_Formhandler_Globals::$session->get('settings');
-		$currentStep = Tx_Formhandler_Globals::$session->get('currentStep');
-		$lastStep = Tx_Formhandler_Globals::$session->get('lastStep');
-		$minCount = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'minCount');
+		$files = $this->globals->getSession()->get('files');
+		$settings = $this->globals->getSession()->get('settings');
+		$currentStep = $this->globals->getSession()->get('currentStep');
+		$lastStep = $this->globals->getSession()->get('lastStep');
+		$minCount = $this->utilityFuncs->getSingle($check['params'], 'minCount');
 		if (is_array($files[$name]) &&
 			$currentStep > $lastStep) {
 

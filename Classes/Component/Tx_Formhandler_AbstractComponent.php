@@ -1,22 +1,6 @@
 <?php
 
-abstract class Tx_Formhandler_AbstractComponent {
-
-	/**
-	 * The Formhandler component manager
-	 *
-	 * @access protected
-	 * @var Tx_Formhandler_Component_Manager
-	 */
-	protected $componentManager;
-
-	/**
-	 * The global Formhandler configuration
-	 *
-	 * @access protected
-	 * @var Tx_Formhandler_Configuration
-	 */
-	protected $configuration;
+abstract class Tx_Formhandler_AbstractComponent extends Tx_Formhandler_AbstractClass {
 
 	/**
 	 * The GET/POST parameters
@@ -27,14 +11,6 @@ abstract class Tx_Formhandler_AbstractComponent {
 	protected $gp;
 
 	/**
-	 * The cObj
-	 *
-	 * @access protected
-	 * @var tslib_cObj
-	 */
-	protected $cObj;
-
-	/**
 	 * Settings
 	 * 
 	 * @access protected
@@ -42,18 +18,7 @@ abstract class Tx_Formhandler_AbstractComponent {
 	 */
 	protected $settings;
 
-	/**
-	 * The constructor for an interceptor setting the component manager and the configuration.
-	 *
-	 * @param Tx_Formhandler_Component_Manager $componentManager
-	 * @param Tx_Formhandler_Configuration $configuration
-	 * @return void
-	 */
-	public function __construct(Tx_Formhandler_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration) {
-		$this->componentManager = $componentManager;
-		$this->configuration = $configuration;
-		$this->cObj = Tx_Formhandler_Globals::$cObj;
-	}
+
 
 	/**	
 	 * Initialize the class variables

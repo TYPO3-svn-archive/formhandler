@@ -16,6 +16,7 @@
 
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
 require_once(PATH_tslib.'class.tslib_pibase.php');
 
 /**
@@ -36,6 +37,14 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 	protected $componentManager;
 
 	/**
+	 * The global Formhandler values
+	 *
+	 * @access protected
+	 * @var Tx_Formhandler_Globals
+	 */
+	protected $globals;
+
+	/**
 	 * Main method of the dispatcher. This method is called as a user function.
 	 *
 	 * @return string rendered view
@@ -44,6 +53,8 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 	 */
 	public function main($content, $setup) {
 		$this->pi_USER_INT_obj = 1;
+		$this->globals = Tx_Formhandler_Globals::getInstance();
+		$this->utilityFuncs = Tx_Formhandler_UtilityFuncs::getInstance();
 		try {
 
 			//init flexform
@@ -62,9 +73,9 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			$langFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'lang_file', 'sDEF');
 			$predef = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'predefined', 'sDEF');
 
-			Tx_Formhandler_Globals::$predef = $predef;
-			Tx_Formhandler_Globals::$cObj = $this->cObj;
-			Tx_Formhandler_Globals::$overrideSettings = $setup;
+			$this->globals->setPredef($predef);
+			$this->globals->setCObj($this->cObj);
+			$this->globals->setOverrideSettings($setup);
 			$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 
 			/*
@@ -77,7 +88,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 				$controller = $setup['controller'];
 			}
 
-			$controller = Tx_Formhandler_StaticFuncs::prepareClassName($controller);
+			$controller = $this->utilityFuncs->prepareClassName($controller);
 			$controller = $this->componentManager->getComponent($controller);
 
 			if (isset($content)) {
@@ -100,8 +111,9 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			$result .= '<div style="color:red; font-weight: bold">File: ' . $e->getFile() . '(' . $e->getLine() . ')</div>';
 			
 		}
-		if (Tx_Formhandler_Globals::$session && Tx_Formhandler_Globals::$session->get('debug')) {
-			foreach(Tx_Formhandler_Globals::$debuggers as $idx => $debugger) {
+		if ($this->globals->getSession() && $this->globals->getSession()->get('debug')) {
+			$debuggers = $this->globals->getDebuggers();
+			foreach($debuggers as $idx => $debugger) {
 				$debugger->outputDebugLog();
 			}
 		}

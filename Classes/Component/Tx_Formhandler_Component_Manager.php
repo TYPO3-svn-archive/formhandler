@@ -32,6 +32,14 @@ class Tx_Formhandler_Component_Manager {
 
 	protected $classFiles;
 	protected $packagePath;
+	
+	/**
+	 * The global Formhandler values
+	 *
+	 * @access protected
+	 * @var Tx_Formhandler_Globals
+	 */
+	protected $globals;
 
 	protected $componentObjects = array(); // the object cache
 	protected $additionalIncludePaths = NULL;
@@ -46,6 +54,7 @@ class Tx_Formhandler_Component_Manager {
 	}
 
 	protected function __construct() {
+		$this->globals = Tx_Formhandler_Globals::getInstance();
 		$this->cacheFilePath = PATH_site . 'typo3temp/formhandlerClassesCache.txt';
 		if(file_exists($this->cacheFilePath)) {
 			$this->classFiles = unserialize(file_get_contents($this->cacheFilePath));
@@ -64,16 +73,17 @@ class Tx_Formhandler_Component_Manager {
 	private function loadTypoScriptConfig() {
 		if ($this->additionalIncludePaths === NULL) {
 			$conf = array();
-			if (!is_array(Tx_Formhandler_Globals::$overrideSettings['settings.'])) {
+			$overrideSettings = $this->globals->getOverrideSettings();
+			if (!is_array($overrideSettings['settings.'])) {
 				$setup = $GLOBALS['TSFE']->tmpl->setup;
 				if ($setup['plugin.']['Tx_Formhandler.']['settings.']['additionalIncludePaths.']) {
 					$conf = $setup['plugin.']['Tx_Formhandler.']['settings.']['additionalIncludePaths.'];
 				}
-				if (Tx_Formhandler_Globals::$predef && is_array($setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][Tx_Formhandler_Globals::$predef]['additionalIncludePaths.'])) {
-					$conf = array_merge($conf, $setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][Tx_Formhandler_Globals::$predef]['additionalIncludePaths.']);
+				if ($this->globals->getPredef() && is_array($setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][$this->globals->getPredef()]['additionalIncludePaths.'])) {
+					$conf = array_merge($conf, $setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][$this->globals->getPredef()]['additionalIncludePaths.']);
 				}
-			} elseif (Tx_Formhandler_Globals::$overrideSettings['settings.']['additionalIncludePaths.']) {
-				$conf = Tx_Formhandler_Globals::$overrideSettings['settings.']['additionalIncludePaths.'];
+			} elseif ($overrideSettings['settings.']['additionalIncludePaths.']) {
+				$conf = $overrideSettings['settings.']['additionalIncludePaths.'];
 			}
 			$this->additionalIncludePaths = $conf;
 		}
@@ -92,6 +102,10 @@ class Tx_Formhandler_Component_Manager {
 		//Avoid component manager creating multiple instances of itself:
 		if (get_class($this) === $componentName) {
 			return $this;
+		} elseif ('Tx_Formhandler_Globals' === $componentName) {
+			return Tx_Formhandler_Globals::getInstance();
+		} elseif ('Tx_Formhandler_UtilityFuncs' === $componentName) {
+			return Tx_Formhandler_UtilityFuncs::getInstance();
 		}
 
 		if (!is_array($this->classFiles)) {

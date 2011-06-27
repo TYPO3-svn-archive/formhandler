@@ -31,15 +31,14 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 	public function process() {
 
 		//set params
-		$table = "tx_formhandler_log";
+		$table = 'tx_formhandler_log';
 
-		$fields['ip'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
-		if (isset($this->settings['disableIPlog']) && intval($this->settings['disableIPlog']) == 1) {
-			$fields['ip'] = NULL;
+		if (!isset($this->settings['disableIPlog']) || intval($this->settings['disableIPlog']) !== 1) {
+			$fields['ip'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
 		}
 		$fields['tstamp'] = time();
 		$fields['crdate'] = time();
-		$fields['pid'] = Tx_Formhandler_StaticFuncs::getSingle($this->settings, 'pid');
+		$fields['pid'] = $this->utilityFuncs->getSingle($this->settings, 'pid');
 		if (!$fields['pid']) {
 			$fields['pid'] = $GLOBALS['TSFE']->id;
 		}
@@ -55,18 +54,18 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		}
 
 		//query the database
-		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $fields);
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $fields);
 		$insertedUID = $GLOBALS['TYPO3_DB']->sql_insert_id();
 		$sessionValues = array (
 			'inserted_uid' => $insertedUID,
 			'inserted_tstamp' => $fields['tstamp'],
 			'key_hash' => $hash
 		);
-		Tx_Formhandler_Globals::$session->setMultiple($sessionValues);
+		$this->globals->getSession()->setMultiple($sessionValues);
 		if (!$this->settings['nodebug']) {
-			Tx_Formhandler_StaticFuncs::debugMessage('logging', array($table, implode(',', $fields)));
+			$this->utilityFuncs->debugMessage('logging', array($table, implode(',', $fields)));
 			if (strlen($GLOBALS['TYPO3_DB']->sql_error()) > 0) {
-				Tx_Formhandler_StaticFuncs::debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
+				$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 			}
 		}
 	}

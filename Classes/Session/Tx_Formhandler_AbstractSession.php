@@ -1,6 +1,6 @@
 <?php
 
-abstract class Tx_Formhandler_AbstractSession {
+abstract class Tx_Formhandler_AbstractSession extends Tx_Formhandler_AbstractClass {
 
 	protected $started = FALSE;
 

@@ -35,9 +35,9 @@ class Tx_Formhandler_ErrorCheck_IsNotInDBTable extends Tx_Formhandler_AbstractEr
 		$checkFailed = '';
 
 		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
-			$checkTable = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'table');
-			$checkField = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'field');
-			$additionalWhere = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'additionalWhere');
+			$checkTable = $this->utilityFuncs->getSingle($check['params'], 'table');
+			$checkField = $this->utilityFuncs->getSingle($check['params'], 'field');
+			$additionalWhere = $this->utilityFuncs->getSingle($check['params'], 'additionalWhere');
 			if (!empty($checkTable) && !empty($checkField)) {
 				$where = $checkField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($gp[$name], $checkTable) . ' ' . $additionalWhere;
 				$showHidden = intval($check['params']['showHidden']) === 1 ? 1 : 0;
@@ -46,7 +46,7 @@ class Tx_Formhandler_ErrorCheck_IsNotInDBTable extends Tx_Formhandler_AbstractEr
 				if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 					$checkFailed = $this->getCheckFailed($check);
 				} elseif (!$res) {
-					Tx_Formhandler_StaticFuncs::debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
+					$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}

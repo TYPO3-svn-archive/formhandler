@@ -35,7 +35,7 @@ class Tx_Formhandler_ErrorCheck_PregMatch extends Tx_Formhandler_AbstractErrorCh
 		$checkFailed = '';
 
 		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
-			$regex = Tx_Formhandler_StaticFuncs::getSingle($check['params'], 'value');
+			$regex = $this->utilityFuncs->getSingle($check['params'], 'value');
 			if ($regex && !preg_match($regex, $gp[$name])) {
 				$checkFailed = $this->getCheckFailed($check);
 			}

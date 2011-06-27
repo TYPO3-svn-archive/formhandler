@@ -34,7 +34,7 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 				$newField = str_replace('.', '', $newField);
 				if (is_array($options['fields.'])) {
 					$this->gp[$newField] = $this->combineFields($options);
-					Tx_Formhandler_StaticFuncs::debugMessage('combined', array($newField, $this->gp[$newField]));
+					$this->utilityFuncs->debugMessage('combined', array($newField, $this->gp[$newField]));
 				}
 			}
 		}
