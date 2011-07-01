@@ -88,7 +88,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$this->templatePath = t3lib_extMgm::extPath('formhandler') . 'Resources/HTML/backend/';
 		$this->templateFile = $this->templatePath . 'template.html';
 		$this->templateCode = t3lib_div::getURL($this->templateFile);
-
+		$this->utilityFuncs = Tx_Formhandler_UtilityFuncs::getInstance();
 	}
 	
 	public function setId($id) {
