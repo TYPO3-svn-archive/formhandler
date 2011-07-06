@@ -213,6 +213,15 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				$object->init($params, $finisherConf);
 				$content = $object->process();
 			} elseif(intval($finisherConf['actions.'][$action . '.']['config.']['returns']) === 1) {
+				$class = $finisherConf['actions.'][$action . '.']['class'];
+				if ($class) {
+
+					//Makes it possible to make your own Generator class show output
+					$class = $this->utilityFuncs->prepareClassName($class);
+					$object = $this->componentManager->getComponent($class);
+					$object->init($params, $finisherConf['actions.'][$action . '.']['config.']);
+					$content = $object->process();
+				} else {
 
 					//Makes it possible that Finisher_SubmittedOK show its output again
 					$class = 'Tx_Formhandler_Finisher_SubmittedOK';
@@ -221,6 +230,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					$object->init($params, $finisherConf);
 					$content = $object->process();
 				}
+			}
 		}
 		return $content;
 	}
@@ -248,8 +258,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 
 		$this->globals->setRandomID($this->gp['randomID']);
-		
-		$this->handleCheckBoxFields();
 
 		//run validation
 		$this->errors = array();
@@ -308,13 +316,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$this->view->setSettings($this->settings);
 			$this->setViewSubpart($this->currentStep);
 
+			$this->storeGPinSession();
+			$this->mergeGPWithSession();
+
 			//if no more steps
 			if ($this->finished) {
 				return $this->processFinished();
 			} else {
-
-				$this->storeGPinSession();
-				$this->mergeGPWithSession(FALSE, $this->currentStep);
 
 				//display form
 				return $this->view->render($this->gp, $this->errors);
@@ -362,7 +370,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		if ($this->currentStep >= $this->lastStep) {
 			$this->storeGPinSession();
-			$this->mergeGPWithSession(FALSE, $this->currentStep);
+			$this->mergeGPWithSession();
 		}
 
 		//display form
@@ -370,8 +378,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	}
 
 	protected function processFinished() {
-		$this->storeGPinSession();
-		$this->mergeGPWithSession();
+		$this->storeSettingsInSession();
 
 		//run save interceptors
 		$this->addFormhandlerClass($this->settings['saveInterceptors.'], 'Interceptor_Filtreatment');
@@ -379,10 +386,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if (strlen($output) > 0) {
 			return $output;
 		}
-
-		$this->storeGPinSession();
-		$this->mergeGPWithSession(FALSE, $this->currentStep);
-		$this->storeSettingsInSession();
 
 		//run loggers
 		$this->addFormhandlerClass($this->settings['loggers.'], 'Logger_DB');
@@ -409,8 +412,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 							$finisher->init($this->gp, $tsConfig['config.']);
 							$finisher->validateConfig();
-							$this->storeGPinSession();
-							$this->mergeGPWithSession(FALSE, $this->currentStep);
 
 							//if the finisher returns HTML (e.g. Tx_Formhandler_Finisher_SubmittedOK)
 							if ($tsConfig['config.']['returns']) {
@@ -669,13 +670,21 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 */
 	protected function storeGPinSession() {
 
-		$newGP = $this->utilityFuncs->getMergedGP();
+		if ($this->currentStep > $this->lastStep) {
+			$this->loadSettingsForStep($this->lastStep);
+		}
+		$newGP = $this->handleCheckBoxFields();
+		if ($this->currentStep > $this->lastStep) {
+			$this->loadSettingsForStep($this->currentStep);
+		}
 		$data = $this->globals->getSession()->get('values');
 
 		//set the variables in session
 		if ($this->lastStep !== $this->currentStep) {
 			foreach ($newGP as $key => $value) {
-				if (!strstr($key, 'step-') && $key !== 'submitted' && $key !== 'randomID') {
+				if (!strstr($key, 'step-') && $key !== 'submitted' && $key !== 'randomID' && 
+					$key !== 'removeFile' && $key !== 'removeFileField' && $key !== 'submitField') {
+
 					$data[$this->lastStep][$key] = $this->gp[$key];
 				}
 			}
@@ -930,7 +939,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$this->utilityFuncs->throwException('You messed with the steps!');
 		}
 
-		$this->mergeGPWithSession(FALSE, $this->currentStep);
+		$this->mergeGPWithSession();
 
 		$this->parseConditions();
 
@@ -956,7 +965,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		$this->storeSettingsInSession();
 
-		$this->mergeGPWithSession(FALSE, $this->currentStep);
+		$this->mergeGPWithSession();
 
 		//set submitted
 		$this->submitted = $this->isFormSubmitted();
@@ -1098,7 +1107,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return void
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
-	protected function mergeGPWithSession($overruleGP = TRUE, $maxStep = 0) {
+	protected function mergeGPWithSession() {
 		if (!is_array($this->gp)) {
 			$this->gp = array();
 		}
@@ -1107,11 +1116,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$values = array();
 		}
 
+		$maxStep = $this->currentStep;
+
 		foreach ($values as $step => &$params) {
 			if (is_array($params) && (!$maxStep || $step <= $maxStep)) {
 				unset($params['submitted']);
 				foreach ($params as $key => $value) {
-					if ($overruleGP || !isset($this->gp[$key])) {
+					if (!isset($this->gp[$key])) {
 						$this->gp[$key] = $value;
 					}
 				}
@@ -1241,20 +1252,20 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if ($this->settings['checkBoxFields']) {
 			$fields = t3lib_div::trimExplode(',', $this->settings['checkBoxFields']);
 			foreach ($fields as $idx => $field) {
-				if (!isset($newGP[$field]) && isset($this->gp[$field])) {
-					if($this->lastStep < $this->currentStep) {
-						$this->gp[$field] = array();
-					}
+				if (!isset($newGP[$field]) && isset($this->gp[$field]) && $this->lastStep < $this->currentStep) {
+					$this->gp[$field] = $newGP[$field] = array();
+
 				//Insert default checkbox values
-				} elseif(!isset($newGP[$field])) {
+				} elseif(!isset($newGP[$field]) && $this->lastStep < $this->currentStep) {
 					if(is_array($this->settings['checkBoxUncheckedValue.']) && isset($this->settings['checkBoxUncheckedValue.'][$field])) {
-						$this->gp[$field] = $this->settings['checkBoxUncheckedValue.'][$field];
+						$this->gp[$field] = $newGP[$field] = $this->settings['checkBoxUncheckedValue.'][$field];
 					} elseif(isset($this->settings['checkBoxUncheckedValue'])) {
-						$this->gp[$field] = $this->settings['checkBoxUncheckedValue'];
+						$this->gp[$field] = $newGP[$field] = $this->settings['checkBoxUncheckedValue'];
 					}
 				}
 			}
 		}
+		return $newGP;
 	}
 
 	protected function initializeDebuggers() {
