@@ -29,26 +29,26 @@ How does this extension work?	8
 Configuration	9
 Reference	9
 General Options	9
-Loggers	13
+Loggers	14
 Debuggers	14
 PreProcessors	15
 Interceptors	17
-Validators	21
+Validators	22
 Generators	23
 Finishers	25
 Backend Module	33
 Available error checks	34
-Available subparts to use in the template	36
+Available subparts to use in the template	35
 Available markers to use in subparts	36
 Tutorial	40
 How to set up a simple form	40
 How to set up an advanced form	40
 How to use predefined forms	40
-How to set up a multistep form	41
+How to set up a multistep form	40
 How to set up a multistep form with conditions	41
 How to set up spam protection	42
 Enable captcha for your form	42
-Enable sr_freecap for your form	43
+Enable sr_freecap for your form	42
 Enable jm_recaptcha for your form	43
 Enable mathGuard for your form	43
 How to set up error checks	44
@@ -63,7 +63,7 @@ How to use your own component (Interceptor, Finisher, ...)	49
 How to XCLASS Formhandler	50
 How to use a master template	50
 How to use AJAX validation	51
-How to upgrade from th_mailformplus to Formhandler	52
+How to upgrade from th_mailformplus to Formhandler	51
 TypoScript:	52
 HTML:	53
 Known problems	55
@@ -413,6 +413,34 @@ files.customRemovalText
 String/cObj
 Enter a custom text shown as the text of the remove link. Used in combination with “enableAjaxFileRemoval”.
 X
+files.search
+String/cObj
+Comma separated list of characters to replace in file names of uploaded files.
+
+Useful in combination with files.replace.
+
+Example:
+
+plugin.Tx_Formhandler.settings {
+  files {
+    search = ä,ö,ü
+    replace = ae,oe,ue
+  }
+}
+Space character and %20
+files.replace
+String/cObj
+Comma separated list of characters to use as a replacement for the characters configured in files.search.
+
+Example:
+
+plugin.Tx_Formhandler.settings {
+  files {
+    search = ä,ö,ü
+    replace = ae,oe,ue
+  }
+}
+_
 markers.[markername]
 mixed
 Define your own custom markers and fill them using TypoScript.
