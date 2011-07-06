@@ -1637,7 +1637,10 @@ Array
 Container for various ouput actions like PDF or CSV.
 Finisher_SubmittedOK will call each class entered in the actions and fill a marker ###[action]_LINK### with the result.
 
+You can write custom actions. If you want Finisher_SubmittedOK to show the output again, add “returns = 1” in the config section of the action.
+
 Example:
+
 actions {
   pdf {
    class = Generator_WebkitPdf
@@ -1648,6 +1651,7 @@ actions {
 Generator_WebkitPdf will fill the marker ###PDF_LINK### with a link to generatte a PDF file of the submitted ok page.
 
 Same for CSV:
+
 actions {
   csv {
    class = Generator_Csv

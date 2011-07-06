@@ -37,7 +37,7 @@ class Tx_Formhandler_View_SubmittedOK extends Tx_Formhandler_View_Form {
 		$params = array (
 			$this->globals->getFormValuesPrefix() => array (
 				'tstamp' => $this->globals->getSession()->get('inserted_tstamp'),
-				'hash' => $this->globals->getSession()->get('key_hash'),
+				'hash' => $this->globals->getSession()->get('unique_hash'),
 				'action' => 'show'
 			),
 			'type' => 98

@@ -46,8 +46,10 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		$keys = array_keys($this->gp);
 		$serialized = serialize($this->gp);
 		$hash = md5(serialize($keys));
+		$uniqueHash = sha1(sha1($serialized) . $TYPO3_CONF_VARS['SYS']['encryptionKey'] . time() . $this->globals->getRandomID());
 		$fields['params'] = $serialized;
 		$fields['key_hash'] = $hash;
+		$fields['unique_hash'] = $uniqueHash;
 
 		if (intval($this->settings['markAsSpam']) == 1) {
 			$fields['is_spam'] = 1;
@@ -59,7 +61,8 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		$sessionValues = array (
 			'inserted_uid' => $insertedUID,
 			'inserted_tstamp' => $fields['tstamp'],
-			'key_hash' => $hash
+			'key_hash' => $hash,
+			'unique_hash' => $uniqueHash
 		);
 		$this->globals->getSession()->setMultiple($sessionValues);
 		if (!$this->settings['nodebug']) {

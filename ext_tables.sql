@@ -10,6 +10,7 @@ CREATE TABLE tx_formhandler_log (
 	params text,
 	is_spam int(11) unsigned DEFAULT '0',
 	key_hash tinytext,
+	unique_hash tinytext,
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );

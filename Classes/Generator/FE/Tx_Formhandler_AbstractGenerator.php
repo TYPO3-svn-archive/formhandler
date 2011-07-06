@@ -16,7 +16,7 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 		$prefix = $this->globals->getFormValuesPrefix();
 		$tempParams = array(
 			'tstamp' => $this->globals->getSession()->get('inserted_tstamp'),
-			'hash' => $this->globals->getSession()->get('key_hash')
+			'hash' => $this->globals->getSession()->get('unique_hash')
 		);
 		$params = array();
 		if ($prefix) {

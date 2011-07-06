@@ -188,14 +188,15 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$tstamp = intval($gp['tstamp']);
 			$hash = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['hash']);
 			if ($tstamp && strpos($hash, ' ') === FALSE) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'tx_formhandler_log', 'tstamp=' . $tstamp . ' AND key_hash=' . $hash);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'tx_formhandler_log', 'tstamp=' . $tstamp . ' AND unique_hash=' . $hash);
 				if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) === 1) {
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					$params = unserialize($row['params']);
 				}
 			}
-			if ($finisherConf['actions.'][$action . '.'] && !empty($params)) {
+			if ($finisherConf['actions.'][$action . '.'] && !empty($params) && intval($finisherConf['actions.'][$action . '.']['config.']['returns']) !== 1) {
+
 				$class = $finisherConf['actions.'][$action . '.']['class'];
 				if ($class) {
 					$class = $this->utilityFuncs->prepareClassName($class);
@@ -204,14 +205,22 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					$object->process();
 				}
 			} elseif($action === 'show') {
-				
+
 				//"show" makes it possible that Finisher_SubmittedOK show its output again
 				$class = 'Tx_Formhandler_Finisher_SubmittedOK';
 				$object = $this->componentManager->getComponent($class);
 				unset($finisherConf['actions.']);
 				$object->init($params, $finisherConf);
 				$content = $object->process();
-			}
+			} elseif(intval($finisherConf['actions.'][$action . '.']['config.']['returns']) === 1) {
+
+					//Makes it possible that Finisher_SubmittedOK show its output again
+					$class = 'Tx_Formhandler_Finisher_SubmittedOK';
+					$object = $this->componentManager->getComponent($class);
+					unset($finisherConf['actions.']);
+					$object->init($params, $finisherConf);
+					$content = $object->process();
+				}
 		}
 		return $content;
 	}
