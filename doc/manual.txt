@@ -2055,6 +2055,18 @@ tx_formhandler_mod1.config {
   csv = firstname, lastname, email, address
 }
 
+csv.delimiter
+String
+Specifiy the delimiter used for CSV files created in the Backend module.
+,
+csv.enclosure
+String
+Specifiy the enclosure used for CSV files created in the Backend module.
+“
+csv.encoding
+String
+Specifiy the encoding used for CSV files created in the Backend module.
+UTF-8
 pdf
 List of field names
 Enter a list of field names to export in PDF. This way you will not have to select the fields manually each time you export.

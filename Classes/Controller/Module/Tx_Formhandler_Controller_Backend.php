@@ -313,7 +313,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		//select the records to export
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params,key_hash', $this->logTable, $where);
 
-		//if record were found
+		//if records were found
 		if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 			$records = array();
 			$count = 0;
@@ -344,13 +344,24 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				if ($tsconfig['properties']['config.']['csv'] != "") {
 					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
 					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
-					$generator->generateModuleCSV($records, $configParams);	
+					$generator->generateModuleCSV(
+						$records,
+						$configParams,
+						$tsconfig['properties']['config.']['csv.']['delimiter'],
+						$tsconfig['properties']['config.']['csv.']['enclosure'],
+						$tsconfig['properties']['config.']['csv.']['encoding']
+					);
 				} elseif (isset($params['exportParams'])) {
 					
 					//if fields were chosen in the selection view, perform the export
-					
 					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
-					$generator->generateModuleCSV($records, $params['exportParams']);
+					$generator->generateModuleCSV(
+						$records,
+						$params['exportParams'],
+						$tsconfig['properties']['config.']['csv.']['delimiter'],
+						$tsconfig['properties']['config.']['csv.']['enclosure'],
+						$tsconfig['properties']['config.']['csv.']['encoding']
+					);
 
 					//no fields chosen, show selection view.
 				} else {

@@ -59,9 +59,8 @@ class Tx_Formhandler_Generator_CSV {
 	 * @see Tx_Formhandler_Controller_Backend::generateCSV()
 	 * @return void
 	 */
-	public function generateModuleCSV($records, $exportParams = array()) {
+	public function generateModuleCSV($records, $exportParams = array(), $delimiter = ',', $enclosure = '"', $encoding = 'UTF-8') {
 
-		
 		$data = array();
 		$dataSorted = array();
 
@@ -105,6 +104,9 @@ class Tx_Formhandler_Generator_CSV {
 
 		// create new parseCSV object.
 		$csv = new parseCSV();
+		$csv->delimiter = $csv->output_delimiter = $delimiter;
+		$csv->enclosure = $enclosure;
+		$csv->output_encoding = $encoding;
 		$csv->output('formhandler.csv', $data, $exportParams);
 		die();
 	}
