@@ -237,7 +237,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		} else {
 			$this->loadSettingsForStep($this->currentStep);
 		}
-		
+
 		$this->parseConditions();
 
 		//run init interceptors
