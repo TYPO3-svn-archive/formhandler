@@ -638,11 +638,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 								switch ($check) {
 									case 'fileMinSize':
 										$minSize = $fieldSettings['errorCheck.'][$key . '.']['minSize'];
-										$markers['###' . $replacedFieldname . '_minSize###'] = t3lib_div::formatSize($minSize, ' Bytes | KB | MB | GB');
+										$markers['###' . $replacedFieldname . '_minSize###'] = t3lib_div::formatSize($minSize, ' Bytes| KB| MB| GB');
 										break;
 									case 'fileMaxSize':
 										$maxSize = $fieldSettings['errorCheck.'][$key . '.']['maxSize'];
-										$markers['###' . $replacedFieldname . '_maxSize###'] = t3lib_div::formatSize($maxSize, ' Bytes | KB | MB | GB');
+										$markers['###' . $replacedFieldname . '_maxSize###'] = t3lib_div::formatSize($maxSize, ' Bytes| KB| MB| GB');
 										break;
 									case 'fileAllowedTypes':
 										$types = $fieldSettings['errorCheck.'][$key . '.']['allowedTypes'];
