@@ -186,7 +186,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 			$params = array();
 			$tstamp = intval($gp['tstamp']);
-			$hash = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['hash']);
+			$hash = $GLOBALS['TYPO3_DB']->fullQuoteStr($gp['hash'], 'tx_formhandler_log');
 			if ($tstamp && strpos($hash, ' ') === FALSE) {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'tx_formhandler_log', 'tstamp=' . $tstamp . ' AND unique_hash=' . $hash);
 				if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) === 1) {
