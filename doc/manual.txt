@@ -1329,6 +1329,39 @@ finishers.3.config {
 }
 
 
+Generator_Print
+
+Shows the submittedOK template again, but with page type 98. You can use this to show a print version of this view.
+
+Property:
+Data type:
+Description:
+Default:
+x.class
+String
+Example:
+
+... {
+  class = Generator_WebkitPdf
+  config {
+    linkText = Print
+    linkTarget = _blank
+  }
+}
+
+x.config
+Array
+
+
+x.config.linkTarget
+String/cObj
+The value of the attribute “target”
+_self
+x.config.linkText
+String/cObj
+Configure a custom link text.
+You can also configure this text in a translation file using the key “print”.
+Print
 
 Generator_WebkitPdf
 

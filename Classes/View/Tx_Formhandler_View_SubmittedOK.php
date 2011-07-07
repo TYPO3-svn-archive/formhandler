@@ -34,19 +34,6 @@ class Tx_Formhandler_View_SubmittedOK extends Tx_Formhandler_View_Form {
 	 */
 	protected function fillDefaultMarkers() {
 		parent::fillDefaultMarkers();
-		$params = array (
-			$this->globals->getFormValuesPrefix() => array (
-				'tstamp' => $this->globals->getSession()->get('inserted_tstamp'),
-				'hash' => $this->globals->getSession()->get('unique_hash'),
-				'action' => 'show'
-			),
-			'type' => 98
-		);
-		$label = $this->utilityFuncs->getTranslatedMessage($this->langFiles, 'print');
-		if (strlen($label) == 0) {
-			$label = 'print';
-		}
-		$markers['###PRINT_LINK###'] = $this->cObj->getTypolink($label, $GLOBALS['TSFE']->id, $params);
 		$params = array();
 		if ($this->globals->getFormValuesPrefix()) {
 			$params[$this->globals->getFormValuesPrefix()] = $this->gp;
