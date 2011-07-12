@@ -44,14 +44,23 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		}
 		ksort($this->gp);
 		$keys = array_keys($this->gp);
-		$serialized = serialize($this->gp);
+
+		$logParams = $this->gp;
+		if($this->settings['excludeFields']) {
+			$excludeFields = $this->utilityFuncs->getSingle($this->settings, 'excludeFields');
+			$excludeFields = t3lib_div::trimExplode(',', $excludeFields);
+			foreach($excludeFields as $excludeField) {
+				unset($logParams[$excludeField]);
+			}
+		}
+		$serialized = serialize($logParams);
 		$hash = md5(serialize($keys));
 		$uniqueHash = sha1(sha1($serialized) . $TYPO3_CONF_VARS['SYS']['encryptionKey'] . time() . $this->globals->getRandomID());
 		$fields['params'] = $serialized;
 		$fields['key_hash'] = $hash;
 		$fields['unique_hash'] = $uniqueHash;
 
-		if (intval($this->settings['markAsSpam']) == 1) {
+		if (intval($this->settings['markAsSpam']) === 1) {
 			$fields['is_spam'] = 1;
 		}
 
@@ -71,6 +80,8 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 				$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 			}
 		}
+		
+		return $this->gp;
 	}
 
 }

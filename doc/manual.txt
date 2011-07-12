@@ -32,42 +32,42 @@ General Options	9
 Loggers	14
 Debuggers	14
 PreProcessors	15
-Interceptors	17
+Interceptors	18
 Validators	22
-Generators	23
-Finishers	25
-Backend Module	33
-Available error checks	34
-Available subparts to use in the template	35
-Available markers to use in subparts	36
-Tutorial	40
-How to set up a simple form	40
-How to set up an advanced form	40
-How to use predefined forms	40
-How to set up a multistep form	40
-How to set up a multistep form with conditions	41
-How to set up spam protection	42
-Enable captcha for your form	42
-Enable sr_freecap for your form	42
-Enable jm_recaptcha for your form	43
-Enable mathGuard for your form	43
-How to set up error checks	44
-How to use ###is_error### markers	45
-How to fill your own markers via TypoScript	45
-How to hide unfilled form field values in templates	46
-How to set up multi language forms	47
-How to load data from DB to use in Finisher_DB	48
-How to store data into more than one DB table	49
-How to use your own controller	49
-How to use your own component (Interceptor, Finisher, ...)	49
-How to XCLASS Formhandler	50
-How to use a master template	50
-How to use AJAX validation	51
-How to upgrade from th_mailformplus to Formhandler	51
-TypoScript:	52
-HTML:	53
-Known problems	55
-To-Do list	56
+Generators	24
+Finishers	26
+Backend Module	34
+Available error checks	35
+Available subparts to use in the template	36
+Available markers to use in subparts	37
+Tutorial	41
+How to set up a simple form	41
+How to set up an advanced form	41
+How to use predefined forms	41
+How to set up a multistep form	41
+How to set up a multistep form with conditions	42
+How to set up spam protection	43
+Enable captcha for your form	43
+Enable sr_freecap for your form	43
+Enable jm_recaptcha for your form	44
+Enable mathGuard for your form	44
+How to set up error checks	45
+How to use ###is_error### markers	46
+How to fill your own markers via TypoScript	46
+How to hide unfilled form field values in templates	47
+How to set up multi language forms	48
+How to load data from DB to use in Finisher_DB	49
+How to store data into more than one DB table	50
+How to use your own controller	50
+How to use your own component (Interceptor, Finisher, ...)	50
+How to XCLASS Formhandler	51
+How to use a master template	51
+How to use AJAX validation	52
+How to upgrade from th_mailformplus to Formhandler	52
+TypoScript:	53
+HTML:	54
+Known problems	56
+To-Do list	57
 
 Introduction
 
@@ -594,9 +594,35 @@ NOTE: The Logger_DB will be added by the controller automatically, so you don't 
 Logger_DB
 
 Will log into tx_formhandler_log. Logging can be accessed via the “Formhandler” backend module.
+
+Property:
+Data type:
+Description:
+Default:
+disableIPLog
+boolean (0/1)
+Disable logging of the IP address of the user.
+
+excludeFields
+string / cObj
+Comma separated list of field names to exclude from logging.
+
+pid
+int / cObj
+Specifiy a custom PID to store the log entries to.
+Current PID
 Logger_DevLog
 
 Will log into the devlog table. Use an extension like “devlog” to access the logged messages.
+
+Property:
+Data type:
+Description:
+Default:
+excludeFields
+string / cObj
+Comma separated list of field names to exclude from logging.
+
 
 Debuggers
 Property:
