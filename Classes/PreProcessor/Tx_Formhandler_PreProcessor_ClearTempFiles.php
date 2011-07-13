@@ -43,7 +43,7 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 		$this->olderThanUnit = $this->settings['clearTempFilesOlderThan.']['unit'];
 		if (!empty($this->olderThanValue) && is_numeric($this->olderThanValue)) {
 			$uploadFolder = $this->utilityFuncs->getTempUploadFolder();
-			$this->clearTempFiles($uploadFolder, $this->olderThanValue, $this->olderThanValue);
+			$this->clearTempFiles($uploadFolder, $this->olderThanValue, $this->olderThanUnit);
 		}
 		return $this->gp;
 	}

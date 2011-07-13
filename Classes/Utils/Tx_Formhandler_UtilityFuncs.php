@@ -658,6 +658,9 @@ class Tx_Formhandler_UtilityFuncs {
 			case 'seconds':
 				$convertedValue = $value;
 				break;
+			default:
+				$convertedValue = $value;
+				break;
 		}
 		return $now - $convertedValue;
 	}
