@@ -2304,8 +2304,12 @@ Checks if the size of an uploaded file is at least the configured value (in Byte
 minSize
 integer/cObj
 fileMaxSize
-Checks if the size of an uploaded file is at less than the configured value (in Byte)
+Checks if the size of an uploaded file is less than the configured value (in Byte)
 maxSize
+integer/cObj
+fileMaxTotalSize
+Checks if the size of all uploaded file is less than the configured value (in Byte)
+maxTotalSize
 integer/cObj
 fileRequired
 Checks if a file has been uploaded from this field
@@ -2480,6 +2484,12 @@ Cumulated error messages.
 Minimum file size for uploaded files in this field. The minimum size is defined in the error check.
 ###[fieldname]_maxSize###
 Maximum file size for uploaded files in this field. The maximum size is defined in the error check.
+###[fieldname]_maxTotalSize###
+Maximum file size for all uploaded files in this field. The maximum size is defined in the error check “fileMaxTotalSize”.
+###[fieldname]_currentTotalSize###
+The current size of all uploaded files in this field.
+###[fieldname]_remainingTotalSize###
+The remaining size of files that can be uploaded in this field. The maximum total size is defined in the error check “fileMaxTotalSize”.
 ###[fieldname]_allowedTypes###
 Allowed file types for uploaded files in this field. The types are defined in error check.
 ###[fieldname]_maxCount###

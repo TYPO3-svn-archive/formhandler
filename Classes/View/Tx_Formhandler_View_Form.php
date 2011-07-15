@@ -651,8 +651,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 									case 'fileMaxCount':
 										$maxCount = $fieldSettings['errorCheck.'][$key . '.']['maxCount'];
 										$markers['###' . $replacedFieldname . '_maxCount###'] = $maxCount;
-										
-										$fileCount = count($sessionFiles[str_replace( '.', '', $fieldname)]);
+
+										$fileCount = count($sessionFiles[$replacedFieldname]);
 										$markers['###' . $replacedFieldname . '_fileCount###'] = $fileCount;
 
 										$remaining = $maxCount - $fileCount;
@@ -661,6 +661,16 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 									case 'fileMinCount':
 										$minCount = $fieldSettings['errorCheck.'][$key.'.']['minCount'];
 										$markers['###' . $replacedFieldname . '_minCount###'] = $minCount;
+										break;
+									case 'fileMaxTotalSize':
+										$maxTotalSize = $fieldSettings['errorCheck.'][$key . '.']['maxTotalSize'];
+										$markers['###' . $replacedFieldname . '_maxTotalSize###'] = t3lib_div::formatSize($maxTotalSize, ' Bytes| KB| MB| GB');
+										$totalSize = 0;
+										foreach ($sessionFiles[$replacedFieldname] as $file) {
+											$totalSize += intval($file['size']);
+										}
+										$markers['###' . $replacedFieldname . '_currentTotalSize###'] = t3lib_div::formatSize($totalSize, ' Bytes| KB| MB| GB');
+										$markers['###' . $replacedFieldname . '_remainingTotalSize###'] = t3lib_div::formatSize($maxTotalSize - $totalSize, ' Bytes| KB| MB| GB');
 										break;
 									case 'required':case 'fileRequired':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathguard':
 										$requiredSign = $this->utilityFuncs->getSingle($settings, 'requiredSign');

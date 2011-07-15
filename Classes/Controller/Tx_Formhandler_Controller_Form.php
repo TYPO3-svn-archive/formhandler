@@ -280,7 +280,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 									'fileMaxCount',
 									'fileMinCount',
 									'fileMaxSize',
-									'fileMinSize'
+									'fileMinSize',
+									'fileMaxTotalSize'
 								);
 								$merged = array_merge($userSetting, $autoSetting);
 								$tsConfig['config.']['restrictErrorChecks'] = implode(',', $merged);
