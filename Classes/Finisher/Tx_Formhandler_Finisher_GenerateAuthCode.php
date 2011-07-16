@@ -74,8 +74,9 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 				$paramsArray = array_merge($firstInsertInfo, array('authCode' => $authCode));
 
 				// If we have set a formValuesPrefix, add it to the parameter-array
-				if (!empty($this->globals->getFormValuesPrefix())) {
-					$paramsArray = array($this->globals->getFormValuesPrefix() => $paramsArray);
+				$formValuesPrefix = $this->globals->getFormValuesPrefix();
+				if (!empty($formValuesPrefix)) {
+					$paramsArray = array($formValuesPrefix => $paramsArray);
 				}
 
 				// create the link, using typolink function, use baseUrl if set, else use t3lib_div::getIndpEnv('TYPO3_SITE_URL')
