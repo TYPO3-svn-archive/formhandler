@@ -666,8 +666,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 										$maxTotalSize = $fieldSettings['errorCheck.'][$key . '.']['maxTotalSize'];
 										$markers['###' . $replacedFieldname . '_maxTotalSize###'] = t3lib_div::formatSize($maxTotalSize, ' Bytes| KB| MB| GB');
 										$totalSize = 0;
-										foreach ($sessionFiles[$replacedFieldname] as $file) {
-											$totalSize += intval($file['size']);
+										if(is_array($sessionFiles[$replacedFieldname])) {
+											foreach ($sessionFiles[$replacedFieldname] as $file) {
+												$totalSize += intval($file['size']);
+											}
 										}
 										$markers['###' . $replacedFieldname . '_currentTotalSize###'] = t3lib_div::formatSize($totalSize, ' Bytes| KB| MB| GB');
 										$markers['###' . $replacedFieldname . '_remainingTotalSize###'] = t3lib_div::formatSize($maxTotalSize - $totalSize, ' Bytes| KB| MB| GB');
