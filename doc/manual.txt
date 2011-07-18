@@ -33,41 +33,41 @@ Loggers	14
 Debuggers	14
 PreProcessors	15
 Interceptors	18
-Validators	22
+Validators	23
 Generators	24
-Finishers	26
-Backend Module	34
-Available error checks	35
-Available subparts to use in the template	36
-Available markers to use in subparts	37
-Tutorial	41
-How to set up a simple form	41
-How to set up an advanced form	41
-How to use predefined forms	41
-How to set up a multistep form	41
-How to set up a multistep form with conditions	42
-How to set up spam protection	43
-Enable captcha for your form	43
-Enable sr_freecap for your form	43
-Enable jm_recaptcha for your form	44
-Enable mathGuard for your form	44
-How to set up error checks	45
-How to use ###is_error### markers	46
-How to fill your own markers via TypoScript	46
-How to hide unfilled form field values in templates	47
-How to set up multi language forms	48
-How to load data from DB to use in Finisher_DB	49
-How to store data into more than one DB table	50
-How to use your own controller	50
-How to use your own component (Interceptor, Finisher, ...)	50
-How to XCLASS Formhandler	51
-How to use a master template	51
-How to use AJAX validation	52
-How to upgrade from th_mailformplus to Formhandler	52
-TypoScript:	53
-HTML:	54
-Known problems	56
-To-Do list	57
+Finishers	27
+Backend Module	35
+Available error checks	36
+Available subparts to use in the template	37
+Available markers to use in subparts	38
+Tutorial	42
+How to set up a simple form	42
+How to set up an advanced form	42
+How to use predefined forms	42
+How to set up a multistep form	42
+How to set up a multistep form with conditions	43
+How to set up spam protection	44
+Enable captcha for your form	44
+Enable sr_freecap for your form	44
+Enable jm_recaptcha for your form	45
+Enable mathGuard for your form	45
+How to set up error checks	46
+How to use ###is_error### markers	47
+How to fill your own markers via TypoScript	47
+How to hide unfilled form field values in templates	48
+How to set up multi language forms	49
+How to load data from DB to use in Finisher_DB	50
+How to store data into more than one DB table	51
+How to use your own controller	51
+How to use your own component (Interceptor, Finisher, ...)	51
+How to XCLASS Formhandler	52
+How to use a master template	52
+How to use AJAX validation	53
+How to upgrade from th_mailformplus to Formhandler	53
+TypoScript:	54
+HTML:	55
+Known problems	57
+To-Do list	58
 
 Introduction
 
@@ -823,7 +823,7 @@ mapping
 String | TypoScript Object
 Field name.
 -
-Separator
+separator
 String | TypoScript Object
 The field separator, e.g. comma
 
@@ -859,6 +859,59 @@ String | TypoScript Object
 limit
 String | TypoScript Object
 
+
+
+PreProcessor_ValidateAuthCode
+
+Validates an auth code generated with Finisher_GenerateAuthCode.
+If you have a registration form which sends an auth code via email to the user, you can use this PreProcessor to validate this auth code directly on the form page again with no need to write additional PHP code.
+Important: Add PreProcessor_LoadGetPost before PreProcessor_ValidateAuthCode!
+Example:
+preProcessors {
+  5 {
+    class = PreProcessor_LoadGetPost
+  }
+  10 {
+    class = PreProcessor_ValidateAuthCode
+    config {
+     
+      # Redirect to this page if the validation is successful
+      redirectPage = 50
+
+      # Redirect to this page if there is an error
+      errorRedirectPage = 51
+    }
+  }
+}
+
+[
+plugin.Tx_Formhandler.settings.preProcessors.x.class = Tx_Formhandler_PreProcessor_ValidateAuthCode
+plugin.Tx_Formhandler.settings.preProcessors.x.config.
+]
+
+Property:
+Data type:
+Description:
+Default:
+redirectPage
+String | TypoScript Object
+Redirect to this page if the validation is successful
+-
+errorRedirectPage
+String | TypoScript Object
+Redirect to this page if an error occurred
+
+hiddenField
+String | TypoScript Object
+The column name indicating the hidden state (e.g. hidden or disable)
+“disable” or taken from TCA if set
+correctRedirectUrl
+Boolean (1/0)
+Replaces  '&amp;' with '&' in URL
+
+additionalParams
+Array
+Add additional parameters to the redirect URL. Each parameter can be a string of a TypoScript object.
 
 Interceptors
 Property:
@@ -982,6 +1035,14 @@ redirectPage
 int/string/cObj
 Page ID or URL to redirect to. If a user is blocked from submiting the form, he gets redirected to this page.
 -
+correctRedirectUrl
+Boolean (1/0)
+Replaces  '&amp;' with '&' in URL
+
+additionalParams
+Array
+Add additional parameters to the redirect URL. Each parameter can be a string of a TypoScript object.
+
 report
 array
 If a user gets blocked from submitting the form, a report email is sent to the configured recipient.
@@ -1100,6 +1161,14 @@ Unit can be seconds,minutes,hoursand days
 redirectPage
 mixed
 Page ID or URL to redirect in case Spam is detected
+
+correctRedirectUrl
+Boolean (1/0)
+Replaces  '&amp;' with '&' in URL
+
+additionalParams
+Array
+Add additional parameters to the redirect URL. Each parameter can be a string of a TypoScript object.
 
 loggers
 array
@@ -1615,6 +1684,10 @@ correctRedirectUrl
 Int (1/0)
 Replaces  '&amp;' with '&' in URL
 0
+additionalParams
+Array
+Add additional parameters to the redirect URL. Each parameter can be a string of a TypoScript object.
+
 
 Finisher_StoreUploadedFiles
 Moves uploaded files from temporary folder to a new one and renames them if set.

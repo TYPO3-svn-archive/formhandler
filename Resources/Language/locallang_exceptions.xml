@@ -35,6 +35,10 @@ finishers {
 				</pre>
 			]]></label>
 			<label index="spam_detected">Your request seems to be a spamming attempt, so it was blocked! This may have been a mistake by the system. Please try again!</label>
+			<label index="validateauthcode_invalid_auth_code">The auth code is invalid!</label>
+			<label index="validateauthcode_insufficient_params">Insufficient parameters! Unable to validate the auth code!</label>
+			<label index="validateauthcode_no_record_found">No matching auth code found!</label>
+			<label index="validateauthcode_update_failed">Updating your data failed! Please try again.</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="extension_required">L'extension "%s" est requise pour %s!</label>
@@ -49,6 +53,10 @@ finishers {
 			<label index="empty_template_file">Template file "%s" is empty!</label>
 			<label index="invalid_template_file">Template file "%s" does not contain a subpart ###TEMPLATE_ and therefore is not a valid template!</label>
 			<label index="spam_detected">TRANSLATE: Your request seems to be a spamming attempt, so it was blocked! This may have been a mistake by the system. Please try again!</label>
+			<label index="validateauthcode_invalid_auth_code">The auth code is invalid!</label>
+			<label index="validateauthcode_insufficient_params">Insufficient parameters! Unable to validate the auth code!</label>
+			<label index="validateauthcode_no_record_found">No matching auth code found!</label>
+			<label index="validateauthcode_update_failed">Updating your data failed! Please try again.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="extension_required"><![CDATA[Die Extension "%s" wird benötigt für %s!]]></label>
@@ -84,6 +92,10 @@ finishers {
 				</pre>
 			]]></label>
 			<label index="spam_detected"><![CDATA[Ihre Anfrage wurde als Spamversuch erkannt und deshalb geblockt! Falls dies ein Fehler des Systems war, versuchen Sie es bitte erneut!]]></label>
+			<label index="validateauthcode_invalid_auth_code">Der Autorisierungscode ist ungültig!</label>
+			<label index="validateauthcode_insufficient_params">Unzureichende Parameter! Die Autorisierung konnte nicht durchgeführt werden</label>
+			<label index="validateauthcode_no_record_found">Der Autorisierungscode wurde nicht gefunden! Vielleicht wurde die Autorisierung bereits durchgeführt.</label>
+			<label index="validateauthcode_update_failed">Die Aktualisierung Ihrer Daten ist fehlgeschlagen! Bitte versuchen Sie es erneut.</label>
 		</languageKey>
 	</data>
 </T3locallang>
