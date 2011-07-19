@@ -116,10 +116,24 @@ class Tx_Formhandler_Component_Manager {
 			$this->classFiles[$classNameParts[1]] = array();
 		}
 		if (!array_key_exists($componentName, $this->classFiles[$classNameParts[1]])) {
-			$this->loadClass($componentName);
-			$componentObject = $this->createComponentObject($componentName, array());
+			$found = FALSE;
+
+			//Look for the requested component in other cached packages
+			foreach($this->classFiles as $packageKey => $classFiles) {
+				if (array_key_exists($componentName, $classFiles)) {
+					$found = TRUE;
+					$arguments =  array_slice(func_get_args(), 1, NULL, TRUE); 
+					$componentObject = $this->createComponentObject($componentName, $arguments);
+				}
+			}
+			
+			//Component couldn't be found anywhere in the cache
+			if(!$found) {
+				$this->loadClass($componentName);
+				$componentObject = $this->createComponentObject($componentName, array());
+			}
 		} else {
-			$arguments =  array_slice(func_get_args(), 1, NULL, TRUE); // array keys are preserved (TRUE) -> argument array starts with key=1 
+			$arguments = array_slice(func_get_args(), 1, NULL, TRUE); // array keys are preserved (TRUE) -> argument array starts with key=1 
 			$componentObject = $this->createComponentObject($componentName, $arguments);
 		}
 		return $componentObject;
