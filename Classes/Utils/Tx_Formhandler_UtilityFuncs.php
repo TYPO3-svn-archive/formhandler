@@ -399,7 +399,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @param string $template The template code
 	 * @param string $langFile The path to the language file
 	 * @return array The filled language markers
-	 * @static
 	 */
 	public function convertToRelativePath($absPath) {
 
@@ -418,7 +417,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @param string $template The template code
 	 * @param string $langFile The path to the language file
 	 * @return array The filled language markers
-	 * @static
 	 */
 	public function getFilledLangMarkers(&$template,$langFiles) {
 		$langMarkers = array();
@@ -444,7 +442,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * @param array &$gp Reference to the GET/POST parameters
 	 * @return array The filled value markers
-	 * @static
 	 */
 	public function getFilledValueMarkers(&$gp) {
 		if (isset($gp) && is_array($gp)) {
@@ -455,9 +452,9 @@ class Tx_Formhandler_UtilityFuncs {
 				$v = trim($v);
 				if (strlen($v) > 0) {
 					if (get_magic_quotes_gpc()) {
-						$markers['###value_'.$k.'###'] = stripslashes(self::reverse_htmlspecialchars($v));
+						$markers['###value_'.$k.'###'] = stripslashes($this->reverse_htmlspecialchars($v));
 					} else {
-						$markers['###value_'.$k.'###'] = self::reverse_htmlspecialchars($v);
+						$markers['###value_'.$k.'###'] = $this->reverse_htmlspecialchars($v);
 					}
 				} else {
 					$markers['###value_'.$k.'###'] = '';
@@ -473,7 +470,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @author	Peter Luser <pl@typoheads.at>
 	 * @param string $mixed The value to process
 	 * @return string The processed value
-	 * @static
 	 */
 	public function reverse_htmlspecialchars($mixed) {
 		$htmltable = get_html_translation_table(HTML_ENTITIES);
@@ -492,7 +488,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @param int $severity The severity of the message. Valid values are 1,2 and 3 (1= info, 2 = warning, 3 = error)
 	 * @param array $data Additional debug data (e.g. the array of GET/POST values)
 	 * @return void
-	 * @static
 	 */
 	public function debugMessage($key, array $printfArgs = array(), $severity = 1, array $data = array()) {
 		
@@ -514,7 +509,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * @param string $key Key in language file
 	 * @return void
-	 * @static
 	 */
 	public function throwException($key) {
 		$message = $this->getExceptionMessage($key);
@@ -535,7 +529,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * @param string $content The template code
 	 * @return string The template code without markers
-	 * @static
 	 */
 	public function removeUnfilledMarkers($content) {
 		return preg_replace('/###.*?###/', '', $content);
@@ -546,7 +539,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * @param string The path
 	 * @return string The resolved path
-	 * @static
 	 */
 	public function resolvePath($path) {
 		$path = explode('/', $path);
@@ -564,7 +556,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * @param string The path
 	 * @return string The resolved path
-	 * @static
 	 */
 	public function resolveRelPath($path) {
 		$path = explode('/', $path);
@@ -582,7 +573,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * @param string The path
 	 * @return string The resolved path
-	 * @static
 	 */
 	public function resolveRelPathFromSiteRoot($path) {
 		if(substr($path, 0, 7) === 'http://') {
@@ -611,8 +601,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 * The default upload folder is: '/uploads/formhandler/tmp/'
 	 *
 	 * @return void
-	 * @static
-	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
 	public function getTempUploadFolder() {
 
@@ -639,7 +627,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * @param int Timebase value
 	 * @param string Timebase unit (seconds|minutes|hours|days)
-	 * @static
 	 * @return long The timestamp
 	 */
 	public function getTimestamp($value, $unit) {
@@ -670,7 +657,6 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * @param int Timebase value
 	 * @param string Timebase unit (seconds|minutes|hours|days)
-	 * @static
 	 * @return long The seconds
 	 */
 	public function convertToSeconds($value,$unit) {
