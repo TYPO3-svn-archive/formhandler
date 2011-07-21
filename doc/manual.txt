@@ -30,44 +30,45 @@ Configuration	9
 Reference	9
 General Options	9
 Loggers	14
-Debuggers	14
-PreProcessors	15
-Interceptors	18
-Validators	23
-Generators	24
-Finishers	27
-Backend Module	35
-Available error checks	36
-Available subparts to use in the template	37
-Available markers to use in subparts	38
-Tutorial	42
-How to set up a simple form	42
-How to set up an advanced form	42
-How to use predefined forms	42
-How to set up a multistep form	42
-How to set up a multistep form with conditions	43
-How to set up spam protection	44
-Enable captcha for your form	44
-Enable sr_freecap for your form	44
-Enable jm_recaptcha for your form	45
-Enable mathGuard for your form	45
-How to set up error checks	46
-How to use ###is_error### markers	47
-How to fill your own markers via TypoScript	47
-How to hide unfilled form field values in templates	48
-How to set up multi language forms	49
-How to load data from DB to use in Finisher_DB	50
-How to store data into more than one DB table	51
-How to use your own controller	51
-How to use your own component (Interceptor, Finisher, ...)	51
-How to XCLASS Formhandler	52
-How to use a master template	52
-How to use AJAX validation	53
-How to upgrade from th_mailformplus to Formhandler	53
-TypoScript:	54
-HTML:	55
-Known problems	57
-To-Do list	58
+Debuggers	15
+AjaxHandler	16
+PreProcessors	17
+Interceptors	20
+Validators	24
+Generators	26
+Finishers	29
+Backend Module	37
+Available error checks	38
+Available subparts to use in the template	39
+Available markers to use in subparts	40
+Tutorial	44
+How to set up a simple form	44
+How to set up an advanced form	44
+How to use predefined forms	44
+How to set up a multistep form	44
+How to set up a multistep form with conditions	45
+How to set up spam protection	46
+Enable captcha for your form	46
+Enable sr_freecap for your form	46
+Enable jm_recaptcha for your form	47
+Enable mathGuard for your form	47
+How to set up error checks	48
+How to use ###is_error### markers	49
+How to fill your own markers via TypoScript	49
+How to hide unfilled form field values in templates	50
+How to set up multi language forms	51
+How to load data from DB to use in Finisher_DB	52
+How to store data into more than one DB table	53
+How to use your own controller	53
+How to use your own component (Interceptor, Finisher, ...)	53
+How to XCLASS Formhandler	54
+How to use a master template	54
+How to use AJAX validation	55
+How to upgrade from th_mailformplus to Formhandler	55
+TypoScript:	56
+HTML:	57
+Known problems	59
+To-Do list	60
 
 Introduction
 
@@ -338,6 +339,21 @@ disableConfigValidation
 Boolean (0,1)
 Formhandler will check if all needed classes are used in TypoScript for the values entered in Flexform. If you have your own components using the Flexform values, you can disable this check using disableConfigValidation = 1
 0
+ajax
+Array
+Configure an AjaxHandler taking care of AJAX validation and AJAX based removal of uploaded files.
+
+Example:
+
+plugin.Tx_Formhandler.settings {
+  ajax {
+    class = AjaxHandler_JQuery
+    config {
+      ...
+    }
+  }
+}
+
 storeGP
 Boolean
 (0,1)
@@ -460,6 +476,13 @@ plugin.Tx_Formhandler.settings {
   2.checkBoxFields = work_experience,accounts
 }
 
+templateSuffix
+String | cObj
+With a “templateSuffix” you can define different template subparts for the same form step or email.
+It can be used in combination with the setting “if” to define different routes through the form depending on the user input.
+
+Have a look at “How to set up a multistep form with conditions” for details.
+
 checkBoxUncheckedValue
 string / array
 Lets you define values for unchecked checkboxes listed in checkBoxFields. 
@@ -515,6 +538,21 @@ plugin.Tx_Formhandler.settings {
   arrayValueSeparator = |
 }
 ,
+if
+Array
+Define several conditions to change the behaviour of the form depending on user input.
+These conditions can be used to show different form output or do different validation depending on what the user entered or selected before.
+
+Have a look at “How to set up a multistep form with conditions” for details.
+
+useDefaultStepBarStyles
+Boolean
+If you use the marker ###step_bar### to insert an automatically created step bar, you can choose to use some default styles or choose to add your own styling.
+0
+stepbar_color
+String
+If you use the marker ###step_bar### to insert an automatically created step bar, you can specify the color of it.
+#EAEAEA
 [plugin.Tx_Formhandler .settings]
 
 General Options for any component
@@ -536,7 +574,7 @@ plugin.Tx_Formhandler.settings {
     1.class = Finisher_Mail
     1.config {
       admin {
-        to_email = rf@typoheads.at
+        to_email = email@example.tld
         subject = TEXT
         subject.data = LLL:fileadmin/templates/ext/formhandler/lang.xml:email_admin_subject
         sender_email = email@example.tld
@@ -692,6 +730,62 @@ severityWrap {
 Debugger_DevLog
 
 Will save the debug message using t3lib_div::devLog(). The messages can be read using an appropriate extension like “devlog”.
+AjaxHandler
+Property:
+Data type:
+Description:
+Default:
+class
+String
+Enter an AjaxHandler to be used for AJAX validation and AJAX based file removal.
+
+Example:
+
+plugin.Tx_Formhandler.settings {
+  ajax {
+    class = AjaxHandler_JQuery
+    config {
+      ...
+    }
+  }
+}
+
+config
+Array
+
+
+[plugin.Tx_Formhandler .settings.ajax]
+
+
+AjaxHandler_JQuery
+
+Currently the only available AjaxHandler.
+It uses the JQuery library (www.jquery.com).
+
+[
+plugin.Tx_Formhandler.settings.ajax.class = AjaxHandler_JQuery
+plugin.Tx_Formhandler.settings.ajax.config.
+]
+Property:
+Data type:
+Description:
+Default:
+initial
+String | cObj
+Initial content of the AJAX validation markers
+
+loading
+String | cObj
+The loading animation text or image used for AJAX validation.
+<img src="typo3conf/ext/formhandler/Resources/Images/ajax-loader.gif"/>
+ok
+String | cObj
+Content to display if an AJAX validation was successful.
+<img src="typo3conf/ext/formhandler/Resources/Images/ok.png"/>
+notOk
+String | cObj
+Content to display if an AJAX validation failed.
+<img src="typo3conf/ext/formhandler/Resources/Images/notOk.png"/>
 
 PreProcessors
 Property:
@@ -827,6 +921,34 @@ separator
 String | TypoScript Object
 The field separator, e.g. comma
 
+fields.[db_field].preProcessing
+TS object
+Preprocess the value before loading them to the session.
+
+Example:
+
+fields {
+  header {
+    preProcessing = USER
+    preProcessing.userFunc = user_helper->appendSomething
+    mapping = firstname
+  }
+}
+
+fields.[db_field].postProcessing
+TS object
+Postprocess the valuebefore loading them to the session. Enables you to override processing of Formhandler, if you are not satisfied with it.
+
+Example:
+
+fields {
+  header {
+    postProcessing = USER
+    postProcessing.userFunc = user_helper->appendSomething
+    mapping = firstname
+  }
+}
+
 [
 plugin.Tx_Formhandler.settings.preProcessors.x.class = Tx_Formhandler_PreProcessor_LoadDB
 plugin.Tx_Formhandler.settings.preProcessors.x.config.select.
@@ -858,7 +980,6 @@ String | TypoScript Object
 
 limit
 String | TypoScript Object
-
 
 
 PreProcessor_ValidateAuthCode
@@ -1019,6 +1140,10 @@ Default removal characters for each field are:
 >
 '
 “
+doNotSanitizeFields
+String | cObj
+Comma separated list of field names to be not sanitized at all. No XSS removal is performed on these fields.
+
 Interceptor_IPBlocking
 If you do not want to use Captcha for your form, you can control how often the form is allowed to be submitted by a single IP address or in total with this class.
 
@@ -1577,6 +1702,10 @@ x.config.headerText
 String/cObj
 The text to insert at the top of each PDF page. See x.config.footerText for a list of special markers.
 
+x.config.customTempOutputPath
+String
+Specify a custom path where to store the generated files
+typo3temp
 Generator_Csv
 
 Just enter the class name. No configuration required for this component.
@@ -1661,9 +1790,31 @@ Current page
 Finisher_GenerateAuthCode
 Generates a unique token for a database entry.
 This can be users for FE user registration or newsletter registration.
-It needs no further configuration.
-
 IMPORTANT: Use this finisher after Finisher_DB and before Finisher_Mail to be able to send the auth code in an email.
+[
+plugin.Tx_Formhandler.settings.finishers.x.class = Tx_Formhandler_Finisher_GenerateAuthCode
+plugin.Tx_Formhandler.settings.finishers.x.config.
+]
+Property:
+Data type:
+Description:
+Default:
+table
+String
+The table where the form data was saved to.
+This is needed for the auth code generation.
+-
+authCodePage
+Int | String | cObj
+This is the page used for the generation of the auth code link which can be used in emails.
+
+If no page is configured in TypoScript, Formhandler will take the “Redirect Page” entered in the Flexform or the current page ID if nothing is defined in the flexform either.
+
+IMPORTANT:
+
+The finisher stores the generated code and the link, so that they can be used in other components and email templates later on.
+You can use the markers ###auth_code###, ###value_generated_authCode### and ###value_authCodeUrl### to access these values.
+Current PID
 
 Finisher_Redirect
 Redirects to specified page after successful form submission.
