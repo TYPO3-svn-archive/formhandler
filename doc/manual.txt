@@ -37,9 +37,9 @@ Interceptors	20
 Validators	24
 Generators	26
 Finishers	28
-Backend Module	36
+Backend Module	37
 Available error checks	37
-Available subparts to use in the template	38
+Available subparts to use in the template	39
 Available markers to use in subparts	39
 Tutorial	43
 How to set up a simple form	43
@@ -2256,7 +2256,27 @@ Settings for the email sent to the user.
 SAME SETTINGS AS FOR ADMIN
 
 
+Finisher_SetLanguage
+Switch to another language. This can be used to send emails using the same language every time instead of the current language in FE.
+[
+plugin.Tx_Formhandler.settings.finishers.x.class = Tx_Formhandler_Finisher_SetLanguage
+plugin.Tx_Formhandler.settings.finishers.x.config.
+]
 
+Property:
+Data type:
+Description:
+Default:
+languageCode
+String / cObj
+The language code to switch to (en,de,fr, ...)
+-
+
+Finisher_RestoreLanguage
+Switch back to the current language in FE after the language got set by Finisher_SetLanguage.
+Finisher_StoreGP
+This finisher stores GP to session for further use in other plugins and update session to not lose changes in GP made by other finishers (e.g. insert_id from Finisher_DB).
+IMPORTANT: Automatically called if plugin.Tx_Formhandler.settings.predef.example.storeGP = 1 is set.
 Backend Module
 
 Add this TypoScript as page Ts config or user TS.
