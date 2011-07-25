@@ -36,39 +36,39 @@ PreProcessors	17
 Interceptors	20
 Validators	24
 Generators	26
-Finishers	29
-Backend Module	37
-Available error checks	38
-Available subparts to use in the template	39
-Available markers to use in subparts	40
-Tutorial	44
-How to set up a simple form	44
-How to set up an advanced form	44
-How to use predefined forms	44
-How to set up a multistep form	44
-How to set up a multistep form with conditions	45
-How to set up spam protection	46
-Enable captcha for your form	46
-Enable sr_freecap for your form	46
-Enable jm_recaptcha for your form	47
-Enable mathGuard for your form	47
-How to set up error checks	48
-How to use ###is_error### markers	49
-How to fill your own markers via TypoScript	49
-How to hide unfilled form field values in templates	50
-How to set up multi language forms	51
-How to load data from DB to use in Finisher_DB	52
-How to store data into more than one DB table	53
-How to use your own controller	53
-How to use your own component (Interceptor, Finisher, ...)	53
-How to XCLASS Formhandler	54
-How to use a master template	54
-How to use AJAX validation	55
-How to upgrade from th_mailformplus to Formhandler	55
-TypoScript:	56
-HTML:	57
-Known problems	59
-To-Do list	60
+Finishers	28
+Backend Module	36
+Available error checks	37
+Available subparts to use in the template	38
+Available markers to use in subparts	39
+Tutorial	43
+How to set up a simple form	43
+How to set up an advanced form	43
+How to use predefined forms	43
+How to set up a multistep form	43
+How to set up a multistep form with conditions	44
+How to set up spam protection	45
+Enable captcha for your form	45
+Enable sr_freecap for your form	45
+Enable jm_recaptcha for your form	46
+Enable mathGuard for your form	46
+How to set up error checks	47
+How to use ###is_error### markers	48
+How to fill your own markers via TypoScript	48
+How to hide unfilled form field values in templates	49
+How to set up multi language forms	50
+How to load data from DB to use in Finisher_DB	51
+How to store data into more than one DB table	52
+How to use your own controller	52
+How to use your own component (Interceptor, Finisher, ...)	52
+How to XCLASS Formhandler	53
+How to use a master template	53
+How to use AJAX validation	54
+How to upgrade from th_mailformplus to Formhandler	54
+TypoScript:	55
+HTML:	56
+Known problems	58
+To-Do list	59
 
 Introduction
 
@@ -1557,27 +1557,11 @@ Property:
 Data type:
 Description:
 Default:
-x.class
-String
-Example:
-
-... {
-  class = Generator_WebkitPdf
-  config {
-    linkText = Print
-    linkTarget = _blank
-  }
-}
-
-x.config
-Array
-
-
-x.config.linkTarget
+linkTarget
 String/cObj
 The value of the attribute “target”
 _self
-x.config.linkText
+linkText
 String/cObj
 Configure a custom link text.
 You can also configure this text in a translation file using the key “print”.
@@ -1592,22 +1576,9 @@ Property:
 Data type:
 Description:
 Default:
-x.class
-String
-Only configuration option for Generator_WebkitPdf is 'pid', which has to be the ID of a page with a 'webkitpdf' plugin record.
-
-Example:
-
-... {
-  class = Generator_WebkitPdf
-  config {
-    pid = 23
-  }
-}
-
-x.config
-Array
-
+pid
+String/cObj
+The ID of a page with a 'webkitpdf' plugin record.
 
 Generator_PdfGenerator
 
@@ -1618,33 +1589,15 @@ Property:
 Data type:
 Description:
 Default:
-x.class
-String
-Configuration options for Generator_PdfGenerator are 'type' and 'target'. 'type' is the page type configured in the pdf_generator2 plugin and 'target' is the target of the link.
-
-Example:
-
-... {
-  class = Generator_PdfGenerator
-  config {
-    type = 123
-    target = _blank
-  }
-}
-
-x.config
-Array
-
-
-x.config.type
+type
 int
 Page type for PDF generation.
 123
-x.config.target
+target
 String/cObj
 Target for the PDF link
 _blank
-x.config.linkText
+linkText
 String/cObj
 The text of the link
 Save
@@ -1657,52 +1610,35 @@ Property:
 Data type:
 Description:
 Default:
-x.class
-String
-Example:
-
-... {
-  class = Generator_TcPdf
-  config {
-    storeInTempFile = 1
-    checkBinaryCrLf = lastname,firstname
-    returnFileName = 1
-  }
-}
-
-x.config
-Array
-
-
-x.config.storeInTempFile
+storeInTempFile
 int (1/0)
 If set, the generator will save the output in a temporary file rather than sending it directly as content.
 Needed for usage with Finisher_Mail in combination with “returnFileName”
 
-x.config.checkBinaryCrLf
+checkBinaryCrLf
 List of field names
 Line breaks in the values of the entered fields will be replaced with HTML break tags.
 
-x.config.returnFileName
+returnFileName
 int (1/0)
 If set, the generator will return only the file name of the generated PDF.
 Needed for usage with Finisher_Mail in combination with “storeInTempFile”
 
-x.config.linkText
+linkText
 String/cObj
 The text of the link
 Save
-x.config.footerText
+footerText
 String/cObj
 The text to insert at the bottom of each PDF page. If this parameter is set, the standard footer text will not be inserted. You can use two special markers in the text:
 ###PDF_PAGE_NUMBER### inserts the current page number.
 ###PDF_TOTAL_PAGES### inserts the total page count
 
-x.config.headerText
+headerText
 String/cObj
 The text to insert at the top of each PDF page. See x.config.footerText for a list of special markers.
 
-x.config.customTempOutputPath
+customTempOutputPath
 String
 Specify a custom path where to store the generated files
 typo3temp
@@ -1714,7 +1650,7 @@ Property:
 Data type:
 Description:
 Default:
-x.config.linkText
+linkText
 String/cObj
 The text of the link
 Save
