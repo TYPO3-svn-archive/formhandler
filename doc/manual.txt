@@ -602,7 +602,7 @@ Description:
 Default:
 x.class
 String
-Enter as many loggers as you like. Each entry requires a class name of the logger. Optional you can enter specific configuration for the logger in the confg section.
+Enter as many loggers as you like. Each entry requires a class name of the logger. Optional you can enter specific configuration for the logger in the config section.
 
 Example:
 
@@ -669,7 +669,7 @@ Description:
 Default:
 x.class
 String
-Enter as many debuggers as you like. Each entry requires a class name of the debugger. Optional you can enter specific configuration for the debugger in the confg section.
+Enter as many debuggers as you like. Each entry requires a class name of the debugger. Optional you can enter specific configuration for the debugger in the config section.
 
 Example:
 
@@ -794,7 +794,7 @@ Description:
 Default:
 x.class
 String
-Enter as many pre processors as you like. Each entry requires a class name of the pre processor. Optional you can enter specific configuration for the pre processor in the confg section. The pre processors are called only the first time the form is shown.
+Enter as many pre processors as you like. Each entry requires a class name of the pre processor. Optional you can enter specific configuration for the pre processor in the config section. The pre processors are called only the first time the form is shown.
 
 Example:
 
@@ -1041,7 +1041,7 @@ Description:
 Default:
 x.class
 String
-Enter as many interceptors as you like. Each entry requires a class name of the interceptor. Optional you can enter specific configuration for the interceptor in the confg section. The init interceptors are called everytime before the form is shown.
+Enter as many interceptors as you like. Each entry requires a class name of the interceptor. Optional you can enter specific configuration for the interceptor in the config section. The init interceptors are called everytime before the form is shown.
 
 Example:
 
@@ -1068,7 +1068,7 @@ Description:
 Default:
 x.class
 String
-Enter as many interceptors as you like. Each entry requires a class name of the interceptor. Optional you can enter specific configuration for the interceptor in the confg section. The save interceptors are called before the finishers are executed.
+Enter as many interceptors as you like. Each entry requires a class name of the interceptor. Optional you can enter specific configuration for the interceptor in the config section. The save interceptors are called before the finishers are executed.
 
 Example:
 
@@ -1412,7 +1412,7 @@ Description:
 Default:
 x.class
 String
-Enter as many validators as you like. Each entry requires a class name of the validator. Optional you can enter specific configuration for the validator in the confg section. For detailed information about the default validator settings have a look at the section “Available error checks”.
+Enter as many validators as you like. Each entry requires a class name of the validator. Optional you can enter specific configuration for the validator in the config section. For detailed information about the default validator settings have a look at the section “Available error checks”.
 
 Example:
 
@@ -1725,7 +1725,7 @@ Description:
 Default:
 x.class
 String
-Enter as many finishers as you like. Each entry requires a class name of the finisher. Optional you can enter specific configuration for the finisher in the confg section.  More information about available finishers and their settings is provided just below this table.
+Enter as many finishers as you like. Each entry requires a class name of the finisher. Optional you can enter specific configuration for the finisher in the config section.  More information about available finishers and their settings is provided just below this table.
 
 Example:
 
@@ -1733,8 +1733,8 @@ finishers.1 {
   class = Tx_Formhandler_Finisher_Mail
   config {
     admin {
-      to_email = rf@typoheads.at
-      to_name = Reinhard Führicht
+      to_email = mail@example.tld
+      to_name = John Doe
       subject = Request
       sender_email = contactform@mysite.com
       replyto_email = email
@@ -1772,7 +1772,7 @@ Description:
 Default:
 cacheCmd
 int/string/cObj
-Enter as many finishers as you like. Each entry requires a class name of the finisher. Optional you can enter specific configuration for the finisher in the confg section.  More information about available finishers and their settings is provided just below this table.
+Enter as many finishers as you like. Each entry requires a class name of the finisher. Optional you can enter specific configuration for the finisher in the config section.  More information about available finishers and their settings is provided just below this table.
 
 Example:
 
@@ -2464,17 +2464,21 @@ Checks if the value of a field is in a configured field in a configured table
 table
 field
 additionalWhere
+showHidden
 string/cObj
 string/cObj
 string/cObj
+boolean
 isNotInDBTable
 Checks if the value of a field is not in a configured field in a configured table
 table
 field
 additionalWhere
+showHidden
 string/cObj
 string/cObj
 string/cObj
+boolean
 pregMatch
 Checks a field value using the configured perl regular expression
 value
