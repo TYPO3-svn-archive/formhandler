@@ -34,41 +34,41 @@ Debuggers	15
 AjaxHandler	16
 PreProcessors	17
 Interceptors	20
-Validators	24
+Validators	25
 Generators	26
 Finishers	28
-Backend Module	37
-Available error checks	37
-Available subparts to use in the template	39
-Available markers to use in subparts	39
-Tutorial	43
-How to set up a simple form	43
-How to set up an advanced form	43
-How to use predefined forms	43
-How to set up a multistep form	43
-How to set up a multistep form with conditions	44
-How to set up spam protection	45
-Enable captcha for your form	45
-Enable sr_freecap for your form	45
-Enable jm_recaptcha for your form	46
-Enable mathGuard for your form	46
-How to set up error checks	47
-How to use ###is_error### markers	48
-How to fill your own markers via TypoScript	48
-How to hide unfilled form field values in templates	49
-How to set up multi language forms	50
-How to load data from DB to use in Finisher_DB	51
-How to store data into more than one DB table	52
-How to use your own controller	52
-How to use your own component (Interceptor, Finisher, ...)	52
-How to XCLASS Formhandler	53
-How to use a master template	53
-How to use AJAX validation	54
-How to upgrade from th_mailformplus to Formhandler	54
-TypoScript:	55
-HTML:	56
-Known problems	58
-To-Do list	59
+Backend Module	38
+Available error checks	38
+Available subparts to use in the template	40
+Available markers to use in subparts	40
+Tutorial	44
+How to set up a simple form	44
+How to set up an advanced form	44
+How to use predefined forms	44
+How to set up a multistep form	44
+How to set up a multistep form with conditions	45
+How to set up spam protection	46
+Enable captcha for your form	46
+Enable sr_freecap for your form	46
+Enable jm_recaptcha for your form	47
+Enable mathGuard for your form	47
+How to set up error checks	48
+How to use ###is_error### markers	49
+How to fill your own markers via TypoScript	49
+How to hide unfilled form field values in templates	50
+How to set up multi language forms	51
+How to load data from DB to use in Finisher_DB	52
+How to store data into more than one DB table	53
+How to use your own controller	53
+How to use your own component (Interceptor, Finisher, ...)	53
+How to XCLASS Formhandler	54
+How to use a master template	54
+How to use AJAX validation	55
+How to upgrade from th_mailformplus to Formhandler	55
+TypoScript:	56
+HTML:	57
+Known problems	59
+To-Do list	60
 
 Introduction
 
@@ -1405,6 +1405,20 @@ string
 Name of a form field. The value of this field will replace the “|” in langKey.
 
 
+Interceptor_FormProtection
+
+Protects Formhandler forms using TYPO3's form protection API.
+A hidden field containing a one time token is inserting automatically by Formhandler.
+After the form is submitted, this token is validated and a new token is created.
+
+It is not recommended to disable this, but if you want to, add the interceptor and disable it:
+plugin.Tx_Formhandler.settings {
+  initInterceptors.1.class = Interceptor_FormProtection
+  initInterceptors.1.disable = 1
+  saveInterceptors.1.class = Interceptor_FormProtection
+  saveInterceptors.1.disable = 1
+}
+
 Validators
 Property:
 Data type:
@@ -2275,7 +2289,7 @@ The language code to switch to (en,de,fr, ...)
 Finisher_RestoreLanguage
 Switch back to the current language in FE after the language got set by Finisher_SetLanguage.
 Finisher_StoreGP
-This finisher stores GP to session for further use in other plugins and update session to not lose changes in GP made by other finishers (e.g. insert_id from Finisher_DB).
+This finisher stores GP to session for further use in other plugins and update session to not lose changes in GP made by other finishers (e.g. insert_id from Finisher_DB) .
 IMPORTANT: Automatically called if plugin.Tx_Formhandler.settings.predef.example.storeGP = 1 is set.
 Backend Module
 

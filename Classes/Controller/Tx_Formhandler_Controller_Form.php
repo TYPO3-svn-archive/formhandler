@@ -251,6 +251,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->parseConditions();
 
 		//run init interceptors
+		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_FormProtection');
 		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
 		$output = $this->runClasses($this->settings['initInterceptors.']);
 		if (strlen($output) > 0) {
@@ -426,6 +427,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->storeSettingsInSession();
 
 		//run save interceptors
+		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_FormProtection');
 		$this->addFormhandlerClass($this->settings['saveInterceptors.'], 'Interceptor_Filtreatment');
 		$output = $this->runClasses($this->settings['saveInterceptors.']);
 		if (strlen($output) > 0) {
@@ -498,6 +500,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 
 		//run init interceptors
+		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_FormProtection');
 		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
 		$output = $this->runClasses($this->settings['initInterceptors.']);
 		if (strlen($output) > 0) {
@@ -1015,6 +1018,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//set submitted
 		$this->submitted = $this->isFormSubmitted();
 
+		$this->globals->setSubmitted($this->submitted);
 		if (!$this->submitted) {
 			$this->reset();
 		}

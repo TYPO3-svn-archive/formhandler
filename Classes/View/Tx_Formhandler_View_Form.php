@@ -437,6 +437,17 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers['###HIDDEN_FIELDS###'] .= '
 			<input type="hidden" id="submitField-' . $this->gp['randomID'] . '" name="' . $name . '" value="" />
 		';
+
+		$name = 'formToken';
+		if ($this->globals->getFormValuesPrefix()) {
+			$name = $this->globals->getFormValuesPrefix() . '[formToken]';
+		}
+		if($this->gp['formToken']) {
+			$markers['###HIDDEN_FIELDS###'] .= '
+				<input type="hidden" name="' . $name . '" value="' . $this->gp['formToken'] . '" />
+			';
+		}
+
 		$markers['###formValuesPrefix###'] = $this->globals->getFormValuesPrefix();
 
 		if ($this->gp['generated_authCode']) {

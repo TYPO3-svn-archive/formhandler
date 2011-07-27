@@ -16,6 +16,7 @@ class Tx_Formhandler_Globals {
 	protected $randomID;
 	protected $session;
 	protected $settings;
+	protected $submitted;
 	protected $templateCode;
 	protected $templateSuffix;
 
@@ -84,6 +85,10 @@ class Tx_Formhandler_Globals {
 		$this->settings = $settings;
 	}
 
+	public function setSubmitted($submitted) {
+		$this->submitted = $submitted;
+	}
+
 	public function setTemplateCode($templateCode) {
 		$this->templateCode = $templateCode;
 	}
@@ -138,6 +143,10 @@ class Tx_Formhandler_Globals {
 
 	public function getSettings() {
 		return $this->settings;
+	}
+
+	public function isSubmitted() {
+		return $this->submitted;
 	}
 
 	public function getTemplateCode() {
