@@ -2,17 +2,14 @@
 
 class Tx_Formhandler_ErrorCheck_FileMaxTotalSize extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that uploaded files has a maximum total file size
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$this->mandatoryParameters = array('maxTotalSize');
+	}
+
+	public function check() {
 		$checkFailed = '';
-		$maxSize = $this->utilityFuncs->getSingle($check['params'], 'maxTotalSize');
+		$maxSize = $this->utilityFuncs->getSingle($this->settings['params'], 'maxTotalSize');
 		$size = 0;
 
 		// first we check earlier uploaded files
@@ -28,7 +25,7 @@ class Tx_Formhandler_ErrorCheck_FileMaxTotalSize extends Tx_Formhandler_Abstract
 				($size + intval($files['size'][$name])) > $maxSize) {
 
 				unset($files);
-				$checkFailed = $this->getCheckFailed($check);
+				$checkFailed = $this->getCheckFailed();
 			}
 		}
 		return $checkFailed;

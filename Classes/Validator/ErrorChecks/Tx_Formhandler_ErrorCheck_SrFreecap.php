@@ -23,21 +23,13 @@
  */
 class Tx_Formhandler_ErrorCheck_SrFreecap extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a specified field's value matches the generated word of the extension "sr_freecap"
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function check() {
 		$checkFailed = '';
 		if (t3lib_extMgm::isLoaded('sr_freecap')) {
 			require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
 			$this->freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
-			if (!$this->freeCap->checkWord($gp[$name])) {
-				$checkFailed = $this->getCheckFailed($check);
+			if (!$this->freeCap->checkWord($this->gp[$this->formFieldName])) {
+				$checkFailed = $this->getCheckFailed();
 			}
 		}
 		return $checkFailed;

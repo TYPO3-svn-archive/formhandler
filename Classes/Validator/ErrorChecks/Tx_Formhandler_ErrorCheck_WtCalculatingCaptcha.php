@@ -23,22 +23,14 @@
  */
 class Tx_Formhandler_ErrorCheck_WtCalculatingCaptcha extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that the correct image of possible images displayed by the extension "simple_captcha" got selected.
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function check() {
 		$checkFailed = '';
 		if (t3lib_extMgm::isLoaded('wt_calculating_captcha')) {
 			require_once(t3lib_extMgm::extPath('wt_calculating_captcha') . 'class.tx_wtcalculatingcaptcha.php');
 
 			$captcha = t3lib_div::makeInstance('tx_wtcalculatingcaptcha');
-			if (!$captcha->correctCode($gp[$name])) {
-				$checkFailed = $this->getCheckFailed($check);
+			if (!$captcha->correctCode($this->gp[$this->formFieldName])) {
+				$checkFailed = $this->getCheckFailed();
 			}
 		}
 		return $checkFailed;

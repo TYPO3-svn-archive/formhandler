@@ -23,21 +23,18 @@
  */
 class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date {
 
-	/**
-	 * Validates that a specified field's value is a valid date and between two specified dates
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$this->mandatoryParameters = array('min', 'max', 'pattern');
+	}
+
+	public function check() {
 		$checkFailed = '';
 
-		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
-			$min = $this->utilityFuncs->getSingle($check['params'], 'min');
-			$max = $this->utilityFuncs->getSingle($check['params'], 'max');
-			$pattern = $this->utilityFuncs->getSingle($check['params'], 'pattern');
+		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
+			$min = $this->utilityFuncs->getSingle($this->settings['params'], 'min');
+			$max = $this->utilityFuncs->getSingle($this->settings['params'], 'max');
+			$pattern = $this->utilityFuncs->getSingle($this->settings['params'], 'pattern');
 			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
 			$sep = $res[1];
 
@@ -48,7 +45,7 @@ class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date
 			$pos1 = strpos($pattern, 'd');
 			$pos2 = strpos($pattern, 'm');
 			$pos3 = strpos($pattern, 'y');
-			$date = $gp[$name];
+			$date = $this->gp[$this->formFieldName];
 			$checkdate = explode($sep,$date);
 			$check_day = $checkdate[$pos1];
 			$check_month = $checkdate[$pos2];
@@ -59,11 +56,11 @@ class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date
 				$min_month = $min_date[$pos2];
 				$min_year = $min_date[$pos3];
 				if ($check_year < $min_year) {
-					$checkFailed = $this->getCheckFailed($check);
+					$checkFailed = $this->getCheckFailed();
 				} elseif ($check_year == $min_year && $check_month < $min_month) {
-					$checkFailed = $this->getCheckFailed($check);
+					$checkFailed = $this->getCheckFailed();
 				} elseif ($check_year == $min_year && $check_month == $min_month && $check_day < $min_day) {
-					$checkFailed = $this->getCheckFailed($check);
+					$checkFailed = $this->getCheckFailed();
 				}
 			}
 			if (strlen($max) > 0) {
@@ -72,16 +69,17 @@ class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date
 				$max_month = $max_date[$pos2];
 				$max_year = $max_date[$pos3];
 				if ($check_year > $max_year) {
-					$checkFailed = $this->getCheckFailed($check);
+					$checkFailed = $this->getCheckFailed();
 				} elseif ($check_year == $max_year && $check_month > $max_month) {
-					$checkFailed = $this->getCheckFailed($check);
+					$checkFailed = $this->getCheckFailed();
 				} elseif ($check_year == $max_year && $check_month == $max_month && $check_day > $max_day) {
-					$checkFailed = $this->getCheckFailed($check);
+					$checkFailed = $this->getCheckFailed();
 				}
 			}
 		}
 
 		return $checkFailed;
 	}
+
 }
 ?>

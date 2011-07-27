@@ -23,20 +23,17 @@
  */
 class Tx_Formhandler_ErrorCheck_ContainsOnly extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a specified field contains at least one of the specified words
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$this->mandatoryParameters = array('words');
+	}
+
+	public function check() {
 		$checkFailed = '';
-		$formValue = trim($gp[$name]);
+		$formValue = trim($this->gp[$this->formFieldName]);
 
 		if (strlen($formValue) > 0) {
-			$checkValue = $this->utilityFuncs->getSingle($check['params'], 'words');
+			$checkValue = $this->utilityFuncs->getSingle($this->settings['params'], 'words');
 			if (!is_array($checkValue)) {
 				$checkValue = t3lib_div::trimExplode(',', $checkValue);
 			}
@@ -50,9 +47,9 @@ class Tx_Formhandler_ErrorCheck_ContainsOnly extends Tx_Formhandler_AbstractErro
 			if ($error) {
 
 				//remove userfunc settings and only store comma seperated words
-				$check['params']['words'] = implode(',', $checkValue);
-				unset($check['params']['words.']);
-				$checkFailed = $this->getCheckFailed($check);
+				$this->settings['params']['words'] = implode(',', $checkValue);
+				unset($this->settings['params']['words.']);
+				$checkFailed = $this->getCheckFailed();
 			}
 		}
 		return $checkFailed;

@@ -23,25 +23,22 @@
  */
 class Tx_Formhandler_ErrorCheck_MaxValue extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a specified field is an integer and lower than or equal a specified value
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$this->mandatoryParameters = array('value');
+	}
+
+	public function check() {
 		$checkFailed = '';
-		$max = floatval(str_replace(',', '.', $this->utilityFuncs->getSingle($check['params'], 'value')));
-		$check['params']['value'] = $max;
-		$valueToCheck = floatval(str_replace(',', '.', $gp[$name]));
-		if (isset($gp[$name]) &&
+		$max = floatval(str_replace(',', '.', $this->utilityFuncs->getSingle($this->settings['params'], 'value')));
+		$this->settings['params']['value'] = $max;
+		$valueToCheck = floatval(str_replace(',', '.', $this->gp[$this->formFieldName]));
+		if (isset($this->gp[$this->formFieldName]) &&
 			$valueToCheck >= 0 &&
 			$max >= 0 &&
 			(!is_numeric($valueToCheck) || $valueToCheck > $max)) {
 
-			$checkFailed = $this->getCheckFailed($check);
+			$checkFailed = $this->getCheckFailed();
 		}
 		return $checkFailed;
 	}

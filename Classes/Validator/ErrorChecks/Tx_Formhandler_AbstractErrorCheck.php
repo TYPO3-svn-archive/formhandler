@@ -23,19 +23,23 @@
  */
 abstract class Tx_Formhandler_AbstractErrorCheck extends Tx_Formhandler_AbstractComponent {
 
+	protected $formFieldName;
+	protected $mandatoryParameters = array();
+
 	public function process() {
-		return;
+		
+	}
+
+	public function setFormFieldName($name) {
+		$this->formFieldName = $name;
 	}
 
 	/**
-	 * Performs the specific error check.
+	 * Sets the suitable string for the checkFailed message parsed in view.
 	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
+	 * @return string If the check failed, the string contains the name of the failed check plus the parameters and values.
 	 */
-	abstract public function check(&$check, $name, &$gp);
+	abstract public function check();
 
 	/**
 	 * Sets the suitable string for the checkFailed message parsed in view.
@@ -43,16 +47,35 @@ abstract class Tx_Formhandler_AbstractErrorCheck extends Tx_Formhandler_Abstract
 	 * @param array $check The parsed check settings
 	 * @return string The check failed string
 	 */
-	protected function getCheckFailed($check) {
-		$checkFailed = $check['check'];
-		if (is_array($check['params'])) {
+	protected function getCheckFailed() {
+		$checkFailed = $this->settings['check'];
+		if (is_array($this->settings['params'])) {
 			$checkFailed .= ';';
-			foreach ($check['params'] as $key => $value) {
+			foreach ($this->settings['params'] as $key => $value) {
 				$checkFailed .= $key . '::' . $value . ';';
 			}
 			$checkFailed = substr($checkFailed, 0, (strlen($checkFailed) - 1));
 		}
 		return $checkFailed;
+	}
+
+	public function validateConfig() {
+		$valid = TRUE;
+		if(!$this->formFieldName) {
+			$this->utilityFuncs->throwException('error_checks_form_field_name_missing', $this->settings['check']);
+		}
+
+		if(!empty($this->mandatoryParameters)) {
+			if(!$this->settings['params']) {
+				$this->utilityFuncs->throwException('error_checks_parameters_missing', $this->settings['check'], implode(',', $this->mandatoryParameters));
+			}
+			foreach($this->mandatoryParameters as $param) {
+				if(!$this->settings['params'][$param]) {
+					$this->utilityFuncs->throwException('error_checks_unsufficient_parameters', $param, $this->settings['check']);
+				}
+			}
+		}
+		return $valid;
 	}
 
 }

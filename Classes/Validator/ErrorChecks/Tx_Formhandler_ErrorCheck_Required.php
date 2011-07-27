@@ -23,22 +23,14 @@
  */
 class Tx_Formhandler_ErrorCheck_Required extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a specified field is filled out
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function check() {
 		$checkFailed = '';
-		if (is_array($gp[$name])) {
-			if (empty($gp[$name])) {
-				$checkFailed = $this->getCheckFailed($check);
+		if (is_array($this->gp[$this->formFieldName])) {
+			if (empty($this->gp[$this->formFieldName])) {
+				$checkFailed = $this->getCheckFailed();
 			}
-		} elseif (!isset($gp[$name]) || strlen(trim($gp[$name])) == 0) {
-			$checkFailed = $this->getCheckFailed($check);
+		} elseif (!isset($this->gp[$this->formFieldName]) || strlen(trim($this->gp[$this->formFieldName])) == 0) {
+			$checkFailed = $this->getCheckFailed();
 		}
 		return $checkFailed;
 	}

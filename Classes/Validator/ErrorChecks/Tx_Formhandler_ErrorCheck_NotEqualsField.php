@@ -23,23 +23,19 @@
  */
 class Tx_Formhandler_ErrorCheck_NotEqualsField extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a specified field doesn't equal the value
-	 * of fieldname in param
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$this->mandatoryParameters = array('field');
+	}
+
+	public function check() {
 		$checkFailed = '';
 
-		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
-			$comparisonValue = $gp[$this->utilityFuncs->getSingle($check['params'], 'field')];
+		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
+			$comparisonValue = $gp[$this->utilityFuncs->getSingle($this->settings['params'], 'field')];
 
-			if (strcmp($comparisonValue, $gp[$name]) == 0) {
-				$checkFailed = $this->getCheckFailed($check);
+			if (strcmp($comparisonValue, $this->gp[$this->formFieldName]) == 0) {
+				$checkFailed = $this->getCheckFailed();
 			}
 		}
 		return $checkFailed;

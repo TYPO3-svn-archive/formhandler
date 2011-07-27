@@ -23,30 +23,27 @@
  */
 class Tx_Formhandler_ErrorCheck_Time extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a specified field's value is a valid time
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$this->mandatoryParameters = array('pattern');
+	}
+
+	public function check() {
 		$checkFailed = '';
 
-		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
-			$pattern = $this->utilityFuncs->getSingle($check['params'], 'pattern');
+		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
+			$pattern = $this->utilityFuncs->getSingle($this->settings['params'], 'pattern');
 			preg_match('/^[h|m]*(.)[h|m]*/i', $pattern, $res);
 			$sep = $res[1];
-			$timeCheck = t3lib_div::trimExplode($sep, $gp[$name]);
+			$timeCheck = t3lib_div::trimExplode($sep, $this->gp[$this->formFieldName]);
 			if (is_array($timeCheck)) {
 				$hours = $timeCheck[0];
 				if (!is_numeric($hours) || $hours < 0 || $hours > 23) {
-					$checkFailed = $this->getCheckFailed($check);
+					$checkFailed = $this->getCheckFailed();
 				}
 				$minutes = $timeCheck[1];
 				if (!is_numeric($minutes) || $minutes < 0 || $minutes > 59) {
-					$checkFailed = $this->getCheckFailed($check);
+					$checkFailed = $this->getCheckFailed();
 				}
 			}
 		}

@@ -23,20 +23,12 @@
  */
 class Tx_Formhandler_ErrorCheck_Integer extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a specified field is a valid integer.
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function check() {
 		$checkFailed = '';
-		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
-			$valid = preg_match('/^-{0,1}[0-9]+$/', $gp[$name]);
+		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
+			$valid = preg_match('/^-{0,1}[0-9]+$/', $this->gp[$this->formFieldName]);
 			if (!$valid) {
-				$checkFailed = $this->getCheckFailed($check);
+				$checkFailed = $this->getCheckFailed();
 			}
 		}
 		return $checkFailed;

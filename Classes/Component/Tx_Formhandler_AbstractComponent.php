@@ -43,7 +43,7 @@ abstract class Tx_Formhandler_AbstractComponent extends Tx_Formhandler_AbstractC
 	abstract public function process();
 
 	public function validateConfig() {
-
+		return TRUE;
 	}
 
 }

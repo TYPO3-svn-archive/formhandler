@@ -23,15 +23,7 @@
  */
 class Tx_Formhandler_ErrorCheck_FileRequired extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a file gets uploaded via specified upload field
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check,$name,&$gp) {
+	public function check() {
 		$checkFailed = '';
 		$sessionFiles = $this->globals->getSession()->get('files');
 		$found = FALSE;
@@ -41,7 +33,7 @@ class Tx_Formhandler_ErrorCheck_FileRequired extends Tx_Formhandler_AbstractErro
 			}
 		}
 		if (!$found && count($sessionFiles[$name]) === 0) {
-			$checkFailed = $this->getCheckFailed($check);
+			$checkFailed = $this->getCheckFailed();
 		}
 		return $checkFailed;
 	}

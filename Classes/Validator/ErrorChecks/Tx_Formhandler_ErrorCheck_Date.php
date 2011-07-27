@@ -23,20 +23,17 @@
  */
 class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a specified field's value is a valid date
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$this->mandatoryParameters = array('pattern');
+	}
+
+	public function check() {
 		$checkFailed = '';
 
-		if (isset($gp[$name]) && strlen(trim($gp[$name])) > 0) {
+		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
 			# find out separator
-			$pattern = $this->utilityFuncs->getSingle($check['params'], 'pattern');
+			$pattern = $this->utilityFuncs->getSingle($this->settings['params'], 'pattern');
 			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
 			$sep = $res[1];
 
@@ -47,15 +44,15 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 			$pos1 = strpos($pattern, 'd');
 			$pos2 = strpos($pattern, 'm');
 			$pos3 = strpos($pattern, 'y');
-			$dateCheck = t3lib_div::trimExplode($sep, $gp[$name]);
+			$dateCheck = t3lib_div::trimExplode($sep, $this->gp[$this->formFieldName]);
 			if (sizeof($dateCheck) !== 3) {
-				$checkFailed = $this->getCheckFailed($check);
+				$checkFailed = $this->getCheckFailed();
 			} elseif (intval($dateCheck[0]) === 0 || intval($dateCheck[1]) === 0 || intval($dateCheck[2]) === 0) {
-				$checkFailed = $this->getCheckFailed($check);
+				$checkFailed = $this->getCheckFailed();
 			} elseif (!checkdate($dateCheck[$pos2], $dateCheck[$pos1], $dateCheck[$pos3])) {
-				$checkFailed = $this->getCheckFailed($check);
+				$checkFailed = $this->getCheckFailed();
 			} elseif (strlen($dateCheck[$pos3]) !== 4) {
-				$checkFailed = $this->getCheckFailed($check);
+				$checkFailed = $this->getCheckFailed();
 			}
 		}
 		return $checkFailed;
@@ -80,5 +77,6 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 		$pattern = str_replace('Y', 'y', $pattern);
 		return $pattern;
 	}
+
 }
 ?>

@@ -262,6 +262,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//run validation
 		$this->errors = array();
 		$valid = array(TRUE);
+		$this->validateErrorCheckConfig();
 		if (isset($this->settings['validators.']) && 
 			is_array($this->settings['validators.']) && 
 			intval($this->settings['validators.']['disable']) !== 1) {
@@ -340,6 +341,49 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$this->view->setSettings($this->settings);
 			$this->setViewSubpart($this->currentStep);
 			return $this->processNotValid();
+		}
+	}
+
+	protected function validateErrorCheckConfig() {
+		if (isset($_FILES) && is_array($_FILES) && !empty($_FILES)) {
+
+			//for all file properties
+			foreach ($_FILES as $sthg => $files) {
+
+				//if a file was uploaded
+				if (isset($files['name']) && is_array($files['name'])) {
+
+					//for all file names
+					$uploadFields = array_keys($files['name']);
+					foreach ($uploadFields as $field) {
+						$valid = FALSE;
+						$hasAllowedTypesCheck = FALSE;
+						if (isset($this->settings['validators.']) && 
+							is_array($this->settings['validators.']) && 
+							intval($this->settings['validators.']['disable']) !== 1) {
+
+							foreach ($this->settings['validators.'] as $idx => $tsConfig) {
+								if($tsConfig['config.']['fieldConf.'][$field . '.']['errorCheck.']) {
+									foreach($tsConfig['config.']['fieldConf.'][$field . '.']['errorCheck.'] as $errorCheck) {
+										if($errorCheck === 'fileAllowedTypes') {
+											$hasAllowedTypesCheck = TRUE;
+										}
+									}
+								}
+							}
+						}
+						if($hasAllowedTypesCheck) {
+							$valid = TRUE;
+						} else {
+							$missingChecks = array();
+							if(!$hasAllowedTypesCheck) {
+								$missingChecks[] = 'fileAllowedTypes';
+							}
+							$this->utilityFuncs->throwException('error_checks_missing', implode(',', $missingChecks), $field);
+						}
+					}
+				}
+			}
 		}
 	}
 

@@ -23,24 +23,21 @@
  */
 class Tx_Formhandler_ErrorCheck_BetweenItems extends Tx_Formhandler_AbstractErrorCheck {
 
-	/**
-	 * Validates that a specified field is an array and has an item count between two specified values
-	 *
-	 * @param array &$check The TypoScript settings for this error check
-	 * @param string $name The field name
-	 * @param array &$gp The current GET/POST parameters
-	 * @return string The error string
-	 */
-	public function check(&$check, $name, &$gp) {
-		$checkFailed = '';
-		$min = intval($this->utilityFuncs->getSingle($check['params'], 'minValue'));
-		$max = intval($this->utilityFuncs->getSingle($check['params'], 'maxValue'));
-		if (isset($gp[$name]) &&
-			is_array($gp[$name]) &&
-			(count($gp[$name]) < intval($min) || 
-			count($gp[$name]) > intval($max))) {
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$this->mandatoryParameters = array('minValue', 'maxValue');
+	}
 
-			$checkFailed = $this->getCheckFailed($check);
+	public function check() {
+		$checkFailed = '';
+		$min = intval($this->utilityFuncs->getSingle($this->settings['params'], 'minValue'));
+		$max = intval($this->utilityFuncs->getSingle($this->settings['params'], 'maxValue'));
+		if (isset($this->gp[$this->formFieldName]) &&
+			is_array($this->gp[$this->formFieldName]) &&
+			(count($this->gp[$this->formFieldName]) < intval($min) || 
+			count($this->gp[$this->formFieldName]) > intval($max))) {
+
+			$checkFailed = $this->getCheckFailed();
 		}
 		return $checkFailed;
 	}
