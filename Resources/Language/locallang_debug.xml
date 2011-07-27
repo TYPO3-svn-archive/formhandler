@@ -3,7 +3,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="adding_html">Adding HTML:</label>
-			<label index="adding_pdf">Adding PDF:</label>
+			<label index="adding_generated_files">Adding generated files:</label>
 			<label index="alert_mail_not_sent">Mails not sent because a mail has already been sent in defined interval!</label>
 			<label index="calling_class">Calling class "%s"</label>
 			<label index="calling_finisher">Calling finisher "%s"</label>
@@ -62,7 +62,7 @@
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="adding_html">Füge HTML hinzu:</label>
-			<label index="adding_pdf">Füge PDF hinzu:</label>
+			<label index="adding_generated_files">Füge generierte Dateien hinzu:</label>
 			<label index="alert_mail_not_sent">E-Mails nicht verschickt, da eine Benachrichtigungs-E-Mail für dieses Intervall schon verschickt wurde!</label>
 			<label index="calling_class">Rufe Klasse "%s" auf!</label>
 			<label index="calling_finisher">Rufe Finisher "%s" auf!</label>
@@ -115,7 +115,7 @@
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="adding_html">TRANSLATE: Adding HTML:</label>
-			<label index="adding_pdf">TRANSLATE: Adding PDF:</label>
+			<label index="adding_generated_files">TRANSLATE: Adding generated files:</label>
 			<label index="alert_mail_not_sent">L'email n'a pas été envoyé, car un autre email à été envoyé dans l'interval de temps!</label>
 			<label index="calling_class">Appel de la class "%s"</label>
 			<label index="calling_finisher">Appel du finisher "%s"</label>

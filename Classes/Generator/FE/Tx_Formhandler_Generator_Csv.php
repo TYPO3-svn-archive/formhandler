@@ -28,8 +28,27 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 
 		// create new parseCSV object.
 		$csv = new parseCSV();
-		$csv->output('formhandler.csv', $data, $params);
-		die();
+		if($this->settings['delimiter']) {
+			$csv->delimiter = $csv->output_delimiter = $this->utilityFuncs->getSingle($this->settings, 'delimiter');
+		}
+		if($this->settings['enclosure']) {
+			$csv->enclosure = $this->utilityFuncs->getSingle($this->settings, 'enclosure');
+		}
+		if(intval($this->settings['returnFileName']) === 1) {
+			$outputPath = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
+			if ($this->settings['customTempOutputPath']) {
+				$outputPath .= $this->utilityFuncs->sanitizePath($this->settings['customTempOutputPath']);
+			} else {
+				$outputPath .= '/typo3temp/';
+			}
+			$filename = $outputPath . $this->settings['filePrefix'] . $this->utilityFuncs->generateHash() . '.csv';
+			$csv->save($filename, $data, FALSE, $params);
+
+			return $filename;
+		} else {
+			$csv->output('formhandler.csv', $data, $params);
+			die();
+		}
 	}
 
 	protected function getComponentLinkParams($linkGP) {

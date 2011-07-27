@@ -40,35 +40,35 @@ Finishers	28
 Backend Module	38
 Available error checks	38
 Available subparts to use in the template	40
-Available markers to use in subparts	40
-Tutorial	44
-How to set up a simple form	44
-How to set up an advanced form	44
-How to use predefined forms	44
-How to set up a multistep form	44
-How to set up a multistep form with conditions	45
-How to set up spam protection	46
-Enable captcha for your form	46
-Enable sr_freecap for your form	46
-Enable jm_recaptcha for your form	47
-Enable mathGuard for your form	47
-How to set up error checks	48
-How to use ###is_error### markers	49
-How to fill your own markers via TypoScript	49
-How to hide unfilled form field values in templates	50
-How to set up multi language forms	51
-How to load data from DB to use in Finisher_DB	52
-How to store data into more than one DB table	53
-How to use your own controller	53
-How to use your own component (Interceptor, Finisher, ...)	53
-How to XCLASS Formhandler	54
-How to use a master template	54
-How to use AJAX validation	55
-How to upgrade from th_mailformplus to Formhandler	55
-TypoScript:	56
-HTML:	57
-Known problems	59
-To-Do list	60
+Available markers to use in subparts	41
+Tutorial	45
+How to set up a simple form	45
+How to set up an advanced form	45
+How to use predefined forms	45
+How to set up a multistep form	45
+How to set up a multistep form with conditions	46
+How to set up spam protection	47
+Enable captcha for your form	47
+Enable sr_freecap for your form	47
+Enable jm_recaptcha for your form	48
+Enable mathGuard for your form	48
+How to set up error checks	49
+How to use ###is_error### markers	50
+How to fill your own markers via TypoScript	50
+How to hide unfilled form field values in templates	51
+How to set up multi language forms	52
+How to load data from DB to use in Finisher_DB	53
+How to store data into more than one DB table	54
+How to use your own controller	54
+How to use your own component (Interceptor, Finisher, ...)	54
+How to XCLASS Formhandler	55
+How to use a master template	55
+How to use AJAX validation	56
+How to upgrade from th_mailformplus to Formhandler	56
+TypoScript:	57
+HTML:	58
+Known problems	60
+To-Do list	61
 
 Introduction
 
@@ -1656,6 +1656,10 @@ customTempOutputPath
 String
 Specify a custom path where to store the generated files
 typo3temp
+filePrefix
+String
+The generated file name contains a random hash. You can specify a custom prefix here (E.g. formhandler)
+
 Generator_Csv
 
 Just enter the class name. No configuration required for this component.
@@ -1668,6 +1672,26 @@ linkText
 String/cObj
 The text of the link
 Save
+exportParams
+List of field names
+List of field names to export to the CSV file.
+All fields
+delimiter
+String / cObj
+Specify your own delimiter for the CSV values
+,
+enclosure
+String / cObj
+Specify your own enclosure for the CSV values
+“
+customTempOutputPath
+String
+Specify a custom path where to store the generated files
+typo3temp
+filePrefix
+String
+The generated file name contains a random hash. You can specify a custom prefix here (E.g. formhandler)
+
 Finishers
 Property:
 Data type:
@@ -2221,18 +2245,25 @@ admin.attachment
 string
 Comma seperated list of form fields or file names to be attached to the email.
 -
-admin.attachPDF
+admin.attachGeneratedFiles
 array
-Attach the submitted values as PDF
+Attach the submitted values as files.
+
+Add as many generators as you like.
+
+Example:
+
+attachGeneratedFiles {
+  1.class = Generator_TcPdf
+  1.config {
+    …
+  }
+  2.class = Generator_Csv
+  2.config {
+    ...
+  }
+}
 -
-admin.attachPDF.class
-string
-Class to handle the PDF generation. Normally this will be Tx_Formhandler_Generator_WebkitPdf
-
-admin.attachPDF.config
-array
-Configuration for the generator class
-
 admin.htmlEmailAsAttachment
 int(1/0)
 Attach the generated HTML email to the outgoing email

@@ -266,9 +266,12 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 				$emailObj->addAttachment($attachment);
 			}
 		}
-		if ($mailSettings['attachPDF']) {
-			$this->utilityFuncs->debugMessage('adding_pdf', array(), 1, array($mailSettings['attachPDF']));
-			$emailObj->addAttachment($mailSettings['attachPDF']);
+		if ($mailSettings['attachGeneratedFiles']) {
+			$files = t3lib_div::trimExplode(',', $mailSettings['attachGeneratedFiles']);
+			$this->utilityFuncs->debugMessage('adding_generated_files', array(), 1, $files);
+			foreach($files as $file) {
+				$emailObj->addAttachment($file);
+			}
 		}
 
 		//parse max count of mails to send
@@ -494,7 +497,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			'to_name',
 			'return_path',
 			'attachment',
-			'attachPDF',
+			'attachGeneratedFiles',
 			'htmlEmailAsAttachment',
 			'plain.',
 			'html.'
@@ -552,19 +555,26 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 						break;
 
 					case 'attachPDF':
-						if (isset($currentSettings['attachPDF.']) && is_array($currentSettings['attachPDF.'])) {
-							$generatorClass = $currentSettings['attachPDF.']['class'];
-							if ($generatorClass) {
-								$generatorClass = $this->utilityFuncs->prepareClassName($generatorClass);
-								$generator = $this->componentManager->getComponent($generatorClass);
-								$generator->init($this->gp, $currentSettings['attachPDF.']['config.']);
-								$generator->getLink();
-								$file = $generator->process();
-								unset($currentSettings['attachPDF.']);
-								$emailSettings['attachPDF'] = $file;
+				case 'attachGeneratedFiles':
+						if (isset($currentSettings['attachGeneratedFiles.']) && is_array($currentSettings['attachGeneratedFiles.'])) {
+							foreach($currentSettings['attachGeneratedFiles.'] as $idx => $options) {
+								$generatorClass = $options['class'];
+								if ($generatorClass) {
+									$generatorClass = $this->utilityFuncs->prepareClassName($generatorClass);
+									$generator = $this->componentManager->getComponent($generatorClass);
+									$generator->init($this->gp, $options['config.']);
+									$generator->getLink();
+									$file = $generator->process();
+									$emailSettings['attachGeneratedFiles'] .= $file . ',';
+								}
 							}
-						} elseif ($currentSettings['attachPDF']) {
-							$emailSettings['attachPDF'] = $currentSettings['attachPDF'];
+							if(substr($emailSettings['attachGeneratedFiles'], strlen($emailSettings['attachGeneratedFiles']) - 1) === ',') {
+								$emailSettings['attachGeneratedFiles'] = substr($emailSettings['attachGeneratedFiles'], 0, strlen($emailSettings['attachGeneratedFiles']) - 1);
+							}
+							unset($currentSettings['attachGeneratedFiles.']);
+							$currentSettings['attachGeneratedFiles'] = $emailSettings['attachGeneratedFiles'];
+						} elseif ($currentSettings['attachGeneratedFiles']) {
+							$emailSettings['attachGeneratedFiles'] = $currentSettings['attachGeneratedFiles'];
 						}
 						break;
 
