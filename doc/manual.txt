@@ -934,18 +934,16 @@ header {
 }
 
 
-fields.[db_field].postProcessing
+postProcessing
 TS object
 Postprocess the valuebefore loading them to the session. Enables you to override processing of Formhandler, if you are not satisfied with it.
 
 Example:
 
-fields {
-  header {
+header {
     postProcessing = USER
     postProcessing.userFunc = user_helper->appendSomething
     mapping = firstname
-  }
 }
 
 [
