@@ -1408,6 +1408,8 @@ Protects Formhandler forms using TYPO3's form protection API.
 A hidden field containing a one time token is inserting automatically by Formhandler.
 After the form is submitted, this token is validated and a new token is created.
 
+IMPORTANT: Interceptor_FormProtection does not work with TYPO3 < 4.5.3!
+
 It is not recommended to disable this, but if you want to, add the interceptor and disable it:
 plugin.Tx_Formhandler.settings {
   initInterceptors.1.class = Interceptor_FormProtection
