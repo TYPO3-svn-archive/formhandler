@@ -69,7 +69,7 @@ $TCA['tx_formhandler_log'] = array (
 		'tstamp' => 'tstamp',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-		'readOnly' => 1
+		'adminOnly' => 1
 	)
 );
 t3lib_extMgm::allowTableOnStandardPages('tx_formhandler_log');
