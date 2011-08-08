@@ -89,12 +89,18 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 						$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
 						if (empty($restrictErrorChecks) || in_array($check['check'], $restrictErrorChecks)) {
 							$gp = array($field => $value);
-							$checkFailed = $errorCheckObject->check($check, $field, $gp);
-							if (strlen($checkFailed) > 0) {
-								if (!is_array($errors[$field])) {
-									$errors[$field] = array();
+							$errorCheckObject->init($gp, $check);
+							$errorCheckObject->setFormFieldName($field);
+							if($errorCheckObject->validateConfig()) {
+								$checkFailed = $errorCheckObject->check();
+								if(strlen($checkFailed) > 0) {
+									if(!is_array($errors[$errorFieldName])) {
+										$errors[$field] = array();
+									}
+									$errors[$field][] = $checkFailed;
 								}
-								array_push($errors[$field], $checkFailed);
+							} else {
+								$this->utilityFuncs->throwException('Configuration is not valid for class "Tx_Formhandler_ErrorCheck_' . $classNameFix . '"!');
 							}
 						}
 					}

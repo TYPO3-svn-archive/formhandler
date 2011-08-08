@@ -35,7 +35,7 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 			$csv->enclosure = $this->utilityFuncs->getSingle($this->settings, 'enclosure');
 		}
 		if(intval($this->settings['returnFileName']) === 1) {
-			$outputPath = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
+			$outputPath = $this->utilityFuncs->getDocumentRoot();
 			if ($this->settings['customTempOutputPath']) {
 				$outputPath .= $this->utilityFuncs->sanitizePath($this->settings['customTempOutputPath']);
 			} else {

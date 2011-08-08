@@ -44,7 +44,6 @@
 class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator {
 
 	protected $restrictErrorChecks = array();
-	
 	protected $disableErrorCheckFields = array();
 
 	/**
@@ -89,19 +88,19 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 		if(isset($this->settings['disableErrorCheckFields'])) {
 			$this->disableErrorCheckFields = t3lib_div::trimExplode(',', $this->settings['disableErrorCheckFields']);
 		}
-		
+
 		if(isset($this->settings['restrictErrorChecks'])) {
 			$this->restrictErrorChecks = t3lib_div::trimExplode(',', $this->settings['restrictErrorChecks']);
 		}
-		
+
 		if (!in_array('all', $this->disableErrorCheckFields)) {
 			$errors = $this->validateRecursive($errors, $this->gp, (array) $this->settings['fieldConf.']);
 		}
-		
+
 		if ($this->settings['messageLimit'] > 0 || is_array($this->settings['messageLimit.'])) {
 			$limit = (int) $this->settings['messageLimit'];
 			$limits = (array) $this->settings['messageLimit.'];
-			
+
 			foreach ($errors as $field => $messages) {
 				if (isset($limits[$field]) && $limits[$field] > 0) {
 					$errors[$field] = array_slice($messages, - $limits[$field]);
@@ -110,7 +109,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				}
 			}
 		}
-		
+
 		return empty($errors);
 	}
 	
@@ -171,14 +170,14 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				// Nested field-confs - do recursion:
 				$errors = $this->validateRecursive($errors, (array) $gp[$fieldName], $tempSettings, $errorFieldName);
 			}
-			
+
 			if (!is_array($fieldSettings['errorCheck.'])) {
 				continue;
 			}
-			
+
 			$counter = 0;
 			$errorChecks = array();
-			
+
 			//set required to first position if set
 			foreach($fieldSettings['errorCheck.'] as $key => $check) {
 				if(!strstr($key, '.')) {
@@ -201,8 +200,8 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				}
 			}
 
-			
-			$checkFailed = '';		
+			$checkFailed = '';
+
 				//foreach error checks
 			foreach($errorChecks as $check) {
 				$classNameFix = ucfirst($check['check']);

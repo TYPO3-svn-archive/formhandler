@@ -43,7 +43,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @return string
 	 */
 	public function getDocumentRoot() {
-		return t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
+		return PATH_site;
 	}
 	
 	public function getMergedGP() {

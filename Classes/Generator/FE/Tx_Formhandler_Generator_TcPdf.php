@@ -19,7 +19,7 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 		$view = $this->componentManager->getComponent('Tx_Formhandler_View_PDF');
 		$this->filename = FALSE;
 		if (intval($this->settings['storeInTempFile']) === 1) {
-			$this->outputPath = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
+			$this->outputPath = $this->utilityFuncs->getDocumentRoot();
 			if ($this->settings['customTempOutputPath']) {
 				$this->outputPath .= $this->utilityFuncs->sanitizePath($this->settings['customTempOutputPath']);
 			} else {
@@ -59,7 +59,7 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 			if ($returns) {
 				return $downloadpath;
 			}
-			$downloadpath = str_replace(t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT'), '', $downloadpath);
+			$downloadpath = str_replace($this->utilityFuncs->getDocumentRoot(), '', $downloadpath);
 			header('Location: ' . $downloadpath);
 			exit;
 		} else {

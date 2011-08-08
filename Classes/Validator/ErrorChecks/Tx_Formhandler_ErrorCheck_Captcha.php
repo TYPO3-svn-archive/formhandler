@@ -23,7 +23,7 @@
  */
 class Tx_Formhandler_ErrorCheck_Captcha extends Tx_Formhandler_AbstractErrorCheck {
 
-	public function check($name) {
+	public function check() {
 		$checkFailed = '';
 
 		// get captcha sting
