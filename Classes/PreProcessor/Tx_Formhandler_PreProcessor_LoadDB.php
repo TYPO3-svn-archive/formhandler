@@ -96,10 +96,10 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 				if (!isset($this->gp[$fN])) {
 
 					//post process the field value.
-					if (is_array($settings[$fN.'.']['preProcessing.'])) {
-						$settings[$fN.'.']['preProcessing.']['value'] = $this->gp[$fN];
-						$this->gp[$fN] = $this->utilityFuncs->getSingle($settings[$fN.'.'], 'preProcessing');
-					}
+					if (is_array($settings[$fN . '.']['preProcessing.'])) {
+						$settings[$fN . '.']['preProcessing.']['value'] = $this->gp[$fN];
+						$this->gp[$fN] = $this->utilityFuncs->getSingle($settings[$fN . '.'], 'preProcessing');
+ 					}
 
 					$this->gp[$fN] = $data[$this->utilityFuncs->getSingle($settings[$fN.'.'], 'mapping')];
 					if ($settings[$fN . '.']['separator']) {
@@ -108,9 +108,39 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 					}
 
 					//post process the field value.
-					if (is_array($settings[$fN.'.']['postProcessing.'])) {
-						$settings[$fN.'.']['postProcessing.']['value'] = $this->gp[$fN];
-						$this->gp[$fN] = $this->utilityFuncs->getSingle($settings[$fN.'.'], 'postProcessing');
+					if (is_array($settings[$fN . '.']['postProcessing.'])) {
+						$settings[$fN . '.']['postProcessing.']['value'] = $this->gp[$fN];
+						$this->gp[$fN] = $this->utilityFuncs->getSingle($settings[$fN . '.'], 'postProcessing');
+					}
+
+					if(isset($settings[$fN . '.']['type']) && $settings[$fN . '.']['type'] === 'upload') {
+						if(!$images) {
+							$images = array();
+						}
+						$images[$fN] = array();
+						if(!empty($this->gp[$fN])) {
+							$globalSettings = $this->globals->getSession()->get('settings');
+							$uploadPath = $this->utilityFuncs->getSingle($globalSettings['files.'], 'uploadFolder');
+							$filesArray = $this->gp[$fN];
+							if(!is_array($filesArray)) {
+								$filesArray = t3lib_div::trimExplode(',', $this->gp[$fN]);
+							}
+
+							foreach($filesArray as $k => $uploadFile) {
+								$file = PATH_site . $uploadPath . $uploadFile;
+								$uploadedUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $uploadPath . $uploadFile;
+								$uploadedUrl = str_replace('//', '/', $uploadedUrl);
+								$images[$fN][] = array (
+									'name' => $uploadFile,
+									'uploaded_name' => $uploadFile,
+									'uploaded_path' => PATH_site . $uploadPath,
+									'uploaded_folder' => $uploadPath,
+									'uploaded_url' => $uploadedUrl,
+									'size' => filesize($file)
+								);
+							}
+							$this->globals->getSession()->set('files', $images);
+						}
 					}
 				}
 			}

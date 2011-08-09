@@ -955,6 +955,16 @@ header {
     mapping = firstname
 }
 
+type
+String
+Specifiy the type of the field.
+
+Currently this is only used for file upload fields.
+
+type = upload
+
+This setting is mandatory for file upload fields preloaded from DB!
+
 [
 plugin.Tx_Formhandler.settings.preProcessors.x.class = Tx_Formhandler_PreProcessor_LoadDB
 plugin.Tx_Formhandler.settings.preProcessors.x.config.select.
