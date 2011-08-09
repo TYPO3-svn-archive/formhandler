@@ -145,7 +145,7 @@ abstract class Tx_Formhandler_AbstractController extends Tx_Formhandler_Abstract
 		$settings = $this->configuration->getSettings();
 		if ($this->predefined && is_array($settings['predef.'][$this->predefined])) {
 			$predefSettings = $settings['predef.'][$this->predefined];
-			unset($settings['predef.'][$this->predefined]);
+			unset($settings['predef.']);
 			$settings = t3lib_div::array_merge_recursive_overrule($settings, $predefSettings);
 		}
 		return $settings;
