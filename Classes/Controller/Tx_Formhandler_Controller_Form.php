@@ -963,7 +963,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		$randomID = $this->gp['randomID'];
 		if (!$randomID) {
-			$randomID = $this->utilityFuncs->generateRandomID();
+			if($this->settings['uniqueFormID']) {
+				$randomID = $this->utilityFuncs->getSingle($this->settings, 'uniqueFormID');
+			} else {
+				$randomID = $this->utilityFuncs->generateRandomID();
+			}
 		}
 		$this->globals->setRandomID($randomID);
 		
