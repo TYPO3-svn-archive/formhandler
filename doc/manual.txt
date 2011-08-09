@@ -1409,7 +1409,7 @@ A hidden field containing a one time token is inserting automatically by Formhan
 After the form is submitted, this token is validated and a new token is created.
 
 IMPORTANT: Interceptor_FormProtection does not work with TYPO3 < 4.5.3!
-
+Interceptor_FormProtection is added by Formhandler automatically if your TYPO3 version is higher than 4.5.2.
 It is not recommended to disable this, but if you want to, add the interceptor and disable it:
 plugin.Tx_Formhandler.settings {
   initInterceptors.1.class = Interceptor_FormProtection
@@ -1417,6 +1417,8 @@ plugin.Tx_Formhandler.settings {
   saveInterceptors.1.class = Interceptor_FormProtection
   saveInterceptors.1.disable = 1
 }
+
+
 
 Validators
 Property:
