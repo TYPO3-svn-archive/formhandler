@@ -82,13 +82,13 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return void
 	 */
-	public function __construct(Tx_Formhandler_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration) {
+	public function __construct(Tx_Formhandler_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration, Tx_Formhandler_UtilityFuncs $utilityFuncs) {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		$this->templatePath = t3lib_extMgm::extPath('formhandler') . 'Resources/HTML/backend/';
 		$this->templateFile = $this->templatePath . 'template.html';
 		$this->templateCode = t3lib_div::getURL($this->templateFile);
-		$this->utilityFuncs = Tx_Formhandler_UtilityFuncs::getInstance();
+		$this->utilityFuncs = $utilityFuncs;
 	}
 	
 	public function setId($id) {

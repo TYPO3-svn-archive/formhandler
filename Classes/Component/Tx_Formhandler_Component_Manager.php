@@ -23,6 +23,7 @@
  * @subpackage	Tx_Formhandler
  */
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
 class Tx_Formhandler_Component_Manager {
 	const PACKAGE_PREFIX = 'Tx';
 	const DIRECTORY_CLASSES = 'Classes/';

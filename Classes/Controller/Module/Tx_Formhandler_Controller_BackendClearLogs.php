@@ -46,10 +46,10 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 	 * @param Tx_Formhandler_Configuration $configuration
 	 * @return void
 	 */
-	public function __construct(Tx_Formhandler_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration) {
+	public function __construct(Tx_Formhandler_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration, Tx_Formhandler_UtilityFuncs $utilityFuncs) {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
-
+		$this->utilityFuncs = $utilityFuncs;
 	}
 	
 	public function setId($id) {
@@ -98,7 +98,10 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 	 */
 	protected function clearTables($tablesArray) {
 		foreach ($tablesArray as $table) {
-			$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE ' . $table);
+			$table = trim($table);
+			if (strpos($table, 'tx_formhandler_') > -1) {
+				$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE ' . $table);
+			}
 		}
 	}
 	
