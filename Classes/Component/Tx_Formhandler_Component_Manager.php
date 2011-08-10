@@ -55,6 +55,7 @@ class Tx_Formhandler_Component_Manager {
 
 	protected function __construct() {
 		$this->globals = Tx_Formhandler_Globals::getInstance();
+		$this->utilityFuncs = Tx_Formhandler_UtilityFuncs::getInstance();
 		$this->cacheFilePath = PATH_site . 'typo3temp/formhandlerClassesCache.txt';
 		if(file_exists($this->cacheFilePath)) {
 			$this->classFiles = unserialize(file_get_contents($this->cacheFilePath));
@@ -75,18 +76,34 @@ class Tx_Formhandler_Component_Manager {
 			$conf = array();
 			$overrideSettings = $this->globals->getOverrideSettings();
 			if (!is_array($overrideSettings['settings.'])) {
+				$utilityFuncs = Tx_Formhandler_UtilityFuncs::getInstance();
 				$setup = $GLOBALS['TSFE']->tmpl->setup;
-				if ($setup['plugin.']['Tx_Formhandler.']['settings.']['additionalIncludePaths.']) {
+				if (is_array($setup['plugin.']['Tx_Formhandler.']['settings.']['additionalIncludePaths.'])) {
 					$conf = $setup['plugin.']['Tx_Formhandler.']['settings.']['additionalIncludePaths.'];
+					$conf = $this->getParsedIncludePaths($conf);
 				}
 				if ($this->globals->getPredef() && is_array($setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][$this->globals->getPredef()]['additionalIncludePaths.'])) {
-					$conf = array_merge($conf, $setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][$this->globals->getPredef()]['additionalIncludePaths.']);
+					$predefIncludePaths = $setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][$this->globals->getPredef()]['additionalIncludePaths.'];
+					$predefIncludePaths = $this->getParsedIncludePaths($predefIncludePaths);
+
+					$conf = array_merge($conf, $predefIncludePaths);
 				}
-			} elseif ($overrideSettings['settings.']['additionalIncludePaths.']) {
+			} elseif (is_array($overrideSettings['settings.']['additionalIncludePaths.'])) {
+				$overrideSettings['settings.']['additionalIncludePaths.'] = $this->getParsedIncludePaths($overrideSettings['settings.']['additionalIncludePaths.']);
 				$conf = $overrideSettings['settings.']['additionalIncludePaths.'];
 			}
 			$this->additionalIncludePaths = $conf;
 		}
+	}
+
+	protected function getParsedIncludePaths(array $pathsArray) {
+		foreach($pathsArray as $key => &$path) {
+			if(FALSE === strpos($key, '.')) {
+				$path = $this->utilityFuncs->getSingle($pathsArray, $key);
+				unset($pathsArray[$key . '.']);
+			}
+		}
+		return $pathsArray;
 	}
 
 	/**
@@ -337,6 +354,17 @@ class Tx_Formhandler_Component_Manager {
 				// Caches the $classFiles
 			if (!is_array($this->classFiles[$classNameParts[1]]) || empty($this->classFiles[$classNameParts[1]])) {
 				$this->classFiles[$classNameParts[1]] = $this->buildArrayOfClassFiles($classNameParts[1]);
+				if (is_array($this->additionalIncludePaths)) {
+					foreach ($this->additionalIncludePaths as $idx => $dir) {
+						$temp = array();
+						$temp = $this->buildArrayOfClassFiles($dir);
+						$this->classFiles[$classNameParts[1]] = array_merge($temp, $this->classFiles[$classNameParts[1]]);
+					}
+				}
+				t3lib_div::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
+
+				//If the package exists in the cache, but the class does not, look in the additionalIncludePaths again.
+			} elseif(!array_key_exists($className, $this->classFiles)) {
 				if (is_array($this->additionalIncludePaths)) {
 					foreach ($this->additionalIncludePaths as $idx => $dir) {
 						$temp = array();
