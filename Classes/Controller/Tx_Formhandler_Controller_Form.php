@@ -265,7 +265,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//run validation
 		$this->errors = array();
 		$valid = array(TRUE);
-		$this->validateErrorCheckConfig();
+		if ($this->currentStep >= $this->lastStep) {
+			$this->validateErrorCheckConfig();
+		}
 		if (isset($this->settings['validators.']) && 
 			is_array($this->settings['validators.']) && 
 			intval($this->settings['validators.']['disable']) !== 1) {
@@ -306,7 +308,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if ($this->isValid($valid)) {
 
 			//process files
-			$this->processFiles();
+			if ($this->currentStep >= $this->lastStep) {
+				$this->processFiles();
+			}
 
 			$this->loadSettingsForStep($this->currentStep);
 			$this->parseConditions();
@@ -353,36 +357,40 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			//for all file properties
 			foreach ($_FILES as $sthg => $files) {
 
-				//if a file was uploaded
+				//if a file upload field exists
 				if (isset($files['name']) && is_array($files['name'])) {
 
 					//for all file names
 					$uploadFields = array_keys($files['name']);
 					foreach ($uploadFields as $field) {
-						$valid = FALSE;
-						$hasAllowedTypesCheck = FALSE;
-						if (isset($this->settings['validators.']) && 
-							is_array($this->settings['validators.']) && 
-							intval($this->settings['validators.']['disable']) !== 1) {
 
-							foreach ($this->settings['validators.'] as $idx => $tsConfig) {
-								if($tsConfig['config.']['fieldConf.'][$field . '.']['errorCheck.']) {
-									foreach($tsConfig['config.']['fieldConf.'][$field . '.']['errorCheck.'] as $errorCheck) {
-										if($errorCheck === 'fileAllowedTypes') {
-											$hasAllowedTypesCheck = TRUE;
+						//if a file was uploaded through this field
+						if(strlen($files['tmp_name'][$field]) > 0) {
+							$valid = FALSE;
+							$hasAllowedTypesCheck = FALSE;
+							if (isset($this->settings['validators.']) && 
+								is_array($this->settings['validators.']) && 
+								intval($this->settings['validators.']['disable']) !== 1) {
+
+								foreach ($this->settings['validators.'] as $idx => $tsConfig) {
+									if($tsConfig['config.']['fieldConf.'][$field . '.']['errorCheck.']) {
+										foreach($tsConfig['config.']['fieldConf.'][$field . '.']['errorCheck.'] as $errorCheck) {
+											if($errorCheck === 'fileAllowedTypes') {
+												$hasAllowedTypesCheck = TRUE;
+											}
 										}
 									}
 								}
 							}
-						}
-						if($hasAllowedTypesCheck) {
-							$valid = TRUE;
-						} else {
-							$missingChecks = array();
-							if(!$hasAllowedTypesCheck) {
-								$missingChecks[] = 'fileAllowedTypes';
+							if($hasAllowedTypesCheck) {
+								$valid = TRUE;
+							} else {
+								$missingChecks = array();
+								if(!$hasAllowedTypesCheck) {
+									$missingChecks[] = 'fileAllowedTypes';
+								}
+								$this->utilityFuncs->throwException('error_checks_missing', implode(',', $missingChecks), $field);
 							}
-							$this->utilityFuncs->throwException('error_checks_missing', implode(',', $missingChecks), $field);
 						}
 					}
 				}

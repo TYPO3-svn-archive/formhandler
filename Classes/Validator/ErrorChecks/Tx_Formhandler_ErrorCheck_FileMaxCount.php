@@ -36,24 +36,24 @@ class Tx_Formhandler_ErrorCheck_FileMaxCount extends Tx_Formhandler_AbstractErro
 		$currentStep = $this->globals->getSession()->get('currentStep');
 		$lastStep = $this->globals->getSession()->get('lastStep');
 		$maxCount = $this->utilityFuncs->getSingle($this->settings['params'], 'maxCount');
-		if (is_array($files[$name]) &&
-			count($files[$name]) >= $maxCount &&
+		if (is_array($files[$this->formFieldName]) &&
+			count($files[$this->formFieldName]) >= $maxCount &&
 			$currentStep == $lastStep) {
 
 			$found = FALSE;
 			foreach ($_FILES as $idx=>$info) {
-				if (strlen($info['name'][$name]) > 0) {
+				if (strlen($info['name'][$this->formFieldName]) > 0) {
 					$found = TRUE;
 				}
 			}
 			if ($found) {
 				$checkFailed = $this->getCheckFailed();
 			}
-		} elseif (is_array($files[$name]) &&
+		} elseif (is_array($files[$this->formFieldName]) &&
 			$currentStep > $lastStep) {
 
 			foreach ($_FILES as $idx=>$info) {
-				if (strlen($info['name'][$name]) > 0 && count($files[$name]) >= $maxCount) {
+				if (strlen($info['name'][$this->formFieldName]) > 0 && count($files[$this->formFieldName]) >= $maxCount) {
 					$checkFailed = $this->getCheckFailed();
 				}
 			}

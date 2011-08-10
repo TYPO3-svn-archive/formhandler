@@ -36,13 +36,13 @@ class Tx_Formhandler_ErrorCheck_FileMinCount extends Tx_Formhandler_AbstractErro
 		$currentStep = $this->globals->getSession()->get('currentStep');
 		$lastStep = $this->globals->getSession()->get('lastStep');
 		$minCount = $this->utilityFuncs->getSingle($this->settings['params'], 'minCount');
-		if (is_array($files[$name]) &&
+		if (is_array($files[$this->formFieldName]) &&
 			$currentStep > $lastStep) {
 
 			foreach ($_FILES as $idx => $info) {
-				if (strlen($info['name'][$name]) > 0 && count($files[$name]) < ($minCount - 1)) {
+				if (strlen($info['name'][$this->formFieldName]) > 0 && count($files[$this->formFieldName]) < ($minCount - 1)) {
 					$checkFailed = $this->getCheckFailed();
-				} elseif (strlen($info['name'][$name]) === 0 && count($files[$name]) < $minCount) {
+				} elseif (strlen($info['name'][$this->formFieldName]) === 0 && count($files[$this->formFieldName]) < $minCount) {
 					$checkFailed = $this->getCheckFailed();
 				}
 			}

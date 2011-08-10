@@ -32,10 +32,10 @@ class Tx_Formhandler_ErrorCheck_FileAllowedTypes extends Tx_Formhandler_Abstract
 		$checkFailed = '';
 		$allowed = $this->utilityFuncs->getSingle($this->settings['params'], 'allowedTypes');
 		foreach ($_FILES as $sthg => &$files) {
-			if (strlen($files['name'][$name]) > 0) {
+			if (strlen($files['name'][$this->formFieldName]) > 0) {
 				if ($allowed) {
 					$types = t3lib_div::trimExplode(',', $allowed);
-					$fileext = substr($files['name'][$name], strrpos($files['name'][$name], '.') + 1);
+					$fileext = substr($files['name'][$this->formFieldName], strrpos($files['name'][$this->formFieldName], '.') + 1);
 					$fileext = strtolower($fileext);
 					if (!in_array($fileext, $types)) {
 						unset($files);
