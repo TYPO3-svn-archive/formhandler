@@ -34,7 +34,7 @@ class Tx_Formhandler_ErrorCheck_NotEqualsField extends Tx_Formhandler_AbstractEr
 		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
 			$comparisonValue = $this->gp[$this->utilityFuncs->getSingle($this->settings['params'], 'field')];
 
-			if (strcmp($comparisonValue, $this->gp[$this->formFieldName]) == 0) {
+			if (strcmp($comparisonValue, $this->gp[$this->formFieldName]) === 0) {
 				$checkFailed = $this->getCheckFailed();
 			}
 		}
