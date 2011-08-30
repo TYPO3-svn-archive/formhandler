@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="extension_required">The extension "%s" is required for %s!</label>
+			<label index="missing_config">No TypoScript config found for Formhandler! Please add the static template or write your own configuration.</label>
+			<label index="insufficient_config">Insufficient config for %s!</label>
+			<label index="missing_component">Missing %s! The Flexform contains '%s' but typoscript configuration is incomplete. Please add : %s</label>
+			<label index="no_config_confirmation">Missing config for %s! Please provide a '%s' either in the TypoScript configuration or in the Flexfom.</label>
+			<label index="no_pdf_template">No template for PDF found! Make sure subpart ###TEMPLATE_PDF### exists in your HTML template file!</label>
+			<label index="no_table">No table configured for %s!</label>
+			<label index="no_fields">No fields mapping configured for %s! Make sure the block "fields" is defined in TyposScript for this component!</label>
+			<label index="no_template">No template file found!</label>
+			<label index="no_template_file">No template file found. Check your TypoScript setup and/or your plugin settings and make sure you defined a template file!</label>
+			<label index="template_file_not_found">Template file "%s" not found!</label>
+			<label index="empty_template_file">Template file "%s" is empty!</label>
+			<label index="invalid_template_file">Template file "%s" does not contain a subpart ###TEMPLATE_ and therefore is not a valid template!</label>
+			<label index="classesarray_error"><![CDATA[
+				There is an error in your TypoScript setup! Make sure your setup for initInterceptors, finishers, validators, ... looks like this:<br />
+				<br /><pre>
+finishers {
+	1 {
+		class = Finisher_Mail
+		config {
+		
+		}
+	}
+	2 {
+		class = Finisher_Xyz
+		config {
+		
+		}
+	}
+}
+				</pre>
+			]]></label>
+			<label index="spam_detected">Your request seems to be a spamming attempt, so it was blocked! This may have been a mistake by the system. Please try again!</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="extension_required">L'extension "%s" est requise pour %s!</label>
+			<label index="insufficient_config">TRANSLATE: Insufficient config for %s!</label>
+			<label index="missing_component">Il manque %s! Le Flexform contient '%s' mais la configuration TypoScript est incomplète. Ajouter: %s</label>
+			<label index="no_config_confirmation">Configuration manquante pour %s! Ajouter un '%s' soit dans la configuration TypoScript ou dans le Flexform.</label>
+			<label index="no_pdf_template">TRANSLAGE: No template for PDF found! Make sure subpart ###TEMPLATE_PDF### exists in your HTML template file!</label>
+			<label index="no_fields">TRANSLATE: No fields mapping configured for %s! Make sure the block "fields" is defined in TyposScript for this component!</label>
+			<label index="no_template">TRANSLATE: No template file found!</label>
+			<label index="no_template_file">No template file found. Check your TypoScript setup and/or your plugin settings and make sure you defined a template file!</label>
+			<label index="template_file_not_found">Template file "%s" not found!</label>
+			<label index="empty_template_file">Template file "%s" is empty!</label>
+			<label index="invalid_template_file">Template file "%s" does not contain a subpart ###TEMPLATE_ and therefore is not a valid template!</label>
+			<label index="spam_detected">TRANSLATE: Your request seems to be a spamming attempt, so it was blocked! This may have been a mistake by the system. Please try again!</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="extension_required"><![CDATA[Die Extension "%s" wird benötigt für %s!]]></label>
+			<label index="missing_config"><![CDATA[Keine TypoScript-Konfiguration für Formhandler gefunden! Fügen Sie das statische Template oder Ihre eigene Konfiguration ein.]]></label>
+			<label index="insufficient_config"><![CDATA[Unzureichende Konfiguration für %s!]]></label>
+			<label index="missing_component"><![CDATA[%s fehlt! Flexform beinhaltet '%s',aber die TypoScript-Konfiguration ist unvollständig. Bitte fügen Sie '%s' hinzu!]]></label>
+			<label index="no_config_confirmation"><![CDATA[Fehlende Konfiguration für %s! Bitte geben Sie '%s' entweder in der TypoScript-Konfiguration oderr im Flexfom ein.]]></label>
+			<label index="no_pdf_template"><![CDATA[Kein Template für PDF gefunden! Bitte prüfen Sie ob der Subpart ###TEMPLATE_PDF### im HTML-Template existiert!]]></label>
+			<label index="no_table"><![CDATA[Keine Tabelle konfiguriert für %s!]]></label>
+			<label index="no_fields"><![CDATA[Kein Mapping konfiguriert für %s! Fügen Sie im TypoScript "fields" für diese Komponente hinzu]]></label>
+			<label index="no_template_file"><![CDATA[Keine Template-Datei gefunden. Überprüfen Sie die TypoScript-Konfiguration und/oder die Plugineinstellungen und vergewissern Sie sich, dass Sie eine Template-Datei angegeben haben!]]></label>
+			<label index="template_file_not_found"><![CDATA[Template-Datei "%s" nicht gefunden!]]></label>
+			<label index="empty_template_file"><![CDATA[Template-Datei "%s" ist leer!]]></label>
+			<label index="invalid_template_file"><![CDATA[Template-Datei "%s" beinhaltet keinen Subpart ###TEMPLATE_ und ist daher keine valide Template-Datei!]]></label>
+			<label index="no_template"><![CDATA[Keine Templatedatei gefunden!]]></label>
+			<label index="classesarray_error"><![CDATA[
+				Fehler im TypoScript Setup! Stellen Sie sicher, dass Ihr Setup für initInterceptors, finishers, validators, ... diesem Schema entspricht:<br />
+				<br /><pre>
+finishers {
+	1 {
+		class = Finisher_Mail
+		config {
+		
+		}
+	}
+	2 {
+		class = Finisher_Xyz
+		config {
+		
+		}
+	}
+}
+				</pre>
+			]]></label>
+			<label index="spam_detected"><![CDATA[Ihre Anfrage wurde als Spamversuch erkannt und deshalb geblockt! Falls dies ein Fehler des Systems war, versuchen Sie es bitte erneut!]]></label>
+		</languageKey>
+	</data>
+</T3locallang>

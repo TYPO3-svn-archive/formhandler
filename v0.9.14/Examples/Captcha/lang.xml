@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="legend">Captcha types</label>
+			<label index="submit">Send</label>
+			<label index="error_mathguard_answer_mathguard">MathGuard answer is incorrect!</label>
+			<label index="error_freecapfield_srFreecap">Freecap is not correct</label>
+			<label index="error_simplecaptchafield_simpleCaptcha">Simple Captcha is not correct</label>
+			<label index="error_captchafield_captcha">Captcha is not correct</label>
+			<label index="error_recaptcha_response_field_jmRecaptcha">Recaptcha is not correct</label>
+		</languageKey>
+		<languageKey index="en" type="array">
+			<label index="legend">Captcha types</label>
+			<label index="submit">Send</label>
+			<label index="error_mathguard_answer_mathguard">MathGuard answer is incorrect!</label>
+			<label index="error_freecapfield_srFreecap">Freecap is not correct</label>
+			<label index="error_simplecaptchafield_simpleCaptcha">Simple Captcha is not correct</label>
+			<label index="error_captchafield_captcha">Captcha is not correct</label>
+			<label index="error_recaptcha_response_field_jmRecaptcha">Recaptcha is not correct</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="legend">Captcha-Arten</label>
+			<label index="submit">Absenden</label>
+			<label index="error_mathguard_answer_mathguard">MathGuard-Antwort ist nicht korrekt!</label>
+			<label index="error_freecapfield_srFreecap">Freecap ist nicht korrekt!</label>
+			<label index="error_simplecaptchafield_simpleCaptcha">Simple Captcha ist nicht korrekt!</label>
+			<label index="error_captchafield_captcha">Captcha ist nicht korrekt!</label>
+			<label index="error_recaptcha_response_field_jmRecaptcha">Recaptcha ist nicht korrekt!</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="legend">Types de captcha</label>
+			<label index="submit">Envoyer</label>
+			<label index="error_mathguard_answer_mathguard">MathGuard réponse incorrect!</label>
+			<label index="error_freecapfield_srFreecap">Freecap incorrect</label>
+			<label index="error_simplecaptchafield_simpleCaptcha">Simple Captcha incorrect</label>
+			<label index="error_captchafield_captcha">Captcha incorrect</label>
+			<label index="error_recaptcha_response_field_jmRecaptcha">Recaptcha incorrect</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -1,0 +1,122 @@
+**************************************
+*    Set up this form			     *
+**************************************
+
+1. Create a new page
+
+2. Create an "Extension template" for this page and paste the TypoScript in "typoscript_setup.txt".
+
+3. Create a content element of type "General plugin"
+
+4. Select "MailFormPlusPlus"
+
+5. Select "Example Captcha" from "Predefined".
+
+6. Save and view the page.
+
+Note: For correct usage of jm_recaptcha, see according section below.
+
+
+**************************************
+*    Enable captcha for your form    *
+**************************************
+
+1. Make sure that the extension "captcha" is installed
+
+2. Put the input field and the required marker into your template:
+
+	###error_captchafield###
+	###CAPTCHA###
+	<input type="text" name="formhandler[captchafield]" />
+	
+3. Enter error check for this field in TypoScript
+
+	plugin.Tx_Formhandler.settings.validators.1 {
+	  class = Tx_Formhandler_Validator_Default
+	  config {
+	    fieldConf {
+	      captchafield.errorCheck.1 = captcha
+	    }
+	  }
+	}
+
+**************************************
+*  Enable sr_freecap for your form   *
+**************************************
+
+1. Make sure that the extension "sr_freecap" is installed
+
+2. Put the required subpart into your template. You can change the name of the input field and the HTML code
+
+	<!--###CAPTCHA_INSERT### this subpart is removed if CAPTCHA is not enabled! -->
+        <div>
+          <label for="freecapfield">###SR_FREECAP_NOTICE###</label>
+		  <div class="clear"></div>
+          ###SR_FREECAP_CANT_READ###
+          <div class="clear"></div>
+          <input type="text" size="15" id="freecapfield" name="formhandler[freecapfield]" title="###SR_FREECAP_NOTICE###" value="">
+          ###SR_FREECAP_IMAGE###
+        </div>
+    <!--###CAPTCHA_INSERT###-->
+	
+3. Enter error check for this field in TypoScript
+
+	plugin.Tx_Formhandler.settings.validators.1 {
+	  class = Tx_Formhandler_Validator_Default
+	  config {
+	    fieldConf {
+	      freecapfield.errorCheck.1 = srFreecap
+	    }
+	  }
+	}
+	
+**************************************
+* Enable jm_recaptcha for your form  *
+**************************************
+
+1. Make sure that the extension "jm_recaptcha" is installed
+
+2. Register an account at http://recaptcha.net/ to get a public and a private key for your domain.
+
+3. Enter these keys in TypoScript:
+
+	plugin.tx_jmrecaptcha {
+	  public_key = xxx
+	  private_key = xxx
+	}
+	
+4. Add marker to template:
+
+	###error_recaptcha_response_field###
+	###RECAPTCHA###
+	
+5. Enter error check for this field in TypoScript
+
+	plugin.Tx_Formhandler.settings.validators.1 {
+	  class = Tx_Formhandler_Validator_Default
+	  config {
+	    fieldConf {
+	      recaptcha_response_field.errorCheck.1 = jmRecaptcha
+	    }
+	  }
+	}
+	
+**************************************
+*   Enable MathGuard for your form   *
+**************************************
+
+1. Add marker to template
+
+	###error_mathguard_answer###
+	###MATHGUARD###
+
+2. Enter error check for this field in TypoScript
+
+	plugin.Tx_Formhandler.settings.validators.1 {
+	  class = Tx_Formhandler_Validator_Default
+	  config {
+	    fieldConf {
+	      mathguard_answer.errorCheck.1 = mathGuard
+	    }
+	  }
+	}

@@ -1,0 +1,51 @@
+<!-- ###TEMPLATE_FORM1### begin -->
+###ERROR###
+<div id="formhandler_contact_form">
+<form method="post" action="###REL_URL###" enctype="multipart/form-data">
+	<fieldset>
+		<legend>###LLL:legend###</legend>
+		<input type="hidden" name="formhandler[submitted]" value="1" />
+		<div class="row">
+			###error_captchafield###
+			###CAPTCHA###
+			<input type="text" name="formhandler[captchafield]" />
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			###error_simplecaptchafield###
+			###SIMPLE_CAPTCHA###
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			###error_freecapfield###
+			<!--###CAPTCHA_INSERT### this subpart is removed if CAPTCHA is not enabled! -->
+                <div>
+                  <label for="freecapfield">###SR_FREECAP_NOTICE###</label>
+				  <div class="clear"></div>
+                  ###SR_FREECAP_CANT_READ###
+                  <div class="clear"></div>
+                  <input type="text" size="15" id="freecapfield" name="formhandler[freecapfield]" title="###SR_FREECAP_NOTICE###" value="">
+                  ###SR_FREECAP_IMAGE###
+                </div>
+            <!--###CAPTCHA_INSERT###-->
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			###error_recaptcha_response_field###
+			###RECAPTCHA###
+			<div class="clear"></div>
+		</div>
+		<div class="mathguard">
+			###error_mathguard_answer###
+			###MATHGUARD###
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			<input type="submit" value="###LLL:submit###" ###submit_nextStep###/>
+		</div>
+	</fieldset>
+</form>
+</div>
+<!-- ###TEMPLATE_FORM1### end -->
+
+			

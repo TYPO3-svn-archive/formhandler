@@ -1,0 +1,31 @@
+<!-- ###field_input### -->
+<div class="row">
+	###error_###fieldname######
+	<label for="###fieldname###">###LLL:###fieldname###### ###required_###fieldname######</label>
+	<input type="text" name="formhandler[###fieldname###]" id="###fieldname###" value="###value_###fieldname######"/>
+	<div class="clear"></div>
+</div>
+<!-- ###field_input### -->
+
+<!-- ###field_upload### -->
+<div class="row">
+	###error_###fieldname######
+	<label for="###fieldname###">###LLL:###fieldname###### ###required_###fieldname######</label>
+	<input type="file" name="formhandler[###fieldname###]" id="###fieldname###" value="###value_###fieldname######"/>
+	<div class="clear"></div>
+	<input type="submit" value="Upload file now" ###submit_reload### /><br />
+	Minimum size: ######fieldname###_minSize###<br />
+	Maximum size: ######fieldname###_maxSize###<br />
+	Allowed types: ######fieldname###_allowedTypes###<br />
+	######fieldname###_fileCount###/######fieldname###_maxCount###<br />
+	######fieldname###_remainingCount### files left to upload<br />
+	<p>Files: ######fieldname###_uploadedFiles###</p>
+</div>
+<!-- ###field_upload### -->
+
+<!-- ###field_submit### -->
+<div class="row">
+	<p>###LLL:required_fields###</p>
+	<input type="submit" value="###LLL:submit###" ###submit_nextStep###/>
+</div>
+<!-- ###field_submit### -->

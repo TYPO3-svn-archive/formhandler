@@ -1,0 +1,2 @@
+# Default TypoScript already loaded from EXT:formhandler/Configuration/Settings/setup.txt
+# Feel free to customize it :)

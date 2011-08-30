@@ -1,0 +1,180 @@
+<!-- ###TEMPLATE_FORM1### begin -->
+###ERROR###
+<div id="formhandler_contact_form">
+	<form id="mailform" method="post" action="###REL_URL###" enctype="multipart/form-data">
+		<fieldset class="csc-mailform">
+			<legend>###LLL:legend###</legend>
+			<div class="contact_box">
+				<h4>###LLL:personal_info###</h4>
+			</div>
+			<input type="hidden" name="formhandler[submitted]" value="1" />
+			<div class="csc-mailform-field">
+				###error_firstname###
+				<label for="firstname">###LLL:firstname### ###required_firstname###</label>
+				<input type="text" name="formhandler[firstname]" id="firstname" value="###value_firstname###"/>
+				<div class="clear"></div>
+			</div>
+			<div class="csc-mailform-field">
+				###error_lastname###
+				<label for="lastname">###LLL:lastname### ###required_lastname###</label>
+				<input type="text" name="formhandler[lastname]" id="lastname" value="###value_lastname###"/>
+				<div class="clear"></div>
+			</div>
+			<div class="csc-mailform-field">
+				###error_email###
+				<label for="email">###LLL:email### ###required_email###</label>
+				<input type="text" name="formhandler[email]" id="email" value="###value_email###"/>
+				<div class="clear"></div>
+			</div>
+			<div class="interest_box">
+				###error_interests###
+				<h4>###LLL:interests### ###required_interests###</h4>
+			</div>
+			<div class="csc-mailform-field">
+				<label for="interests_sports">###LLL:interests_sports###</label>
+				<input type="checkbox" name="formhandler[interests][]" id="interests_sports" value="sports" class="csc-mailform-check" ###checked_interests_sports### />
+			</div>
+			<div class="csc-mailform-field">
+				<label for="interests_music">###LLL:interests_music###</label>
+				<input type="checkbox" name="formhandler[interests][]" id="interests_music" value="music" class="csc-mailform-check" ###checked_interests_music###/>
+			</div>
+			<div class="csc-mailform-field">
+				<label for="interests_science">###LLL:interests_science###</label>
+				<input type="checkbox" name="formhandler[interests][]" id="interests_science" value="science" class="csc-mailform-check" ###checked_interests_science###/>
+			</div>
+			<div class="csc-mailform-field">
+				<label for="interests_cars">###LLL:interests_cars###</label>
+				<input type="checkbox" name="formhandler[interests][]" id="interests_cars" value="cars" class="csc-mailform-check" ###checked_interests_cars###/>
+			</div>
+			<div class="contact_box">
+				###error_contact_via###
+				<h4>###LLL:contact_via### ###required_contact_via###</h4>
+			</div>
+			<div class="csc-mailform-field">
+				<label for="mailformcontact">###LLL:contact###</label>
+				<span class="csc-mailform-radio">
+					<fieldset id="mailformcontact">
+						<legend>###LLL:contact###</legend>
+						<input type="radio" name="formhandler[contact_via]" id="contact_via_email" value="email" ###checked_contact_via_email###/>
+						<label for="contact_via_email">###LLL:contact_via_email###<br /></label>
+						<input type="radio" name="formhandler[contact_via]" id="contact_via_phone" value="phone" ###checked_contact_via_phone###/>
+						<label for="contact_via_phone">###LLL:contact_via_phone###<br /></label>
+					</fieldset>
+				</span>
+			</div>
+
+			<div class="csc-mailform-field">
+				<p>###LLL:required_fields###</p>
+				<input type="submit" value="###LLL:submit###" ###submit_nextStep###/>
+			</div>
+		</fieldset>
+	</form>
+</div>
+<!-- ###TEMPLATE_FORM1### end -->
+
+<!-- ###TEMPLATE_EMAIL_USER_PLAIN### begin -->
+Hello ###value_firstname### ###value_lastname###,
+
+you have just filled out the form.
+
+Thanks for your request, we will answer asap.
+
+Typoheads
+<!-- ###TEMPLATE_EMAIL_USER_PLAIN### end -->
+
+<!-- ###TEMPLATE_EMAIL_USER_HTML### begin -->
+<p>
+	Hello ###value_firstname### ###value_lastname###,
+</p>
+<p>
+	you have just filled out the form.
+</p>
+<p>
+	Thanks for your request, we will answer asap.
+</p>
+Typoheads
+<!-- ###TEMPLATE_EMAIL_USER_HTML### end -->
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_PLAIN### begin -->
+Hello Admin,
+
+A user has just filled out the form.
+
+###LLL:lastname### ###value_lastname###
+###LLL:firstname### ###value_firstname###
+###LLL:email### ###value_email###
+###LLL:interests### ###value_interests###
+###LLL:contact_via### ###value_contact_via###
+<!-- ###TEMPLATE_EMAIL_ADMIN_PLAIN### end -->
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_HTML### begin -->
+<html>
+	<head>
+		<!-- OUTLOOK DOES NOT SEE STYLES LOCATED IN THE HEAD :( -->
+	</head>
+	<body>
+		<style>
+			p, table{font-family: Verdana; font-size: 10pt}
+			.leftColumn {padding-top: 10px; padding-right: 5px; border-bottom: 1px dotted black}
+			.rightColumn {padding-top: 10px; border-bottom: 1px dotted black; font-weight: bold}
+		</style>
+		<p>Hello Admin,</p>
+		<p>A user has just filled out the form.</p>
+		<table cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="leftColumn">###LLL:lastname###</td>
+				<td class="rightColumn">###value_lastname###</td>
+			</tr>
+			<tr>
+				<td class="leftColumn">###LLL:firstname###</td>
+				<td class="rightColumn">###value_firstname###</td>
+			</tr>
+			<tr>
+				<td class="leftColumn">###LLL:email###</td>
+				<td class="rightColumn">###value_email###</td>
+			</tr>
+			<tr>
+				<td class="leftColumn">###LLL:interests###</td>
+				<td class="rightColumn">###value_interests###</td>
+			</tr>
+			<tr>
+				<td class="leftColumn">###LLL:contact_via###</td>
+				<td class="rightColumn">###value_contact_via###</td>
+			</tr>
+		</table>
+	</body>
+</html>
+<!-- ###TEMPLATE_EMAIL_ADMIN_HTML### end -->
+
+<!-- ###TEMPLATE_SUBMITTEDOK### begin -->
+
+<table>
+	<tr>
+		<td>###LLL:firstname###</td>
+		<td>###value_firstname###</td>
+	</tr>
+
+	<tr>
+		<td>###LLL:lastname###</td>
+		<td>###value_lastname###</td>
+	</tr>
+
+	<tr>
+		<td>###LLL:email###</td>
+		<td>###value_email###</td>
+	</tr>
+
+	<tr>
+		<td>###LLL:interests###</td>
+		<td>###value_interests###</td>
+	</tr>
+
+	<tr>
+		<td>###LLL:contact_via###</td>
+		<td>###value_contact_via###</td>
+	</tr>
+</table>
+<div>
+	###PRINT_LINK### / ###PDF_LINK### / ###CSV_LINK###
+</div>
+<!-- ###TEMPLATE_SUBMITTEDOK### end -->

@@ -1,0 +1,184 @@
+<!-- ###TEMPLATE_FORM1### begin -->
+
+<!-- ###FORM_STARTBLOCK### begin -->
+###ERROR###
+<div id="formhandler_contact_form">
+<form method="post" action="###REL_URL###" enctype="multipart/form-data">
+	<fieldset>
+		<legend>###LLL:legend###</legend>
+		<input type="hidden" name="formhandler[submitted]" value="1" />
+<!-- ###FORM_STARTBLOCK### end -->
+		<div class="row">
+			###error_firstname###
+			<label for="firstname">###LLL:firstname### ###required_firstname###</label>
+			<input type="text" name="formhandler[firstname]" id="firstname" value="###value_firstname###"/>
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			###error_lastname###
+			<label for="lastname">###LLL:lastname### ###required_lastname###</label>
+			<input type="text" name="formhandler[lastname]" id="lastname" value="###value_lastname###"/>
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			###error_email###
+			<label for="email">###LLL:email### ###required_email###</label>
+			<input type="text" name="formhandler[email]" id="email" value="###value_email###"/>
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			###error_picture###
+			<label for="picture">###LLL:picture### ###required_picture###</label>
+			<input type="file" name="formhandler[picture]" id="picture" value="###value_picture###"/>
+			<div class="clear"></div>
+			<input type="submit" value="Upload file now" ###submit_reload### /><br />
+			Minimum size: ###picture_minSize###<br />
+			Maximum size: ###picture_maxSize###<br />
+			Allowed types: ###picture_allowedTypes###<br />
+			###picture_fileCount###/###picture_maxCount###<br />
+			###picture_remainingCount### files left to upload<br />
+			<p>Files: ###picture_uploadedFiles###</p>
+		</div>
+		<div class="row">
+			###error_interests###
+			<h4>###LLL:interests### ###required_interests###</h4>
+			<div class="interests_box">
+				<label for="interests_sports">###LLL:interests_sports###</label>
+				<input type="checkbox" name="formhandler[interests][]" id="interests_sports" value="sports" ###checked_interests_sports###/>
+				<div class="clear"></div>
+				<label for="interests_music">###LLL:interests_music###</label>
+				<input type="checkbox" name="formhandler[interests][]" id="interests_music" value="music" ###checked_interests_music###/>
+				<div class="clear"></div>
+				<label for="interests_science">###LLL:interests_science###</label>
+				<input type="checkbox" name="formhandler[interests][]" id="interests_science" value="science" ###checked_interests_science###/>
+				<div class="clear"></div>
+				<label for="interests_cars">###LLL:interests_cars###</label>
+				<input type="checkbox" name="formhandler[interests][]" id="interests_cars" value="cars" ###checked_interests_cars###/>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			###error_contact_via###
+			<h4>###LLL:contact_via### ###required_contact_via###</h4>
+			<div class="contact_box">
+				<label for="contact_via_email">###LLL:contact_via_email###</label>
+				<input type="radio" name="formhandler[contact_via]" id="contact_via_email" value="email" ###checked_contact_via_email###/>
+				<div class="clear"></div>
+				<label for="contact_via_phone">###LLL:contact_via_phone###</label>
+				<input type="radio" name="formhandler[contact_via]" id="contact_via_phone" value="phone" ###checked_contact_via_phone###/>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			<p>###LLL:required_fields###</p>
+			<input type="submit" value="###LLL:next###" ###submit_nextStep###/>
+		</div>
+<!-- ###FORM_ENDBLOCK### begin -->
+	</fieldset>
+</form>
+</div>
+<!-- ###FORM_ENDBLOCK### end -->
+<!-- ###TEMPLATE_FORM1### end -->
+
+<!-- ###TEMPLATE_FORM2### begin -->
+
+###FORM_STARTBLOCK###
+		<div class="row">
+			###error_street###
+			<label for="firstname">###LLL:street### ###required_street###</label>
+			<input type="text" name="formhandler[street]" id="street" value="###value_street###"/>
+			<div class="clear"></div>
+		</div>
+		<div class="row">
+			<p>###LLL:required_fields###</p>
+			<input type="submit" value="###LLL:prev###" ###submit_prevStep###/>
+			<input type="submit" value="###LLL:next###" ###submit_nextStep###/>
+		</div>
+###FORM_ENDBLOCK###
+<!-- ###TEMPLATE_FORM2### end -->
+
+<!-- ###TEMPLATE_FORM3### begin -->
+
+###FORM_STARTBLOCK###
+		<div class="row">
+			Thank you. Please press send to finish!
+		</div>
+		<div class="row">
+			<input type="submit" value="###LLL:prev###" ###submit_prevStep###/>
+			<input type="submit" value="###LLL:submit###" ###submit_nextStep###/>
+		</div>
+###FORM_ENDBLOCK###
+<!-- ###TEMPLATE_FORM3### end -->
+
+<!-- ###TEMPLATE_EMAIL_USER_PLAIN### begin -->
+Hello ###value_firstname### ###value_lastname###,
+
+you have just filled out the form.
+
+Thanks for your request, we will answer asap.
+
+Typoheads
+
+<!-- ###TEMPLATE_EMAIL_USER_PLAIN### end -->
+
+<!-- ###TEMPLATE_EMAIL_USER_HTML### begin -->
+<p>
+Hello ###value_firstname### ###value_lastname###,
+</p>
+<p>
+you have just filled out the form.
+</p>
+<p>
+Thanks for your request, we will answer asap.
+</p>
+Typoheads
+
+<!-- ###TEMPLATE_EMAIL_USER_HTML### end -->
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_PLAIN### begin -->
+Hello Admin,
+
+a user has just filled out the form.
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_PLAIN### end -->
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_HTML### begin -->
+Hello Admin (HTML),
+
+a user has just filled out the form.
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_HTML### end -->
+
+<!-- ###TEMPLATE_SUBMITTEDOK### begin -->
+
+<table>
+  <tr>
+    <td>###LLL:firstname###</td>
+    <td>###value_firstname###</td>
+  </tr>
+
+  <tr>
+    <td>###LLL:lastname###</td>
+    <td>###value_lastname###</td>
+  </tr>
+  
+  <tr>
+    <td>###LLL:email###</td>
+    <td>###value_email###</td>
+  </tr>
+  
+  <tr>
+    <td>###LLL:interests###</td>
+    <td>###value_interests###</td>
+  </tr>
+  
+  <tr>
+    <td>###LLL:contact_via###</td>
+    <td>###value_contact_via###</td>
+  </tr>
+</table>
+<div>
+###PRINT_LINK### / ###PDF_LINK### / ###CSV_LINK###
+</div>
+<!-- ###TEMPLATE_SUBMITTEDOK### end -->

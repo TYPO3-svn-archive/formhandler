@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="picture">Picture</label>
+			<label index="legend">Personal Information</label>
+			<label index="firstname">Firstname</label>
+			<label index="lastname">Lastname</label>
+			<label index="email">E-Mail</label>
+			<label index="interests">Interests</label>
+			<label index="interests_sports">Sports</label>
+			<label index="interests_music">Music</label>
+			<label index="interests_science">Science</label>
+			<label index="interests_cars">Cars</label>
+			<label index="contact_via">Contact via</label>
+			<label index="contact_via_email">E-mail</label>
+			<label index="contact_via_phone">Phone</label>
+			<label index="street">Street</label>
+			<label index="submit">Send</label>
+			<label index="next">Next</label>
+			<label index="prev">Previous</label>
+			
+			<label index="error_street_required">Street is required!</label>
+			<label index="error_firstname_required">Firstname is missing!</label>
+			<label index="error_firstname_maxLength">Firstname has to be shorter than ###value### characters!</label>
+			<label index="error_lastname_required">Lastname is missing!</label>
+			<label index="error_lastname_maxLength">Lastname has to be shorter than ###value### characters!</label>
+			<label index="error_interests_minItems">Select at least ###value### interests!</label>
+			<label index="error_interests_required">Select some interests!</label>
+			<label index="error_email_required">Enter your E-mail address!</label>
+			<label index="error_email_email">E-mail address must be valid syntax!</label>
+			<label index="error_contact_via_required">Please select how to contact You!</label>
+			<label index="required_fields">Fields marked with * are required!</label>
+		</languageKey>
+		<languageKey index="en" type="array">
+			<label index="picture">Picture</label>
+			<label index="legend">Personal Information</label>
+			<label index="firstname">Firstname</label>
+			<label index="lastname">Lastname</label>
+			<label index="email">E-Mail</label>
+			<label index="interests">Interests</label>
+			<label index="interests_sports">Sports</label>
+			<label index="interests_music">Music</label>
+			<label index="interests_science">Science</label>
+			<label index="interests_cars">Cars</label>
+			<label index="contact_via">Contact via</label>
+			<label index="contact_via_email">E-mail</label>
+			<label index="contact_via_phone">Phone</label>
+			<label index="street">Street</label>
+			<label index="submit">Send</label>
+			<label index="next">Next</label>
+			<label index="prev">Previous</label>
+			
+			<label index="error_street_required">Street is required!</label>
+			<label index="error_firstname_required">Firstname is missing!</label>
+			<label index="error_firstname_maxLength">Firstname has to be shorter than ###value### characters!</label>
+			<label index="error_lastname_required">Lastname is missing!</label>
+			<label index="error_lastname_maxLength">Lastname has to be shorter than ###value### characters!</label>
+			<label index="error_interests_minItems">Select at least ###value### interests!</label>
+			<label index="error_interests_required">Select some interests!</label>
+			<label index="error_email_required">Enter your E-mail address!</label>
+			<label index="error_email_email">E-mail address must be valid syntax!</label>
+			<label index="error_contact_via_required">Please select how to contact You!</label>
+			<label index="required_fields">Fields marked with * are required!</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="picture">Foto</label>
+			<label index="legend">Persönliche Daten</label>
+			<label index="firstname">Vorname</label>
+			<label index="lastname">Nachname</label>
+			<label index="email">E-Mail</label>
+			<label index="interests">Interessen</label>
+			<label index="interests_sports">Sport</label>
+			<label index="interests_music">Musik</label>
+			<label index="interests_science">Wissenschaft</label>
+			<label index="interests_cars">Autos</label>
+			<label index="contact_via">Bitte kontaktieren Sie mich per</label>
+			<label index="contact_via_email">E-mail</label>
+			<label index="contact_via_phone">Telefon</label>
+			<label index="street">Straße</label>
+			<label index="submit">Absenden</label>
+			<label index="next">Weiter</label>
+			<label index="prev">Zurück</label>
+			
+			<label index="error_street_required">Straße ist nicht ausgefüllt!</label>
+			<label index="error_firstname_required">Vorname ist nicht ausgefüllt!</label>
+			<label index="error_firstname_maxLength">Vorname muss kürzer sein als ###value### Zeichen!</label>
+			<label index="error_lastname_required">Nachname ist nicht ausgefüllt!</label>
+			<label index="error_lastname_maxLength">Nachname muss kürzer sein als ###value### Zeichen!</label>
+			<label index="error_interests_minItems">Wählen Sie mindestens ###value### Interessen!</label>
+			<label index="error_interests_required">Sie müssen Interessen angeben!</label>
+			<label index="error_email_required">Geben Sie Ihre E-Mailadresse ein!</label>
+			<label index="error_email_email">E-Mailadresse ist ungültig!</label>
+			<label index="error_contact_via_required">Bitte wählen Sie wie wir Sie kontaktieren sollen!</label>
+			<label index="required_fields">Felder mit * sind Pflichtfelder!</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="picture">Photo</label>
+			<label index="legend">Informations personnelles</label>
+			<label index="firstname">Prénom</label>
+			<label index="lastname">Nom</label>
+			<label index="email">Email</label>
+			<label index="interests">Intérêts</label>
+			<label index="interests_sports">Sports</label>
+			<label index="interests_music">Musique</label>
+			<label index="interests_science">Science</label>
+			<label index="interests_cars">Voitures</label>
+			<label index="contact_via">Contacter via</label>
+			<label index="contact_via_email">Email</label>
+			<label index="contact_via_phone">Téléphone</label>
+			<label index="street">Rue</label>
+			<label index="submit">Envoyer</label>
+			<label index="next">Suivant</label>
+			<label index="prev">Retour</label>
+			
+			<label index="error_firstname_required">Il manque le prénom!</label>
+			<label index="error_firstname_maxLength">Le prénom doit comprendre moins de ###value### caractères!</label>
+			<label index="error_lastname_required">Il manque le nom!</label>
+			<label index="error_lastname_maxLength">Le nom doit comprendre moins de ###value### caractères!</label>
+			<label index="error_interests_minItems">Sélectionner au moins ###value### intérêts!</label>
+			<label index="error_interests_required">Sélectionner quelques intérêts!</label>
+			<label index="error_email_required">Saisir votre adresse email!</label>
+			<label index="error_email_email">L'adresse email doit être valide!</label>
+			<label index="error_contact_via_required">Sélectionner le mode de contact!</label>
+			<label index="required_fields">Les champs marqués de * sont obligatoires!</label>
+		</languageKey>
+	</data>
+</T3locallang>

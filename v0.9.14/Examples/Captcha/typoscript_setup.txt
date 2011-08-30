@@ -1,0 +1,45 @@
+# Defines here some configuration when using recaptcha services
+# http://recaptcha.net/
+plugin.tx_jmrecaptcha {
+	public_key = xxx
+	private_key = xxx
+}
+
+
+# Main configuration
+plugin.Tx_Formhandler.settings.predef.captcha_example {
+
+	# Cummon configuration
+	name = Example Captcha
+	templateFile = EXT:formhandler/Examples/Captcha/template.html
+	langFile.1 = EXT:formhandler/Examples/Captcha/lang.xml
+	cssFile.1 = EXT:formhandler/Examples/Captcha/styles.css
+	formValuesPrefix = formhandler
+	addErrorAnchors = 1
+
+	# HTML wrapping by validation error
+	errorListTemplate {
+		totalWrap = <ul>|</ul>
+		singleWrap = <li class="error">|</li>
+	}
+	singleErrorTemplate {
+		singleWrap = <span class="error">|</span><br />
+	}
+
+	# Validators configuration
+	validators {
+		1 {
+			class = Tx_Formhandler_Validator_Default
+			config {
+				fieldConf {
+					# 4 possible captcha systems.
+					# YOU SHOULD CHOOSE ONE AND REMOVE THE OTHER ONES.
+					captchafield.errorCheck.1 = captcha
+					freecapfield.errorCheck.1 = srFreecap
+					recaptcha_response_field.errorCheck.1 = jmRecaptcha
+					mathguard_answer.errorCheck.1 = mathGuard
+				}
+			}
+		}
+	}
+}

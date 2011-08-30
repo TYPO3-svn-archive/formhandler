@@ -1,0 +1,76 @@
+<!-- ###TEMPLATE_FORM1### begin -->
+###ERROR###
+<div id="formhandler_contact_form">
+<form method="post" action="###REL_URL###" enctype="multipart/form-data">
+	<fieldset>
+		<legend>###LLL:legend###</legend>
+		<input type="hidden" name="formhandler[submitted]" value="1" />
+		###field_input_firstname###
+		###field_input_lastname###
+		###field_input_email###
+		###field_upload_picture###
+		###field_submit###
+	</fieldset>
+</form>
+</div>
+<!-- ###TEMPLATE_FORM1### end -->
+
+<!-- ###TEMPLATE_EMAIL_USER_PLAIN### begin -->
+Hello ###value_firstname### ###value_lastname###,
+
+you have just filled out the form.
+
+Thanks for your request, we will answer asap.
+
+Typoheads
+
+<!-- ###TEMPLATE_EMAIL_USER_PLAIN### end -->
+
+<!-- ###TEMPLATE_EMAIL_USER_HTML### begin -->
+
+Hello ###value_firstname### ###value_lastname###,
+
+you have just filled out the form.
+
+Thanks for your request, we will answer asap.
+
+Typoheads
+
+<!-- ###TEMPLATE_EMAIL_USER_HTML### end -->
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_PLAIN### begin -->
+Hello Admin,
+
+a user has just filled out the form.
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_PLAIN### end -->
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_HTML### begin -->
+Hello Admin (HTML),
+
+a user has just filled out the form.
+
+<!-- ###TEMPLATE_EMAIL_ADMIN_HTML### end -->
+
+<!-- ###TEMPLATE_SUBMITTEDOK### begin -->
+
+<table>
+  <tr>
+    <td>###LLL:firstname###</td>
+    <td>###value_firstname###</td>
+  </tr>
+
+  <tr>
+    <td>###LLL:lastname###</td>
+    <td>###value_lastname###</td>
+  </tr>
+  
+  <tr>
+    <td>###LLL:email###</td>
+    <td>###value_email###</td>
+  </tr>
+</table>
+<div>
+###PRINT_LINK### / ###PDF_LINK### / ###CSV_LINK###
+</div>
+<!-- ###TEMPLATE_SUBMITTEDOK### end -->

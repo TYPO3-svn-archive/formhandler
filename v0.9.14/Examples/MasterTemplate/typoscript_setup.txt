@@ -1,0 +1,167 @@
+plugin.Tx_Formhandler.settings.predef.mastertemplate_example {
+
+	# Common configuration
+	name = Example MasterTemplate
+	debug = 0
+	addErrorAnchors = 1
+	templateFile = EXT:formhandler/Examples/MasterTemplate/template.html
+	
+	# single master template
+	masterTemplateFile = EXT:formhandler/Examples/MasterTemplate/master_template.html
+	
+	#multiple master templates
+	#masterTemplateFile.1 = EXT:formhandler/Examples/MasterTemplate/master_template.html
+	#masterTemplateFile.2 = fileadmin/templates/ext/formhandler/mymastemplate.html
+	
+	langFile.1 = EXT:formhandler/Examples/MasterTemplate/lang.xml
+	cssFile.1 = EXT:formhandler/Examples/MasterTemplate/styles.css
+	formValuesPrefix = formhandler
+
+	# HTML wrapping by validation error
+	errorListTemplate {
+		totalWrap = <ul>|</ul>
+		singleWrap = <li class="error">|</li>
+	}
+	singleErrorTemplate {
+		singleWrap = <span class="error">|</span><br />
+	}
+
+	# File configuration
+	singleFileMarkerTemplate {
+		totalWrap = <ul>|</ul>
+		singleWrap = <li style="color:maroon;">|</li>
+	}
+	totalFilesMarkerTemplate {
+		totalWrap = <ul>|</ul>
+		singleWrap = <li style="color:red;">|</li>
+	}
+	files {
+		clearTempFilesOlderThanHours = 24
+		uploadFolder = uploads/formhandler/tmp2/
+		enableAjaxFileRemoval = 1
+	}
+
+	# Validators configuration
+	validators {
+		1 {
+			class = Tx_Formhandler_Validator_Default
+			config {
+				fieldConf {
+					picture {
+						errorCheck.1 = fileAllowedTypes
+						errorCheck.1.allowedTypes = jpg,gif
+						errorCheck.2 = fileMinSize
+						errorCheck.2.minSize = 20000
+						errorCheck.3 = fileMaxSize
+						errorCheck.3.maxSize= 100000
+						errorCheck.4 = fileMaxCount
+						errorCheck.4.maxCount = 2
+					}
+					firstname {
+						errorCheck.1 = required
+						errorCheck.2 = maxLength
+						errorCheck.2.value = 50
+					}
+					lastname {
+						errorCheck.1 = required
+						errorCheck.2 = maxLength
+						errorCheck.2.value = 50
+					}
+					email {
+						errorCheck.1 = required
+						errorCheck.2 = email
+					}
+				}
+			}
+		}
+	}
+
+	# Interceptors configuration
+	initInterceptors {
+		1 {
+			class = Tx_Formhandler_Interceptor_Filtreatment
+		}
+	}
+
+	# Loggers configuration
+	loggers {
+		1 {
+			class = Tx_Formhandler_Logger_DB
+		}
+	}
+
+	# Finishers configuration
+	finishers {
+		 1 {
+			class = Tx_Formhandler_Finisher_DB
+			config {
+				table = tt_content
+				key = uid
+				fields {
+					header {
+						mapping = name
+						if_is_empty = None given
+					}
+					bodytext {
+						mapping = subject
+						separator = ,
+					}
+					hidden = 1
+					pid = 39
+					subheader.special = sub_datetime
+					crdate.special = sub_tstamp
+					tstamp.special = sub_tstamp
+					imagecaption.special = ip
+				}
+			}
+		}
+		2.class = Tx_Formhandler_Finisher_Mail
+		2.config {
+			limitMailsToUser = 5
+			admin {
+				to_email = email@host.com
+				to_name = Some Admin
+				subject = SingleStep Request
+				sender_email = email
+				sender_name = lastname
+				replyto_email = email
+				replyto_name = lastname
+				htmlEmailAsAttachment = 1
+				attachment = picture
+			}
+			user {
+				to_email = email
+				to_name = lastname
+				subject = Your SingleStep request
+				sender_email = email@host.com
+				sender_name = Some Company
+				replyto_email = email@host.com
+				replyto_name = TEXT
+				replyto_name.value = Some Company
+				htmlEmailAsAttachment = 1
+				attachment = picture
+				attachPDF {
+				  class = Generator_WebkitPdf
+				  config {
+				    pid = 23
+				  }
+				}
+		 	}
+		}
+		3.class = Tx_Formhandler_Finisher_SubmittedOK
+		3.config {
+			returns = 1
+			actions {
+				pdf {
+					class = Generator_WebkitPdf
+					config {
+				  	  pid = 23
+				  	}	
+				}
+				csv {
+					class = Generator_Csv		
+				}
+			}
+		}
+	}
+}
