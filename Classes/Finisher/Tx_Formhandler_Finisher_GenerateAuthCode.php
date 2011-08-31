@@ -46,7 +46,7 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 			}
  		}
 		$table = $firstInsertInfo['table'];
-		$uid = $firstInsertInfo['uid'];
+		$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($firstInsertInfo['uid'], $table);
 		$uidField = $firstInsertInfo['uidField'];
 		if(!$uidField) {
 			$uidField = 'uid';

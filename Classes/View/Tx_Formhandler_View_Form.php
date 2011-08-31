@@ -391,7 +391,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers = array();
 		$markers['###REL_URL###'] = $path;
 		$markers['###TIMESTAMP###'] = time();
-		$markers['###RANDOM_ID###'] = $this->gp['randomID'];
+		$markers['###RANDOM_ID###'] = htmlspecialchars($this->gp['randomID']);
 		$markers['###ABS_URL###'] = t3lib_div::locationHeaderUrl('') . $path;
 		$markers['###rel_url###'] = $markers['###REL_URL###'];
 		$markers['###timestamp###'] = $markers['###TIMESTAMP###'];
@@ -1012,8 +1012,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					$level--;
 				}
 				$v = trim($v);
-				$markers['###' . $currPrefix . '###'] = $v;
-				$markers['###' . strtoupper($currPrefix) . '###'] = $v;
+				$markers['###' . $currPrefix . '###'] = htmlspecialchars($v);
+				$markers['###' . strtoupper($currPrefix) . '###'] = $markers['###' . $currPrefix . '###'];
 			}
 		}
 		return $markers;
