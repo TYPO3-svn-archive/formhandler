@@ -2430,6 +2430,10 @@ email
 Checks if a field contains a valid email
 none
 -
+url
+Checks if a field contains a valid URL
+none
+-
 integer
 Checks if a field contains a valid integer value
 none
