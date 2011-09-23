@@ -42,8 +42,7 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 		$this->olderThanValue = $this->settings['clearTempFilesOlderThan.']['value'];
 		$this->olderThanUnit = $this->settings['clearTempFilesOlderThan.']['unit'];
 		if (!empty($this->olderThanValue) && is_numeric($this->olderThanValue)) {
-			$uploadFolder = $this->utilityFuncs->getTempUploadFolder();
-			$this->clearTempFiles($uploadFolder, $this->olderThanValue, $this->olderThanUnit);
+			$this->clearTempFiles($this->olderThanValue, $this->olderThanUnit);
 		}
 		return $this->gp;
 	}
@@ -52,20 +51,17 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 	 * Deletes all files older than a specific time in a temporary upload folder.
 	 * Settings for the threshold time and the folder are made in TypoScript.
 	 *
-	 * Here is an example:
-	 * <code>
-	 * plugin.Tx_Formhandler.settings.files.clearTempFilesOlderThanHours = 24
-	 * plugin.Tx_Formhandler.settings.files.tmpUploadFolder = uploads/formhandler/tmp
-	 * </code>
-	 *
-	 * @param integer $olderThan Delete files older than $olderThan hours.
+	 * @param integer $olderThanValue Delete files older than this value.
+	 * @param string $olderThanUnit The unit for $olderThan. May be seconds|minutes|hours|days
 	 * @return void
 	 * @author	Reinhard Führicht <rf@typoheads.at>
 	 */
-	protected function clearTempFiles($uploadFolder, $olderThanValue, $olderThanUnit) {
+	protected function clearTempFiles($olderThanValue, $olderThanUnit) {
 		if (!$olderThanValue) {
 			return;
 		}
+
+		$uploadFolder = $this->utilityFuncs->getTempUploadFolder();
 
 		//build absolute path to upload folder
 		$path = $this->utilityFuncs->getDocumentRoot() . $uploadFolder;

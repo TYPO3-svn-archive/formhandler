@@ -28,9 +28,18 @@ plugin.Tx_Formhandler.settings.predef.singlestep_example {
 		singleWrap = <li style="color:red;">|</li>
 	}
 	files {
-		clearTempFilesOlderThanHours = 24
-		uploadFolder = uploads/formhandler/tmp2/
+		uploadFolder = uploads/formhandler/
 		enableAjaxFileRemoval = 1
+	}
+	
+	preProcessors {
+		1.class = PreProcessor_ClearTempFiles
+		1.config {
+			clearTempFilesOlderThan {
+				value = 24
+				unit = hours
+			}
+		}
 	}
 
 	# Validators configuration
