@@ -665,18 +665,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 									$ext = substr($name, strpos($name, '.'));
 									$suffix = 1;
 
-									//Default: Replace spaces with underscores
-									$search = array(' ', '%20');
-									$replace = array('_');
-
-									//The settings "search" and "replace" are comma separated lists
-									if($this->settings['files.']['search']) {
-										$search = t3lib_div::trimExplode(',', $this->settings['files.']['search']);
-									}
-									if($this->settings['files.']['replace']) {
-										$replace = t3lib_div::trimExplode(',', $this->settings['files.']['replace']);
-									}
-									$filename = str_replace($search, $replace, $filename);
+									$filename = $this->utilityFuncs->doFileNameReplace($filename);
 
 									//build file name
 									$uploadedFileName = $filename . $ext;

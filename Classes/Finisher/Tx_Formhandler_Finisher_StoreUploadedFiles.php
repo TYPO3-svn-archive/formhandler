@@ -148,7 +148,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 
 		//remove ',' from filename, would be handled as file separator 
 		$newFilename = str_replace(',', '', $newFilename);
-
+		$newFilename = $this->utilityFuncs->doFileNameReplace($newFilename);
 		$newFilename .= $fileext;
 		return $newFilename;
 	}

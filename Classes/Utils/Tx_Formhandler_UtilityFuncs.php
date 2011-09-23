@@ -723,6 +723,39 @@ class Tx_Formhandler_UtilityFuncs {
 	public function getExceptionMessage($key) {
 		return trim($GLOBALS['TSFE']->sL('LLL:EXT:formhandler/Resources/Language/locallang_exceptions.xml:' . $key));
 	}
+	
+	/**
+	 * Performs search and replace settings defined in TypoScript.
+	 * 
+	 * Example:
+	 * 
+	 * <code>
+	 * plugin.Tx_Formhandler.settings.files.search = ä,ö,ü
+	 * plugin.Tx_Formhandler.settings.files.replace = ae,oe,ue 
+	 * </code>
+	 *
+	 * @param string The file name
+	 * @return string The replaced file name
+	 *
+	 **/
+	public function doFileNameReplace($fileName) {
+
+		$settings = $this->globals->getSettings();
+
+		//Default: Replace spaces with underscores
+		$search = array(' ', '%20');
+		$replace = array('_');
+
+		//The settings "search" and "replace" are comma separated lists
+		if($settings['files.']['search']) {
+			$search = explode(',', $settings['files.']['search']);
+		}
+		if($settings['files.']['replace']) {
+			$replace = explode(',', $settings['files.']['replace']);
+		}
+		$fileName = str_replace($search, $replace, $fileName);
+		return $fileName;
+	}
 
 }
 
