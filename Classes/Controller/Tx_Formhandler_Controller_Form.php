@@ -746,6 +746,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 	protected function reset() {
 		$values = array (
+			'creationTstamp' => time(),
 			'values' => NULL,
 			'files' => NULL,
 			'lastStep' => NULL,
@@ -950,12 +951,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$isDebugMode = $this->utilityFuncs->getSingle($this->settings, 'debug');
 		$this->debugMode = (intval($isDebugMode) === 1);
 
-		$sessionClass = 'Tx_Formhandler_Session_PHP';
-		if($this->settings['session.']) {
-			$sessionClass = $this->utilityFuncs->prepareClassName($this->settings['session.']['class']);
-		}
-
-		$this->globals->setSession($this->componentManager->getComponent($sessionClass));
 		$this->gp = $this->utilityFuncs->getMergedGP();
 
 		$randomID = $this->gp['randomID'];
@@ -967,7 +962,14 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 		}
 		$this->globals->setRandomID($randomID);
-		
+
+		$sessionClass = 'Tx_Formhandler_Session_PHP';
+		if($this->settings['session.']) {
+			$sessionClass = $this->utilityFuncs->prepareClassName($this->settings['session.']['class']);
+		}
+
+		$this->globals->setSession($this->componentManager->getComponent($sessionClass));
+
 		$action = t3lib_div::_GP('action');
 		if ($this->globals->getFormValuesPrefix()) {
 			$temp = t3lib_div::_GP($this->globals->getFormValuesPrefix());

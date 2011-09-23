@@ -1,38 +1,24 @@
 <?php
 
 class Tx_Formhandler_Session_PHP extends Tx_Formhandler_AbstractSession {
-	
-	/**
-	 * The Formhandler component manager
-	 *
-	 * @access protected
-	 * @var Tx_Formhandler_Component_Manager
-	 */
-	protected $componentManager;
 
-	/**
-	 * The global Formhandler configuration
-	 *
-	 * @access protected
-	 * @var Tx_Formhandler_Configuration
-	 */
-	protected $configuration;
+	public function __construct(Tx_Formhandler_Component_Manager $componentManager, 
+								Tx_Formhandler_Configuration $configuration, 
+								Tx_Formhandler_Globals $globals,
+								Tx_Formhandler_UtilityFuncs $utilityFuncs) {
 
-	/**
-	 * The global Formhandler values
-	 *
-	 * @access protected
-	 * @var Tx_Formhandler_Globals
-	 */
-	protected $globals;
-
-	/**
-	 * The Formhandler utility methods
-	 *
-	 * @access protected
-	 * @var Tx_Formhandler_UtilityFuncs
-	 */
-	protected $utlityFuncs;
+		parent::__construct($componentManager, $configuration, $globals, $utilityFuncs);
+		$this->start();
+		$threshold = $this->utilityFuncs->getTimestamp(1, 'hours');
+		if($this->settings['clearOldSession.']['value']) {
+			$threshold = $this->utilityFuncs->getTimestamp($this->settings['clearOldSession.']['value'], $this->settings['clearOldSession.']['unit']);
+		}
+		foreach($_SESSION['formhandler'] as $hashedID => $sesData) {
+			if($this->globals->getFormValuesPrefix() === $sesData['formValuesPrefix'] && $sesData['creationTstamp'] < $threshold) {
+				unset($_SESSION['formhandler'][$hashedID]);
+			}
+		}
+	}
 
 	public function set($key, $value) {
 		$this->start();
