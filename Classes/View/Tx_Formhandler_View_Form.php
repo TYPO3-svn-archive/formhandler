@@ -1008,11 +1008,16 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				if (is_array($v)) {
 					$level++;
 					$markers = array_merge($markers, $this->getValueMarkers($v, $level, $currPrefix));
+					foreach($v as &$arrayValue) {
+						$arrayValue = htmlspecialchars($arrayValue);
+					}
 					$v = implode($arrayValueSeparator, $v);
 					$level--;
+				} else {
+					$v = htmlspecialchars($v);
 				}
 				$v = trim($v);
-				$markers['###' . $currPrefix . '###'] = htmlspecialchars($v);
+				$markers['###' . $currPrefix . '###'] = $v;
 				$markers['###' . strtoupper($currPrefix) . '###'] = $markers['###' . $currPrefix . '###'];
 			}
 		}
