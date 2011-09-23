@@ -1714,7 +1714,7 @@ The generated file name contains a random hash. You can specify a custom prefix 
 
 Generator_Csv
 
-Just enter the class name. No configuration required for this component.
+Generates CSV files based on the user input.
 
 Property:
 Data type:
@@ -1744,6 +1744,10 @@ filePrefix
 String
 The generated file name contains a random hash. You can specify a custom prefix here (E.g. formhandler)
 
+addFieldNames
+Boolean
+If set, the CSV contains the field names as labels in the first line
+0
 Finishers
 Property:
 Data type:

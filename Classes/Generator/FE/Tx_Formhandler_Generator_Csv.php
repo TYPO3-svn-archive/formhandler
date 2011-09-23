@@ -26,8 +26,19 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 			$value = str_replace('"', '""', $value);
 		}
 
+
 		// create new parseCSV object.
 		$csv = new parseCSV();
+
+		//parseCSV expects data to be a two dimensional array
+		$data = array($params);
+
+		$fields = FALSE;
+		if(intval($this->utilityFuncs->getSingle($this->settings, 'addFieldNames')) === 1) {
+			$fields = array_keys($params);
+			$csv->heading = TRUE;
+		}
+		
 		if($this->settings['delimiter']) {
 			$csv->delimiter = $csv->output_delimiter = $this->utilityFuncs->getSingle($this->settings, 'delimiter');
 		}
@@ -42,11 +53,11 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 				$outputPath .= '/typo3temp/';
 			}
 			$filename = $outputPath . $this->settings['filePrefix'] . $this->utilityFuncs->generateHash() . '.csv';
-			$csv->save($filename, $data, FALSE, $params);
+			$csv->save($filename, $data, FALSE, $fields);
 
 			return $filename;
 		} else {
-			$csv->output('formhandler.csv', $data, $params);
+			$csv->output('formhandler.csv', $data, $fields);
 			die();
 		}
 	}
