@@ -2,6 +2,328 @@
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+---------------------------- Version 0.9.16 ----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+r52415 | reinhardfuehricht | 2011-09-23 11:40:56 +0200 (Fre, 23. Sep 2011) | 1 line
+
+Lower memory consumption of Formhander (#29162)
+------------------------------------------------------------------------
+r52414 | reinhardfuehricht | 2011-09-23 11:34:40 +0200 (Fre, 23. Sep 2011) | 1 line
+
+Use files.replace for schemeMarkers too (fixes #29456)
+------------------------------------------------------------------------
+r52413 | reinhardfuehricht | 2011-09-23 11:31:37 +0200 (Fre, 23. Sep 2011) | 1 line
+
+Added an option to include the field names in generated CSV files called "addFieldNames" (resolves #30009)
+------------------------------------------------------------------------
+r52407 | reinhardfuehricht | 2011-09-23 11:06:04 +0200 (Fre, 23. Sep 2011) | 1 line
+
+Changed the marker replacement to make htmlspecialchars in the view ignore the arrayValueSeparator (fixes #30042)
+------------------------------------------------------------------------
+r52405 | reinhardfuehricht | 2011-09-23 10:57:48 +0200 (Fre, 23. Sep 2011) | 1 line
+
+Corrected wrong Typoscript in the examples for clearing temporary files (resolves #29839).
+------------------------------------------------------------------------
+r52359 | reinhardfuehricht | 2011-09-21 15:39:31 +0200 (Mit, 21. Sep 2011) | 1 line
+
+New error check "url" (resolves: #30031)
+------------------------------------------------------------------------
+r51576 | reinhardfuehricht | 2011-08-31 09:49:37 +0200 (Mit, 31. Aug 2011) | 1 line
+
+Applied security patch from version 0.9.15
+------------------------------------------------------------------------
+r51559 | reinhardfuehricht | 2011-08-30 17:03:03 +0200 (Die, 30. Aug 2011) | 1 line
+
+I screwed up the last commit comment. So here it is: Fixed bug in ErrorCheck_EqualsField and ErrorCheck_NotEqualsField (fixes #29152).
+------------------------------------------------------------------------
+r51558 | reinhardfuehricht | 2011-08-30 16:59:32 +0200 (Die, 30. Aug 2011) | 1 line
+
+------------------------------------------------------------------------
+r50947 | reinhardfuehricht | 2011-08-10 17:37:11 +0200 (Mit, 10. Aug 2011) | 1 line
+
+Perform htmlspecialchars on the randomID field and other hidden fields. This is done in additional to the XSS removal of Interceptor_Filtreatment.
+------------------------------------------------------------------------
+r50946 | reinhardfuehricht | 2011-08-10 17:36:12 +0200 (Mit, 10. Aug 2011) | 1 line
+
+Backend module "Clear logs" was broken
+------------------------------------------------------------------------
+r50918 | reinhardfuehricht | 2011-08-10 14:24:47 +0200 (Mit, 10. Aug 2011) | 1 line
+
+If a component is not found by the component manager , the additional include paths are checked again and the cache is updated.
+------------------------------------------------------------------------
+r50875 | reinhardfuehricht | 2011-08-10 11:21:19 +0200 (Mit, 10. Aug 2011) | 1 line
+
+Fixed bugs in file related error checks.
+------------------------------------------------------------------------
+r50810 | reinhardfuehricht | 2011-08-09 17:42:20 +0200 (Die, 09. Aug 2011) | 1 line
+
+Do not store all predefined forms in the session, but only the current one.
+------------------------------------------------------------------------
+r50805 | reinhardfuehricht | 2011-08-09 15:24:02 +0200 (Die, 09. Aug 2011) | 1 line
+
+New TS setting "type" for PreProcessor_LoadDB to enable preloading of file upload fields. Fixes #26834
+------------------------------------------------------------------------
+r50803 | reinhardfuehricht | 2011-08-09 15:17:18 +0200 (Die, 09. Aug 2011) | 1 line
+
+New TS setting "uniqueFormID". Fixes #28478 : inserted_uid from Tx_Formhandler_Logger_DB not available
+------------------------------------------------------------------------
+r50802 | reinhardfuehricht | 2011-08-09 14:56:52 +0200 (Die, 09. Aug 2011) | 1 line
+
+Run Interceptor_FormProtection automatically only if TYPO3 version is higher than 4.5.2
+------------------------------------------------------------------------
+r50761 | reinhardfuehricht | 2011-08-08 15:42:14 +0200 (Mon, 08. Aug 2011) | 1 line
+
+Removed "readOnly" flag for the log table. Using "adminOnly" instead. (fixes #28479)
+------------------------------------------------------------------------
+r50760 | reinhardfuehricht | 2011-08-08 15:40:04 +0200 (Mon, 08. Aug 2011) | 1 line
+
+Replaced DOCUMENT_ROOT with PATH_site to make file uploads work with webs where TYPO3 is not in the root dir (fixes #8778)
+------------------------------------------------------------------------
+r50279 | reinhardfuehricht | 2011-07-29 13:31:49 +0200 (Fre, 29. Jul 2011) | 1 line
+
+Documentation changes
+------------------------------------------------------------------------
+r50248 | reinhardfuehricht | 2011-07-28 19:32:40 +0200 (Don, 28. Jul 2011) | 1 line
+
+Additional fixes in the documentation
+------------------------------------------------------------------------
+r50238 | reinhardfuehricht | 2011-07-28 17:11:56 +0200 (Don, 28. Jul 2011) | 1 line
+
+Fixed documentation bugs
+------------------------------------------------------------------------
+r50194 | reinhardfuehricht | 2011-07-27 21:24:40 +0200 (Mit, 27. Jul 2011) | 1 line
+
+Make CSV files attachable to an email (resolves #27767). Warning: The TS setting "attachPDF" got removed in favor of "attachGeneratedFiles". See manual for details.
+------------------------------------------------------------------------
+r50193 | reinhardfuehricht | 2011-07-27 21:11:06 +0200 (Mit, 27. Jul 2011) | 1 line
+
+Protect Formhandler forms using the TYPO3 form protection API (resolves #28315)
+------------------------------------------------------------------------
+r50192 | reinhardfuehricht | 2011-07-27 20:42:39 +0200 (Mit, 27. Jul 2011) | 1 line
+
+Refactor Error Checks (resolves #28524). Warning: Structure of error check classes has changed! fileAllowedTypes is now a mandatory error check for file upload fields.
+------------------------------------------------------------------------
+r50105 | reinhardfuehricht | 2011-07-25 16:53:03 +0200 (Mon, 25. Jul 2011) | 1 line
+
+Added documentation for Finisher_SetLanguage, Finisher_RestoreLanguage and Finisher_StoreGP
+------------------------------------------------------------------------
+r50103 | reinhardfuehricht | 2011-07-25 15:41:10 +0200 (Mon, 25. Jul 2011) | 1 line
+
+Documentation update: Restructured TypoScript options listings of generators to make them look like the listings of all other components.
+------------------------------------------------------------------------
+r50101 | reinhardfuehricht | 2011-07-25 15:26:20 +0200 (Mon, 25. Jul 2011) | 1 line
+
+Removed some typing errors in the manual
+------------------------------------------------------------------------
+r50095 | mabolek | 2011-07-25 14:11:32 +0200 (Mon, 25. Jul 2011) | 1 line
+
+Documented undocumented showHidden property in isNotInDBTable and isInDBTable error checks in manual.
+------------------------------------------------------------------------
+r49989 | reinhardfuehricht | 2011-07-21 10:45:31 +0200 (Don, 21. Jul 2011) | 1 line
+
+Documentation update. Added some missing properties.
+------------------------------------------------------------------------
+r49916 | reinhardfuehricht | 2011-07-19 12:15:24 +0200 (Die, 19. Jul 2011) | 1 line
+
+Cleanup: Removed @static from phpdoc comments
+------------------------------------------------------------------------
+r49907 | reinhardfuehricht | 2011-07-19 09:01:39 +0200 (Die, 19. Jul 2011) | 1 line
+
+Allow components in custom packages to be prefixed with another package name.
+------------------------------------------------------------------------
+r49894 | reinhardfuehricht | 2011-07-18 16:41:59 +0200 (Mon, 18. Jul 2011) | 1 line
+
+Removed a few PHP warnings
+------------------------------------------------------------------------
+r49888 | reinhardfuehricht | 2011-07-18 11:37:01 +0200 (Mon, 18. Jul 2011) | 1 line
+
+class.formhandler_htmlmail.php never sets the return path (fixes #27839)
+------------------------------------------------------------------------
+r49885 | reinhardfuehricht | 2011-07-18 10:47:13 +0200 (Mon, 18. Jul 2011) | 1 line
+
+New component PreProcessor_ValidateAuthCode (resolves #13978)
+------------------------------------------------------------------------
+r49883 | reinhardfuehricht | 2011-07-18 10:30:47 +0200 (Mon, 18. Jul 2011) | 1 line
+
+Use a local variable instead of an instance variable for formValuesPrefix in PreProcessor_LoadGetPost
+------------------------------------------------------------------------
+r49882 | reinhardfuehricht | 2011-07-18 10:27:10 +0200 (Mon, 18. Jul 2011) | 1 line
+
+When throwing an exception only print the according file name if debug mode is on.
+------------------------------------------------------------------------
+r49866 | erep | 2011-07-17 00:53:22 +0200 (Son, 17. Jul 2011) | 1 line
+
+Follow up to #25788. Fatal Error in Finisher GenerateAuthCode (fixes #28261)
+------------------------------------------------------------------------
+r49832 | reinhardfuehricht | 2011-07-15 12:04:29 +0200 (Fre, 15. Jul 2011) | 1 line
+
+New error check "fileMaxTotalSize" (resolves #28177)
+------------------------------------------------------------------------
+r49775 | reinhardfuehricht | 2011-07-13 11:45:10 +0200 (Mit, 13. Jul 2011) | 1 line
+
+"disableIPlog" setting was spelled wrong in the manual
+------------------------------------------------------------------------
+r49774 | reinhardfuehricht | 2011-07-13 11:39:43 +0200 (Mit, 13. Jul 2011) | 1 line
+
+PreProcessor_ClearTempFiles does not delete old files (fixes #28166)
+------------------------------------------------------------------------
+r49727 | reinhardfuehricht | 2011-07-12 12:10:46 +0200 (Die, 12. Jul 2011) | 1 line
+
+Feature: Possibility to exclude certain fields from logging (resolves #28116)
+------------------------------------------------------------------------
+r49599 | reinhardfuehricht | 2011-07-07 16:34:00 +0200 (Don, 07. Jul 2011) | 1 line
+
+Moved PRINT_LINK generation to a separate Generator (Generator_Print) (resolves #27953)
+------------------------------------------------------------------------
+r49596 | reinhardfuehricht | 2011-07-07 15:28:00 +0200 (Don, 07. Jul 2011) | 1 line
+
+ControllerForm processAction generates PHP warning (fixes #27946)
+------------------------------------------------------------------------
+r49594 | reinhardfuehricht | 2011-07-07 14:55:08 +0200 (Don, 07. Jul 2011) | 1 line
+
+Units in minSize maxSize file markers create and ugly space after (fixes #27942)
+------------------------------------------------------------------------
+r49526 | reinhardfuehricht | 2011-07-06 17:58:43 +0200 (Mit, 06. Jul 2011) | 1 line
+
+Option to change delimiter and charset in backend csv (resolves #9769)
+------------------------------------------------------------------------
+r49523 | reinhardfuehricht | 2011-07-06 17:37:25 +0200 (Mit, 06. Jul 2011) | 2 lines
+
+checkbox values not submitted correctly (fixes #14051)
+Follow-Up fix: #26637 problem with parameter loading with action=show
+------------------------------------------------------------------------
+r49521 | reinhardfuehricht | 2011-07-06 17:25:25 +0200 (Mit, 06. Jul 2011) | 1 line
+
+Last commit lacked the commit comment: problem with parameter loading with action=show (fixes #26637)
+------------------------------------------------------------------------
+r49519 | reinhardfuehricht | 2011-07-06 17:24:21 +0200 (Mit, 06. Jul 2011) | 1 line
+
+
+------------------------------------------------------------------------
+r49516 | reinhardfuehricht | 2011-07-06 17:07:31 +0200 (Mit, 06. Jul 2011) | 1 line
+
+Substitute certain special characters in file names of uploaded files (resolves #27911)
+------------------------------------------------------------------------
+r49266 | reinhardfuehricht | 2011-07-01 09:39:14 +0200 (Fre, 01. Jul 2011) | 1 line
+
+Follow up to #25788. Backend module didn't work after the commit.
+------------------------------------------------------------------------
+r49145 | reinhardfuehricht | 2011-06-27 15:15:48 +0200 (Mon, 27. Jun 2011) | 1 line
+
+WARNING: BIg update. Updated the static classes Globals and StaticFuncs to non static classes, renamed StaticFuncs to UtilityFuncs. (fixes #25788) 
+------------------------------------------------------------------------
+r48963 | reinhardfuehricht | 2011-06-21 12:20:21 +0200 (Die, 21. Jun 2011) | 1 line
+
+Follow-Up to "Cache Component manager search results". Here comes the ext_localconf.php
+------------------------------------------------------------------------
+r48962 | reinhardfuehricht | 2011-06-21 12:19:57 +0200 (Die, 21. Jun 2011) | 1 line
+
+Follow-Up to "Cache Component manager search results". Forgot to commit the file containing the clear cache hook.
+------------------------------------------------------------------------
+r48959 | reinhardfuehricht | 2011-06-21 11:05:21 +0200 (Die, 21. Jun 2011) | 1 line
+
+Cache Component manager search results (fixes #26176)
+------------------------------------------------------------------------
+r48958 | reinhardfuehricht | 2011-06-21 10:57:46 +0200 (Die, 21. Jun 2011) | 1 line
+
+Allow to disable any component array + Added possibility to disable the default configuration validation (fixes #26868)
+------------------------------------------------------------------------
+r48952 | reinhardfuehricht | 2011-06-21 10:31:47 +0200 (Die, 21. Jun 2011) | 1 line
+
+Fixed error in documentation (fixes #27096)
+------------------------------------------------------------------------
+r48951 | reinhardfuehricht | 2011-06-21 10:28:46 +0200 (Die, 21. Jun 2011) | 1 line
+
+Fixed PRINT_LINK (fixes #27302)
+------------------------------------------------------------------------
+r48950 | reinhardfuehricht | 2011-06-21 10:14:12 +0200 (Die, 21. Jun 2011) | 1 line
+
+Do not loop through every field in AJAX validation, when only a single field is checked (#27581)
+------------------------------------------------------------------------
+r48949 | reinhardfuehricht | 2011-06-21 09:58:36 +0200 (Die, 21. Jun 2011) | 1 line
+
+Performance tuning for the AJAX calls (fixes #27581)
+------------------------------------------------------------------------
+r48948 | reinhardfuehricht | 2011-06-21 09:41:42 +0200 (Die, 21. Jun 2011) | 1 line
+
+Total steps weren't calculated (fixes #27330)
+------------------------------------------------------------------------
+r48921 | mabolek | 2011-06-20 14:03:57 +0200 (Mon, 20. Jun 2011) | 1 line
+
+Feature #11248 - Defining default unchecked value for checkboxes
+------------------------------------------------------------------------
+r47908 | reinhardfuehricht | 2011-05-19 17:23:54 +0200 (Don, 19. Mai 2011) | 1 line
+
+MAke the settings "key_value" available for Finisher_DifferentDB too (fixes #26857)
+------------------------------------------------------------------------
+r47867 | reinhardfuehricht | 2011-05-18 16:06:23 +0200 (Mit, 18. Mai 2011) | 1 line
+
+- Documentation update (fixes #26797 and #26793)
+------------------------------------------------------------------------
+r47319 | reinhardfuehricht | 2011-05-05 11:13:12 +0200 (Don, 05. Mai 2011) | 1 line
+
+Make date format of the options "special = sub_datetime" in Finisher_DB configurable.
+------------------------------------------------------------------------
+r47318 | reinhardfuehricht | 2011-05-05 10:57:40 +0200 (Don, 05. Mai 2011) | 1 line
+
+PreProcessing failed in Finisher_DB (fixes #26629)
+------------------------------------------------------------------------
+r46992 | reinhardfuehricht | 2011-04-26 16:41:39 +0200 (Die, 26. Apr 2011) | 1 line
+
+Fixed copy/paste error in Validator_Ajax
+------------------------------------------------------------------------
+r46973 | reinhardfuehricht | 2011-04-26 11:49:08 +0200 (Die, 26. Apr 2011) | 1 line
+
+Various fixes for PDF generation
+------------------------------------------------------------------------
+r46860 | reinhardfuehricht | 2011-04-21 16:23:39 +0200 (Don, 21. Apr 2011) | 1 line
+
+Fixed bug when using conditions fordifferent email templates.
+------------------------------------------------------------------------
+r46850 | reinhardfuehricht | 2011-04-21 14:49:33 +0200 (Don, 21. Apr 2011) | 1 line
+
+Fixed issue in controller when using different template file for each step of a multistep form.
+------------------------------------------------------------------------
+r46841 | reinhardfuehricht | 2011-04-21 11:56:57 +0200 (Don, 21. Apr 2011) | 1 line
+
+Allow LLL markers in list of uploaded files in combination with AJAX based file removal.
+------------------------------------------------------------------------
+r46757 | reinhardfuehricht | 2011-04-19 16:50:20 +0200 (Die, 19. Apr 2011) | 1 line
+
+Removed a print command
+------------------------------------------------------------------------
+r46756 | reinhardfuehricht | 2011-04-19 16:47:51 +0200 (Die, 19. Apr 2011) | 1 line
+
+Fixed bug in condition parsing. != and = did not work properly.
+------------------------------------------------------------------------
+r46748 | reinhardfuehricht | 2011-04-19 14:27:01 +0200 (Die, 19. Apr 2011) | 1 line
+
+Fixed support for wt_calculating_captcha, dropped support for simple_captcha.
+------------------------------------------------------------------------
+r46559 | reinhardfuehricht | 2011-04-15 12:21:09 +0200 (Fre, 15. Apr 2011) | 1 line
+
+ext_emconf and changelog update due to TER upload
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+---------------------------- Version 0.9.15 ----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+Version 0.9.15 contained only security fixes.
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 ---------------------------- Version 0.9.14 ----------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
