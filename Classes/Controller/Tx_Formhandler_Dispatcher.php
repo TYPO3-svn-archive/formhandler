@@ -110,6 +110,7 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			$result = '<div style="color:red; font-weight: bold">' . $e->getMessage() . '</div>';
 			if ($this->globals->getSession() && $this->globals->getSession()->get('debug')) {
 				$result .= '<div style="color:red; font-weight: bold">File: ' . $e->getFile() . '(' . $e->getLine() . ')</div>';
+				$result .= '<div style="color:red; font-weight: bold">' . $e->getTraceAsString() . '</div>';
 			}
 		}
 		if ($this->globals->getSession() && $this->globals->getSession()->get('debug')) {

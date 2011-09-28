@@ -22,6 +22,8 @@
  * @subpackage	View
  */
 class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
+	
+	protected $currentMailSettings;
 
 	/**
 	 * Main method called by the controller.
@@ -31,71 +33,35 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 	 * @return string content
 	 */
 	public function render($gp, $errors) {
-
-		//set GET/POST parameters
-		$this->gp = array();
-		$this->gp = $gp;
-
-		//set template
-		$this->template = $this->subparts['template'];
-
-		//set settings
-		$this->settings = $this->parseSettings();
-
-		//set language file
-		if (!$this->langFiles) {
-			$this->langFiles = $this->globals->getLangFiles();
+		$this->currentMailSettings = $errors;
+		$content = '';
+		if($this->subparts['template']) {
+			$this->settings = $this->globals->getSettings();
+			$content = parent::render($gp);
 		}
-
+		return $content;
+	}
+	
+	public function pi_wrapInBaseClass($content) {
+		return $content;
+	}
+	
+	protected function fillValueMarkers() {
+		$markers = $this->getValueMarkers($this->gp);
 		$componentSettings = $this->getComponentSettings();
 		if ($componentSettings[$errors['mode']][$errors['suffix'] . '.']['arrayValueSeparator']) {
 			$this->settings['arrayValueSeparator'] = $componentSettings[$errors['mode']][$errors['suffix'] . '.']['arrayValueSeparator'];
 			$this->settings['arrayValueSeparator.'] = $componentSettings[$errors['mode']][$errors['suffix'] . '.']['arrayValueSeparator.'];
 		}
-		if ($errors['suffix'] != 'plain') {
-			$this->sanitizeMarkers();
+		if ($this->currentMailSettings['suffix'] !== 'plain') {
+			$markers = $this->sanitizeMarkers($markers);
 		}
-
-		//read master template
-		if (!$this->masterTemplates) {
-			$this->readMasterTemplates();
-		}
-
-		if (!empty($this->masterTemplates)) {
-			$this->replaceMarkersFromMaster();
-		}
-
-		//substitute ISSET markers
-		$this->substituteIssetSubparts();
-
-		//fill TypoScript markers
-		if (is_array($this->settings['markers.'])) {
-			$this->fillTypoScriptMarkers();
-		}
-
-		//fill default markers
-		$this->fillDefaultMarkers();
 		
-		if(intval($this->settings['fillValueMarkersBeforeLangMarkers']) === 1) {
-			
-			//fill value_[fieldname] markers
-			$this->fillValueMarkers();
-		}
+		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
 
-		//fill LLL:[language_key] markers
-		$this->fillLangMarkers();
-		
-		$this->fillSelectedMarkers();
-
-		if(intval($this->settings['fillValueMarkersBeforeLangMarkers']) !== 1) {
-			
-			//fill value_[fieldname] markers
-			$this->fillValueMarkers();
-		}
-
-		//remove markers that were not substituted
-		$content = $this->utilityFuncs->removeUnfilledMarkers($this->template);
-		return trim($content);
+		//remove remaining VALUE_-markers
+		//needed for nested markers like ###LLL:tx_myextension_table.field1.i.###value_field1###### to avoid wrong marker removal if field1 isn't set
+		$this->template = preg_replace('/###value_.*?###/i', '', $this->template);
 	}
 
 	/**
@@ -103,19 +69,22 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 	 *
 	 * @return void
 	 */
-	protected function sanitizeMarkers() {
+	protected function sanitizeMarkers($markers) {
 		$componentSettings = $this->getComponentSettings();
 		$checkBinaryCrLf = $componentSettings['checkBinaryCrLf'];
-		if ($checkBinaryCrLf != '') {
+		if (strlen($checkBinaryCrLf) > 0) {
 			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
-			foreach ($paramsToCheck as $idx => $field) {
-				if (!is_array($field)) {
-					$this->gp[$field] = str_replace (chr(13), '', $this->gp[$field]);
-					$this->gp[$field] = str_replace ('\\', '', $this->gp[$field]);
-					$this->gp[$field] = nl2br($this->gp[$field]);
+			foreach ($markers as $markerName => &$value) {
+				
+				$fieldName = strtolower(str_replace(array('value_', 'VALUE_', '###'), '', $markerName));
+				if(in_array($fieldName, $paramsToCheck)) {
+					$value = str_replace (chr(13), '', $value);
+					$value = str_replace ('\\', '', $value);
+					$value = nl2br($value);
 				}
 			}
 		}
+		return $markers;
 	}
 
 }
