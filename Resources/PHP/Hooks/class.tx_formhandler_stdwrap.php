@@ -20,8 +20,13 @@ class tx_formhandler_stdwrap implements tslib_content_stdWrapHook {
 			$this->originalGET = $_GET;
 			$this->originalPOST = $_POST;
 			$prefix = $globals->getFormValuesPrefix();
-			$_GET[$prefix] = $globals->getGP();
-			$_POST[$prefix] = $globals->getGP();
+			if(strlen($prefix) > 0) {
+				$_GET[$prefix] = $globals->getGP();
+				$_POST[$prefix] = $globals->getGP();
+			} else {
+				$_GET = array_merge($_GET, $globals->getGP());
+				$_POST = array_merge($_POST, $globals->getGP());
+			}
 		}
 		return $content;
 	}
