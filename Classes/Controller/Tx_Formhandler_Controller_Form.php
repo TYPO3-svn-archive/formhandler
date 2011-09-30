@@ -1127,7 +1127,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	protected function loadSettingsForStep($step) {
 		//merge settings with specific settings for current step
 		if (isset($this->settings[$step . '.']) && is_array($this->settings[$step . '.'])) {
-			$this->settings = array_merge($this->settings, $this->settings[$step . '.']);
+			$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $this->settings[$step . '.']);
 		}
 		$this->globals->getSession()->set('settings', $this->settings);
 	}
