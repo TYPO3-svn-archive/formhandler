@@ -286,28 +286,30 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		reset($mailSettings['to_email']);
 
 		//send e-mails
-		foreach ($mailSettings['to_email'] as $idx => $mailto) {
-			$sent = FALSE;
-			if ($count < $max) {
-				if (strpos($mailto, '@') && $doSend) {
-					$sent = $emailObj->send($mailto);
-				}
-				$count++;
-			}
-			if ($sent) {
-				$this->utilityFuncs->debugMessage('mail_sent', array($mailto));
-			} else {
-				$this->utilityFuncs->debugMessage('mail_not_sent', array($mailto), 2);
-			}
-			$this->utilityFuncs->debugMessage('mail_subject', array($emailObj->getSubject()));
-			$this->utilityFuncs->debugMessage('mail_sender', array($emailObj->getSender()));
-			$this->utilityFuncs->debugMessage('mail_replyto', array($emailObj->getReplyTo()));
-			$this->utilityFuncs->debugMessage('mail_returnpath', array($emailObj->returnPath));
-			$this->utilityFuncs->debugMessage('mail_cc', array(implode('<br />', $emailObj->getCc())));
-			$this->utilityFuncs->debugMessage('mail_bcc', array(implode('<br />', $emailObj->getBcc())));
-			$this->utilityFuncs->debugMessage('mail_plain', array(), 1, array($template['plain']));
-			$this->utilityFuncs->debugMessage('mail_html', array(), 1, array($template['html']));
+		$recipients = $mailSettings['to_email'];
+		foreach($recipients as &$recipient) {
+			if(strpos($mailto, '@') === FALSE || strpos($mailto, '@') === 0) {
+				unset($recipient);
+ 			}
 		}
+		$recipients = array_slice($recipients, 0, $max);
+		$sent = FALSE;
+		if ($doSend) {
+			$sent = $emailObj->send(implode(',', $recipients));
+		}
+		if ($sent) {
+			$this->utilityFuncs->debugMessage('mail_sent', array(implode(',', $recipients)));
+		} else {
+			$this->utilityFuncs->debugMessage('mail_not_sent', array(implode(',', $recipients)), 2);
+		}
+		$this->utilityFuncs->debugMessage('mail_subject', array($emailObj->getSubject()));
+		$this->utilityFuncs->debugMessage('mail_sender', array($emailObj->getSender()));
+		$this->utilityFuncs->debugMessage('mail_replyto', array($emailObj->getReplyTo()));
+		$this->utilityFuncs->debugMessage('mail_returnpath', array($emailObj->returnPath));
+		$this->utilityFuncs->debugMessage('mail_cc', array(implode(',', $emailObj->getCc())));
+		$this->utilityFuncs->debugMessage('mail_bcc', array(implode(',', $emailObj->getBcc())));
+		$this->utilityFuncs->debugMessage('mail_plain', array(), 1, array($template['plain']));
+		$this->utilityFuncs->debugMessage('mail_html', array(), 1, array($template['html']));
 		if ($tmphtml) {
 			unlink($tmphtml);
 		}

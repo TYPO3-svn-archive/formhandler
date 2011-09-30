@@ -499,8 +499,11 @@ class Tx_Formhandler_UtilityFuncs {
 		} elseif (count($printfArgs) > 0) {
 			$message = vsprintf($message, $printfArgs);
 		}
+		foreach($data as &$value) {
+			$value = htmlspecialchars($value);
+		}
 		foreach($this->globals->getDebuggers() as $idx => $debugger) {
-			$debugger->addToDebugLog($message, $severity, $data);
+			$debugger->addToDebugLog(htmlspecialchars($message), $severity, $data);
 		}
 	}
 
