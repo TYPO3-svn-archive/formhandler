@@ -104,14 +104,14 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		//fill selected_[fieldname]_value markers and checked_[fieldname]_value markers
 		$this->fillSelectedMarkers();
 
-		//fill LLL:[language_key] markers again to make language markers in other markers possible
-		$this->fillLangMarkers();
-
 		//fill error_[fieldname] markers
 		if (!empty($errors)) {
 			$this->fillIsErrorMarkers($errors);
 			$this->fillErrorMarkers($errors);
 		}
+
+		//fill LLL:[language_key] markers again to make language markers in other markers possible
+		$this->fillLangMarkers();
 
 		//remove markers that were not substituted
 		$content = $this->utilityFuncs->removeUnfilledMarkers($this->template);
@@ -905,7 +905,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					$type = strtolower($type);
 					$errorMessage = $this->utilityFuncs->getTranslatedMessage($this->langFiles, 'error_' . $field . '_' . $type);
 				}
+				//Still no error message found, try to find a less specific one
+				if (strlen($errorMessage) === 0) {
+					$type = strtolower($type);
+					$errorMessage = $this->utilityFuncs->getTranslatedMessage($this->langFiles, 'error_default_' . $type);
+				}
 				if ($errorMessage) {
+					$errorMessage = str_replace(array('###fieldname###', '###FIELDNAME###'), $field, $errorMessage);
 					if (is_array($values)) {
 						foreach ($values as $key => $value) {
 							$errorMessage = str_replace('###' . $key . '###', $value, $errorMessage);

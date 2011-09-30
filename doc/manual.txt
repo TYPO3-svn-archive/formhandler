@@ -59,14 +59,14 @@ How to fill your own markers via TypoScript	51
 How to hide unfilled form field values in templates	52
 How to set up multi language forms	53
 How to load data from DB to use in Finisher_DB	54
-How to store data into more than one DB table	54
+How to store data into more than one DB table	55
 How to use your own controller	55
 How to use your own component (Interceptor, Finisher, ...)	55
 How to XCLASS Formhandler	56
 How to use a master template	56
 How to use AJAX validation	57
 How to upgrade from th_mailformplus to Formhandler	57
-TypoScript:	57
+TypoScript:	58
 HTML:	58
 Known problems	60
 To-Do list	61
@@ -3079,6 +3079,20 @@ How to set up error checks
     <label index="error_field1_maxLength">Field1 has to be shorter than ###value### characters!</label>
     <label index="error_field2_required">Field2 is required!</label>
     <label index="error_field2_email">Field2 is no valid e-mail!</label>
+
+NOTE: You can define a generic error message for a specific error check so that you don't have to add a message for each field.
+<label index="error_default_required">This field is required!</label>
+
+You can use translation markers and the marker ###fieldname### in the error message.
+<label index="error_default_required">###fieldname### is required!</label>
+<label index="error_default_required">###LLL:label_###fieldname### is required!</label>
+
+This is a fallback solution if no specific error message for this field + error check is found in the current and the default language. The order is:
+
+1. specific error message current language
+2. specific error message default language
+3. generic error message current language
+4. generic error message default language 
 
 NOTE: The marker ###value### in the error message is filled with the value of the parameter “value” for error check “maxLength”. If an error check requires parameters, you can use markers like ###[parametername]### in the translatable message.
 When you have to validate values in nested arrays you can nest the validators as well. Given following fields:
