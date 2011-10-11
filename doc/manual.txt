@@ -313,6 +313,10 @@ controller
 String
 Classname of the controller to be used
 Tx_Formhandler_Controller_Default
+userPredef
+String
+When calling Formhandler from PHP, use this setting to call a specific predefined form.
+
 formID
 String
 Value of the id attribute of the form tag. This is mandatory, if you use enableFileRemoval and have more than one form on a page. 
