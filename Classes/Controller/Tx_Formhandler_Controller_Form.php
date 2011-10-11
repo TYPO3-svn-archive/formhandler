@@ -251,9 +251,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->parseConditions();
 
 		//run init interceptors
-		if(t3lib_div::int_from_ver(TYPO3_version) >= t3lib_div::int_from_ver('4.5.3')) {
-			$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_FormProtection');
-		}
 		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
 		$output = $this->runClasses($this->settings['initInterceptors.']);
 		if (strlen($output) > 0) {
@@ -437,9 +434,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->storeSettingsInSession();
 
 		//run save interceptors
-		if(t3lib_div::int_from_ver(TYPO3_version) >= t3lib_div::int_from_ver('4.5.3')) {
-			$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_FormProtection');
-		}
 		$this->addFormhandlerClass($this->settings['saveInterceptors.'], 'Interceptor_Filtreatment');
 		$output = $this->runClasses($this->settings['saveInterceptors.']);
 		if (strlen($output) > 0) {
@@ -512,9 +506,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 
 		//run init interceptors
-		if(t3lib_div::int_from_ver(TYPO3_version) >= t3lib_div::int_from_ver('4.5.3')) {
-			$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_FormProtection');
-		}
 		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
 		$output = $this->runClasses($this->settings['initInterceptors.']);
 		if (strlen($output) > 0) {
