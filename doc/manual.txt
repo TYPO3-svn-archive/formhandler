@@ -1784,22 +1784,9 @@ Property:
 Data type:
 Description:
 Default:
-cacheCmd
+pidList
 int/string/cObj
-Enter as many finishers as you like. Each entry requires a class name of the finisher. Optional you can enter specific configuration for the finisher in the config section.  More information about available finishers and their settings is provided just below this table.
-
-Example:
-
-finishers.1.class = Tx_Formhandler_Finisher_ClearCache
-
-# The cache of page 15 will be cleared 
-finishers.1.config.cacheCmd = 15
- 
-# cObject is supported...
-finishers.1.config.cacheCmd = TEXT
-finishers.1.config.cacheCmd.data = GP:someparameter
- 
-# for other cacheCmds see phpdoc in t3lib_TCEmain->clear_cacheCmd()
+List of page Ids. The cache for each of these pages will be cleared.
 Current page
 Finisher_GenerateAuthCode
 Generates a unique token for a database entry.
