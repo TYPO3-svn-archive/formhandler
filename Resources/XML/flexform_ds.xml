@@ -325,15 +325,6 @@
 					</TCEforms>
 				</redirect_page>
 
-				<store_gp>
-					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.store_gp</label>
-						<config>
-							<type>check</type>
-						</config>
-					</TCEforms>
-				</store_gp>
-
 				<required_fields>
 					<TCEforms>
 						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.mandatoryFields</label>

@@ -451,11 +451,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if (isset($this->settings['finishers.']) && is_array($this->settings['finishers.']) && intval($this->settings['finishers.']['disable']) !== 1) {
 			ksort($this->settings['finishers.']);
 
-			//if storeGP is set include Finisher_storeGP, stores GET / POST in the session
-			if ($this->utilityFuncs->pi_getFFvalue($this->cObj->data['pi_flexform'], 'store_gp', 'sMISC')){
-				$this->addFormhandlerClass($this->settings['finishers.'], 'Finisher_StoreGP');
-			}
-
 			foreach ($this->settings['finishers.'] as $idx => $tsConfig) {
 				if ($idx !== 'disabled') {
 					if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
