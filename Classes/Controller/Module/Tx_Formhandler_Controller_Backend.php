@@ -349,6 +349,17 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			if ($availableFormatsCount === 1) {
 				$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1'); 
 				$configParams = array();
+				
+				if(!$tsconfig['properties']['config.']['csv.']['delimiter']) {
+					$tsconfig['properties']['config.']['csv.']['delimiter'] = ',';
+				}
+				if(!$tsconfig['properties']['config.']['csv.']['enclosure']) {
+					$tsconfig['properties']['config.']['csv.']['enclosure'] = '"';
+				}
+				if(!$tsconfig['properties']['config.']['csv.']['encoding']) {
+					$tsconfig['properties']['config.']['csv.']['encoding'] = '"';
+				}
+
 				// check if TSconfig filter is set
 				if ($tsconfig['properties']['config.']['csv'] != "") {
 					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
