@@ -22,7 +22,34 @@ class Tx_Formhandler_Utils_AjaxValidate {
 				$this->globals->setSession($this->componentManager->getComponent($sessionClass));
 			}
 			$validator = $this->componentManager->getComponent('Tx_Formhandler_Validator_Ajax');
-			print $validator->validateAjax($this->fieldname, $this->value);
+			+			$valid = $validator->validateAjax($this->fieldname, $this->value, $errors);
+			$this->settings = $this->globals->getSession()->get('settings');
+			$content = '';
+			if ($valid) {
+				
+				$content = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'ok');
+				if(strlen($content) === 0) {
+					$content = '<img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ok.png' . '" />';
+				} else {
+					$gp = array(
+						$_GET['field'] => $_GET['value']
+					);
+					$view = $this->initView($content);
+					$content = $view->render($gp);
+				}
+			} else {
+				$content = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'notOk');
+				if(strlen($content) === 0) {
+					$content = '<img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/notok.png' . '" />';
+				} else {
+					$view = $this->initView($content);
+					$gp = array(
+						$_GET['field'] => $_GET['value']
+					);
+					$content = $view->render($gp, $errors);
+				}
+			}
+			print $content;
 		}
 	}
 
@@ -40,10 +67,21 @@ class Tx_Formhandler_Utils_AjaxValidate {
 		$this->utilityFuncs->initializeTSFE($this->id);
 	}
 
+	protected function initView($content) {
+		$viewClass = 'Tx_Formhandler_View_AjaxValidation';
+		$view = $this->componentManager->getComponent($viewClass);
+		$view->setLangFiles($this->utilityFuncs->readLanguageFiles(array(), $this->settings));
+		$view->setSettings($this->settings);
+		$templateName = 'AJAX';
+		$template = str_replace('###fieldname###', htmlspecialchars($_GET['field']), $content);
+		$template = '###TEMPLATE_' . $templateName . '###' . $template . '###TEMPLATE_' . $templateName . '###';
+		$view->setTemplate($template, 'AJAX');
+		return $view;
+	}
 
 }
 
-$output = t3lib_div::makeInstance('Tx_Formhandler_Utils_AjaxValidate');
-$output->main();
+$validator = t3lib_div::makeInstance('Tx_Formhandler_Utils_AjaxValidate');
+$validator->main();
 
 ?>
