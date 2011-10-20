@@ -807,7 +807,9 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$pid_search = array();
 			// check is page shall be accessed by current BE user
 			foreach ($pids as $pid) {
-				if (t3lib_BEfunc::readPageAccess(intval($pid))) $pid_search[] = intval($pid);
+				if (t3lib_BEfunc::readPageAccess(intval($pid), $GLOBALS['BE_USER']->getPagePermsClause(1))) {
+					$pid_search[] = intval($pid);
+				}
 			}
 			// check if there's a valid pid left
 			$this->pidFilter = (empty($pid_search)) ? 0 : implode(",", $pid_search);
