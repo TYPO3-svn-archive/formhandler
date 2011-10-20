@@ -91,6 +91,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		//substitute ISSET markers
 		$this->substituteIssetSubparts();
+		
+		//substitute IF markers
+		$this->substituteIfSubparts();
 
 		//fill default markers
 		$this->fillDefaultMarkers();
@@ -324,6 +327,97 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$endblock = $this->cObj->getSubpart($this->template, '###FORM_ENDBLOCK###');
 		}
 		$this->globals->getSession()->setMultiple(array ('startblock' => $startblock, 'endblock' => $endblock));
+	}
+
+	/**
+	 * Use or remove subparts with IF_[fieldname]=[value] patterns
+	 *
+	 * @author  Arno Dudek <webmaster@adgrafik.at>
+	 * @return	string		substituted HTML content
+	 */
+	protected function substituteIfSubparts() {
+		$write = TRUE;
+		$out = array();
+		foreach(explode(chr(10), $this->template) as $line){
+ 
+			// works only on it's own line
+			$pattern = '/###if_+([^#]*)_*###/i';
+
+			// set for odd IF_xyz, else reset
+			if(preg_match($pattern, $line, $matches)) {
+				if(!$flags[$matches[0]] && strtolower($matches[1]) != 'end') { // set
+					$flags[$matches[0]] = TRUE;
+
+					$conditions = preg_split('/\s*(\|\||&&)\s*/i', $matches[1], -1, PREG_SPLIT_DELIM_CAPTURE);
+					$operator = NULL;
+					foreach($conditions as $condition) {
+
+						$valueConditions = preg_split('/\s*(!=|\^=|\$=|~=|=|<|>)\s*/', $condition, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+						$conditionOperator = trim($valueConditions[1]);
+						$fieldName = trim($valueConditions[0]);
+
+						$conditionResult = FALSE;
+						switch($conditionOperator) {
+							case '!=':
+								$conditionResult = $this->globals->getCObj()->getGlobal($fieldName, $this->gp) != $valueConditions[2];
+								break;
+							case '^=':
+								$conditionResult = strpos($this->globals->getCObj()->getGlobal($fieldName, $this->gp), $valueConditions[2]) === 0;
+								break;
+							case '$=':
+								$gpValue = $this->globals->getCObj()->getGlobal($fieldName, $this->gp); 
+								$checkValue = substr($valueConditions[2], -strlen($gpValue));
+								$conditionResult = (strcmp($checkValue, $gpValue) === 0);
+								break;
+							case '~=':
+								$conditionResult = strpos($valueConditions[2], $this->globals->getCObj()->getGlobal($fieldName, $this->gp)) !== FALSE;
+								break;
+							case '=':
+								$conditionResult = $this->globals->getCObj()->getGlobal($fieldName, $this->gp) == $valueConditions[2];
+								break;
+							case '>':
+								$value = $this->globals->getCObj()->getGlobal($fieldName, $this->gp);
+								if(is_numeric($value)) {
+									$conditionResult = floatval($value) > floatval($valueConditions[2]);
+								}
+								break;
+							case '<':
+								$value = $this->globals->getCObj()->getGlobal($fieldName, $this->gp);
+								if(is_numeric($value)) {
+									$conditionResult = floatval($value) < floatval($valueConditions[2]);
+								}
+								break;
+							case '>=':
+								$value = $this->globals->getCObj()->getGlobal($fieldName, $this->gp);
+								if(is_numeric($value)) {
+									$conditionResult = floatval($value) >= floatval($valueConditions[2]);
+								}
+								break;
+							case '<=':
+								$value = $this->globals->getCObj()->getGlobal($fieldName, $this->gp);
+								if(is_numeric($value)) {
+									$conditionResult = floatval($value) <= floatval($valueConditions[2]);
+								}
+								break;
+							default:
+								$conditionResult = strlen(trim($this->globals->getCObj()->getGlobal($fieldName, $this->gp))) > 0;
+						}
+					}
+
+					$write = (boolean) $conditionResult;
+				} else if($flags[$matches[0]] || strtolower($matches[1]) == 'end') { // close it
+					$flags[$matches[0]] = FALSE;
+					$write = TRUE;
+				}
+			} else if($write) {
+				$out[] = $line;
+			}
+		}
+
+		$out = implode(chr(10),$out);
+
+		$this->template = $out;
 	}
 
 	/**

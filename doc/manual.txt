@@ -57,19 +57,20 @@ How to set up error checks	50
 How to use ###is_error### markers	51
 How to fill your own markers via TypoScript	51
 How to hide unfilled form field values in templates	52
+How to hide stuff in your template using simple conditions	53
 How to set up multi language forms	53
 How to load data from DB to use in Finisher_DB	54
 How to store data into more than one DB table	55
 How to use your own controller	55
-How to use your own component (Interceptor, Finisher, ...)	55
+How to use your own component (Interceptor, Finisher, ...)	56
 How to XCLASS Formhandler	56
 How to use a master template	56
 How to use AJAX validation	57
-How to upgrade from th_mailformplus to Formhandler	57
+How to upgrade from th_mailformplus to Formhandler	58
 TypoScript:	58
-HTML:	58
-Known problems	60
-To-Do list	61
+HTML:	59
+Known problems	61
+To-Do list	62
 
 Introduction
 
@@ -2633,6 +2634,9 @@ If you use the confirmation view after successful form submission you can enter 
 Subpart for Interceptor_AntiSpamFormTime.
 ###ISSET_[FIELDNAME]###
 Use this subpart in your E-mail and confirmation templates to not show fields that were not filled out in the form. There is a how to section in this manual.
+###IF_...###
+Control which content to show depending on the GET/POST values.
+There is a how to section in this manual.
 
 Available markers to use in subparts
 
@@ -3246,6 +3250,24 @@ bad:
 <!-- ###ISSET_email### -->
 ###value _EMAIL###
 <!-- ###ISSET_email### -->
+
+How to hide stuff in your template using simple conditions
+
+Formhandler enables you to control which content to show in your templates (e.g. the email templates) depending on the user input using “IF” subparts.
+
+<!-- ###IF_field = value### -->
+    Show this
+<!-- ###IF_field = value### -->
+You can use the following operators:
+
+=   equals
+^=  begins
+$=  ends
+!=  not equal
+~=  contains
+Furthermore you can access array values and use multiple conditions:
+
+<!-- ###IF_gpvar1|sub|sub=value || gpvar2~=value### -->
 
 How to set up multi language forms
 
