@@ -187,9 +187,10 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			//check if uid of record to update is in GP
 			$uid = $this->getUpdateUid();
 			$recordExists = $this->doesRecordExist($uid);
-			
+			$andWhere = $this->utilityFuncs->getSingle($this->settings, 'andWhere');
 			if ($recordExists) {
-				$this->doUpdate($uid, $queryFields);
+				$andWhere = $this->utilityFuncs->getSingle($this->settings, 'andWhere');
+				$this->doUpdate($uid, $queryFields, $andWhere);
 			} elseif($this->settings['insertIfNoUpdatePossible']) {
 				$this->doInsert($queryFields);
 			} else {
@@ -220,9 +221,13 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		}
 	}
 	
-	protected function doUpdate($uid, $queryFields) {
+	protected function doUpdate($uid, $queryFields, $andWhere) {
 		$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
-		$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
+		$andWhere = trim($andWhere);
+		if(substr($andWhere, 0, 3) === 'AND') {
+			$andWhere = trim(substr($andWhere, 3));
+		}
+		$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid . ' AND ' . $andWhere, $queryFields);
 		$this->utilityFuncs->debugMessage('sql_request', array($query));
 		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 	}

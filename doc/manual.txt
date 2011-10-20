@@ -1982,6 +1982,10 @@ The query will look like this:
 
 UPDATE table SET field=value WHERE key=key_value
 
+andWhere
+String / cObject
+Enter an additional where clause used for the SQL query to update a record. The “AND” in front will be added by Formhandler, please do not add it yourself.
+
 updateInsteadOfInsert
 int(1/0)
 Does not store the values as a new row in the table, but tries to update an existing record. 
