@@ -52,7 +52,11 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 			$uidField = 'uid';
 		}
 		if ($table && $uid && $uidField) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $uidField . '=' . $uid);
+			$selectFields = '*';
+			if($this->settings['selectFields']) {
+				$selectFields = $this->utilityFuncs->getSingle($this->settings, 'selectFields');
+			}
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $uidField . '=' . $uid);
 			if ($res) {
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$authCode = $this->generateAuthCode($row);

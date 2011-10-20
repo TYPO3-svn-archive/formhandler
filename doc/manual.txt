@@ -1047,6 +1047,10 @@ hiddenField
 String | TypoScript Object
 The column name indicating the hidden state (e.g. hidden or disable)
 “disable” or taken from TCA if set
+selectFields
+String | Typoscript Object
+The database fields to be used to generate the comparison auth code
+*
 correctRedirectUrl
 Boolean (1/0)
 Replaces  '&amp;' with '&' in URL
@@ -1821,6 +1825,10 @@ IMPORTANT:
 The finisher stores the generated code and the link, so that they can be used in other components and email templates later on.
 You can use the markers ###auth_code###, ###value_generated_authCode### and ###value_authCodeUrl### to access these values.
 Current PID
+selectFields
+String | Typoscript Object
+The database fields to be used to generate the comparison auth code
+*
 
 Finisher_Redirect
 Redirects to specified page after successful form submission.
