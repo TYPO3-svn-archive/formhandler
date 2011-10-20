@@ -13,10 +13,14 @@ class Tx_Formhandler_Session_PHP extends Tx_Formhandler_AbstractSession {
 		if($this->settings['clearOldSession.']['value']) {
 			$threshold = $this->utilityFuncs->getTimestamp($this->settings['clearOldSession.']['value'], $this->settings['clearOldSession.']['unit']);
 		}
-		foreach($_SESSION['formhandler'] as $hashedID => $sesData) {
-			if($this->globals->getFormValuesPrefix() === $sesData['formValuesPrefix'] && $sesData['creationTstamp'] < $threshold) {
-				unset($_SESSION['formhandler'][$hashedID]);
+		if(is_array($_SESSION['formhandler'])) {
+			foreach($_SESSION['formhandler'] as $hashedID => $sesData) {
+				if($this->globals->getFormValuesPrefix() === $sesData['formValuesPrefix'] && $sesData['creationTstamp'] < $threshold) {
+					unset($_SESSION['formhandler'][$hashedID]);
+				}
 			}
+		} else {
+			$_SESSION['formhandler'] = array();
 		}
 	}
 
