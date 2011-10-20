@@ -256,6 +256,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if (strlen($output) > 0) {
 			return $output;
 		}
+		
+		//Parse conditions again. An interceptor might have added additional values.
+		$this->parseConditions();
 
 		$this->globals->setRandomID($this->gp['randomID']);
 
@@ -506,6 +509,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if (strlen($output) > 0) {
 			return $output;
 		}
+		
+		//Parse conditions again. An interceptor might have added additional values.
+		$this->parseConditions();
 
 		//display form
 		$content = $this->view->render($this->gp, $this->errors);
