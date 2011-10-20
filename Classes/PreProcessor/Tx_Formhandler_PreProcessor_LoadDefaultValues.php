@@ -68,17 +68,7 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 	function loadDefaultValuesToGP($settings) {
 
 		if (is_array($settings)) {
-			$arrKeys = array_keys($settings);
-			foreach ($arrKeys as $idx => $fieldName) {
-				$fieldName = preg_replace('/\.$/', '', $fieldName);
-				if (!isset($this->gp[$fieldName])) {
-					$this->gp[$fieldName] = $this->utilityFuncs->getSingle($settings[$fieldName . '.'], 'defaultValue');
-					if ($settings[$fieldName . '.']['defaultValue.']['separator']) {
-						$separator = $settings[$fieldName . '.']['defaultValue.']['separator'];
-						$this->gp[$fieldName] = t3lib_div::trimExplode($separator, $this->gp[$fieldName]);
-					}
-				}
-			}
+			$this->setDefaultValues($settings, $this->gp);
 		}
 	}
 
@@ -92,18 +82,27 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 	private function loadDefaultValuesToSession($settings, $step){
 		if (is_array($settings) && $step) {
 			$values = $this->globals->getSession()->get('values');
-			$arrKeys = array_keys($settings);
-			foreach ($arrKeys as $idx => $fieldName) {
+			$this->setDefaultValues($settings, $values);
+			$this->globals->getSession()->set('values', $values);
+		}
+	}
+	
+	protected function setDefaultValues($fields, &$currentLevelGP) {
+		$firstLevelFields = array_keys($fields);
+		if(is_array($firstLevelFields)) {
+			foreach ($firstLevelFields as $idx => $fieldName) {
 				$fieldName = preg_replace('/\.$/', '', $fieldName);
-				if (!isset($values[$step][$fieldName])) {
-					$values[$step][$fieldName] = $this->utilityFuncs->getSingle($settings[$fieldName . '.'], 'defaultValue');
-					if ($settings[$fieldName . '.']['defaultValue.']['separator']) {
-						$separator = $settings[$fieldName . '.']['defaultValue.']['separator'];
-						$values[$step][$fieldName] = t3lib_div::trimExplode($separator, $this->gp[$fieldName]);
+				if(!isset($fields[$fieldName . '.']['defaultValue']) && is_array($fields[$fieldName . '.'])) {
+					$this->setDefaultValues($fields[$fieldName . '.'], $currentLevelGP[$fieldName]);
+				} elseif (!isset($currentLevelGP[$fieldName])) {
+					$currentLevelGP[$fieldName] = $this->utilityFuncs->getSingle($fields[$fieldName . '.'], 'defaultValue');
+					print $fieldName . "<br />";
+					if ($fields[$fieldName . '.']['defaultValue.']['separator']) {
+						$separator = $fields[$fieldName . '.']['defaultValue.']['separator'];
+						$currentLevelGP[$fieldName] = t3lib_div::trimExplode($separator, $currentLevelGP[$fieldName]);
 					}
 				}
 			}
-			$this->globals->getSession()->set('values', $values);
 		}
 	}
 }

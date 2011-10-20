@@ -357,22 +357,18 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return void
 	 */
 	protected function fillSelectedMarkers() {
-		$markers = array();
+		$values = $this->gp;
+		unset($values['randomID']);
+		unset($values['submitted']);
+		unset($values['removeFile']);
+		unset($values['removeFileField']);
+		unset($values['submitField']);
+		unset($values['formErrors']);
+		$markers = $this->getSelectedMarkers($values);
+		$markers = array_merge($markers, $this->getSelectedMarkers($this->gp, 0, 'checked_'));
+		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
 
-		if (is_array($this->gp)) {
-			foreach ($this->gp as $k => $v) {
-				if (is_array($v)) {
-					foreach ($v as $field => $value) {
-						$markers['###checked_' . $k . '_' . $value . '###'] = 'checked="checked"';
-						$markers['###selected_' . $k . '_' . $value . '###'] = 'selected="selected"';
-					}
-				} else {
-					$markers['###checked_' . $k  .'_' . $v . '###'] = 'checked="checked"';
-					$markers['###selected_' . $k . '_' . $v . '###'] = 'selected="selected"';
-				}
-			}
-			$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
-		}
+		$this->template = preg_replace('/###(selected|checked)_.*?###/i', '', $this->template);
 	}
 
 	/**
@@ -988,6 +984,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return void
 	 */
 	protected function fillValueMarkers() {
+		$values = $this->gp;
 		$markers = $this->getValueMarkers($this->gp);
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
 
@@ -1025,6 +1022,40 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				$v = trim($v);
 				$markers['###' . $currPrefix . '###'] = $v;
 				$markers['###' . strtoupper($currPrefix) . '###'] = $markers['###' . $currPrefix . '###'];
+			}
+		}
+		return $markers;
+	}
+	
+	protected function getSelectedMarkers($values, $level = 0, $prefix = 'selected_') {
+		$markers = array();
+		$activeString = 'selected="selected"';
+		if($prefix === 'checked_') {
+			$activeString = 'checked="checked"';
+		}
+		if (is_array($values)) {
+			foreach ($values as $k => $v) {
+				$currPrefix = $prefix;
+				if ($level === 0) {
+					$currPrefix .= $k;
+				} else {
+					$currPrefix .= '|' . $k;
+				}
+				if (is_array($v)) {
+					$level++;
+					$markers = array_merge($markers, $this->getSelectedMarkers($v, $level, $currPrefix));
+					foreach($v as $arrayValue) {
+						$arrayValue = htmlspecialchars($arrayValue);
+						$markers['###' . $currPrefix . '_' . $arrayValue . '###'] = $activeString;
+						$markers['###' . strtoupper($currPrefix) . '###'] = $markers['###' . $currPrefix  . '_' . $arrayValue . '###'];
+					}
+					$level--;
+				} else {
+					$v = htmlspecialchars($v);
+					$markers['###' . $currPrefix . '_' . $v . '###'] = $activeString;
+					$markers['###' . strtoupper($currPrefix) . '###'] = $markers['###' . $currPrefix . '_' . $v . '###'];
+				}
+				
 			}
 		}
 		return $markers;
