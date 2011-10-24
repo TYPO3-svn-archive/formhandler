@@ -22,7 +22,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 				$this->globals->setSession($this->componentManager->getComponent($sessionClass));
 			}
 			$validator = $this->componentManager->getComponent('Tx_Formhandler_Validator_Ajax');
-			+			$valid = $validator->validateAjax($this->fieldname, $this->value, $errors);
+			$valid = $validator->validateAjax($this->fieldname, $this->value, $errors);
 			$this->settings = $this->globals->getSession()->get('settings');
 			$content = '';
 			if ($valid) {
