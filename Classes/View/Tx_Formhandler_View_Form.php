@@ -1105,11 +1105,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				if (is_array($v)) {
 					$level++;
 					$markers = array_merge($markers, $this->getValueMarkers($v, $level, $currPrefix));
-					foreach($v as &$arrayValue) {
-						if(!is_array($arrayValue)) {
-							$arrayValue = htmlspecialchars($arrayValue);
-						}
-					}
+					$v = $this->utilityFuncs->recursiveHtmlSpecialChars($v);
 					$v = implode($arrayValueSeparator, $v);
 					$level--;
 				} else {
@@ -1141,7 +1137,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					$level++;
 					$markers = array_merge($markers, $this->getSelectedMarkers($v, $level, $currPrefix));
 					foreach($v as $arrayValue) {
-						$arrayValue = htmlspecialchars($arrayValue);
+						$arrayValue = $this->utilityFuncs->recursiveHtmlSpecialChars($arrayValue);
 						$markers['###' . $currPrefix . '_' . $arrayValue . '###'] = $activeString;
 						$markers['###' . strtoupper($currPrefix) . '###'] = $markers['###' . $currPrefix  . '_' . $arrayValue . '###'];
 					}
