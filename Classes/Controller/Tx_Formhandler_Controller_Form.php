@@ -249,6 +249,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 
 		$this->parseConditions();
+		
+		if ($this->currentStep > $this->lastStep) {
+			$this->loadSettingsForStep($this->lastStep);
+		} else {
+			$this->loadSettingsForStep($this->currentStep);
+		}
 
 		//run init interceptors
 		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
@@ -259,6 +265,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		//Parse conditions again. An interceptor might have added additional values.
 		$this->parseConditions();
+		
+		if ($this->currentStep > $this->lastStep) {
+			$this->loadSettingsForStep($this->lastStep);
+		} else {
+			$this->loadSettingsForStep($this->currentStep);
+		}
 
 		$this->globals->setRandomID($this->gp['randomID']);
 
@@ -512,6 +524,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		
 		//Parse conditions again. An interceptor might have added additional values.
 		$this->parseConditions();
+		$this->loadSettingsForStep($this->currentStep);
 
 		//display form
 		$content = $this->view->render($this->gp, $this->errors);
