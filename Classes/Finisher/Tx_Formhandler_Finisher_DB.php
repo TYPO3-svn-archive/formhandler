@@ -227,9 +227,15 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		if(substr($andWhere, 0, 3) === 'AND') {
 			$andWhere = trim(substr($andWhere, 3));
 		}
-		$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid . ' AND ' . $andWhere, $queryFields);
+		if(strlen($andWhere) > 0) {
+			$andWhere = ' AND ' . $andWhere;
+		}
+		$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid . $andWhere, $queryFields);
 		$this->utilityFuncs->debugMessage('sql_request', array($query));
 		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
+		if($GLOBALS['TYPO3_DB']->sql_error()) {
+			$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()));
+		}
 	}
 
 	/**
