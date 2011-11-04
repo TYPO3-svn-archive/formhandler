@@ -234,7 +234,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		$this->utilityFuncs->debugMessage('sql_request', array($query));
 		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 		if($GLOBALS['TYPO3_DB']->sql_error()) {
-			$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()));
+			$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 		}
 	}
 
