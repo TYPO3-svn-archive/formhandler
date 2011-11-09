@@ -40,6 +40,8 @@ class Tx_Formhandler_ErrorCheck_MinItems extends Tx_Formhandler_AbstractErrorChe
 			} else {
 				$checkFailed = $this->getCheckFailed();
 			}
+		} else {
+			$checkFailed = $this->getCheckFailed();
 		}
 		return $checkFailed;
 	}
