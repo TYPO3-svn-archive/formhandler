@@ -1442,6 +1442,7 @@ You can access the data in PHP regardless of the session mechanism you are using
 $this->globals = Tx_Formhandler_Globals::getInstance();
 $this->globals->getSession()->get('inserted_uid');
 
+IMPORTANT: The session class can only be set on a global level for all forms. It is not possible to configure a session class for a predefined form!
 Session_PHP
 
 Stores the data in a PHP session.
