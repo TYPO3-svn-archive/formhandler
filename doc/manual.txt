@@ -3022,7 +3022,7 @@ Enable jm_recaptcha for your form
 	  class = Tx_Formhandler_Validator_Default
 	  config {
 	    fieldConf {
-	      recaptcha_response_field.errorCheck.1 = jmRecpatcha
+	      recaptcha_response_field.errorCheck.1 = jmRecaptcha
 	    }
 	  }
 	}
