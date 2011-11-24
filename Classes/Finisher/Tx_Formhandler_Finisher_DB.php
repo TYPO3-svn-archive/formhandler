@@ -295,12 +295,16 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 					//pre process the field value. e.g. to format a date
 					if (isset($options['preProcessing.']) && is_array($options['preProcessing.'])) {
-						$options['preProcessing.']['value'] = $fieldValue;
+						if(!isset($options['preProcessing.']['value'])) {
+							$options['preProcessing.']['value'] = $fieldValue;
+						}
 						$fieldValue = $this->utilityFuncs->getSingle($options, 'preProcessing');
 					}
 
 					if (isset($options['mapping.']) && is_array($options['mapping.'])) {
-						$options['mapping.']['value'] = $fieldValue;
+						if(!isset($options['mapping.']['value'])) {
+							$options['mapping.']['value'] = $fieldValue;
+						}
 						$fieldValue = $this->utilityFuncs->getSingle($options, 'mapping');
 					}
 
@@ -360,7 +364,9 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 			//post process the field value after formhandler did it's magic.
 			if (is_array($options['postProcessing.'])) {
-				$options['postProcessing.']['value'] = $fieldValue;
+				if(!isset($options['postProcessing.']['value'])) {
+					$options['postProcessing.']['value'] = $fieldValue;
+				}
 				$fieldValue = $this->utilityFuncs->getSingle($options, 'postProcessing');
 			}
 
