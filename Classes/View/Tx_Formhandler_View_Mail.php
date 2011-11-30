@@ -76,7 +76,7 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
 			foreach ($markers as $markerName => &$value) {
 				
-				$fieldName = strtolower(str_replace(array('value_', 'VALUE_', '###'), '', $markerName));
+				$fieldName = str_replace(array('value_', 'VALUE_', '###'), '', $markerName);
 				if(in_array($fieldName, $paramsToCheck)) {
 					$value = str_replace (chr(13), '', $value);
 					$value = str_replace ('\\', '', $value);
