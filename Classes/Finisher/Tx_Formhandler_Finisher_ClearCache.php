@@ -52,7 +52,7 @@ class Tx_Formhandler_Finisher_ClearCache extends Tx_Formhandler_AbstractFinisher
 
 		$this->utilityFuncs->debugMessage('Clearing Cache', array($pidList));
 
-		$GLOBALS['TSFE']->clearPageCacheContent_pidList($pidList)
+		$GLOBALS['TSFE']->clearPageCacheContent_pidList($pidList);
 		return $this->gp;
 	}
 }
