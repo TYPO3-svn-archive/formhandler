@@ -29,7 +29,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		$this->removeChars = array('<', '>', '"', "'");
+		$this->removeChars = array();
 
 		//search for a global setting for character removal
 		$globalSetting = $this->settings['fieldConf.']['global.'];
