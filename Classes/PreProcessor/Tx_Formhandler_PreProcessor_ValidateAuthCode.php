@@ -48,8 +48,8 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 				$hiddenField = 'disable';
 				if($this->settings['hiddenField']) {
 					$hiddenField = $this->utilityFuncs->getSingle($this->settings, 'hiddenField');
-				} elseif($TCA[$table]['ctrl']['enablecolumns']['hidden']) {
-					$hiddenField = $TCA[$table]['ctrl']['enablecolumns']['hidden'];
+				} elseif($TCA[$table]['ctrl']['enablecolumns']['disable']) {
+					$hiddenField = $TCA[$table]['ctrl']['enablecolumns']['disable'];
 				}
 				$selectFields = '*';
 				if($this->settings['selectFields']) {
