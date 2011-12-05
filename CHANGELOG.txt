@@ -2,6 +2,150 @@
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+---------------------------- Version 1.0.0 -----------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+r54776 | reinhardfuehricht | 2011-11-24 11:14:15 +0100 (Don, 24. Nov 2011) | 1 Zeile
+
+OpenOffice-Documentation removed. From now on the documentation is available online on www.typo3-formhandler.com
+------------------------------------------------------------------------
+r54775 | reinhardfuehricht | 2011-11-24 11:04:52 +0100 (Don, 24. Nov 2011) | 1 Zeile
+
+Make sure Finisher_DB sets the value option in mapping, preProcessing and postProcessing only if it is not set by the user (fixes #31965)
+------------------------------------------------------------------------
+r54458 | reinhardfuehricht | 2011-11-18 13:47:54 +0100 (Fre, 18. Nov 2011) | 1 Zeile
+
+Corrected a typo in the manual (fixes #31888)
+------------------------------------------------------------------------
+r54047 | reinhardfuehricht | 2011-11-11 14:17:36 +0100 (Fre, 11. Nov 2011) | 1 Zeile
+
+Added information to the manual about where to configure a session class (fixes #31185)
+------------------------------------------------------------------------
+r53970 | reinhardfuehricht | 2011-11-09 18:53:39 +0100 (Mit, 09. Nov 2011) | 1 Zeile
+
+ErrorCheck MinItems failed if no checkbox ist activates (fixes #31700)
+------------------------------------------------------------------------
+r53969 | reinhardfuehricht | 2011-11-09 18:51:10 +0100 (Mit, 09. Nov 2011) | 1 Zeile
+
+Correct data type of "formValuesPrefix" in the documentation (fixes #31708)
+------------------------------------------------------------------------
+r53703 | reinhardfuehricht | 2011-11-04 15:29:19 +0100 (Fre, 04. Nov 2011) | 1 Zeile
+
+Debug SQL error message in Finisher_DB when updating a record.
+------------------------------------------------------------------------
+r53686 | reinhardfuehricht | 2011-11-04 10:17:44 +0100 (Fre, 04. Nov 2011) | 1 Zeile
+
+Fixed a bug in Finisher_DB. "andWhere" got added to the SQL query even if not set.
+------------------------------------------------------------------------
+r53508 | reinhardfuehricht | 2011-10-28 12:10:07 +0200 (Fre, 28. Okt 2011) | 1 Zeile
+
+Fixed some PHP warnings (fixes #31375)
+------------------------------------------------------------------------
+r53507 | reinhardfuehricht | 2011-10-28 11:46:49 +0200 (Fre, 28. Okt 2011) | 1 Zeile
+
+Follow-Up-Patch: Accessing intercepted values in Conditions (fixes #31095)
+------------------------------------------------------------------------
+r53472 | reinhardfuehricht | 2011-10-27 10:27:36 +0200 (Don, 27. Okt 2011) | 1 Zeile
+
+Examples removed. Examples can soon be found on the new formhandler website.
+------------------------------------------------------------------------
+r53300 | reinhardfuehricht | 2011-10-24 16:48:41 +0200 (Mon, 24. Okt 2011) | 1 Zeile
+
+Fixed small typo
+------------------------------------------------------------------------
+r53215 | reinhardfuehricht | 2011-10-20 18:25:41 +0200 (Don, 20. Okt 2011) | 1 Zeile
+
+New TS setting "selectFields" for Finisher_GenerateAuthCode and PreProcessor_ValidateAuthCode to controll which fields are used for the auth code generation (fixes #29114).
+------------------------------------------------------------------------
+r53208 | reinhardfuehricht | 2011-10-20 16:14:57 +0200 (Don, 20. Okt 2011) | 1 Zeile
+
+Make it possible to use all available markers in the settings of AjaxHandler (fixes #30275)
+------------------------------------------------------------------------
+r53204 | reinhardfuehricht | 2011-10-20 16:00:31 +0200 (Don, 20. Okt 2011) | 1 Zeile
+
+New subparts "IF_[fieldname]=[value]" (fixes #8980).
+------------------------------------------------------------------------
+r53201 | reinhardfuehricht | 2011-10-20 15:46:15 +0200 (Don, 20. Okt 2011) | 1 Zeile
+
+News TS option "andWhere" for Finisher_DB (fixes #30434)
+------------------------------------------------------------------------
+r53198 | reinhardfuehricht | 2011-10-20 15:16:10 +0200 (Don, 20. Okt 2011) | 1 Zeile
+
+Added new icons for extension, module and new content element wizard.
+------------------------------------------------------------------------
+r53196 | reinhardfuehricht | 2011-10-20 15:13:07 +0200 (Don, 20. Okt 2011) | 1 Zeile
+
+Fixed 2 PHP warnings and removed an unwanted debug output (fixes #31145).
+------------------------------------------------------------------------
+r53195 | reinhardfuehricht | 2011-10-20 15:05:09 +0200 (Don, 20. Okt 2011) | 1 Zeile
+
+Fixed PHP Warning in Session classes (fixes #31131)
+------------------------------------------------------------------------
+r53194 | reinhardfuehricht | 2011-10-20 15:03:07 +0200 (Don, 20. Okt 2011) | 1 Zeile
+
+Make it possible to access array fields in selected/checked markers (fixes #31088)
+------------------------------------------------------------------------
+r53193 | reinhardfuehricht | 2011-10-20 15:01:56 +0200 (Don, 20. Okt 2011) | 1 Zeile
+
+Parse conditions again after the interceptors were called (fixes #31095)
+------------------------------------------------------------------------
+r53091 | reinhardfuehricht | 2011-10-18 12:46:48 +0200 (Die, 18. Okt 2011) | 1 Zeile
+
+Set default values for delimiter,enclosure and encoding for CSV generated in BE module
+------------------------------------------------------------------------
+r53073 | reinhardfuehricht | 2011-10-17 17:23:47 +0200 (Mon, 17. Okt 2011) | 1 Zeile
+
+Replaced extension icon shown in the new content element wizard and removed the icon for pi2 (resolves #30867).
+------------------------------------------------------------------------
+r52939 | reinhardfuehricht | 2011-10-12 15:56:40 +0200 (Mit, 12. Okt 2011) | 1 Zeile
+
+Removed the flexform field "Store GP". This should be set in TypoScript only using Finisher_StoreGP
+------------------------------------------------------------------------
+r52892 | reinhardfuehricht | 2011-10-11 17:07:31 +0200 (Die, 11. Okt 2011) | 1 Zeile
+
+Added a new TS option "usePredef" which is useful when calling Formhandler from PHP. (resolves #30603)
+------------------------------------------------------------------------
+r52891 | reinhardfuehricht | 2011-10-11 17:04:25 +0200 (Die, 11. Okt 2011) | 1 Zeile
+
+Fixed fatal error in Finisher_ClearCache. The TypoScript option was renamed from "cacheCmd" to "pidList". (fixes #30602)
+------------------------------------------------------------------------
+r52890 | reinhardfuehricht | 2011-10-11 16:59:28 +0200 (Die, 11. Okt 2011) | 1 Zeile
+
+Removed Interceptor_FormProtection since it didn't work well.
+------------------------------------------------------------------------
+r52581 | reinhardfuehricht | 2011-09-30 10:05:49 +0200 (Fre, 30. Sep 2011) | 1 Zeile
+
+Add possibility to define generic error messages for a specific error check (resolves #30402)
+------------------------------------------------------------------------
+r52580 | reinhardfuehricht | 2011-09-30 09:54:17 +0200 (Fre, 30. Sep 2011) | 1 Zeile
+
+Merge settings for a step with global settings instead of overwriting them (fixes #30407)
+------------------------------------------------------------------------
+r52578 | reinhardfuehricht | 2011-09-30 09:51:00 +0200 (Fre, 30. Sep 2011) | 1 Zeile
+
+Do not send emails in a loop (fixes #30466)
+------------------------------------------------------------------------
+r52513 | reinhardfuehricht | 2011-09-28 14:20:09 +0200 (Mit, 28. Sep 2011) | 1 Zeile
+
+Make stdWrap hook work without a formValuesPrefix too (fixes #30388)
+------------------------------------------------------------------------
+r52507 | reinhardfuehricht | 2011-09-28 12:20:23 +0200 (Mit, 28. Sep 2011) | 1 Zeile
+
+Fixed a bug in View_Mail causing line breaks to be put throught htmlspecialchars (fixes #30291)
+------------------------------------------------------------------------
+r52506 | reinhardfuehricht | 2011-09-28 11:46:07 +0200 (Mit, 28. Sep 2011) | 1 Zeile
+
+Raised version number due to TER upload
+------------------------------------------------------------------------
+r52417 | reinhardfuehricht | 2011-09-23 12:41:58 +0200 (Fre, 23. Sep 2011) | 1 Zeile
+
+Changelog updated
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 ---------------------------- Version 0.9.16 ----------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
