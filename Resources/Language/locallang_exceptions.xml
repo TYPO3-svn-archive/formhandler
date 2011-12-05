@@ -5,6 +5,7 @@
 			<label index="extension_required">The extension "%s" is required for %s!</label>
 			<label index="missing_config">No TypoScript config found for Formhandler! Please add the static template or write your own configuration.</label>
 			<label index="insufficient_config">Insufficient config for %s!</label>
+			<label index="error_getmxrr">The PHP version you are using is too low. The error check "emailExists" is not available on your system. Please remove it from your TypoScript configuration.</label>
 			<label index="missing_component">Missing %s! The Flexform contains '%s' but typoscript configuration is incomplete. Please add : %s</label>
 			<label index="no_config_confirmation">Missing config for %s! Please provide a '%s' either in the TypoScript configuration or in the Flexfom.</label>
 			<label index="no_pdf_template">No template for PDF found! Make sure subpart ###TEMPLATE_PDF### exists in your HTML template file!</label>
@@ -70,6 +71,7 @@ finishers {
 			<label index="extension_required"><![CDATA[Die Extension "%s" wird benötigt für %s!]]></label>
 			<label index="missing_config"><![CDATA[Keine TypoScript-Konfiguration für Formhandler gefunden! Fügen Sie das statische Template oder Ihre eigene Konfiguration ein.]]></label>
 			<label index="insufficient_config"><![CDATA[Unzureichende Konfiguration für %s!]]></label>
+			<label index="error_getmxrr"><![CDATA[Ihre PHP version ist zu niedrig, um den Error-Check "emailExists" verwenden zu können. Bitte entfernen Sie den Error-Check aus Ihrer TypoScript-Konfiguration.]]></label>
 			<label index="missing_component"><![CDATA[%s fehlt! Flexform beinhaltet '%s',aber die TypoScript-Konfiguration ist unvollständig. Bitte fügen Sie '%s' hinzu!]]></label>
 			<label index="no_config_confirmation"><![CDATA[Fehlende Konfiguration für %s! Bitte geben Sie '%s' entweder in der TypoScript-Konfiguration oderr im Flexfom ein.]]></label>
 			<label index="no_pdf_template"><![CDATA[Kein Template für PDF gefunden! Bitte prüfen Sie ob der Subpart ###TEMPLATE_PDF### im HTML-Template existiert!]]></label>
