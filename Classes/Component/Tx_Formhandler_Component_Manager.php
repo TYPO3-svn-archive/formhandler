@@ -93,6 +93,13 @@ class Tx_Formhandler_Component_Manager {
 				$overrideSettings['settings.']['additionalIncludePaths.'] = $this->getParsedIncludePaths($overrideSettings['settings.']['additionalIncludePaths.']);
 				$conf = $overrideSettings['settings.']['additionalIncludePaths.'];
 			}
+			if(TYPO3_MODE === 'BE') {
+				$tsconfig = t3lib_BEfunc::getModTSconfig(intval($_GET['id']), 'tx_formhandler_mod1'); 
+				if (is_array($tsconfig['properties']['config.']['additionalIncludePaths.'])) {
+					$conf = $tsconfig['properties']['config.']['additionalIncludePaths.'];
+					$conf = $this->getParsedIncludePaths($conf);
+				}
+			}
 			$this->additionalIncludePaths = $conf;
 		}
 	}

@@ -272,16 +272,19 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1'); 
 			$configParams = array();
 			
+			$className = 'Tx_Formhandler_Generator_TCPDF';
+			if($tsconfig['properties']['config.']['generators.']['pdf']) {
+				$className = $this->utilityFuncs->prepareClassName($tsconfig['properties']['config.']['generators.']['pdf']);
+			}
+			$generator = $this->componentManager->getComponent($className);
+			
 			// check if TSconfig filter is set
 			if (strlen($tsconfig['properties']['config.']['csv']) > 0) {
 				$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['pdf'], 1);
-				$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_TCPDF');
 				$generator->generateModulePDF($records, $configParams);	
 			} elseif (isset($gp['exportParams'])) {
-				
+
 				//if fields were chosen in selection view, export the records using the selected fields
-				
-				$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_TCPDF');
 				$generator->generateModulePDF($records, $gp['exportParams']);
 				
 				/*
@@ -359,11 +362,16 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				if(!$tsconfig['properties']['config.']['csv.']['encoding']) {
 					$tsconfig['properties']['config.']['csv.']['encoding'] = '"';
 				}
+				
+				$className = 'Tx_Formhandler_Generator_CSV';
+				if($tsconfig['properties']['config.']['generators.']['csv']) {
+					$className = $this->utilityFuncs->prepareClassName($tsconfig['properties']['config.']['generators.']['csv']);
+				}
+				$generator = $this->componentManager->getComponent($className);
 
 				// check if TSconfig filter is set
 				if ($tsconfig['properties']['config.']['csv'] != "") {
 					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
-					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
 					$generator->generateModuleCSV(
 						$records,
 						$configParams,
@@ -374,7 +382,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				} elseif (isset($params['exportParams'])) {
 					
 					//if fields were chosen in the selection view, perform the export
-					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
 					$generator->generateModuleCSV(
 						$records,
 						$params['exportParams'],
@@ -413,13 +420,10 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				// check if TSconfig filter is set
 				if ($tsconfig['properties']['config.']['csv'] != "") {
 					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
-					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
 					$generator->generateModuleCSV($renderRecords, $configParams);	
 				} elseif (isset($params['exportParams'])) {
-					
+
 					//if fields were chosen in the selection view, perform the export
-					
-					$generator = $this->componentManager->getComponent('Tx_Formhandler_Generator_CSV');
 					$generator->generateModuleCSV($renderRecords, $params['exportParams']);
 
 					//no fields chosen, show selection view.
