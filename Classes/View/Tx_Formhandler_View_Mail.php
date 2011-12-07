@@ -47,12 +47,12 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 	}
 	
 	protected function fillValueMarkers() {
-		$markers = $this->getValueMarkers($this->gp);
 		$componentSettings = $this->getComponentSettings();
-		if ($componentSettings[$errors['mode']][$errors['suffix'] . '.']['arrayValueSeparator']) {
-			$this->settings['arrayValueSeparator'] = $componentSettings[$errors['mode']][$errors['suffix'] . '.']['arrayValueSeparator'];
-			$this->settings['arrayValueSeparator.'] = $componentSettings[$errors['mode']][$errors['suffix'] . '.']['arrayValueSeparator.'];
-		}
+		if ($componentSettings[$this->currentMailSettings['mode']][$this->currentMailSettings['suffix'] . '.']['arrayValueSeparator']) {
+			$this->settings['arrayValueSeparator'] = $componentSettings[$this->currentMailSettings['mode']][$this->currentMailSettings['suffix'] . '.']['arrayValueSeparator'];
+			$this->settings['arrayValueSeparator.'] = $componentSettings[$this->currentMailSettings['mode']][$this->currentMailSettings['suffix'] . '.']['arrayValueSeparator.'];
+ 		}
+		$markers = $this->getValueMarkers($this->gp);
 		if ($this->currentMailSettings['suffix'] !== 'plain') {
 			$markers = $this->sanitizeMarkers($markers);
 		}
