@@ -37,7 +37,7 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 		$content = '';
 		if($this->subparts['template']) {
 			$this->settings = $this->globals->getSettings();
-			$content = parent::render($gp);
+			$content = parent::render($gp, array());
 		}
 		return $content;
 	}
