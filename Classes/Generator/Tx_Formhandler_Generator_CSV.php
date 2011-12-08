@@ -89,9 +89,9 @@ class Tx_Formhandler_Generator_CSV {
 			foreach ($data as $idx => &$params) {
 
 				// fill missing fields with empty value
-				foreach ($exportParams as $key => $param) {
-					if (!array_key_exists($param, $params)) {
-						$params[$param] = '';
+				foreach ($exportParams as $key => $exportParam) {
+					if (!array_key_exists($exportParam, $params)) {
+						$params[$exportParam] = '';
 					}
 				}
 
