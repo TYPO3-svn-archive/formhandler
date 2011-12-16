@@ -33,25 +33,10 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 	 */
 	public function process() {
 
-		//store in Session for further use by other plugins
-		$this->storeUserGPinSession();
-
 		//update values in session
 		$this->updateSession();
 
 		return $this->gp;
-	}
-
-	/**
-	 * Stores the GP in session.
-	 *
-	 * @return void
-	 */
-	protected function storeUserGPinSession() {
-		foreach ($this->gp as $key => $value) {
-			$GLOBALS['TSFE']->fe_user->setKey('ses', $key, $value);
-			$GLOBALS['TSFE']->fe_user->storeSessionData();
-		}
 	}
 
 	/**
@@ -63,7 +48,7 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 	protected function updateSession() {
 
 		$newValues = array();
-		
+
 		//set the variables in session
 		//no need to seperate steps in finishers, so simply store to step 1
 		foreach ($this->gp as $key => $value) {
