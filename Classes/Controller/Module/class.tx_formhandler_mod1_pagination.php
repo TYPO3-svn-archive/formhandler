@@ -218,7 +218,7 @@ class tx_formhandler_mod1_pagination {
 
 		$GPvars = t3lib_div::_GP('formhandler');
 		if (!$GPvars) $GPvars = array();
-		if ($GPvars['pointer']) unset($GPvars['pointer']);
+		unset($GPvars['pointer']);
 		if (!$GPvars['pidFilter'] && $this->id) $GPvars['pidFilter'] = intval($this->id);
 
 		$GP_url = t3lib_div::implodeArrayForUrl('formhandler', $GPvars);
