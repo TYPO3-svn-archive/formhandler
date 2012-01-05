@@ -36,6 +36,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 					);
 					$view = $this->initView($content);
 					$content = $view->render($gp);
+					$content = '<span class="success">' . $content . '</span>';
 				}
 			} else {
 				$content = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'notOk');
@@ -47,6 +48,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 						$_GET['field'] => $_GET['value']
 					);
 					$content = $view->render($gp, $errors);
+					$content = '<span class="error">' . $content . '</span>';
 				}
 			}
 			print $content;

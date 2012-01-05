@@ -3,7 +3,17 @@
 class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandler {
 
 	public function initAjax() {
-
+		$settings = $this->globals->getSession()->get('settings');
+		$autoDisableSubmitButton = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'autoDisableSubmitButton');
+		if(intval($autoDisableSubmitButton) === 1) {
+			$GLOBALS['TSFE']->additionalHeaderData['Tx_Formhandler_AjaxHandler_Jquery'] = '
+				<script type="text/javascript">
+					$(function() {
+						$(".form-invalid").attr("disabled", "disabled");
+					});
+				</script>
+			';
+		}
 	}
 
 	public function fillAjaxMarkers(&$markers) {
@@ -14,6 +24,12 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		if(strlen($loadingImg) === 0) {
 			$loadingImg = t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ajax-loader.gif';
 			$loadingImg = '<img src="' . $loadingImg . '"/>';
+		}
+		
+		
+		$autoDisableSubmitButton = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'autoDisableSubmitButton');
+		if(intval($autoDisableSubmitButton) === 1) {
+			$markers['###validation-status###'] = 'formhandler-validation-status form-invalid';
 		}
 
 		//parse validation settings
@@ -34,9 +50,10 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 							'value' => ''
 						);
 						$url = $this->globals->getCObj()->getTypoLink_Url($GLOBALS['TSFE']->id, $params);
+						
 						$markers['###validate_' . $replacedFieldname . '###'] = '
 							<span class="loading" id="loading_' . $replacedFieldname . '" style="display:none">' . $loadingImg . '</span>
-							<span id="result_' . $replacedFieldname . '">' . str_replace('###fieldname###', $replacedFieldname, $initial) . '</span>
+							<span id="result_' . $replacedFieldname . '" class="formhandler-ajax-validation-result">' . str_replace('###fieldname###', $replacedFieldname, $initial) . '</span>
 							<script type="text/javascript">
 								$(document).ready(function() {
 									$("*[name=\'' . $fieldname . '\']").blur(function() {
@@ -46,15 +63,42 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 												fieldVal = "";
 											}
 										}
-										$("#loading_' . $replacedFieldname . '").show();
-										$("#result_' . $replacedFieldname . '").hide();
+										
+										var loading = $("#loading_' . $replacedFieldname . '");
+										var result = $("#result_' . $replacedFieldname . '");
+										
+										loading.show();
+										result.hide();
 										var url = "' . $url . '";
 										url = url.replace("value=", "value=" + fieldVal);
-										$("#result_' . $replacedFieldname . '").load(url,
-										function() {
-										
-											$("#loading_' . $replacedFieldname . '").hide();
-											$("#result_' . $replacedFieldname . '").show();
+										result.load(url, function() {
+											loading.hide();
+											result.show();
+						';
+						if(intval($autoDisableSubmitButton) === 1) {
+							$markers['###validate_' . $replacedFieldname . '###'] .= '
+								if(result.find("SPAN.error").length > 0) {
+									result.data("isValid", false);
+								} else {
+									result.data("isValid", true);
+								}
+								var valid = true;
+								$("#' . $this->globals->getFormID() . ' .formhandler-ajax-validation-result").each(function() {
+									if(!$(this).data("isValid")) {
+										valid = false;
+									}
+								});
+								var button = $("#' . $this->globals->getFormID() . ' INPUT.formhandler-validation-status");
+								if(valid) {
+									button.removeAttr("disabled");
+									button.removeClass("form-invalid").addClass("form-valid");
+								} else {
+									button.attr("disabled", "disabled");
+									button.removeClass("form-valid").addClass("form-invalid");
+								}
+							';
+						}
+						$markers['###validate_' . $replacedFieldname . '###'] .= '
 										});
 									});
 								});
