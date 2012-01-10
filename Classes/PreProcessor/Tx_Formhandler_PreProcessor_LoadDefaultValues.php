@@ -47,7 +47,7 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 
 	public function process() {
 		foreach ($this->settings as $step => $stepSettings){
-			$step= preg_replace('/\.$/', '', $step);
+			$step = preg_replace('/\.$/', '', $step);
 
 			if ($step == 1){
 				$this->loadDefaultValuesToGP($stepSettings);
@@ -82,7 +82,7 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 	private function loadDefaultValuesToSession($settings, $step){
 		if (is_array($settings) && $step) {
 			$values = $this->globals->getSession()->get('values');
-			$this->setDefaultValues($settings, $values);
+			$this->setDefaultValues($settings, $values[$step]);
 			$this->globals->getSession()->set('values', $values);
 		}
 	}
