@@ -10,7 +10,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 		$this->init();
 		if ($this->fieldname) {
 			$this->globals->setCObj($GLOBALS['TSFE']->cObj);
-			$randomID = t3lib_div::_GP('randomID');
+			$randomID = htmlspecialchars(t3lib_div::_GP('randomID'));
 			$this->globals->setRandomID($randomID);
 			$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 			if(!$this->globals->getSession()) {
@@ -56,8 +56,8 @@ class Tx_Formhandler_Utils_AjaxValidate {
 	}
 
 	protected function init() {
-		$this->fieldname = $_GET['field'];
-		$this->value = $_GET['value'];
+		$this->fieldname = htmlspecialchars($_GET['field']);
+		$this->value = htmlspecialchars($_GET['value']);
 		if (isset($_GET['pid'])) {
 			$this->id = intval($_GET['pid']);
 		} else {

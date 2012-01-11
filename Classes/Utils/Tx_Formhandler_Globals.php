@@ -5,6 +5,7 @@ class Tx_Formhandler_Globals {
 	static private $instance = NULL;
 
 	protected $ajaxHandler;
+	protected $ajaxMode;
 	protected $cObj;
 	protected $debuggers;
 	protected $formID;
@@ -30,6 +31,14 @@ class Tx_Formhandler_Globals {
 	protected function __construct() {}
 	protected function __clone() {}
 
+	public function setAjaxMode($mode) {
+		$this->ajaxMode = $mode;
+	}
+	
+	public function isAjaxMode() {
+		return $this->ajaxMode;
+	}
+	
 	public function setAjaxHandler($ajaxHandler) {
 		$this->ajaxHandler = $ajaxHandler;
 	}

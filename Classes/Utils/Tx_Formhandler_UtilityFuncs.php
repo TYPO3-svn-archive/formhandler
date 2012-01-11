@@ -274,8 +274,14 @@ class Tx_Formhandler_UtilityFuncs {
 		}
 
 		if ($url) {
-			header('Status: 301 Moved Permanently');
-			header('Location: ' . t3lib_div::locationHeaderUrl($url));
+			if(!$this->globals->isAjaxMode()) {
+				header('Status: 301 Moved Permanently');
+				header('Location: ' . t3lib_div::locationHeaderUrl($url));
+			} else {
+				print '{' . json_encode('redirect') . ':' . json_encode(t3lib_div::locationHeaderUrl($url)) . '}';
+				exit;
+			}
+			
 		}
 	}
 

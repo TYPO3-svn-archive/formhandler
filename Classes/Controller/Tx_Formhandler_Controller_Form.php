@@ -745,7 +745,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				}
 			}
 		}
-
 		$this->globals->getSession()->set('values', $data);
 	}
 
@@ -1016,6 +1015,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		$this->utilityFuncs->debugMessage('using_prefix', array($this->formValuesPrefix));
 
+		
+		$this->globals->getSession()->set('predef', $this->globals->getPredef());
+		
 		//init view
 		$viewClass = $this->settings['view'];
 		if (!$viewClass) {

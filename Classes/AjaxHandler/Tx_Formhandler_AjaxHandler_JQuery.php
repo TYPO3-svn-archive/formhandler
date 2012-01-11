@@ -5,12 +5,46 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 	public function initAjax() {
 		$settings = $this->globals->getSession()->get('settings');
 		$autoDisableSubmitButton = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'autoDisableSubmitButton');
+		$js = '';
 		if(intval($autoDisableSubmitButton) === 1) {
+			$js .= '$(".form-invalid").attr("disabled", "disabled");';
+		}
+		$ajaxSubmit = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmit');
+		if(intval($ajaxSubmit) === 1) {
+			$js .= '
+			$(".Tx-Formhandler FORM").live("submit", function() {
+				return false;
+			});
+			$(".Tx-Formhandler INPUT[type=\'submit\']").live("click", function() {
+				$(".Tx-Formhandler INPUT[type=\'submit\']").attr("disabled", "disabled");
+				var container = $(this).closest(".Tx-Formhandler");
+				var form = $(this).closest("FORM");
+				var requestURL = "/index.php?id=' . $GLOBALS['TSFE']->id . '&eID=formhandler-ajaxsubmit&randomID=' . $this->globals->getRandomID() . '";
+				var postData = form.serialize() + "&" + $(this).attr("name") + "=submit";
+				container.find(".loading_ajax-submit").show();
+				$.ajax({
+				    type: "post",
+				    url: requestURL,
+				    data: postData,
+				    dataType: "json",
+				    success: function(data, textStatus) {
+				        if (data.redirect) {
+				            window.location.href = data.redirect;
+				        }
+				        else {
+				            form.closest(".Tx-Formhandler").replaceWith(data.form);
+				        }
+				    }
+				});
+				return false;
+			});';
+		}
+		if(strlen($js) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData['Tx_Formhandler_AjaxHandler_Jquery'] = '
 				<script type="text/javascript">
-					$(function() {
-						$(".form-invalid").attr("disabled", "disabled");
-					});
+				$(function() {
+				' . $js . '
+				});
 				</script>
 			';
 		}
@@ -30,6 +64,18 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		$autoDisableSubmitButton = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'autoDisableSubmitButton');
 		if(intval($autoDisableSubmitButton) === 1) {
 			$markers['###validation-status###'] = 'formhandler-validation-status form-invalid';
+		}
+		
+		$ajaxSubmit = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmit');
+
+		if(intval($ajaxSubmit) === 1) {
+			$ajaxSubmitLoader = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmitLoader');
+			if(strlen($ajaxSubmitLoader) === 0) {
+				$loadingImg = t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ajax-loader.gif';
+				$loadingImg = '<img src="' . $loadingImg . '"/>';
+				$ajaxSubmitLoader = '<span class="loading_ajax-submit">' . $loadingImg . '</span>';
+			}
+			$markers['###loading_ajax-submit###'] = $ajaxSubmitLoader;
 		}
 
 		//parse validation settings
@@ -55,7 +101,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 							<span class="loading" id="loading_' . $replacedFieldname . '" style="display:none">' . $loadingImg . '</span>
 							<span id="result_' . $replacedFieldname . '" class="formhandler-ajax-validation-result">' . str_replace('###fieldname###', $replacedFieldname, $initial) . '</span>
 							<script type="text/javascript">
-								$(document).ready(function() {
+								$(function() {
 									$("*[name=\'' . $fieldname . '\']").blur(function() {
 										var fieldVal = escape($(this).val());
 										if ($(this).attr("type") == "radio" || $(this).attr("type") == "checkbox") {

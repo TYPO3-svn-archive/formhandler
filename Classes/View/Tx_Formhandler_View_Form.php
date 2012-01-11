@@ -478,6 +478,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if (isset($parameters['id'])) {
 			unset($parameters['id']);
 		}
+		if (isset($parameters['eID'])) {
+			unset($parameters['eID']);
+		}
+		if (isset($parameters['randomID'])) {
+			unset($parameters['randomID']);
+		}
 
 		$path = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $parameters);
 		$path = htmlspecialchars($path);

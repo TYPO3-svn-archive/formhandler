@@ -4,56 +4,22 @@ require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandle
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
-class Tx_Formhandler_Utils_AjaxRemoveFile {
+class Tx_Formhandler_Utils_AjaxSubmit {
 
 	public function main() {
 		$this->init();
 		$content = '';
 
-		if ($this->fieldName) {
-			$sessionFiles = $this->globals->getSession()->get('files');
-			if (is_array($sessionFiles)) {
-				foreach ($sessionFiles as $field => $files) {
+		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_formhandler_pi1.'];
+		$settings['usePredef'] = $this->globals->getSession()->get('predef');
+		
+		$content = $GLOBALS['TSFE']->cObj->cObjGetSingle('USER', $settings);
 
-					if (!strcmp($field, $this->fieldName)) {
-						$found = FALSE;
-						foreach ($files as $key=>&$fileInfo) {
-							if (!strcmp($fileInfo['uploaded_name'], $this->uploadedFileName)) {
-								$found = TRUE;
-								unset($sessionFiles[$field][$key]);
-							}
-						}
-						if (!$found) {
-							foreach ($files as $key=>&$fileInfo) {
-								if (!strcmp($fileInfo['name'], $this->uploadedFileName)) {
-									$found = TRUE;
-									unset($sessionFiles[$field][$key]);
-								}
-							}
-						}
-					}
-				}
-			}
-
-			$this->globals->getSession()->set('files', $sessionFiles);
-
-			// Add the content to or Result Box: #formResult
-			if (is_array($sessionFiles) && !empty($sessionFiles[$field])) {
-				$markers = array();
-				$view = $this->componentManager->getComponent('Tx_Formhandler_View_Form');
-				$view->setSettings($this->settings);
-				$view->fillFileMarkers($markers);
-				$langMarkers = $this->utilityFuncs->getFilledLangMarkers($markers['###'. $this->fieldName . '_uploadedFiles###'], $this->langFiles);
-				$markers['###'. $this->fieldName . '_uploadedFiles###'] = $this->globals->getCObj()->substituteMarkerArray($markers['###'. $this->fieldName . '_uploadedFiles###'], $langMarkers);
-				$content = $markers['###'. $this->fieldName . '_uploadedFiles###'];
-			}
-		}
+		$content = '{' . json_encode('form') . ':' . json_encode($content) . '}';
 		print $content;
 	}
 
 	protected function init() {
-		$this->fieldName = htmlspecialchars($_GET['field']);
-		$this->uploadedFileName = htmlspecialchars($_GET['uploadedFileName']);
 		if (isset($_GET['pid'])) {
 			$this->id = intval($_GET['pid']);
 		} else {
@@ -68,7 +34,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		$this->globals->setCObj($GLOBALS['TSFE']->cObj);
 		$randomID = htmlspecialchars(t3lib_div::_GP('randomID'));
 		$this->globals->setRandomID($randomID);
-		
+		$this->globals->setAjaxMode(TRUE);
 		if(!$this->globals->getSession()) {
 			$ts = $GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.'];
 			$sessionClass = 'Tx_Formhandler_Session_PHP';
@@ -98,7 +64,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 
 }
 
-$output = t3lib_div::makeInstance('Tx_Formhandler_Utils_AjaxRemoveFile');
+$output = t3lib_div::makeInstance('Tx_Formhandler_Utils_AjaxSubmit');
 $output->main();
 
 ?>
