@@ -332,6 +332,13 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$hashes = array();
 			$availableFormats = array();
 
+			$className = 'Tx_Formhandler_Generator_CSV';
+			if($tsconfig['properties']['config.']['generators.']['csv']) {
+				$className = $this->utilityFuncs->prepareClassName($tsconfig['properties']['config.']['generators.']['csv']);
+			}
+			$generator = $this->componentManager->getComponent($className);
+
+
 			//loop through records
 			while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 
@@ -363,12 +370,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 					$tsconfig['properties']['config.']['csv.']['encoding'] = '"';
 				}
 				
-				$className = 'Tx_Formhandler_Generator_CSV';
-				if($tsconfig['properties']['config.']['generators.']['csv']) {
-					$className = $this->utilityFuncs->prepareClassName($tsconfig['properties']['config.']['generators.']['csv']);
-				}
-				$generator = $this->componentManager->getComponent($className);
-
 				// check if TSconfig filter is set
 				if ($tsconfig['properties']['config.']['csv'] != "") {
 					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
