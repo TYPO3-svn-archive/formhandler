@@ -218,8 +218,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					return FALSE;
 				} elseif ($matches[6] == '!' && !$isset) {
 					$return = !$this->keyIsset($matches[7]);
-				} elseif ($this->globals->getSession()->get('debug')) {
-					$this->utilityFuncs->debugMessage('invalid_isset', array($field), 2);
 				}
 			}
 		} else {
