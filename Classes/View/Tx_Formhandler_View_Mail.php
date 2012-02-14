@@ -51,8 +51,18 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 		if ($componentSettings[$this->currentMailSettings['mode']][$this->currentMailSettings['suffix'] . '.']['arrayValueSeparator']) {
 			$this->settings['arrayValueSeparator'] = $componentSettings[$this->currentMailSettings['mode']][$this->currentMailSettings['suffix'] . '.']['arrayValueSeparator'];
 			$this->settings['arrayValueSeparator.'] = $componentSettings[$this->currentMailSettings['mode']][$this->currentMailSettings['suffix'] . '.']['arrayValueSeparator.'];
- 		}
-		$markers = $this->getValueMarkers($this->gp);
+		}
+
+		/*
+		 * getValueMarkers() will call htmlSpecialChars on all values before adding them to the marker array.
+		 * In case of a plain text email, this is unwanted behavior.
+		 */
+		$doEncode = TRUE;
+		if ($this->currentMailSettings['suffix'] === 'plain') {
+			$doEncode = FALSE;
+		}
+		$markers = $this->getValueMarkers($this->gp, 0, 'value_', $doEncode);
+
 		if ($this->currentMailSettings['suffix'] !== 'plain') {
 			$markers = $this->sanitizeMarkers($markers);
 		}

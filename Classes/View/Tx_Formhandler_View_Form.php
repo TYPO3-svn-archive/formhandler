@@ -1102,7 +1102,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$this->template = preg_replace('/###value_.*?###/i', '', $this->template);
 	}
 
-	protected function getValueMarkers($values, $level = 0, $prefix = 'value_') {
+	protected function getValueMarkers($values, $level = 0, $prefix = 'value_', $doEncode = TRUE) {
 		$markers = array();
 		
 		$arrayValueSeparator = $this->utilityFuncs->getSingle($this->settings, 'arrayValueSeparator');
@@ -1120,10 +1120,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				if (is_array($v)) {
 					$level++;
 					$markers = array_merge($markers, $this->getValueMarkers($v, $level, $currPrefix));
-					$v = $this->utilityFuncs->recursiveHtmlSpecialChars($v);
+					if($doEncode) {
+						$v = $this->utilityFuncs->recursiveHtmlSpecialChars($v);
+					}
 					$v = implode($arrayValueSeparator, $v);
 					$level--;
-				} else {
+				} elseif($doEncode) {
 					$v = htmlspecialchars($v);
 				}
 				$v = trim($v);
