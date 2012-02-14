@@ -54,8 +54,6 @@
  * </code>
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Finisher
  */
 class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
@@ -198,7 +196,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			}
 		}
 	}
-	
+
 	protected function doesRecordExist($uid) {
 		$exists = FALSE;
 		if($uid) {
@@ -211,7 +209,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		}
 		return $exists;
 	}
-	
+
 	protected function doInsert($queryFields) {
 		$query = $GLOBALS['TYPO3_DB']->INSERTquery($this->table, $queryFields);
 		$this->utilityFuncs->debugMessage('sql_request', array($query));
@@ -220,7 +218,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 		}
 	}
-	
+
 	protected function doUpdate($uid, $queryFields, $andWhere) {
 		$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
 		$andWhere = trim($andWhere);

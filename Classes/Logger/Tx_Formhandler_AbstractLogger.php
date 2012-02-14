@@ -18,8 +18,6 @@
  * Abstract class for loggers
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Logger
  * @abstract
  */
 abstract class Tx_Formhandler_AbstractLogger extends Tx_Formhandler_AbstractComponent {

@@ -19,8 +19,7 @@
  * 
  * Refactored for usage with Formhandler.
  *
- * @package	TYPO3
- * @subpackage	Tx_Formhandler
+ * @author	Reinhard Führicht <rf@typoheads.at>
  */
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
@@ -30,10 +29,9 @@ class Tx_Formhandler_Component_Manager {
 	const DIRECTORY_TEMPLATE = 'Resources/Template/';
 
 	private static $instance = NULL;
-
 	protected $classFiles;
 	protected $packagePath;
-	
+
 	/**
 	 * The global Formhandler values
 	 *
@@ -151,7 +149,7 @@ class Tx_Formhandler_Component_Manager {
 					$componentObject = $this->createComponentObject($componentName, $arguments);
 				}
 			}
-			
+
 			//Component couldn't be found anywhere in the cache
 			if(!$found) {
 				$this->loadClass($componentName);
@@ -258,6 +256,7 @@ class Tx_Formhandler_Component_Manager {
 	 */
 	public function injectConstructorArguments($constructorArguments, &$injectedArguments, &$preparedArguments) {
 		foreach ($constructorArguments as $index => $constructorArgument) {
+
 			// TODO Testing the prefix is not very sophisticated. Should be is_object()
 			if (substr($constructorArgument, 0, 3) === self::PACKAGE_PREFIX . '_') {
 				$value = $this->getComponent($constructorArgument);

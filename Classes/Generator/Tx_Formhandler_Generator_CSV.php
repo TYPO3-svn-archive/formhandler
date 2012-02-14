@@ -15,11 +15,9 @@
  *                                                                        */
 
 /**
- * Class to generate CSV files in Backend and Frontend
+ * Class to generate CSV files in Backend
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Generator
  * @uses export2CSV in csv.lib.php
  */
 require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
@@ -120,6 +118,11 @@ class Tx_Formhandler_Generator_CSV {
 		die();
 	}
 
+	/**
+	 * Sorts the CSV data
+	 *
+	 * @return array The sorted array
+	 */
 	private function sortArrayByArray($array, $orderArray) {
 		$ordered = array();
 		foreach ($orderArray as $idx => $key) {

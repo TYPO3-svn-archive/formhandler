@@ -46,18 +46,18 @@
  *
  *
  * @author	Mathias Bolt Lesniak, LiliO Design <mathias@lilio.com>
- * @package	Tx_Formhandler
- * @subpackage	PreProcessor
  */
 
 class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProcessor {
 
 	/**
 	 * @var Array $data as associative array. Row data from DB.
+	 * @access protected
 	 */
 	protected $data;
 
 	/**
+	 * Main method called by the controller
 	 * 
 	 * @return Array GP
 	 */

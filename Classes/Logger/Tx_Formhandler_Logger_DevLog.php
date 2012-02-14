@@ -1,13 +1,24 @@
 <?php
+/*                                                                        *
+ * This script is part of the TYPO3 project - inspiring people to share!  *
+*                                                                        *
+* TYPO3 is free software; you can redistribute it and/or modify it under *
+* the terms of the GNU General Public License version 2 as published by  *
+* the Free Software Foundation.                                          *
+*                                                                        *
+* This script is distributed in the hope that it will be useful, but     *
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+* TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+* Public License for more details.                                       *
+*
+*                                                                        */
 /**
  * A logger to store submission information in DevLog
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Logger
  */
 class Tx_Formhandler_Logger_DevLog extends Tx_Formhandler_AbstractLogger {
-	
+
 	/**
 	 * Logs the given values.
 	 *
@@ -29,7 +40,7 @@ class Tx_Formhandler_Logger_DevLog extends Tx_Formhandler_AbstractLogger {
 			}
 		}
 		t3lib_div::devLog($message, 'formhandler', $severity, $logParams);
-		
+
 		return $this->gp;
 	}
 }

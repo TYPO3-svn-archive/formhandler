@@ -18,11 +18,14 @@
  * A simple debugger printing the messages on the screen
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Debugger
  */
 class Tx_Formhandler_Debugger_Print extends Tx_Formhandler_AbstractDebugger {
 
+	/**
+	 * Prints the messages to the screen
+	 *
+	 * @return void
+	 */
 	public function outputDebugLog() {
 		$out = '';
 
@@ -47,6 +50,11 @@ class Tx_Formhandler_Debugger_Print extends Tx_Formhandler_AbstractDebugger {
 		print $out;
 	}
 
+	/**
+	 * Sets default config for the debugger.
+	 *
+	 * @return void
+	 */
 	public function validateConfig() {
 		if(!$this->settings['sectionWrap']) {
 			$this->settings['sectionWrap'] = '<div style="border:1px solid #ccc; padding:7px; background:#dedede;">|</div>';

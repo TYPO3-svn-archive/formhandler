@@ -15,7 +15,7 @@
  *                                                                        */
 
 /**
- * Class to generate PDF files in Backend and Frontend
+ * Class to generate PDF files in Backend
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @package	Tx_Formhandler
@@ -172,6 +172,12 @@ class Tx_Formhandler_Generator_TCPDF {
 		exit;
 	}
 
+	/**
+	 * Sets the template code for the PDF
+	 *
+	 * @param string $templateCode The template code
+	 * @return void
+	 */
 	public function setTemplateCode($templateCode) {
 		$this->templateCode = $templateCode;
 	}

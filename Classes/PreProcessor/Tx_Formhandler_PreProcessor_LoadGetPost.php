@@ -18,8 +18,6 @@
  * A pre processor for Formhandler loading GET/POST parameters passed from another page.
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	PreProcessor
  */
 class Tx_Formhandler_PreProcessor_LoadGetPost extends Tx_Formhandler_AbstractPreProcessor {
 
@@ -34,6 +32,11 @@ class Tx_Formhandler_PreProcessor_LoadGetPost extends Tx_Formhandler_AbstractPre
 		return $this->gp;
 	}
 
+	/**
+	 * Loads the GET/POST parameterss into the internal storage $this->gp
+	 *
+	 * @return array The loaded parameters
+	 */
 	protected function loadGP() {
 		$gp = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
 		$formValuesPrefix = $this->globals->getFormValuesPrefix();

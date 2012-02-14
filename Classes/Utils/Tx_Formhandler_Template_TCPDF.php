@@ -1,6 +1,16 @@
 <?php
-
-/* $Id$ */
+/*                                                                        *
+ * This script is part of the TYPO3 project - inspiring people to share!  *
+*                                                                        *
+* TYPO3 is free software; you can redistribute it and/or modify it under *
+* the terms of the GNU General Public License version 2 as published by  *
+* the Free Software Foundation.                                          *
+*                                                                        *
+* This script is distributed in the hope that it will be useful, but     *
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+* TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+* Public License for more details.                                       *
+*                                                                        */
 
 if (TYPO3_MODE == 'BE') {
 	require_once('../../../Resources/PHP/tcpdf/tcpdf.php');
@@ -12,8 +22,6 @@ if (TYPO3_MODE == 'BE') {
  * A PDF Template class for Formhandler generated PDF files for usage with Generator_TCPDF.
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Utils
  */
 class Tx_Formhandler_Template_TCPDF extends TCPDF {
 
@@ -108,6 +116,12 @@ class Tx_Formhandler_Template_TCPDF extends TCPDF {
 		
 	}
 
+	/**
+	 * Get a translation for given key from "EXT:formhandler/Resources/Language/locallang.xml"
+	 *
+	 * @param string $key The key
+	 * @return string The translation
+	 */
 	private function getLL($key) {
 		global $LANG;
 		if (TYPO3_MODE == 'BE') {

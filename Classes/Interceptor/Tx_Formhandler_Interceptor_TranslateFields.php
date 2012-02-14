@@ -18,8 +18,6 @@
  * Combines values entered in form field and stores it in a new entry in $this->gp.
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Interceptor
  */
 class Tx_Formhandler_Interceptor_TranslateFields extends Tx_Formhandler_AbstractInterceptor {
 
@@ -42,6 +40,12 @@ class Tx_Formhandler_Interceptor_TranslateFields extends Tx_Formhandler_Abstract
 		return $this->gp;
 	}
 
+	/**
+	 * Searches for a translation of the configured field
+	 *
+	 * @param array $options The TS setting for the translation
+	 * @return string The translated message
+	 */
 	protected function translateFields($options) {
 		$key = $options['langKey'];
 		$field = $options['field'];

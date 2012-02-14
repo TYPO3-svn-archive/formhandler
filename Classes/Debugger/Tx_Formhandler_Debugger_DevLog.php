@@ -18,11 +18,14 @@
  * A simple debugger writing messages into devlog
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Debugger
  */
 class Tx_Formhandler_Debugger_DevLog extends Tx_Formhandler_AbstractDebugger {
 
+	/**
+	 * Inserts the messages to the devlog
+	 *
+	 * @return void
+	 */
 	public function outputDebugLog() {
 
 		foreach($this->debugLog as $section => $logData) {

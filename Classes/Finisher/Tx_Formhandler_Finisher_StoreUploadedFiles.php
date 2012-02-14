@@ -31,8 +31,6 @@
  * </code>
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Finisher
  */
 class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_AbstractFinisher {
 
@@ -42,7 +40,6 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-
 		if ($this->settings['finishedUploadFolder']) {
 
 			//move the uploaded files
@@ -77,7 +74,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 		$newFolder = $this->utilityFuncs->sanitizePath($newFolder);
 		$uploadPath = $this->utilityFuncs->getDocumentRoot() . $newFolder;
 		$sessionFiles = $this->globals->getSession()->get('files');
-		if (is_array($sessionFiles) && !empty($sessionFiles) && strlen($newFolder) > 0 ) {
+		if (is_array($sessionFiles) && !empty($sessionFiles) && strlen($newFolder) > 0) {
 			foreach ($sessionFiles as $field => $files) {
 				$this->gp[$field] = array();
 				foreach ($files as $key => $file) {
@@ -113,7 +110,6 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 	 *
 	 * @param string The current filename
 	 * @return string The new filename
-	 *
 	 **/
 	protected function getNewFilename($oldName) {
 		$fileparts = explode('.', $oldName);

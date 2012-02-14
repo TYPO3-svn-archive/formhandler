@@ -41,6 +41,12 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 		return $this->gp;
 	}
 
+	/**
+	 * Combines two or more field values
+	 *
+	 * @param array $options TS settings how to perform the combination
+	 * @return string The combined value
+	 */
 	protected function combineFields($options) {
 		if (!isset($options['separator'])) {
 			$separator = ' ';

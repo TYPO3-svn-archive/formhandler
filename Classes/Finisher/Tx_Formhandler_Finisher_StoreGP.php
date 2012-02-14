@@ -21,8 +21,6 @@
  * No further configuration.
  *
  * @author Johannes Feustel
- * @package	Tx_Formhandler
- * @subpackage	Finisher
  */
 class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 
@@ -63,7 +61,7 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 	protected function updateSession() {
 
 		$newValues = array();
-		
+
 		//set the variables in session
 		//no need to seperate steps in finishers, so simply store to step 1
 		foreach ($this->gp as $key => $value) {

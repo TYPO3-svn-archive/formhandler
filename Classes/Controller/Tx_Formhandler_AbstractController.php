@@ -18,8 +18,6 @@
  * Abstract class for Controller Classes used by Formhandler.
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Controller
  * @abstract
  */
 abstract class Tx_Formhandler_AbstractController extends Tx_Formhandler_AbstractClass implements Tx_Formhandler_ControllerInterface {

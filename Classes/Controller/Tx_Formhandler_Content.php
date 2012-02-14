@@ -18,8 +18,6 @@
  * Content to be parsed.
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Controller
  */
 class Tx_Formhandler_Content {
 

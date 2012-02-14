@@ -18,8 +18,7 @@
  * An abstract class for pre processors used by Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	PreProcessor
+ * @abstract
  */
 abstract class Tx_Formhandler_AbstractPreProcessor extends Tx_Formhandler_AbstractComponent {
 

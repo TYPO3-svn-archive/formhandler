@@ -18,8 +18,6 @@
  * Controller interface for Controller Classes of Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Controller
  */
 interface Tx_Formhandler_ControllerInterface {
 

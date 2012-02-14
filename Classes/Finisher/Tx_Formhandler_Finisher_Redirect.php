@@ -26,8 +26,6 @@
  * </code>
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Finisher
  */
 class Tx_Formhandler_Finisher_Redirect extends Tx_Formhandler_AbstractFinisher {
 

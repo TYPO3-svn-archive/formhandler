@@ -18,8 +18,6 @@
  * An abstract view for Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	View
  */
 abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 

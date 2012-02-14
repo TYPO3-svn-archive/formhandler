@@ -19,8 +19,6 @@
  * This can be used for FE user registration or newsletter registration.
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Finisher
  */
 class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFinisher {
 
@@ -104,6 +102,6 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 	protected function generateAuthCode($row) {
 		return md5(serialize($row));
 	}
-	
+
 }
 ?>

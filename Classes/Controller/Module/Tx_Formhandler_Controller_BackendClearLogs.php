@@ -16,11 +16,8 @@
  * Controller for Backend Module of Formhandler handling the "clear log" option
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Controller
  */
 class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_AbstractController {
-
 
 	/**
 	 * The Formhandler component manager
@@ -51,7 +48,13 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 		$this->configuration = $configuration;
 		$this->utilityFuncs = $utilityFuncs;
 	}
-	
+
+	/**
+	 * Sets the given ID as the current page ID.
+	 *
+	 * @param int $id
+	 * @return void
+	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
@@ -82,14 +85,13 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 
 		//init gp params
 		$params = t3lib_div::_GP('formhandler');
-		
 		if (isset($params['clearTables']) && is_array($params['clearTables'])) {
 			$this->clearTables($params['clearTables']);
 		}
 
 		return $this->getOverview();
 	}
-	
+
 	/**
 	 * Truncates tables.
 	 *
@@ -102,7 +104,7 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 				$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE ' . $table);
 		}
 	}
-	
+
 	/**
 	 * Returns HTML code for an overview table showing all found tables and how many rows are in them.
 	 *
@@ -118,10 +120,9 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 		$markers['###UID###'] = $this->id;
 		$markers['###LLL:table###'] = $LANG->getLL('table');
 		$markers['###LLL:total_rows###'] = $LANG->getLL('total_rows');
-		
+
 		$markers['###TABLES###'] = '';
 		foreach ($existingTables as $table => $tableSettings) {
-			
 			if (strpos($table, 'tx_formhandler_') > -1) {
 				$res = $GLOBALS['TYPO3_DB']->sql_query('SELECT COUNT(*) as rowCount FROM ' . $table);
 				if ($res) {
@@ -133,9 +134,7 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					$markers['###TABLES###'] .= $this->utilityFuncs->substituteMarkerArray($rowCode, $tableMarkers);
 				}
-				
 			}
-			
 		}
 		$markers['###LLL:clear###'] = $LANG->getLL('clear_selected_tables');
 		return $this->utilityFuncs->substituteMarkerArray($code, $markers);

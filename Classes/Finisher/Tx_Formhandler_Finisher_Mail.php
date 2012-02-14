@@ -65,8 +65,6 @@
  * </code>
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Finisher
  */
 class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
@@ -80,7 +78,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		//send emails
 		$this->sendMail('admin');
 		$this->sendMail('user');
-		
+
 		return $this->gp;
 	}
 
@@ -92,14 +90,15 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @return string The template code
 	 */
 	protected function parseTemplate($mode, $suffix) {
-		
+
 		$viewClass = $this->settings['view'];
 		if(!$viewClass) {
 			$viewClass = 'Tx_Formhandler_View_Mail';
 		}
+
 		/* @var $view Tx_Formhandler_AbstractView */
 		$view = $this->componentManager->getComponent($viewClass);
-		
+
 		$view->setLangFiles($this->globals->getLangFiles());
 		$view->setPredefined($this->predefined);
 		$view->setComponentSettings($this->settings);
@@ -110,7 +109,6 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		if($this->settings[$mode]['templateFile']) {
 			$templateCode = $this->utilityFuncs->readTemplateFile(FALSE, $this->settings[$mode]);
 		}
-
 
 		$view->setTemplate($templateCode, ('EMAIL_' . strtoupper($mode) . '_' . strtoupper($suffix) . $this->globals->getTemplateSuffix()));
 		if (!$view->hasTemplate()) {
@@ -437,7 +435,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	/**
 	 * Fetches the global TypoScript settings of the Formhandler
 	 *
-	 * @return void
+	 * @return array The settings
 	 */
 	protected function getSettings() {
 		return $this->configuration->getSettings();
@@ -548,11 +546,11 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 						break;
 
 					case 'attachment':
-						$emailSettings[$option] = $this->parseFilesList($currentSettings,$type,$option);
+						$emailSettings[$option] = $this->parseFilesList($currentSettings, $type, $option);
 						break;
 
 					case 'attachPDF':
-				case 'attachGeneratedFiles':
+					case 'attachGeneratedFiles':
 						if (isset($currentSettings['attachGeneratedFiles.']) && is_array($currentSettings['attachGeneratedFiles.'])) {
 							foreach($currentSettings['attachGeneratedFiles.'] as $idx => $options) {
 								$generatorClass = $options['class'];

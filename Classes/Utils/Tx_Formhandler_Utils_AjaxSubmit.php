@@ -1,11 +1,33 @@
 <?php
+/*                                                                        *
+ * This script is part of the TYPO3 project - inspiring people to share!  *
+*                                                                        *
+* TYPO3 is free software; you can redistribute it and/or modify it under *
+* the terms of the GNU General Public License version 2 as published by  *
+* the Free Software Foundation.                                          *
+*                                                                        *
+* This script is distributed in the hope that it will be useful, but     *
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+* TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+* Public License for more details.                                       *
+*                                                                        */
 
+/**
+ * A class calling the controller and returning the form content as JSON. This class is called via AJAX.
+ *
+ * @author	Reinhard Führicht <rf@typoheads.at>
+ */
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 class Tx_Formhandler_Utils_AjaxSubmit {
 
+	/**
+	 * Main method of the class.
+	 *
+	 * @return string The HTML list of remaining files to be displayed in the form
+	 */
 	public function main() {
 		$this->init();
 		$content = '';
@@ -19,6 +41,11 @@ class Tx_Formhandler_Utils_AjaxSubmit {
 		print $content;
 	}
 
+	/**
+	 * Initialize the class. Read GET parameters
+	 *
+	 * @return void
+	 */
 	protected function init() {
 		if (isset($_GET['pid'])) {
 			$this->id = intval($_GET['pid']);

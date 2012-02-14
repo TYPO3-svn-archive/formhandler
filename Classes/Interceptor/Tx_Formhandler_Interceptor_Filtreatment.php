@@ -18,8 +18,6 @@
  * An interceptor doing XSS checking on GET/POST parameters
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Interceptor
  */
 class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInterceptor {
 
@@ -173,7 +171,10 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 		}
 		return TRUE;
 	}
-	
+
+	/* (non-PHPdoc)
+	 * @see Classes/Component/Tx_Formhandler_AbstractComponent#init($gp, $settings)
+	*/
 	public function init($gp, $settings) {
 		parent::init($gp, $settings);
 		$this->doNotSanitizeFields = array();

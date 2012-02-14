@@ -23,8 +23,6 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
  * The Dispatcher instantiates the Component Manager and delegates the process to the given controller.
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Controller
  */
 class Tx_Formhandler_Dispatcher extends tslib_pibase {
 
@@ -107,7 +105,6 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			}
 
 			$result = $controller->process();
-			
 		} catch(Exception $e) {
 			$result = '<div style="color:red; font-weight: bold">' . $e->getMessage() . '</div>';
 			if ($this->globals->getSession() && $this->globals->getSession()->get('debug')) {

@@ -13,12 +13,18 @@
  *                                                                        */
 
 /**
+ * Finisher to set the currently used language to a set value.
+ * Useful if you want to send the admin email in a specific language and do not want to use the language of the user.
+ * 
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Finisher
  */
 class Tx_Formhandler_Finisher_SetLanguage extends Tx_Formhandler_AbstractFinisher {
 
+	/**
+	 * The main method called by the controller
+	 *
+	 * @return array The probably modified GET/POST parameters
+	 */
 	public function process() {
 		if($this->globals->getSession()->get('originalLanguage') === NULL) {
 			$this->globals->getSession()->set('originalLanguage', $GLOBALS['TSFE']->lang);
@@ -32,7 +38,7 @@ class Tx_Formhandler_Finisher_SetLanguage extends Tx_Formhandler_AbstractFinishe
 		}
 		return $this->gp;
 	}
-	
+
 	/**
 	 * Method to define whether the config is valid or not. If no, display a warning on the frontend.
 	 * The default value is TRUE. This up to the finisher to overload this method

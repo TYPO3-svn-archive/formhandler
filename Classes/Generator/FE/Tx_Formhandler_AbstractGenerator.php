@@ -1,6 +1,30 @@
 <?php
+/*                                                                        *
+ * This script is part of the TYPO3 project - inspiring people to share!  *
+*                                                                        *
+* TYPO3 is free software; you can redistribute it and/or modify it under *
+* the terms of the GNU General Public License version 2 as published by  *
+* the Free Software Foundation.                                          *
+*                                                                        *
+* This script is distributed in the hope that it will be useful, but     *
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+* TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+* Public License for more details.                                       *
+*                                                                        */
+
+/**
+* Abstract generator class for Formhandler
+*
+* @author	Reinhard Führicht <rf@typoheads.at>
+*/
 abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractComponent {
 
+	/**
+	* Returns the link with the right action set to be used in Finisher_SubmittedOK
+	*
+	* @param array $linkGP The GET parameters to set
+	* @return string The link
+	*/
 	public function getLink($linkGP) {
 		$text = $this->getLinkText();
 
@@ -12,6 +36,11 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 		return $this->cObj->getTypolink($text, $GLOBALS['TSFE']->id, $params, $this->getLinkTarget());
 	}
 
+	/**
+	* Returns the default link parameters of a generator containing the timestamp and hash of the log record.
+	*
+	* @return array The default parameters
+	*/
 	protected function getDefaultLinkParams() {
 		$prefix = $this->globals->getFormValuesPrefix();
 		$tempParams = array(
@@ -26,9 +55,20 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 		}
 		return $params;
 	}
-	
+
+	/**
+	 * Returns specific link parameters for a generator.
+	 *
+	 * @param array $linkGP The link parameters set before.
+	 * @return array The parameters
+	 */
 	abstract protected function getComponentLinkParams($linkGP);
-	
+
+	/**
+	 * Returns the link text.
+	 *
+	 * @return string The link text
+	 */
 	protected function getLinkText() {
 		$text = $this->utilityFuncs->getSingle($this->settings, 'linkText');
 		if(strlen($text) === 0) {
@@ -37,6 +77,11 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 		return $text;
 	}
 
+	/**
+	 * Returns the link target.
+	 *
+	 * @return string The link target
+	 */
 	protected function getLinkTarget() {
 		$target = $this->utilityFuncs->getSingle($this->settings, 'linkTarget');
 		if(strlen($target) === 0) {

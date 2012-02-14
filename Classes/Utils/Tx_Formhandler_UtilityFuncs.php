@@ -18,8 +18,6 @@
  * A class providing helper functions for Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Utils
  */
 class Tx_Formhandler_UtilityFuncs {
 
@@ -102,8 +100,8 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * Returns the first subpart encapsulated in the marker, $marker (possibly present in $content as a HTML comment)
 	 *
-	 * @param	string		Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
-	 * @param	string		Marker string, eg. "###CONTENT_PART###"
+	 * @param	string	Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
+	 * @param	string	Marker string, eg. "###CONTENT_PART###"
 	 * @return	string
 	 */
 	public function getSubpart($content, $marker) {

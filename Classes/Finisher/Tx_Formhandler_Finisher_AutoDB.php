@@ -26,28 +26,26 @@
  * in - so be sure to do that.
  *
  * @author	Christian Opitz <co@netzelf.de>
- * @package	Tx_Formhandler
- * @subpackage	Finisher
  */
 class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
-	
+
 	/**
 	 * The name of the table to put the values into.
 	 * @todo Make it protected var in Tx_Formhandler_AbstractFinisher
 	 * @var string
 	 */
 	public $settings;
-	
+
 	/**
 	 * @var t3lib_db
 	 */
 	protected $db;
-	
+
 	/**
 	 * @var string Attributes for new db fields
 	 */
 	protected $newFieldsSqlAttribs = 'TINYTEXT NOT NULL';
-	
+
 	/**
 	 * Initialize the component
 	 * 
@@ -60,7 +58,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 		}
 		$this->settings = $settings;
 		parent::init($gp, $settings);
-		
+
 		if ($this->settings['newFieldsSqlAttribs']) {
 			$this->newFieldsSqlAttribs = $this->settings['newFieldsSqlAttribs'];
 		}
@@ -106,7 +104,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 
 		return (array) $matches[2];
 	}
-	
+
 	/**
 	 * Gets the top level fields from the formFieldNames (@see getFormFieldNames)
 	 * 
@@ -129,7 +127,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 
 		return $fields;
 	}
-	
+
 	/**
 	 * Looks if the specified table exists and if not create it with the key-
 	 * field (uid). Then it syncs the DB-fields with the fields found in the form 
@@ -137,7 +135,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 	 */
 	protected function createTable() {
 		$fields = $this->getFormFields();
-		
+
 		if ($this->settings['excludeFields']) {
 			$excludes = t3lib_div::trimExplode(',', $this->settings['excludeFields']);
 			foreach ($excludes as $exclude) {
@@ -151,7 +149,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 		}
 		
 		$res = $this->db->sql_query("SHOW TABLES LIKE '" . $this->table . "'");
-		
+
 		if (!$this->db->sql_num_rows($res)) {
 			$query = "CREATE TABLE `" . $this->table . "` (
 				`" . $this->key . "` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
@@ -159,12 +157,13 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 			$this->db->sql_query($query);
 			$this->utilityFuncs->debugMessage('sql_request', array($query));
 			$dbFields = array($this->key);
-		}else{
+		} else{
 			$dbFields = array_keys($this->db->admin_get_fields($this->table));
 		}
-		
+		$this->db->sql_free_result($res);
+
 		$createFields = array_diff($fields, $dbFields);
-		
+
 		if (count($createFields)) {
 			$sql = 'ALTER TABLE ' . $this->table . ' ADD `';
 			$sql .= implode('` ' . $this->newFieldsSqlAttribs . ', ADD `', $createFields);

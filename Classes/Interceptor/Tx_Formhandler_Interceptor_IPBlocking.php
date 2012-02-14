@@ -45,8 +45,6 @@
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @see Tx_Formhandler_Logger_DB
- * @package	Tx_Formhandler
- * @subpackage	Interceptor
  */
 class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInterceptor {
 

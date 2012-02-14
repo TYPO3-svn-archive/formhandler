@@ -32,8 +32,7 @@
  *
  * Further configuration equals the configuration of Tx_Formhandler_Finisher_DB.
  *
- * @package	Tx_Formhandler
- * @subpackage	Finisher
+ * @author	Reinhard Führicht <rf@typoheads.at>
  * @see Tx_Formhandler_Finisher_DB
  */
 class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {

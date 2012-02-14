@@ -1,7 +1,24 @@
 <?php
+/*                                                                        *
+ * This script is part of the TYPO3 project - inspiring people to share!  *
+*                                                                        *
+* TYPO3 is free software; you can redistribute it and/or modify it under *
+* the terms of the GNU General Public License version 2 as published by  *
+* the Free Software Foundation.                                          *
+*                                                                        *
+* This script is distributed in the hope that it will be useful, but     *
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+* TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+* Public License for more details.                                       *
+*                                                                        */
 
+/**
+ * PDF generator class for Formhandler using the extension "webkitpdf"
+ *
+ * @author	Reinhard Führicht <rf@typoheads.at>
+ */
 class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerator {
-	
+
 	/**
 	 * Renders the PDF.
 	 *
@@ -33,7 +50,12 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 			return $generator->main('', $config);
 		}
 	}
-	
+
+	/**
+	 * Reads the TS configuration of the extension "webkitpdf".
+	 *
+	 * @return array $conf
+	 */
 	protected function readWebkitPdfConf() {
 		$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
 
@@ -55,6 +77,9 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 		return $conf;
 	}
 
+	/* (non-PHPdoc)
+	 * @see Classes/Generator/Tx_Formhandler_AbstractGenerator#getLink($linkGP)
+	*/
 	public function getLink($linkGP) {
 		$params = $this->getDefaultLinkParams();
 		$componentParams = $this->getComponentLinkParams($linkGP);
@@ -74,6 +99,9 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 		return $this->cObj->getTypolink($text, $this->settings['pid'], $params);
 	}
 
+	/* (non-PHPdoc)
+	 * @see Classes/Generator/Tx_Formhandler_AbstractGenerator#getComponentLinkParams($linkGP)
+	*/
 	protected function getComponentLinkParams($linkGP) {
 		$prefix = $this->globals->getFormValuesPrefix();
 		$tempParams = array(
@@ -88,6 +116,9 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 		return $params;
 	}
 
+	/* (non-PHPdoc)
+	 * @see Classes/Generator/Tx_Formhandler_AbstractGenerator#getLinkText()
+	*/
 	protected function getLinkText() {
 		$config = $this->readWebkitPdfConf();
 		$text = $this->utilityFuncs->getSingle($config, 'linkText');

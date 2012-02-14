@@ -18,8 +18,6 @@
  * Abstract class for Finisher Classes used by Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Finisher
  * @abstract
  */
 abstract class Tx_Formhandler_AbstractFinisher extends Tx_Formhandler_AbstractComponent {

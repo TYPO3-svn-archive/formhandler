@@ -89,11 +89,9 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 		return FALSE;
 	}
 
-	/**
-	 * Sets the content of the html part of the message
-	 *
-	 * @param string $html
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#setHTML()
+	*/
 	public function setHTML($html) {
 
 		if (!isset($this->htmlMimePart)) {
@@ -108,11 +106,9 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 		}
 	}
 
-	/**
-	 * Sets the content of the plain text part of the message
-	 *
-	 * @param string $plain
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#setPlain()
+	*/
 	public function setPlain($plain) {
 
 		if (!isset($this->plainMimePart)) {
@@ -127,11 +123,9 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 		}
 	}
 
-	/**
-	 * Sets the subject of the mail
-	 *
-	 * @param string $value
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#setSubject()
+	*/
 	public function setSubject($value) {
 		$this->emailObj->setSubject($value);
 	}
@@ -151,78 +145,53 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 		}
 	}
 
-	/**
-	 * Sets the name and email of the reply to contact
-	 *
-	 * @param string $email
-	 * @param string $name
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#setReplyTo()
+	*/
 	public function setReplyTo($email, $name) {
 		if (!empty($email)) {
 			$this->emailObj->setReplyTo($email, $name);
 		}
 	}
 
-	/**
-	 * Adds the name and email of a cc recipient
-	 *
-	 * @param string $email
-	 * @param string $name
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#addCc()
+	*/
 	public function addCc($email, $name) {
 		$this->emailObj->addCc($email, $name);
 	}
 
-	/**
-	 * Adds the name and email of a bcc recipient
-	 *
-	 * @param string $email
-	 * @param string $name
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#addBcc()
+	*/
 	public function addBcc($email, $name) {
 		$this->emailObj->addBcc($email, $name);
 	}
 
-	/**
-	 * Sets the return path to the given value
-	 *
-	 * @param string $value RFC 2822 compatible email address
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#setReturnPath()
+	*/
 	public function setReturnPath($value) {
 		$this->emailObj->setReturnPath($value);
 	}
 
-	/**
-	 * Adds a header to the message
-	 *
-	 * Does not work at the moment!
-	 *
-	 * @param $value
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#addHeader()
+	*/
 	public function addHeader($value) {
 		//@TODO: Find a good way to make headers configurable
 	}
 
-	/**
-	 * Adds the given file as an attachment to the mail
-	 *
-	 * @param string $value path to the file to add
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#addAttachment()
+	*/
 	public function addAttachment($value) {
-
-			// since there is no error / exception handling in Tx_Formhandler_Finisher_Mail::sendMail()
-			// we will silently ignore non existing files
-			// thanks to Christoph Hofmann (http://forge.typo3.org/issues/12926)
-		if (@file_exists($value)) {
-			$this->emailObj->attach(Swift_Attachment::fromPath($value));
-		}
+		$this->emailObj->attach(Swift_Attachment::fromPath($value));
 	}
 
-	/**
-	 * Returns the current html content
-	 *
-	 * @return string
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#getHTML()
+	*/
 	public function getHTML() {
 		if (isset($this->htmlMimePart)) {
 			return $this->htmlMimePart->getBody();
@@ -231,11 +200,9 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 		}
 	}
 
-	/**
-	 * Returns the current plain text content
-	 *
-	 * @return string
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#getPlain()
+	*/
 	public function getPlain() {
 		if (isset($this->plainMimePart)) {
 			return $this->plainMimePart->getBody();
@@ -244,38 +211,30 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 		}
 	}
 
-	/**
-	 * Returns the current subject
-	 *
-	 * @return string
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#getSubject()
+	*/
 	public function getSubject() {
 		return $this->emailObj->getSubject();
 	}
 
-	/**
-	 * Returns the current sender
-	 *
-	 * @return array containing the sender email and optionally the sender name
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#getSender()
+	*/
 	public function getSender() {
 		return $this->emailObj->getFrom();
 	}
 
-	/**
-	 * Returns the current reply to value
-	 *
-	 * @return array containing the reply-to address and optionally the reply-to name
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#getReplyTo()
+	*/
 	public function getReplyTo() {
 		return $this->emailObj->getReplyTo();
 	}
 
-	/**
-	 * Returns the current cc email addresses in an array
-	 *
-	 * @return array
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#getCc()
+	*/
 	public function getCc() {
 		$ccArray = $this->emailObj->getCc();
 		$ccConcat = array();
@@ -287,11 +246,9 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 		return $ccConcat;
 	}
 
-	/**
-	 * Returns the current bcc email addresses in an array
-	 *
-	 * @return array
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#getBcc()
+	*/
 	public function getBcc() {
 		$bccArray = $this->emailObj->getBcc();
 		$bccConcat = array();
@@ -303,11 +260,9 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 		return $bccConcat;
 	}
 
-	/**
-	 * Returns the return path
-	 *
-	 * @return string RFC 2822 compatible email address
-	 */
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#getReturnPath()
+	*/
 	public function getReturnPath() {
 		return $this->emailObj->getReturnPath();
 	}

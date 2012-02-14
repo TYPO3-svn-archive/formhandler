@@ -39,8 +39,6 @@
  * plugin.Tx_Formhandler.settings.predef.multistep_example.2.validators.1.config.fieldConf.[field].errorcheck.1.notDefaultValue.defaultValue < plugin.Tx_Formhandler.settings.predef.multistep_example.preProcessors.1.config.1.[field].defaultValue
  *
  * @author	Johannes Feustel
- * @package	Tx_Formhandler
- * @subpackage	PreProcessor
  */
 
 class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_AbstractPreProcessor {
@@ -86,7 +84,14 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 			$this->globals->getSession()->set('values', $values);
 		}
 	}
-	
+
+	/**
+	 * Recursive method to set the GP values 
+	 *
+	 * @return void
+	 * @param array $fields
+	 * @param array &$currentLevelGP
+	 */
 	protected function setDefaultValues($fields, &$currentLevelGP) {
 		$firstLevelFields = array_keys($fields);
 		if(is_array($firstLevelFields)) {

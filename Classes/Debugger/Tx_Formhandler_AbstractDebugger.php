@@ -18,18 +18,29 @@
  * An abstract debugger
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Debugger
  * @abstract
  */
 abstract class Tx_Formhandler_AbstractDebugger extends Tx_Formhandler_AbstractComponent {
 
 	protected $debugLog = array();
 
+	/**
+	 * The main method called by the controller
+	 *
+	 * @return array The probably modified GET/POST parameters
+	 */
 	public function process() {
 		//Not available for this type of component
 	}
 
+	/**
+	 * Adds a message to the internal message storage
+	 *
+	 * @param string $message The message to log
+	 * @param int $severity The severity of the message (1,2,3)
+	 * @param array $data Additional data to log
+	 * @return void
+	 */
 	public function addToDebugLog($message = '', $severity = 1, array $data = array()) {
 		$trace = debug_backtrace();
 		$section = '';
@@ -47,6 +58,12 @@ abstract class Tx_Formhandler_AbstractDebugger extends Tx_Formhandler_AbstractCo
 		}
 	}
 
+	/**
+	 * Called if all messages were added to the internal message storage.
+	 * The component decides how to output the messages.
+	 *
+	 * @return void/mixed
+	 */
 	abstract public function outputDebugLog();
 }
 

@@ -1,11 +1,33 @@
 <?php
+/*                                                                        *
+ * This script is part of the TYPO3 project - inspiring people to share!  *
+*                                                                        *
+* TYPO3 is free software; you can redistribute it and/or modify it under *
+* the terms of the GNU General Public License version 2 as published by  *
+* the Free Software Foundation.                                          *
+*                                                                        *
+* This script is distributed in the hope that it will be useful, but     *
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+* TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+* Public License for more details.                                       *
+*                                                                        */
 
+/**
+ * A class removing uploaded files. This class is called via AJAX.
+ *
+ * @author	Reinhard Führicht <rf@typoheads.at>
+ */
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 class Tx_Formhandler_Utils_AjaxRemoveFile {
 
+	/**
+	 * Main method of the class.
+	 *
+	 * @return string The HTML list of remaining files to be displayed in the form
+	 */
 	public function main() {
 		$this->init();
 		$content = '';
@@ -51,6 +73,11 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		print $content;
 	}
 
+	/**
+	 * Initialize the class. Read GET parameters
+	 *
+	 * @return void
+	 */
 	protected function init() {
 		$this->fieldName = htmlspecialchars($_GET['field']);
 		$this->uploadedFileName = htmlspecialchars($_GET['uploadedFileName']);
@@ -68,7 +95,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		$this->globals->setCObj($GLOBALS['TSFE']->cObj);
 		$randomID = htmlspecialchars(t3lib_div::_GP('randomID'));
 		$this->globals->setRandomID($randomID);
-		
+
 		if(!$this->globals->getSession()) {
 			$ts = $GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.'];
 			$sessionClass = 'Tx_Formhandler_Session_PHP';
@@ -77,7 +104,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 			}
 			$this->globals->setSession($this->componentManager->getComponent($sessionClass));
 		}
-		
+
 		$this->settings = $this->globals->getSession()->get('settings');
 		$this->langFiles = $this->utilityFuncs->readLanguageFiles(array(), $this->settings);
 

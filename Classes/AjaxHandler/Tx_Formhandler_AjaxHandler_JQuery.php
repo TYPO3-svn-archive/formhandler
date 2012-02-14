@@ -1,7 +1,29 @@
 <?php
+/*                                                                       *
+* This script is part of the TYPO3 project - inspiring people to share!  *
+*                                                                        *
+* TYPO3 is free software; you can redistribute it and/or modify it under *
+* the terms of the GNU General Public License version 2 as published by  *
+* the Free Software Foundation.                                          *
+*                                                                        *
+* This script is distributed in the hope that it will be useful, but     *
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+* TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+* Public License for more details.                                       *
+*                                                                        */
 
+/**
+ * Implementation of an AjaxHandler using the jQuery Framework.
+ *
+ * @author	Reinhard Führicht <rf@typoheads.at>
+ */
 class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandler {
 
+	/**
+	 * Initialize AJAX stuff
+	 *
+	 * @return void
+	 */
 	public function initAjax() {
 		$settings = $this->globals->getSession()->get('settings');
 		$autoDisableSubmitButton = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'autoDisableSubmitButton');
@@ -23,18 +45,18 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 				var postData = form.serialize() + "&" + $(this).attr("name") + "=submit";
 				container.find(".loading_ajax-submit").show();
 				$.ajax({
-				    type: "post",
-				    url: requestURL,
-				    data: postData,
-				    dataType: "json",
-				    success: function(data, textStatus) {
-				        if (data.redirect) {
-				            window.location.href = data.redirect;
-				        }
-				        else {
-				            form.closest(".Tx-Formhandler").replaceWith(data.form);
-				        }
-				    }
+					type: "post",
+					url: requestURL,
+					data: postData,
+					dataType: "json",
+					success: function(data, textStatus) {
+						if (data.redirect) {
+							window.location.href = data.redirect;
+						}
+						else {
+							form.closest(".Tx-Formhandler").replaceWith(data.form);
+						}
+					}
 				});
 				return false;
 			});';
@@ -50,24 +72,30 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		}
 	}
 
+	/**
+	 * Method called by the view to let the AjaxHandler add its markers.
+	 *
+	 * The view passes the marker array by reference.
+	 *
+	 * @param array &$markers Reference to the marker array
+	 * @return void
+	 */
 	public function fillAjaxMarkers(&$markers) {
 		$settings = $this->globals->getSession()->get('settings');
 		$initial = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'initial');
-		
+
 		$loadingImg = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'loading');
 		if(strlen($loadingImg) === 0) {
 			$loadingImg = t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ajax-loader.gif';
 			$loadingImg = '<img src="' . $loadingImg . '"/>';
 		}
-		
-		
+
 		$autoDisableSubmitButton = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'autoDisableSubmitButton');
 		if(intval($autoDisableSubmitButton) === 1) {
 			$markers['###validation-status###'] = 'formhandler-validation-status form-invalid';
 		}
-		
-		$ajaxSubmit = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmit');
 
+		$ajaxSubmit = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmit');
 		if(intval($ajaxSubmit) === 1) {
 			$ajaxSubmitLoader = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmitLoader');
 			if(strlen($ajaxSubmitLoader) === 0) {
@@ -96,7 +124,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 							'value' => ''
 						);
 						$url = $this->globals->getCObj()->getTypoLink_Url($GLOBALS['TSFE']->id, $params);
-						
+
 						$markers['###validate_' . $replacedFieldname . '###'] = '
 							<span class="loading" id="loading_' . $replacedFieldname . '" style="display:none">' . $loadingImg . '</span>
 							<span id="result_' . $replacedFieldname . '" class="formhandler-ajax-validation-result">' . str_replace('###fieldname###', $replacedFieldname, $initial) . '</span>
@@ -109,10 +137,8 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 												fieldVal = "";
 											}
 										}
-										
 										var loading = $("#loading_' . $replacedFieldname . '");
 										var result = $("#result_' . $replacedFieldname . '");
-										
 										loading.show();
 										result.hide();
 										var url = "' . $url . '";
@@ -156,6 +182,14 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		}
 	}
 
+	/**
+	 * Method called by the view to get an AJAX based file removal link.
+	 *
+	 * @param string $text The link text to be used
+	 * @param string $field The field name of the form field
+	 * @param string $uploadedFileName The name of the file to be deleted
+	 * @return void
+	 */
 	public function getFileRemovalLink($text, $field, $uploadedFileName) {
 		$params = array(
 			'eID' => 'formhandler-removefile',
