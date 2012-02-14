@@ -262,8 +262,10 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			$mailSettings['attachment'] = array($mailSettings['attachment']);
 		}
 		foreach ($mailSettings['attachment'] as $idx => $attachment) {
-			if (strlen($attachment) > 0) {
+			if (strlen($attachment) > 0 && @file_exists($attachment)) {
 				$emailObj->addAttachment($attachment);
+			} else {
+				$this->utilityFuncs->debugMessage('attachment_not_found', array($attachment), 2);
 			}
 		}
 		if ($mailSettings['attachGeneratedFiles']) {
