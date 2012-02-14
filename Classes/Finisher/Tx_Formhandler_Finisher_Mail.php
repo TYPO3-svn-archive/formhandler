@@ -304,14 +304,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		} else {
 			$this->utilityFuncs->debugMessage('mail_not_sent', array(implode(',', $recipients)), 2);
 		}
-		$this->utilityFuncs->debugMessage('mail_subject', array($emailObj->getSubject()));
-		$this->utilityFuncs->debugMessage('mail_sender', array($emailObj->getSender()));
-		$this->utilityFuncs->debugMessage('mail_replyto', array($emailObj->getReplyTo()));
-		$this->utilityFuncs->debugMessage('mail_returnpath', array($emailObj->returnPath));
-		$this->utilityFuncs->debugMessage('mail_cc', array(implode(',', $emailObj->getCc())));
-		$this->utilityFuncs->debugMessage('mail_bcc', array(implode(',', $emailObj->getBcc())));
-		$this->utilityFuncs->debugMessage('mail_plain', array(), 1, array($template['plain']));
-		$this->utilityFuncs->debugMessage('mail_html', array(), 1, array($template['html']));
+		$this->utilityFuncs->debugMailContent($emailObj);
 		if ($tmphtml) {
 			unlink($tmphtml);
 		}

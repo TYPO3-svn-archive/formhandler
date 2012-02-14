@@ -35,6 +35,9 @@ abstract class Tx_Formhandler_AbstractDebugger extends Tx_Formhandler_AbstractCo
 		$section = '';
 		if (isset($trace[2])) {
 			$section = $trace[2]['class'];
+			if($section === 'Tx_Formhandler_UtilityFuncs') {
+				$section = $trace[3]['class'];
+			}
 		}
 		if(!$message && !isset($this->debugLog[$section])) {
 			$this->debugLog[$section] = array();

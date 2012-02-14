@@ -511,6 +511,28 @@ class Tx_Formhandler_UtilityFuncs {
 		}
 	}
 
+	public function debugMailContent($emailObj) {
+		$this->debugMessage('mail_subject', array($emailObj->getSubject()));
+		
+		$sender = $emailObj->getSender();
+		if(!is_array($sender)) {
+			$sender = array($sender);
+		}
+		$this->debugMessage('mail_sender', array(), 1, $sender);
+
+		$replyTo = $emailObj->getReplyTo();
+		if(!is_array($replyTo)) {
+			$replyTo = array($replyTo);
+		}
+		$this->debugMessage('mail_replyto', array(), 1, $replyTo);
+
+		$this->debugMessage('mail_cc', array(), 1, (array)$emailObj->getCc());
+		$this->debugMessage('mail_bcc', array(), 1, (array)$emailObj->getBcc());
+		$this->debugMessage('mail_returnpath', array(), 1, array($emailObj->returnPath));
+		$this->debugMessage('mail_plain', array(), 1, array($emailObj->getPlain()));
+		$this->debugMessage('mail_html', array(), 1, array($emailObj->getHTML()));
+	}
+
 	/**
 	 * Manages the exception throwing
 	 *
