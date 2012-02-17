@@ -70,8 +70,6 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 					$this->utilityFuncs->throwException('validateauthcode_update_failed');
 				}
 
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
 				$redirectPage = $this->utilityFuncs->getSingle($this->settings, 'redirectPage');
 				if($redirectPage) {
 					$this->utilityFuncs->doRedirect($redirectPage, $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
