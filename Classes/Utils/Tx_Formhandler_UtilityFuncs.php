@@ -728,6 +728,7 @@ class Tx_Formhandler_UtilityFuncs {
 			// Get the page
 		$TSFE->fetch_the_id();
 		$TSFE->getConfigArray();
+		$TSFE->includeLibraries($TSFE->tmpl->setup['includeLibs.']);
 		$TSFE->newCObj();
 	}
 	
