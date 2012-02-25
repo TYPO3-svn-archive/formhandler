@@ -46,7 +46,9 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 			$this->log(TRUE);
 			if ($this->settings['redirectPage']) {
 				$this->globals->getSession()->reset();
-				$this->utilityFuncs->doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
+				$redirectPage = $this->utilityFuncs->getSingle($this->settings, 'redirectPage');
+				$correctRedirectUrl = $this->utilityFuncs->getSingle($this->settings, 'correctRedirectUrl');
+				$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.']);
 				return 'Lousy spammer!';
 			} else {
 				$view = $this->componentManager->getComponent('Tx_Formhandler_View_AntiSpam');
@@ -76,12 +78,12 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 	 * @return boolean
 	 */
 	protected function doCheck() {
-		$value = $this->settings['minTime.']['value'];
-		$unit = $this->settings['minTime.']['unit'];
+		$value = $this->utilityFuncs->getSingle($this->settings['minTime.'], 'value');
+		$unit = $this->utilityFuncs->getSingle($this->settings['minTime.'], 'unit');
 		$minTime = $this->utilityFuncs->convertToSeconds($value, $unit);
 
-		$value = $this->settings['maxTime.']['value'];
-		$unit = $this->settings['maxTime.']['unit'];
+		$value = $this->utilityFuncs->getSingle($this->settings['maxTime.'], 'value');
+		$unit = $this->utilityFuncs->getSingle($this->settings['maxTime.'], 'unit');
 		$maxTime = $this->utilityFuncs->convertToSeconds($value, $unit);
 		$spam = FALSE;
 		if (!isset($this->gp['formtime']) || 
