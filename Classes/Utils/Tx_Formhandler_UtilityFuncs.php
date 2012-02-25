@@ -784,10 +784,12 @@ class Tx_Formhandler_UtilityFuncs {
 
 		//The settings "search" and "replace" are comma separated lists
 		if($settings['files.']['search']) {
-			$search = explode(',', $settings['files.']['search']);
+			$search = $this->getSingle($settings['files.'], 'search');
+			$search = explode(',', $search);
 		}
 		if($settings['files.']['replace']) {
-			$replace = explode(',', $settings['files.']['replace']);
+			$replace = $this->getSingle($settings['files.'], 'replace');
+			$replace = explode(',', $replace);
 		}
 		$fileName = str_replace($search, $replace, $fileName);
 		return $fileName;

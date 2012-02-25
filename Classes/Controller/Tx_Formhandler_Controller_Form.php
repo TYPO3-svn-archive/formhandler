@@ -1081,12 +1081,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->globals->getSession()->set('predef', $this->globals->getPredef());
 
 		//init view
-		$viewClass = $this->settings['view'];
-		if (!$viewClass) {
-			$viewClass = 'Tx_Formhandler_View_Form';
-		}
-
+		$viewClass = $this->utilityFuncs->getPreparedClassName($this->settings['view'], 'View_Form');
 		$this->utilityFuncs->debugMessage('using_view', array($viewClass));
+
 		$this->utilityFuncs->debugMessage('current_gp', array(), 1, $this->gp);
 
 		$this->storeSettingsInSession();
@@ -1108,8 +1105,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->addJS();
 
 		$this->utilityFuncs->debugMessage('current_session_params', array(), 1, (array)$this->globals->getSession()->get('values'));
-
-		$viewClass = $this->utilityFuncs->prepareClassName($viewClass);
 		$this->view = $this->componentManager->getComponent($viewClass);
 		$this->view->setLangFiles($this->langFiles);
 		$this->view->setSettings($this->settings);
@@ -1144,7 +1139,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					$submitted = TRUE;
 				}
 			}
-		} elseif (intval($this->settings['skipView']) === 1) {
+		} elseif (intval($this->utilityFuncs->getSingle($this->settings, 'skipView')) === 1) {
 			$submitted = TRUE;
 		}
 		
@@ -1160,7 +1155,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	protected function setViewSubpart($step) {
 		$this->finished = FALSE;
 
-		if (intval($this->settings['skipView']) === 1) {
+		if (intval($this->utilityFuncs->getSingle($this->settings, 'skipView')) === 1) {
 			$this->finished = TRUE;
 		} elseif (strstr($this->templateFile, ('###TEMPLATE_FORM' . $step . $this->settings['templateSuffix'] . '###'))) {
 
@@ -1319,7 +1314,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return void
 	 */
 	protected function addCSS() {
-		$stylesheetFile = $this->settings['cssFile'];
+		$cssFile = $this->settings['cssFile'];
 		$cssFiles = array();
 		if ($this->settings['cssFile.']) {
 			foreach ($this->settings['cssFile.'] as $idx => $file) {
@@ -1328,8 +1323,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					$cssFiles[] = $file;
 				}
 			}
-		} elseif (strlen($stylesheetFile) > 0) {
-			$cssFiles[] = $this->utilityFuncs->getSingle($this->settings, 'cssFile');
+		} else {
+			$cssFiles[] = $cssFile;
 		}
 		foreach ($cssFiles as $idx => $file) {
 
@@ -1354,8 +1349,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					$jsFiles[] = $file;
 				}
 			}
-		} elseif (strlen($jsFile) > 0) {
-			$jsFiles[] = $this->utilityFuncs->getSingle($this->settings, 'jsFile');;
+		} else {
+			$jsFiles[] = $jsFile;
 		}
 		foreach ($jsFiles as $idx => $file) {
 
@@ -1394,7 +1389,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		//check for checkbox fields using the values in $newGP
 		if ($this->settings['checkBoxFields']) {
-			$fields = t3lib_div::trimExplode(',', $this->settings['checkBoxFields']);
+			$checkBoxFields = $this->utilityFuncs->getSingle($this->settings, 'checkBoxFields');
+			$fields = t3lib_div::trimExplode(',', $checkBoxFields);
 			foreach ($fields as $idx => $field) {
 				if (!isset($newGP[$field]) && isset($this->gp[$field]) && $this->lastStep < $this->currentStep) {
 					$this->gp[$field] = $newGP[$field] = array();
@@ -1402,9 +1398,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				//Insert default checkbox values
 				} elseif(!isset($newGP[$field]) && $this->lastStep < $this->currentStep) {
 					if(is_array($this->settings['checkBoxUncheckedValue.']) && isset($this->settings['checkBoxUncheckedValue.'][$field])) {
-						$this->gp[$field] = $newGP[$field] = $this->settings['checkBoxUncheckedValue.'][$field];
+						$this->gp[$field] = $newGP[$field] = $this->utilityFuncs->getSingle($this->settings['checkBoxUncheckedValue.'], $field);
 					} elseif(isset($this->settings['checkBoxUncheckedValue'])) {
-						$this->gp[$field] = $newGP[$field] = $this->settings['checkBoxUncheckedValue'];
+						$this->gp[$field] = $newGP[$field] = $this->utilityFuncs->getSingle($this->settings, 'checkBoxUncheckedValue');
 					}
 				}
 			}
@@ -1418,7 +1414,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return void
 	 */
 	protected function initializeDebuggers() {
-		$this->addFormhandlerClass($this->settings['debuggers.'], 'Tx_Formhandler_Debugger_Print');
+		$this->addFormhandlerClass($this->settings['debuggers.'], 'Debugger_Print');
 
 		foreach ($this->settings['debuggers.'] as $idx => $options) {
 			if(intval($this->utilityFuncs->getSingle($options, 'disable')) !== 1) {
