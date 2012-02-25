@@ -98,10 +98,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 
 		if(!$this->globals->getSession()) {
 			$ts = $GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.'];
-			$sessionClass = 'Tx_Formhandler_Session_PHP';
-			if($ts['session.']) {
-				$sessionClass = $this->utilityFuncs->prepareClassName($ts['session.']['class']);
-			}
+			$sessionClass = $this->utilityFuncs->getPreparedClassName($ts['session.'], 'Session_PHP');
 			$this->globals->setSession($this->componentManager->getComponent($sessionClass));
 		}
 
@@ -110,11 +107,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 
 		//init ajax
 		if ($this->settings['ajax.']) {
-			$class = $this->settings['ajax.']['class'];
-			if (!$class) {
-				$class = 'Tx_Formhandler_AjaxHandler_JQuery';
-			}
-			$class = $this->utilityFuncs->prepareClassName($class);
+			$class = $this->utilityFuncs->getPreparedClassName($this->settings['ajax.'], 'AjaxHandler_JQuery');
 			$ajaxHandler = $this->componentManager->getComponent($class);
 			$this->globals->setAjaxHandler($ajaxHandler);
 

@@ -49,7 +49,8 @@ class Tx_Formhandler_Finisher_SetLanguage extends Tx_Formhandler_AbstractFinishe
 		if(is_array($settings['finishers.'])) {
 			$found = FALSE;
 			foreach($settings['finishers.'] as $finisherConfig) {
-				if(strstr($finisherConfig['class'], 'Finisher_RestoreLanguage')) {
+				$currentFinisherClass = $this->utilityFuncs->getPreparedClassName($finisherConfig);
+				if($currentFinisherClass === 'Tx_Formhandler_Finisher_RestoreLanguage') {
 					$found = TRUE;
 				}
 			}

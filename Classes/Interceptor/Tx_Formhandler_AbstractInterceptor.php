@@ -32,8 +32,9 @@ abstract class Tx_Formhandler_AbstractInterceptor extends Tx_Formhandler_Abstrac
 		$classesArray = $this->settings['loggers.'];
 		if (isset($classesArray) && is_array($classesArray)) {
 			foreach ($classesArray as $idx => $tsConfig) {
-				if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class']) && intval($this->utilityFuncs->getSingle($tsConfig, 'disable')) !== 1) {
-					$className = $this->utilityFuncs->prepareClassName($tsConfig['class']);
+				$className = $this->utilityFuncs->getPreparedClassName($tsConfig);
+				if (is_array($tsConfig) && strlen($className) > 0 && intval($this->utilityFuncs->getSingle($tsConfig, 'disable')) !== 1) {
+
 					$this->utilityFuncs->Message('calling_class', array($className));
 					$obj = $this->componentManager->getComponent($className);
 					if ($markAsSpam) {

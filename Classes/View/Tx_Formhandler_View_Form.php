@@ -726,7 +726,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 				// Searches the index of Tx_Formhandler_Validator_Default
 				foreach ($settings['validators.'] as $index => $validator) {
-					if ($validator['class'] == 'Tx_Formhandler_Validator_Default') {
+					$currentValidatorClass = $this->utilityFuncs->getPreparedClassName($validator);
+					if ($currentValidatorClass === 'Tx_Formhandler_Validator_Default') {
 						break;
 					}
 				}

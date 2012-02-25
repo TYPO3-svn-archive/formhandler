@@ -43,9 +43,8 @@ class Tx_Formhandler_View_SubmittedOK extends Tx_Formhandler_View_Form {
 		if ($this->componentSettings['actions.']) {
 			foreach ($this->componentSettings['actions.'] as $action=>$options) {
 				$sanitizedAction = str_replace('.', '', $action);
-				$class = $options['class'];
+				$class = $this->utilityFuncs->getPreparedClassName($options);
 				if ($class) {
-					$class = $this->utilityFuncs->prepareClassName($class);
 					$generator = $this->componentManager->getComponent($class);
 					$generator->init($this->gp, $options['config.']);
 					$markers['###' . strtoupper($sanitizedAction) . '_LINK###'] = $generator->getLink($params);

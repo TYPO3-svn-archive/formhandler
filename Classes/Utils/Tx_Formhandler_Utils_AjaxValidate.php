@@ -38,10 +38,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 			$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 			if(!$this->globals->getSession()) {
 				$ts = $GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.'];
-				$sessionClass = 'Tx_Formhandler_Session_PHP';
-				if($ts['session.']) {
-					$sessionClass = $this->utilityFuncs->prepareClassName($ts['session.']['class']);
-				}
+				$sessionClass = $this->utilityFuncs->getPreparedClassName($ts['session.'], 'Session_PHP');
 				$this->globals->setSession($this->componentManager->getComponent($sessionClass));
 			}
 			$validator = $this->componentManager->getComponent('Tx_Formhandler_Validator_Ajax');

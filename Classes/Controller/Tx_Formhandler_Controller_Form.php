@@ -183,7 +183,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$finisherConf = array();
 			foreach ($this->settings['finishers.'] as $key => $config) {
 				if (strpos($key, '.') !== FALSE) {
-					$className = $this->utilityFuncs->prepareClassName($config['class']);
+					$className = $this->utilityFuncs->getPreparedClassName($config);
 					if ($className === 'Tx_Formhandler_Finisher_SubmittedOK' && is_array($config['config.'])) {
 						$finisherConf = $config['config.'];
 					}
@@ -200,11 +200,10 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					$params = unserialize($row['params']);
 				}
 			}
-			if ($finisherConf['actions.'][$action . '.'] && !empty($params) && intval($finisherConf['actions.'][$action . '.']['config.']['returns']) !== 1) {
+			if ($finisherConf['actions.'][$action . '.'] && !empty($params) && intval($this->utilityFuncs->getSingle($finisherConf['actions.'][$action . '.']['config.'], 'returns')) !== 1) {
 
-				$class = $finisherConf['actions.'][$action . '.']['class'];
+				$class = $this->utilityFuncs->getPreparedClassName($finisherConf['actions.'][$action . '.']);
 				if ($class) {
-					$class = $this->utilityFuncs->prepareClassName($class);
 					$object = $this->componentManager->getComponent($class);
 					$object->init($params, $finisherConf['actions.'][$action . '.']['config.']);
 					$object->process();
@@ -217,12 +216,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				unset($finisherConf['actions.']);
 				$object->init($params, $finisherConf);
 				$content = $object->process();
-			} elseif(intval($finisherConf['actions.'][$action . '.']['config.']['returns']) === 1) {
-				$class = $finisherConf['actions.'][$action . '.']['class'];
+			} elseif(intval($this->utilityFuncs->getSingle($finisherConf['actions.'][$action . '.']['config.'], 'returns')) === 1) {
+				$class = $this->utilityFuncs->getPreparedClassName($finisherConf['actions.'][$action . '.']);
 				if ($class) {
 
 					//Makes it possible to make your own Generator class show output
-					$class = $this->utilityFuncs->prepareClassName($class);
 					$object = $this->componentManager->getComponent($class);
 					$object->init($params, $finisherConf['actions.'][$action . '.']['config.']);
 					$content = $object->process();
@@ -296,12 +294,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 			foreach ($this->settings['validators.'] as $idx => $tsConfig) {
 				if ($idx !== 'disable') {
-					if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
+					$className = $this->utilityFuncs->getPreparedClassName($tsConfig);
+					if (is_array($tsConfig) && strlen($className) > 0) {
 						if (intval($this->utilityFuncs->getSingle($tsConfig, 'disable')) !== 1) {
-							$className = $this->utilityFuncs->prepareClassName($tsConfig['class']);
+
 							$validator = $this->componentManager->getComponent($className);
 							if ($this->currentStep === $this->lastStep) {
-								$userSetting = t3lib_div::trimExplode(',', $tsConfig['config.']['restrictErrorChecks']);
+								$userSetting = t3lib_div::trimExplode(',', $this->utilityFuncs->getSingle($tsConfig['config.'], 'restrictErrorChecks'));
 								$autoSetting = array(
 									'fileAllowedTypes',
 									'fileRequired',
@@ -313,6 +312,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 								);
 								$merged = array_merge($userSetting, $autoSetting);
 								$tsConfig['config.']['restrictErrorChecks'] = implode(',', $merged);
+								unset($tsConfig['config.']['restrictErrorChecks.']);
 							}
 							$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 							$validator->init($this->gp, $tsConfig['config.']);
@@ -493,16 +493,17 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 			foreach ($this->settings['finishers.'] as $idx => $tsConfig) {
 				if ($idx !== 'disabled') {
-					if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
+					$className = $this->utilityFuncs->getPreparedClassName($tsConfig);
+					if (is_array($tsConfig) && strlen($className) > 0) {
 						if (intval($this->utilityFuncs->getSingle($tsConfig, 'disable')) !== 1) {
-							$className = $this->utilityFuncs->prepareClassName($tsConfig['class']);
+
 							$finisher = $this->componentManager->getComponent($className);
 							$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 							$finisher->init($this->gp, $tsConfig['config.']);
 							$finisher->validateConfig();
 
 							//if the finisher returns HTML (e.g. Tx_Formhandler_Finisher_SubmittedOK)
-							if ($tsConfig['config.']['returns']) {
+							if (intval($this->utilityFuncs->getSingle($tsConfig['config.'], 'returns')) === 1) {
 								$this->globals->getSession()->set('finished', TRUE);
 								return $finisher->process();
 							} else {
@@ -616,10 +617,10 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$classesArray[] = array('class' => $className);
 		} else {
 			$found = FALSE;
+			$className = $this->utilityFuncs->prepareClassName($className);
 			foreach ($classesArray as $idx => $classOptions) {
-				if ($className === $classOptions['class']) {
-					$found = TRUE;
-				} elseif ($className === str_replace('Tx_Formhandler_', '', $classOptions['class'])) {
+				$currentClassName = $this->utilityFuncs->getPreparedClassName($classOptions);
+				if ($className === $currentClassName) {
 					$found = TRUE;
 				}
 			}
@@ -889,13 +890,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$isConfigOk = FALSE;
 			if (is_array($this->settings[$component . '.'])) {
 				foreach ($this->settings[$component . '.'] as $idx => $finisher) {
-					if ($finisher['class'] == $componentName
-						|| @is_subclass_of($finisher['class'], $componentName)) {
-
-						$isConfigOk = TRUE;
-						break;
-					} elseif (	$finisher['class'] == (str_replace('Tx_Formhandler_', '', $componentName))
-								|| @is_subclass_of('Tx_Formhandler_' . $finisher['class'], $componentName)) {
+					$className = $this->utilityFuncs->getPreparedClassName($finisher);
+					if ($className == $componentName
+						|| @is_subclass_of($className, $componentName)) {
 
 						$isConfigOk = TRUE;
 						break;
@@ -1036,11 +1033,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 		$this->globals->setRandomID($randomID);
 
-		$sessionClass = 'Tx_Formhandler_Session_PHP';
-		if($this->settings['session.']) {
-			$sessionClass = $this->utilityFuncs->prepareClassName($this->settings['session.']['class']);
-		}
-
+		$sessionClass = $this->utilityFuncs->getPreparedClassName($this->settings['session.'], 'Session_PHP');
 		$this->globals->setSession($this->componentManager->getComponent($sessionClass));
 
 		$action = t3lib_div::_GP('action');
@@ -1125,12 +1118,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		//init ajax
 		if ($this->settings['ajax.']) {
-			$class = $this->settings['ajax.']['class'];
-			if (!$class) {
-				$class = 'Tx_Formhandler_AjaxHandler_JQuery';
-			}
+			$class = $this->utilityFuncs->getPreparedClassName($this->settings['ajax.'], 'AjaxHandler_JQuery');
 			$this->utilityFuncs->debugMessage('using_ajax', array($class));
-			$class = $this->utilityFuncs->prepareClassName($class);
 			$ajaxHandler = $this->componentManager->getComponent($class);
 			$this->globals->setAjaxHandler($ajaxHandler);
 
@@ -1295,9 +1284,10 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 			foreach ($classesArray as $idx => $tsConfig) {
 				if ($idx !== 'disable') {
-					if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
+					$className = $this->utilityFuncs->getPreparedClassName($tsConfig);
+					if (is_array($tsConfig) && strlen($className) > 0) {
 						if (intval($this->utilityFuncs->getSingle($tsConfig, 'disable')) !== 1) {
-							$className = $this->utilityFuncs->prepareClassName($tsConfig['class']);
+
 							$this->utilityFuncs->debugMessage('calling_class', array($className));
 							$obj = $this->componentManager->getComponent($className);
 							$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
@@ -1432,8 +1422,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		foreach ($this->settings['debuggers.'] as $idx => $options) {
 			if(intval($this->utilityFuncs->getSingle($options, 'disable')) !== 1) {
-				$debuggerClass = $options['class'];
-				$debuggerClass = $this->utilityFuncs->prepareClassName($debuggerClass);
+				$debuggerClass = $this->utilityFuncs->getPreparedClassName($options);
 				$debugger = $this->componentManager->getComponent($debuggerClass);
 				$debugger->init($this->gp, $options['config.']);
 				$debugger->validateConfig();

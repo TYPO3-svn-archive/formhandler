@@ -145,11 +145,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		}
 
 		//init mailer object
-		$emailClass = $this->utilityFuncs->getSingle($this->settings['mailer.'], 'class');
-		if (!$emailClass) {
-			$emailClass = 'Tx_Formhandler_Mailer_HtmlMail';
-		}
-		$emailClass = $this->utilityFuncs->prepareClassName($emailClass);
+		$emailClass = $this->utilityFuncs->getPreparedClassName($this->settings['mailer.'], 'Mailer_HtmlMail');
 		$emailObj = $this->componentManager->getComponent($emailClass);
 		$emailObj->init($this->gp, $this->settings['mailer.']['config.']);
 
@@ -553,9 +549,8 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 					case 'attachGeneratedFiles':
 						if (isset($currentSettings['attachGeneratedFiles.']) && is_array($currentSettings['attachGeneratedFiles.'])) {
 							foreach($currentSettings['attachGeneratedFiles.'] as $idx => $options) {
-								$generatorClass = $options['class'];
+								$generatorClass = $this->utilityFuncs->getPreparedClassName($options);
 								if ($generatorClass) {
-									$generatorClass = $this->utilityFuncs->prepareClassName($generatorClass);
 									$generator = $this->componentManager->getComponent($generatorClass);
 									$generator->init($this->gp, $options['config.']);
 									$generator->getLink();

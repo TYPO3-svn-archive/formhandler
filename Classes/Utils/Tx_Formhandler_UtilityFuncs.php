@@ -238,6 +238,14 @@ class Tx_Formhandler_UtilityFuncs {
 		return $this->globals->getCObj()->cObjGetSingle($arr[$key], $arr[$key . '.']);
 	}
 
+	public function getPreparedClassName($settingsArray, $defaultClassName = '') {
+		$className = $defaultClassName;
+		if(is_array($settingsArray) && $settingsArray['class']) {
+			$className = $this->getSingle($settingsArray, 'class');
+		}
+		return $this->prepareClassName($className);
+	}
+
 	/**
 	 * Redirects to a specified page or URL.
 	 *
