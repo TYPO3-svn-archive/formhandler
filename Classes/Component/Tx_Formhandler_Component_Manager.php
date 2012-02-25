@@ -39,8 +39,6 @@ class Tx_Formhandler_Component_Manager {
 	 * @var Tx_Formhandler_Globals
 	 */
 	protected $globals;
-
-	protected $componentObjects = array(); // the object cache
 	protected $additionalIncludePaths = NULL;
 
 	protected $cacheFilePath = '';
@@ -275,19 +273,6 @@ class Tx_Formhandler_Component_Manager {
 				$injectedArguments[$index] = $value;
 			}
 		}
-	}
-
-	/**
-	 * Tests if a component object already exists in cache 
-	 *
-	 * @param string $componentName 
-	 * @return void
-	 */
-	protected function componentObjectExists($componentName) {
-		if (!is_string($componentName)) {
-			throw new InvalidArgumentException('The component name must be of type string, ' . gettype($componentName) . ' given.');
-		}
-		return array_key_exists($componentName, $this->componentObjects);
 	}
 
 	/**
