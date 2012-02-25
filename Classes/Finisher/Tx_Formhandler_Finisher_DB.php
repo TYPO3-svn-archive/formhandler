@@ -90,7 +90,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 		$evaluation = TRUE;
 		if (isset($this->settings['condition'])) {
-			$condition = $this->parseCondition($this->settings['condition']);
+			$condition = $this->parseCondition($this->utilityFuncs->getSingle($this->settings, 'condition'));
 			eval('$evaluation = ' . $condition . ';');
 			$evaluationMessage = ($evaluation === TRUE) ?  'TRUE' : 'FALSE';
 			$this->utilityFuncs->debugMessage('condition', array($evaluationMessage, $condition));
@@ -189,7 +189,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			if ($recordExists) {
 				$andWhere = $this->utilityFuncs->getSingle($this->settings, 'andWhere');
 				$this->doUpdate($uid, $queryFields, $andWhere);
-			} elseif($this->settings['insertIfNoUpdatePossible']) {
+			} elseif(intval($this->utilityFuncs->getSingle($this->settings, 'insertIfNoUpdatePossible')) === 1) {
 				$this->doInsert($queryFields);
 			} else {
 				$this->utilityFuncs->debugMessage('no_update_possible', array(), 2);
@@ -245,7 +245,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		parent::init($gp, $settings);
 
 		//set table
-		$this->table = $this->settings['table'];
+		$this->table = $this->utilityFuncs->getSingle($this->settings, 'table');
 		if (!$this->table) {
 			$this->utilityFuncs->throwException('no_table', 'Tx_Formhandler_Finisher_DB');
 			return;
@@ -264,7 +264,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 		//check whether to update or to insert a record
 		$this->doUpdate = FALSE;
-		if ($this->settings['updateInsteadOfInsert']) {
+		if (intval($this->utilityFuncs->getSingle($this->settings, 'updateInsteadOfInsert')) === 1) {
 			$this->doUpdate = TRUE;
 		}
 	}
@@ -311,7 +311,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 						$fieldValue = $this->utilityFuncs->getSingle($options, 'ifIsEmpty');
 					}
 
-					if ($options['zeroIfEmpty'] && strlen($fieldValue) == 0) {
+					if (intval($this->utilityFuncs->getSingle($options, 'zeroIfEmpty')) === 1 && strlen($fieldValue) == 0) {
 						$fieldValue = 0;
 					}
 
@@ -319,7 +319,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 					if (is_array($fieldValue)) {
 						$separator = ',';
 						if ($options['separator']) {
-							$separator = $options['separator'];
+							$separator = $this->utilityFuncs->getSingle($options, 'separator');
 						}
 						$fieldValue = implode($separator, $fieldValue);
 					}
@@ -345,7 +345,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 							$fieldValue = t3lib_div::getIndpEnv('REMOTE_ADDR');
 							break;
 						case 'inserted_uid':
-							$table = $options['special.']['table'];
+							$table = $this->utilityFuncs->getSingle($options['special.'], 'table');
 							if (is_array($this->gp['saveDB'])) {
 								foreach ($this->gp['saveDB'] as $idx => $info) {
 									if ($info['table'] === $table) {
@@ -370,7 +370,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 			$queryFields[$fieldname] = $fieldValue;
 
-			if ($options['nullIfEmpty'] && strlen($queryFields[$fieldname]) == 0) {
+			if (intval($this->utilityFuncs->getSingle($options, 'nullIfEmpty')) === 1 && strlen($queryFields[$fieldname]) == 0) {
 				unset($queryFields[$fieldname]);
 			}
 		}
