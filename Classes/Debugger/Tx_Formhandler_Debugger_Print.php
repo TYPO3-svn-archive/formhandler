@@ -30,11 +30,11 @@ class Tx_Formhandler_Debugger_Print extends Tx_Formhandler_AbstractDebugger {
 		$out = '';
 
 		foreach($this->debugLog as $section => $logData) {
-			$out .= $this->globals->getCObj()->wrap($section, $this->settings['sectionHeaderWrap']);
+			$out .= $this->globals->getCObj()->wrap($section, $this->utilityFuncs->getSingle($this->settings, 'sectionHeaderWrap'));
 			$sectionContent = '';
 			foreach($logData as $messageData) {
 				$message = str_replace("\n", '<br />', $messageData['message']);
-				$message = $this->globals->getCObj()->wrap($message, $this->settings['severityWrap.'][$messageData['severity']]);
+				$message = $this->globals->getCObj()->wrap($message, $this->utilityFuncs->getSingle($this->settings['severityWrap.'], $messageData['severity']));
 				$sectionContent .= $this->globals->getCObj()->wrap($message, $this->settings['messageWrap']);
 				if($messageData['data']) {
 					if (t3lib_div::int_from_ver(TYPO3_branch) < t3lib_div::int_from_ver('4.5')) {
@@ -45,7 +45,7 @@ class Tx_Formhandler_Debugger_Print extends Tx_Formhandler_AbstractDebugger {
 					$sectionContent .= '<br />';
 				}
 			}
-			$out .= $this->globals->getCObj()->wrap($sectionContent, $this->settings['sectionWrap']);
+			$out .= $this->globals->getCObj()->wrap($sectionContent, $this->utilityFuncs->getSingle($this->settings, 'sectionWrap'));
 		}
 		print $out;
 	}
