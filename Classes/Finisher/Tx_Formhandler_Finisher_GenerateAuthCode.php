@@ -31,8 +31,9 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 		$firstInsertInfo = array();
 		if (is_array($this->gp['saveDB'])) {
 			if (isset($this->settings['table'])) {
+				$table = $this->utilityFuncs->getSingle($this->settings, 'table');
 				foreach ($this->gp['saveDB'] as $idx => $insertInfo) {
-					if ($insertInfo['table'] === $this->settings['table']) {
+					if ($insertInfo['table'] === $table) {
 						$firstInsertInfo = $insertInfo;
 						break;
 					}
