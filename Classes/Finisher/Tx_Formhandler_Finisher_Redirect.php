@@ -42,7 +42,8 @@ class Tx_Formhandler_Finisher_Redirect extends Tx_Formhandler_AbstractFinisher {
 			return $this->gp;
 		}
 		$this->globals->getSession()->reset();
-		$this->utilityFuncs->doRedirect($redirectPage, $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
+		$correctRedirectUrl = $this->utilityFuncs->getSingle($this->settings, 'correctRedirectUrl');
+		$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.']);
 		exit();
 	}
 
