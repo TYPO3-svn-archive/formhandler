@@ -47,8 +47,8 @@ class Tx_Formhandler_Interceptor_TranslateFields extends Tx_Formhandler_Abstract
 	 * @return string The translated message
 	 */
 	protected function translateFields($options) {
-		$key = $options['langKey'];
-		$field = $options['field'];
+		$key = $this->utilityFuncs->getSingle($options, 'langKey');
+		$field = $this->utilityFuncs->getSingle($options, 'field');
 		if ($field) {
 			$key = str_replace('|', $this->gp[$field], $key);
 		}
