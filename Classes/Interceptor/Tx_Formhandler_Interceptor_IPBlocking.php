@@ -63,17 +63,17 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	 */
 	public function process() {
 
-		$ipTimebaseValue = $this->settings['ip.']['timebase.']['value'];
-		$ipTimebaseUnit = $this->settings['ip.']['timebase.']['unit'];
-		$ipMaxValue = $this->settings['ip.']['threshold'];
+		$ipTimebaseValue = $this->utilityFuncs->getSingle($this->settings['ip.']['timebase.'], 'value');
+		$ipTimebaseUnit = $this->utilityFuncs->getSingle($this->settings['ip.']['timebase.'], 'unit');
+		$ipMaxValue = $this->utilityFuncs->getSingle($this->settings['ip.'], 'threshold');
 
 		if ($ipTimebaseValue && $ipTimebaseUnit && $ipMaxValue) {
 			$this->check($ipTimebaseValue, $ipTimebaseUnit, $ipMaxValue, TRUE);
 		}
 
-		$globalTimebaseValue = $this->settings['global.']['timebase.']['value'];
-		$globalTimebaseUnit = $this->settings['global.']['timebase.']['unit'];
-		$globalMaxValue = $this->settings['global.']['threshold'];
+		$globalTimebaseValue = $this->utilityFuncs->getSingle($this->settings['global.']['timebase.'], 'value');
+		$globalTimebaseUnit = $this->utilityFuncs->getSingle($this->settings['global.']['timebase.'], 'unit');
+		$globalMaxValue = $this->utilityFuncs->getSingle($this->settings['global.'], 'threshold');
 
 		if ($globalTimebaseValue && $globalTimebaseUnit && $globalMaxValue) {
 			$this->check($globalTimebaseValue, $globalTimebaseUnit, $globalMaxValue, TRUE);
@@ -109,8 +109,8 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 				while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 					$rows[] = $row;
 				}
-				$intervalValue = $this->settings['report.']['interval.']['value'];
-				$intervalUnit = $this->settings['report.']['interval.']['unit'];
+				$intervalValue = $this->utilityFuncs->getSingle($this->settings['report.']['interval.'], 'value');
+				$intervalUnit = $this->utilityFuncs->getSingle($this->settings['report.']['interval.'], 'unit');
 				$send = TRUE;
 				if ($intervalUnit && $intervalValue) {
 					$intervalTstamp = $this->utilityFuncs->getTimestamp($intervalValue, $intervalUnit);
@@ -119,10 +119,9 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 						$where .= ' AND ip=\'' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '\'';
 					}
 
-					$res_log = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $this->reportTable, $where);
-					if ($res_log && $GLOBALS['TYPO3_DB']->sql_num_rows($res_log) > 0) {
+					$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $this->logTable, $where);
+					if ($count > 0) {
 						$send = FALSE;
-						$GLOBALS['TYPO3_DB']->sql_free_result($res_log);
 					}
 				}
 				if ($send) {
@@ -137,7 +136,9 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($this->settings['redirectPage']) {
-				$this->utilityFuncs->doRedirect($this->settings['redirectPage'], $this->settings['correctRedirectUrl'], $this->settings['additionalParams.']);
+				$redirectPage = $this->utilityFuncs->getSingle($this->settings, 'redirectPage');
+				$correctRedirectUrl = $this->utilityFuncs->getSingle($this->settings, 'correctRedirectUrl');
+				$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.']);
 				$this->utilityFuncs->debugMessage('redirect_failed', array(), 2);
 				exit(0);
 			} else {
@@ -154,9 +155,10 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	 * @return void
 	 */
 	private function sendReport($type,&$rows) {
-		$email = t3lib_div::trimExplode(',', $this->settings['report.']['email']);
-		$sender = $this->settings['report.']['sender'];
-		$subject = $this->settings['report.']['subject'];
+		$email = $this->utilityFuncs->getSingle($this->settings['report.'], 'email');
+		$email = t3lib_div::trimExplode(',', $email);
+		$sender = $this->utilityFuncs->getSingle($this->settings['report.'], 'sender');
+		$subject = $this->utilityFuncs->getSingle($this->settings['report.'], 'subject');
 		$message = '';
 		if ($type == 'ip') {
 			$message = 'IP address "' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '" has submitted a form too many times!';
@@ -183,7 +185,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		}
 
 		//init mailer object
-		require_once(PATH_t3lib.'class.t3lib_htmlmail.php');
+		require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
 		$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
 		$emailObj->start();
 
