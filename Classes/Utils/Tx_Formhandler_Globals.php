@@ -138,6 +138,9 @@ class Tx_Formhandler_Globals {
 	}
 
 	public function getDebuggers() {
+		if(!is_array($this->debuggers)) {
+			$this->debuggers = array();
+		}
 		return $this->debuggers;
 	}
 
@@ -150,14 +153,23 @@ class Tx_Formhandler_Globals {
 	}
 
 	public function getGP() {
+		if(!is_array($this->gp)) {
+			$this->gp = array();
+		}
 		return $this->gp;
 	}
 
 	public function getLangFiles() {
+		if(!is_array($this->langFiles)) {
+			$this->langFiles = array();
+		}
 		return $this->langFiles;
 	}
 
 	public function getOverrideSettings() {
+		if(!is_array($this->overrideSettings)) {
+			$this->overrideSettings = array();
+		}
 		return $this->overrideSettings;
 	}
 
@@ -174,6 +186,9 @@ class Tx_Formhandler_Globals {
 	}
 
 	public function getSettings() {
+		if(!is_array($this->settings)) {
+			$this->settings = array();
+		}
 		return $this->settings;
 	}
 

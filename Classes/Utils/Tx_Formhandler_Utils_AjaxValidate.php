@@ -45,11 +45,11 @@ class Tx_Formhandler_Utils_AjaxValidate {
 				$this->globals->setSession($this->componentManager->getComponent($sessionClass));
 			}
 			$validator = $this->componentManager->getComponent('Tx_Formhandler_Validator_Ajax');
+			$errors = array();
 			$valid = $validator->validateAjax($this->fieldname, $this->value, $errors);
 			$this->settings = $this->globals->getSession()->get('settings');
 			$content = '';
 			if ($valid) {
-				
 				$content = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'ok');
 				if(strlen($content) === 0) {
 					$content = '<img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ok.png' . '" />';
@@ -58,7 +58,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 						$_GET['field'] => $_GET['value']
 					);
 					$view = $this->initView($content);
-					$content = $view->render($gp);
+					$content = $view->render($gp, $errors);
 					$content = '<span class="success">' . $content . '</span>';
 				}
 			} else {
