@@ -51,7 +51,7 @@ abstract class Tx_Formhandler_AbstractClass {
 	 * @access protected
 	 * @var Tx_Formhandler_UtilityFuncs
 	 */
-	protected $utlityFuncs;
+	protected $utilityFuncs;
 
 	/**
 	 * The cObj
