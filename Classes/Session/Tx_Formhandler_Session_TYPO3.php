@@ -30,11 +30,7 @@ class Tx_Formhandler_Session_TYPO3 extends Tx_Formhandler_AbstractSession {
 		parent::__construct($componentManager, $configuration, $globals, $utilityFuncs);
 		$this->start();
 
-		$threshold = $this->utilityFuncs->getTimestamp(1, 'hours');
-		if($this->settings['clearOldSession.']['value']) {
-			$threshold = $this->utilityFuncs->getTimestamp($this->settings['clearOldSession.']['value'], $this->settings['clearOldSession.']['unit']);
-		}
-
+		$threshold = $this->getOldSessionThreshold();
 		$data = $GLOBALS['TSFE']->fe_user->getKey('ses', 'formhandler');
 		if(is_array($data)) {
 			foreach($data as $hashedID => $sesData) {

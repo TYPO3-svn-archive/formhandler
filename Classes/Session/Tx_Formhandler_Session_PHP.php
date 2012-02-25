@@ -29,10 +29,7 @@ class Tx_Formhandler_Session_PHP extends Tx_Formhandler_AbstractSession {
 
 		parent::__construct($componentManager, $configuration, $globals, $utilityFuncs);
 		$this->start();
-		$threshold = $this->utilityFuncs->getTimestamp(1, 'hours');
-		if($this->settings['clearOldSession.']['value']) {
-			$threshold = $this->utilityFuncs->getTimestamp($this->settings['clearOldSession.']['value'], $this->settings['clearOldSession.']['unit']);
-		}
+		$threshold = $this->getOldSessionThreshold();
 		if(is_array($_SESSION['formhandler'])) {
 			foreach($_SESSION['formhandler'] as $hashedID => $sesData) {
 				if($this->globals->getFormValuesPrefix() === $sesData['formValuesPrefix'] && $sesData['creationTstamp'] < $threshold) {

@@ -80,6 +80,16 @@ abstract class Tx_Formhandler_AbstractSession extends Tx_Formhandler_AbstractCla
 	 * @return void
 	 */
 	abstract public function reset();
+	
+	protected function getOldSessionThreshold() {
+		$threshold = $this->utilityFuncs->getTimestamp(1, 'hours');
+		if($this->settings['clearSessionsOlderThan.']['value']) {
+			$thresholdValue = $this->utilityFuncs->getSingle($this->settings['clearSessionsOlderThan.'], 'value');
+			$thresholdUnit = $this->utilityFuncs->getSingle($this->settings['clearSessionsOlderThan.'], 'unit');
+			$threshold = $this->utilityFuncs->getTimestamp($thresholdValue, $thresholdUnit);
+		}
+		return $threshold;
+	}
 
 }
 
