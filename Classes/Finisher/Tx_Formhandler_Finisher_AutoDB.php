@@ -144,7 +144,8 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 		}
 
 		$globalSettings = $this->globals->getSettings();
-		if (intval($globalSettings['debug']) === 1) {
+		$isDebugMode = $this->utilityFuncs->getSingle($globalSettings, 'debug');
+		if (intval($isDebugMode) === 1) {
 			$this->db->debugOutput = 1;
 		}
 		

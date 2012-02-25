@@ -1079,7 +1079,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->globals->setSettings($this->settings);
 
 		//set debug mode again cause it may have changed in specific step settings
-		$this->debugMode = (intval($this->settings['debug']) === 1);
+		$isDebugMode = $this->utilityFuncs->getSingle($this->settings, 'debug');
+		$this->debugMode = (intval($isDebugMode) === 1);
 		$this->globals->getSession()->set('debug', $this->debugMode);
 
 		$this->utilityFuncs->debugMessage('using_prefix', array($this->formValuesPrefix));
