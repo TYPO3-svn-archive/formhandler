@@ -34,28 +34,41 @@ class Tx_Formhandler_View_PDF extends Tx_Formhandler_View_Form {
 		$this->gp = $gp;
 		$this->settings = $this->parseSettings();
 
-		$this->sanitizeMarkers();
 		return parent::render($this->gp, $errors);
 	}
 
 	/**
 	 * Sanitizes GET/POST parameters by processing the 'checkBinaryCrLf' setting in TypoScript
 	 *
-	 * @return void
+	 * @return array The markers
 	 */
-	protected function sanitizeMarkers() {
+	protected function sanitizeMarkers($markers) {
 		$componentSettings = $this->getComponentSettings();
 		$checkBinaryCrLf = $componentSettings['checkBinaryCrLf'];
-		if ($checkBinaryCrLf !== '') {
+		if (strlen($checkBinaryCrLf) > 0) {
 			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
-			foreach ($paramsToCheck as $idx => $field) {
-				if (!is_array($field)) {
-					$this->gp[$field] = str_replace(chr(13), '<br />', $this->gp[$field]);
-					$this->gp[$field] = str_replace('\\', '', $this->gp[$field]);
-					$this->gp[$field] = nl2br($this->gp[$field]);
+			foreach ($markers as $markerName => &$value) {
+				$fieldName = str_replace(array('value_', 'VALUE_', '###'), '', $markerName);
+				if(in_array($fieldName, $paramsToCheck)) {
+					$value = str_replace (chr(13), '', $value);
+					$value = str_replace ('\\', '', $value);
+					$value = nl2br($value);
 				}
 			}
 		}
+		return $markers;
+	}
+
+	protected function fillValueMarkers() {
+		$markers = $this->getValueMarkers($this->gp);
+
+		$markers = $this->sanitizeMarkers($markers);
+
+		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
+
+		//remove remaining VALUE_-markers
+		//needed for nested markers like ###LLL:tx_myextension_table.field1.i.###value_field1###### to avoid wrong marker removal if field1 isn't set
+		$this->template = preg_replace('/###value_.*?###/i', '', $this->template);
 	}
 }
 ?>

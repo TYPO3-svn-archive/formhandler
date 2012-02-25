@@ -77,7 +77,7 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 	/**
 	 * Sanitizes GET/POST parameters by processing the 'checkBinaryCrLf' setting in TypoScript
 	 *
-	 * @return void
+	 * @return array The markers
 	 */
 	protected function sanitizeMarkers($markers) {
 		$componentSettings = $this->getComponentSettings();
