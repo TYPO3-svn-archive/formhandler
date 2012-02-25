@@ -54,6 +54,9 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 				$view->setPredefined($this->predefined);
 
 				$templateCode = $this->globals->getTemplateCode();
+				if($this->settings['templateFile']) {
+					$templateCode = $this->utilityFuncs->readTemplateFile(FALSE, $this->settings);
+				}
 				$view->setTemplate($templateCode, 'ANTISPAM');
 				if (!$view->hasTemplate()) {
 					$this->utilityFuncs->throwException('spam_detected');
