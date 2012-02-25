@@ -113,7 +113,7 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 						$this->gp[$fN] = $this->utilityFuncs->getSingle($settings[$fN . '.'], 'postProcessing');
 					}
 
-					if(isset($settings[$fN . '.']['type']) && $settings[$fN . '.']['type'] === 'upload') {
+					if(isset($settings[$fN . '.']['type']) && $this->utilityFuncs->getSingle($settings[$fN . '.'], 'type') === 'upload') {
 						if(!$images) {
 							$images = array();
 						}
