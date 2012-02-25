@@ -102,7 +102,7 @@ class Tx_Formhandler_PreProcessor_LoadDefaultValues extends Tx_Formhandler_Abstr
 				} elseif (!isset($currentLevelGP[$fieldName])) {
 					$currentLevelGP[$fieldName] = $this->utilityFuncs->getSingle($fields[$fieldName . '.'], 'defaultValue');
 					if ($fields[$fieldName . '.']['defaultValue.']['separator']) {
-						$separator = $fields[$fieldName . '.']['defaultValue.']['separator'];
+						$separator = $this->utilityFuncs->getSingle($fields[$fieldName . '.']['defaultValue.'], 'separator');
 						$currentLevelGP[$fieldName] = t3lib_div::trimExplode($separator, $currentLevelGP[$fieldName]);
 					}
 				}
