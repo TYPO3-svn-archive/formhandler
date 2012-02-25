@@ -108,6 +108,7 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 
 				//check if uid of record to update is in GP
 				$uid = $this->getUpdateUid();
+				$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
 				if ($uid) {
 					$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid, $queryFields);
 					$this->utilityFuncs->debugMessage('sql_request', array($query));
@@ -147,12 +148,12 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 	public function init($gp, $settings) {
 		parent::init($gp, $settings);
 
-		$this->driver = $this->settings['driver'];
-		$this->db = $this->settings['db'];
-		$this->host = $this->settings['host'];
-		$this->port = $this->settings['port'];
-		$this->user = $this->settings['username'];
-		$this->password = $this->settings['password'];
+		$this->driver = $this->utilityFuncs->getSingle($this->settings, 'driver');
+		$this->db = $this->utilityFuncs->getSingle($this->settings, 'db');
+		$this->host = $this->utilityFuncs->getSingle($this->settings, 'host');
+		$this->port = $this->utilityFuncs->getSingle($this->settings, 'port');
+		$this->user = $this->utilityFuncs->getSingle($this->settings, 'username');
+		$this->password = $this->utilityFuncs->getSingle($this->settings, 'password');
 		if (!$this->driver) {
 			throw new Exception('No driver given!');
 		}
