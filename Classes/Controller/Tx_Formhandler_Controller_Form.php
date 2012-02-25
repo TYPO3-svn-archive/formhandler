@@ -292,12 +292,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 		if (isset($this->settings['validators.']) && 
 			is_array($this->settings['validators.']) && 
-			intval($this->settings['validators.']['disable']) !== 1) {
+			intval($this->utilityFuncs->getSingle($this->settings['validators.'], 'disable')) !== 1) {
 
 			foreach ($this->settings['validators.'] as $idx => $tsConfig) {
 				if ($idx !== 'disable') {
 					if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
-						if (intval($tsConfig['disable']) !== 1) {
+						if (intval($this->utilityFuncs->getSingle($tsConfig, 'disable')) !== 1) {
 							$className = $this->utilityFuncs->prepareClassName($tsConfig['class']);
 							$validator = $this->componentManager->getComponent($className);
 							if ($this->currentStep === $this->lastStep) {
@@ -397,7 +397,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							$hasAllowedTypesCheck = FALSE;
 							if (isset($this->settings['validators.']) && 
 								is_array($this->settings['validators.']) && 
-								intval($this->settings['validators.']['disable']) !== 1) {
+								intval($this->utilityFuncs->getSingle($this->settings['validators.'], 'disable')) !== 1) {
 
 								foreach ($this->settings['validators.'] as $idx => $tsConfig) {
 									if($tsConfig['config.']['fieldConf.'][$field . '.']['errorCheck.']) {
@@ -488,13 +488,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 
 		//run finishers
-		if (isset($this->settings['finishers.']) && is_array($this->settings['finishers.']) && intval($this->settings['finishers.']['disable']) !== 1) {
+		if (isset($this->settings['finishers.']) && is_array($this->settings['finishers.']) && intval($this->utilityFuncs->getSingle($this->settings['finishers.'], 'disable')) !== 1) {
 			ksort($this->settings['finishers.']);
 
 			foreach ($this->settings['finishers.'] as $idx => $tsConfig) {
 				if ($idx !== 'disabled') {
 					if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
-						if (intval($tsConfig['disable']) !== 1) {
+						if (intval($this->utilityFuncs->getSingle($tsConfig, 'disable')) !== 1) {
 							$className = $this->utilityFuncs->prepareClassName($tsConfig['class']);
 							$finisher = $this->componentManager->getComponent($className);
 							$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
@@ -1291,12 +1291,12 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 */
 	protected function runClasses($classesArray) {
 		$output = '';
-		if (isset($classesArray) && is_array($classesArray) && intval($classesArray['disable']) !== 1) {
+		if (isset($classesArray) && is_array($classesArray) && intval($this->utilityFuncs->getSingle($classesArray, 'disable')) !== 1) {
 
 			foreach ($classesArray as $idx => $tsConfig) {
 				if ($idx !== 'disable') {
 					if (is_array($tsConfig) && isset($tsConfig['class']) && !empty($tsConfig['class'])) {
-						if (intval($tsConfig['disable']) !== 1) {
+						if (intval($this->utilityFuncs->getSingle($tsConfig, 'disable')) !== 1) {
 							$className = $this->utilityFuncs->prepareClassName($tsConfig['class']);
 							$this->utilityFuncs->debugMessage('calling_class', array($className));
 							$obj = $this->componentManager->getComponent($className);
@@ -1431,7 +1431,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->addFormhandlerClass($this->settings['debuggers.'], 'Tx_Formhandler_Debugger_Print');
 
 		foreach ($this->settings['debuggers.'] as $idx => $options) {
-			if(intval($options['disable']) !== 1) {
+			if(intval($this->utilityFuncs->getSingle($options, 'disable')) !== 1) {
 				$debuggerClass = $options['class'];
 				$debuggerClass = $this->utilityFuncs->prepareClassName($debuggerClass);
 				$debugger = $this->componentManager->getComponent($debuggerClass);
