@@ -60,7 +60,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 		parent::init($gp, $settings);
 
 		if ($this->settings['newFieldsSqlAttribs']) {
-			$this->newFieldsSqlAttribs = $this->settings['newFieldsSqlAttribs'];
+			$this->newFieldsSqlAttribs = $this->utilityFuncs->getSingle($this->settings, 'newFieldsSqlAttribs');
 		}
 
 		$this->db = $GLOBALS['TYPO3_DB'];
@@ -70,7 +70,8 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 	 * @see Classes/Finisher/Tx_Formhandler_Finisher_DB#parseFields()
 	 */
 	protected function parseFields() {
-		if ($this->settings['autoCreate'] && $GLOBALS['TSFE']->beUserLogin) {
+		$doAutoCreate = intval($this->utilityFuncs->getSingle($this->settings, 'newFieldsSqlAttribs'));
+		if ($doAutoCreate === 1 && $GLOBALS['TSFE']->beUserLogin) {
 			$this->createTable();
 		}
 
@@ -135,9 +136,9 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 	 */
 	protected function createTable() {
 		$fields = $this->getFormFields();
-
-		if ($this->settings['excludeFields']) {
-			$excludes = t3lib_div::trimExplode(',', $this->settings['excludeFields']);
+		$excludeFields = trim($this->utilityFuncs->getSingle($this->settings, 'excludeFields'));
+		if (strlen($excludeFields) > 0) {
+			$excludes = t3lib_div::trimExplode(',', $excludeFields);
 			foreach ($excludes as $exclude) {
 				unset($fields[$exclude]);
 			}
