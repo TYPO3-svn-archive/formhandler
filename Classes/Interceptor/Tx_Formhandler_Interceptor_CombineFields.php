@@ -48,16 +48,17 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 	 * @return string The combined value
 	 */
 	protected function combineFields($options) {
-		if (!isset($options['separator'])) {
-			$separator = ' ';
-		} else {
-			$separator = $options['separator'];
+		$separator = ' ';
+		if (isset($options['separator'])) {
+			$separator = $this->utilityFuncs->getSingle($options, 'separator');
 		}
 		$fieldsArr = $options['fields.'];
 		$combinedString = '';
+		$hideEmptyValues = intval($this->utilityFuncs->getSingle($options, 'hideEmptyValues'));
 		foreach ($fieldsArr as $idx => $field) {
-			if (intval($options['hideEmptyValues']) === 0 || 
-				(intval($options['hideEmptyValues']) === 1 && isset($this->gp[$field]) && strlen($this->gp[$field]) > 0)) {
+			
+			if ($hideEmptyValues === 0 || 
+				($hideEmptyValues === 1 && isset($this->gp[$field]) && strlen($this->gp[$field]) > 0)) {
 				$combinedString .= $this->gp[$field] . $separator;
 			}
 		}
