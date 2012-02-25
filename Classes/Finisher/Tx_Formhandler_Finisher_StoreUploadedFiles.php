@@ -70,7 +70,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 	 */
 	protected function moveUploadedFiles() {
 
-		$newFolder = $this->settings['finishedUploadFolder'];
+		$newFolder = $this->utilityFuncs->getSingle($this->settings, 'finishedUploadFolder');
 		$newFolder = $this->utilityFuncs->sanitizePath($newFolder);
 		$uploadPath = $this->utilityFuncs->getDocumentRoot() . $newFolder;
 		$sessionFiles = $this->globals->getSession()->get('files');
@@ -117,7 +117,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 		array_pop($fileparts);
 		$filename = implode('.', $fileparts);
 
-		$namingScheme = $this->settings['renameScheme'];
+		$namingScheme = $this->utilityFuncs->getSingle($this->settings, 'renameScheme');
 		if (!$namingScheme) {
 			$namingScheme = '[filename]_[time]';
 		}
