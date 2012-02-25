@@ -51,7 +51,14 @@ class Tx_Formhandler_Interceptor_AntiSpamFormTime extends Tx_Formhandler_Abstrac
 				$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.']);
 				return 'Lousy spammer!';
 			} else {
-				$view = $this->componentManager->getComponent('Tx_Formhandler_View_AntiSpam');
+
+				//set view
+				$viewClass = 'Tx_Formhandler_View_AntiSpam';
+				if($this->settings['view']) {
+					$viewClass = $this->utilityFuncs->getSingle($this->settings, 'view');
+				}
+				$viewClass = $this->utilityFuncs->prepareClassName($viewClass);
+				$view = $this->componentManager->getComponent($viewClass);
 				$view->setLangFiles($this->globals->getLangFiles());
 				$view->setPredefined($this->predefined);
 
