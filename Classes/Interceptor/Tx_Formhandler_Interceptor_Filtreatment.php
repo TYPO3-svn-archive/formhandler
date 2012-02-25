@@ -41,7 +41,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 
 				//user set custom separator
 				if ($globalSetting['separator']) {
-					$sep = $globalSetting['separator'];
+					$sep = $this->utilityFuncs->getSingle($globalSetting, 'separator');
 				}
 			} else {
 
@@ -49,7 +49,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 				$list = $globalSetting['removeChars'];
 			}
 			$this->removeChars = t3lib_div::trimExplode($sep, $list);
-		} elseif (intval($globalSetting['removeChars.']['disable']) === 1) {
+		} elseif (intval($this->utilityFuncs->getSingle($globalSetting['removeChars.'], 'disable')) === 1) {
 
 			//user disabled removal globally
 			$this->removeChars = array();
@@ -92,7 +92,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 
 						//user set custom separator
 						if ($fieldSetting['separator']) {
-							$sep = $fieldSetting['separator'];
+							$sep = $this->utilityFuncs->getSingle($fieldSetting, 'separator');
 						}
 					} else {
 
@@ -100,7 +100,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 						$list = $fieldSetting['removeChars'];
 					}
 					$removeChars = t3lib_div::trimExplode($sep, $list);
-				} elseif (intval($fieldSetting['removeChars.']['disable']) === 1) {
+				} elseif (intval($this->utilityFuncs->getSingle($fieldSetting['removeChars.'], 'disable')) === 1) {
 
 					//user disabled removal for this field
 					$removeChars = array();
