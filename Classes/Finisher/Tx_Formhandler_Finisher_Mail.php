@@ -91,7 +91,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function parseTemplate($mode, $suffix) {
 
-		$viewClass = $this->settings['view'];
+		$viewClass = $this->utilityFuncs->getSingle($this->settings, 'view');
 		if(!$viewClass) {
 			$viewClass = 'Tx_Formhandler_View_Mail';
 		}
@@ -129,7 +129,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function sendMail($type) {
 		$doSend = TRUE;
-		if (intval($this->settings[$type]['disable']) === 1) {
+		if (intval($this->utilityFuncs->getSingle($this->settings[$type], 'disable')) === 1) {
 			$this->utilityFuncs->debugMessage('mail_disabled', array($type));
 			$doSend = FALSE;
 		} 
@@ -145,7 +145,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		}
 
 		//init mailer object
-		$emailClass = $this->settings['mailer.']['class'];
+		$emailClass = $this->utilityFuncs->getSingle($this->settings['mailer.'], 'class');
 		if (!$emailClass) {
 			$emailClass = 'Tx_Formhandler_Mailer_HtmlMail';
 		}
@@ -276,7 +276,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
 		//parse max count of mails to send
 		$count = 0;
-		$max = $this->settings['limitMailsToUser'];
+		$max = $this->utilityFuncs->getSingle($this->settings, 'limitMailsToUser');
 		if (!$max) {
 			$max = 2;
 		}
@@ -574,14 +574,16 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 						break;
 
 					case 'htmlEmailAsAttachment':
-						if (isset($currentSettings['htmlEmailAsAttachment']) && !strcmp($currentSettings['htmlEmailAsAttachment'], '1')) {
+						$htmlEmailAsAttachment = $this->utilityFuncs->getSingle($currentSettings, 'htmlEmailAsAttachment');
+						if (intval($htmlEmailAsAttachment) === 1) {
 							$emailSettings['htmlEmailAsAttachment'] = 1;
 						}
 
 						break;
 					case 'filePrefix':
-						if (isset($currentSettings['filePrefix'])) {
-							$emailSettings['filePrefix'] = $currentSettings['filePrefix'];
+						$filePrefix = $this->utilityFuncs->getSingle($currentSettings, 'filePrefix');
+						if (strlen($filePrefix) > 0) {
+							$emailSettings['filePrefix'] = $filePrefix;
 						}
 						break;
 					case 'plain.':
