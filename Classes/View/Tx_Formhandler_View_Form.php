@@ -878,7 +878,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					}
 					if (intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1 || intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 2) {
 						$imgConf['image.'] = $settings['totalFilesMarkerTemplate.']['image.'];
-						if (!$imgconf['image.']) {
+						if (!$imgConf['image.']) {
 							$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
 						}
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
