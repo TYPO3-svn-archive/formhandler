@@ -229,7 +229,10 @@ class Tx_Formhandler_UtilityFuncs {
 	}
 
 	public function getSingle($arr, $key) {
-		if (!isset($arr[$key . '.'])) {
+		if(!is_array($arr)) {
+			return $arr;
+		}
+		if (!is_array($arr[$key . '.'])) {
 			return $arr[$key];
 		}
 		if (!isset($arr[$key . '.']['sanitize'])) {
