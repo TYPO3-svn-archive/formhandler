@@ -184,16 +184,10 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 			//check if uid of record to update is in GP
 			$uid = $this->getUpdateUid();
-			$recordExists = $this->doesRecordExist($uid);
+
 			$andWhere = $this->utilityFuncs->getSingle($this->settings, 'andWhere');
-			if ($recordExists) {
-				$andWhere = $this->utilityFuncs->getSingle($this->settings, 'andWhere');
-				$this->doUpdate($uid, $queryFields, $andWhere);
-			} elseif(intval($this->utilityFuncs->getSingle($this->settings, 'insertIfNoUpdatePossible')) === 1) {
-				$this->doInsert($queryFields);
-			} else {
-				$this->utilityFuncs->debugMessage('no_update_possible', array(), 2);
-			}
+			$this->doUpdate($uid, $queryFields, $andWhere);
+			
 		}
 	}
 
@@ -265,7 +259,16 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		//check whether to update or to insert a record
 		$this->doUpdate = FALSE;
 		if (intval($this->utilityFuncs->getSingle($this->settings, 'updateInsteadOfInsert')) === 1) {
-			$this->doUpdate = TRUE;
+
+			//check if uid of record to update is in GP
+			$uid = $this->getUpdateUid();
+
+			$recordExists = $this->doesRecordExist($uid);
+			if ($recordExists) {
+				$this->doUpdate = TRUE;
+			} elseif(intval($this->utilityFuncs->getSingle($this->settings, 'insertIfNoUpdatePossible')) !== 1) {
+				$this->utilityFuncs->debugMessage('no_update_possible', array(), 2);
+			}
 		}
 	}
 
@@ -396,11 +399,14 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function getUpdateUid() {
 		$uid = $this->utilityFuncs->getSingle($this->settings, 'key_value');
-		if (!$uid) {
-			$uid = $this->gp[$this->key];
-		}
-		if (!$uid) {
-			$uid = $this->gp['inserted_uid'];
+		$disableFallback = (intval($this->utilityFuncs->getSingle($this->settings, 'disableUpdateUidFallback')) === 1);
+		if(!$disableFallback) {
+			if (!$uid) {
+				$uid = $this->gp[$this->key];
+			}
+			if (!$uid) {
+				$uid = $this->gp['inserted_uid'];
+			}
 		}
 		return $uid;
 	}

@@ -96,7 +96,6 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 
 		//if adodb is installed
 		if (t3lib_extMgm::isLoaded('adodb')) {
-			require_once(t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php');
 
 			//insert query
 			if (!$this->doUpdate) {
@@ -134,8 +133,6 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 
 			//close connection
 			$conn->Close();
-		} else {
-			$this->utilityFuncs->throwException('extension_required', 'adodb', 'Tx_Formhandler_Finisher_DifferentDB');
 		}
 	}
 
@@ -146,17 +143,25 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 	 * @return void
 	 */
 	public function init($gp, $settings) {
-		parent::init($gp, $settings);
 
-		$this->driver = $this->utilityFuncs->getSingle($this->settings, 'driver');
-		$this->db = $this->utilityFuncs->getSingle($this->settings, 'db');
-		$this->host = $this->utilityFuncs->getSingle($this->settings, 'host');
-		$this->port = $this->utilityFuncs->getSingle($this->settings, 'port');
-		$this->user = $this->utilityFuncs->getSingle($this->settings, 'username');
-		$this->password = $this->utilityFuncs->getSingle($this->settings, 'password');
-		if (!$this->driver) {
-			throw new Exception('No driver given!');
+		//if adodb is installed
+		if (t3lib_extMgm::isLoaded('adodb')) {
+			require_once(t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php');
+
+			$this->driver = $this->utilityFuncs->getSingle($this->settings, 'driver');
+			$this->db = $this->utilityFuncs->getSingle($this->settings, 'db');
+			$this->host = $this->utilityFuncs->getSingle($this->settings, 'host');
+			$this->port = $this->utilityFuncs->getSingle($this->settings, 'port');
+			$this->user = $this->utilityFuncs->getSingle($this->settings, 'username');
+			$this->password = $this->utilityFuncs->getSingle($this->settings, 'password');
+			if (!$this->driver) {
+				throw new Exception('No driver given!');
+			}
+		} else {
+			$this->utilityFuncs->throwException('extension_required', 'adodb', 'Tx_Formhandler_Finisher_DifferentDB');
 		}
+
+		parent::init($gp, $settings);
 	}
 
 }
