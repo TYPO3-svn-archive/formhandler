@@ -138,7 +138,8 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 			if ($this->settings['redirectPage']) {
 				$redirectPage = $this->utilityFuncs->getSingle($this->settings, 'redirectPage');
 				$correctRedirectUrl = $this->utilityFuncs->getSingle($this->settings, 'correctRedirectUrl');
-				$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.']);
+				$headerStatusCode = $this->utilityFuncs->getSingle($this->settings, 'headerStatusCode');
+				$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.'], $headerStatusCode);
 				$this->utilityFuncs->debugMessage('redirect_failed', array(), 2);
 				exit(0);
 			} else {

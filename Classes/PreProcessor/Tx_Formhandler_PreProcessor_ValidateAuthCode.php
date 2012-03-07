@@ -73,13 +73,15 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 				$redirectPage = $this->utilityFuncs->getSingle($this->settings, 'redirectPage');
 				if($redirectPage) {
 					$correctRedirectUrl = $this->utilityFuncs->getSingle($this->settings, 'correctRedirectUrl');
-					$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.']);
+					$headerStatusCode  = $this->utilityFuncs->getSingle($this->settings, 'headerStatusCode');
+					$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.'], $headerStatusCode);
 				}
 			} catch(Exception $e) {
 				$redirectPage = $this->utilityFuncs->getSingle($this->settings, 'errorRedirectPage');
 				if($redirectPage) {
 					$correctRedirectUrl = $this->utilityFuncs->getSingle($this->settings, 'correctRedirectUrl');
-					$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.']);
+					$headerStatusCode  = $this->utilityFuncs->getSingle($this->settings, 'headerStatusCode');
+					$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.'], $headerStatusCode);
 				} else {
 					throw new Exception($e->getMessage());
 				}

@@ -256,7 +256,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @param boolean $correctRedirectUrl replace &amp; with & in URL 
 	 * @return void
 	 */
-	public function doRedirect($redirect, $correctRedirectUrl, $additionalParams = array()) {
+	public function doRedirect($redirect, $correctRedirectUrl, $additionalParams = array(), $headerStatusCode = '') {
 
 		// these parameters have to be added to the redirect url
 		$addparams = array();
@@ -284,7 +284,11 @@ class Tx_Formhandler_UtilityFuncs {
 
 		if ($url) {
 			if(!$this->globals->isAjaxMode()) {
-				header('Status: 301 Moved Permanently');
+				$status = '307 Temporary Redirect';
+				if($headerStatusCode) {
+					$status = $headerStatusCode;
+				}
+				header('Status: ' . $status);
 				header('Location: ' . t3lib_div::locationHeaderUrl($url));
 			} else {
 				print '{' . json_encode('redirect') . ':' . json_encode(t3lib_div::locationHeaderUrl($url)) . '}';
