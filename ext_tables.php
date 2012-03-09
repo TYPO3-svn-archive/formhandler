@@ -61,7 +61,7 @@ t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/Settings/', 'Example Config
 t3lib_extMgm::addPlugin(array('Formhandler', $_EXTKEY . '_pi1'), 'list_type');
 
 $TCA['tx_formhandler_log'] = array (
-    'ctrl' => array (
+	'ctrl' => array (
 		'title' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log',
 		'label' => 'uid',
 		'default_sortby' => 'ORDER BY crdate DESC',
@@ -73,5 +73,12 @@ $TCA['tx_formhandler_log'] = array (
 	)
 );
 t3lib_extMgm::allowTableOnStandardPages('tx_formhandler_log');
+
+$TCA['pages']['columns']['module']['config']['items'][] = array(
+	'LLL:EXT:' . $_EXTKEY . '/Resources/Language/locallang.xml:title',
+	'formlogs',
+	t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif'
+);
+t3lib_SpriteManager::addTcaTypeIcon('pages', 'contains-formlogs', t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Images/pagetreeicon.png');
 
 ?>
