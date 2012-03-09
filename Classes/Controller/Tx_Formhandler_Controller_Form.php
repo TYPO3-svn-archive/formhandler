@@ -1327,10 +1327,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$cssFiles[] = $cssFile;
 		}
 		foreach ($cssFiles as $idx => $file) {
-
-				// set stylesheet
-				$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
-					'<link rel="stylesheet" href="' . $this->utilityFuncs->resolveRelPathFromSiteRoot($file) . '" type="text/css" media="screen" />' . "\n";
+			if(strlen(trim($file)) > 0) {
+				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
+				if(file_exists($file)) {
+					$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
+						'<link rel="stylesheet" href="' . $file . '" type="text/css" media="screen" />' . "\n";
+				}
+			}
 		}
 	}
 
@@ -1353,10 +1356,14 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$jsFiles[] = $jsFile;
 		}
 		foreach ($jsFiles as $idx => $file) {
+			if(strlen(trim($file)) > 0) {
+				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
+				if(file_exists($file)) {
 
-			// set stylesheet
-			$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
-				'<script type="text/javascript" src="' . $this->utilityFuncs->resolveRelPathFromSiteRoot($file) . '"></script>' . "\n";
+					$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
+						'<script type="text/javascript" src="' . $file . '"></script>' . "\n";
+				}
+			}
 		}
 	}
 
