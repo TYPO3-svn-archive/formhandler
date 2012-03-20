@@ -1274,7 +1274,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return void
 	 */
 	protected function runClasses($classesArray) {
-		$output = '';
+		$return = '';
 		if (isset($classesArray) && is_array($classesArray) && intval($this->utilityFuncs->getSingle($classesArray, 'disable')) !== 1) {
 
 			foreach ($classesArray as $idx => $tsConfig) {
