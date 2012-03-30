@@ -333,7 +333,13 @@ class Tx_Formhandler_UtilityFuncs {
 	public function pi_getFFvalueFromSheetArray($sheetArray, $fieldNameArr, $value) {
 		$tempArr = $sheetArray;
 		foreach ($fieldNameArr as $k => $v) {
-			if (t3lib_div::testInt($v)) {
+			$isInt = FALSE;
+			if (version_compare(TYPO3_branch, '4.6', '<')) {
+				$isInt = t3lib_div::testInt($v);
+			} else {
+				$isInt = t3lib_utility_Math::canBeInterpretedAsInteger($v);
+			}
+			if ($isInt) {
 				if (is_array($tempArr)) {
 					$c = 0;
 					foreach ($tempArr as $idx => $values) {
