@@ -299,6 +299,33 @@ class Tx_Formhandler_UtilityFuncs {
 	}
 
 	/**
+	 * Redirects to a specified page or URL.
+	 * The redirect url, additional params and other settings are taken from the given settings array.
+	 *
+	 * @param array $settings Array containing the redirect settings
+	 * @param array $gp Array with GET/POST parameters
+	 * @param string $redirectPageSetting Name of the Typoscript setting which holds the redirect page.
+	 * @return void
+	 */
+	public function doRedirectBasedOnSettings($settings, $gp, $redirectPageSetting = 'redirectPage') {
+		$redirectPage = $this->getSingle($settings, $redirectPageSetting);
+
+		//Allow "redirectPage" to be the value of a form field
+		if($redirectPage && isset($gp[$redirectPage])) {
+			$redirectPage = $gp[$redirectPage];
+		}
+
+		if(strlen($redirectPage > 0)) {
+			$correctRedirectUrl = $this->getSingle($settings, 'correctRedirectUrl');
+			$headerStatusCode = $this->getSingle($settings, 'headerStatusCode');
+			$this->doRedirect($redirectPage, $correctRedirectUrl, $settings['additionalParams.'], $headerStatusCode);
+			exit();
+		} else {
+			$this->throwException('No redirectPage set. Aborting.');
+		}
+	}
+
+	/**
 	 * Return value from somewhere inside a FlexForm structure
 	 *
 	 * @param	array		FlexForm data

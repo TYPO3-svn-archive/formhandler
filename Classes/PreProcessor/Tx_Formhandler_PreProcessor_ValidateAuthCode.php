@@ -70,18 +70,11 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 					$this->utilityFuncs->throwException('validateauthcode_update_failed');
 				}
 
-				$redirectPage = $this->utilityFuncs->getSingle($this->settings, 'redirectPage');
-				if($redirectPage) {
-					$correctRedirectUrl = $this->utilityFuncs->getSingle($this->settings, 'correctRedirectUrl');
-					$headerStatusCode  = $this->utilityFuncs->getSingle($this->settings, 'headerStatusCode');
-					$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.'], $headerStatusCode);
-				}
+				$this->utilityFuncs->doRedirectBasedOnSettings($this->settings, $this->gp);
 			} catch(Exception $e) {
 				$redirectPage = $this->utilityFuncs->getSingle($this->settings, 'errorRedirectPage');
 				if($redirectPage) {
-					$correctRedirectUrl = $this->utilityFuncs->getSingle($this->settings, 'correctRedirectUrl');
-					$headerStatusCode  = $this->utilityFuncs->getSingle($this->settings, 'headerStatusCode');
-					$this->utilityFuncs->doRedirect($redirectPage, $correctRedirectUrl, $this->settings['additionalParams.'], $headerStatusCode);
+					$this->utilityFuncs->doRedirectBasedOnSettings($this->settings, $this->gp, 'errorRedirectPage');
 				} else {
 					throw new Exception($e->getMessage());
 				}
