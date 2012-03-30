@@ -662,6 +662,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		//parse validation settings
 		if (is_array($settings['validators.'])) {
 			foreach ($settings['validators.'] as $key => $validatorSettings) {
+				$disableErrorCheckFields = array();
+				if(is_array($validatorSettings['config.']) && isset($validatorSettings['config.']['disableErrorCheckFields'])) {
+					$disableErrorCheckFields = t3lib_div::trimExplode(',', $validatorSettings['config.']['disableErrorCheckFields']);
+				}
 				if (is_array($validatorSettings['config.']) && is_array($validatorSettings['config.']['fieldConf.'])) {
 					foreach ($validatorSettings['config.']['fieldConf.'] as $fieldname => $fieldSettings) {
 						$replacedFieldname = str_replace('.', '', $fieldname);
@@ -707,11 +711,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 										$markers['###' . $replacedFieldname . '_remainingTotalSize###'] = t3lib_div::formatSize($maxTotalSize - $totalSize, ' Bytes| KB| MB| GB');
 										break;
 									case 'required':case 'fileRequired':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathguard':
-										$requiredSign = $this->utilityFuncs->getSingle($settings, 'requiredSign');
-										if(strlen($requiredSign) === 0) {
-											$requiredSign = '*';
+										if(!in_array('all', $disableErrorCheckFields) && !in_array($replacedFieldname, $disableErrorCheckFields)) {
+											$requiredSign = $this->utilityFuncs->getSingle($settings, 'requiredSign');
+											if(strlen($requiredSign) === 0) {
+												$requiredSign = '*';
+											}
+											$markers['###required_' . $replacedFieldname . '###'] = $requiredSign;
 										}
-										$markers['###required_' . $replacedFieldname . '###'] = $requiredSign;
 										break;
 								}
 							}
