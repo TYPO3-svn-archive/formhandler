@@ -115,7 +115,7 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 		if ($tsConfig['validators.']) {
 			foreach ($tsConfig['validators.'] as $idx => $settings) {
 				if (is_array($settings['config.'])) {
-					$this->settings = array_merge($this->settings, $settings['config.']);
+					$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $settings['config.']);
 				}
 			}
 		}
