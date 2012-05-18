@@ -644,6 +644,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$fieldname = $this->gp['removeFileField'];
 			$sessionFiles = $this->globals->getSession()->get('files');
 			if (is_array($sessionFiles)) {
+
+				//get upload folder
+				$uploadFolder = $this->utilityFuncs->getTempUploadFolder();
+
+				//build absolute path to upload folder
+				$uploadPath = $this->utilityFuncs->getTYPO3Root() . $uploadFolder;
+
 				foreach ($sessionFiles as $field => $files) {
 					if (!strcmp($field, $fieldname)) {
 						$found = FALSE;
@@ -651,12 +658,18 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							if (!strcmp($fileInfo['uploaded_name'], $filename)) {
 								$found = TRUE;
 								unset($sessionFiles[$field][$key]);
+								if(file_exists($uploadPath . $fileInfo['uploaded_name'])) {
+									unlink($uploadPath . $fileInfo['uploaded_name']);
+								}
 							}
 						}
 						if (!$found) {
 							foreach ($files as $key => $fileInfo) {
 								if (!strcmp($fileInfo['name'], $filename)) {
 									unset($sessionFiles[$field][$key]);
+									if(file_exists($uploadPath . $fileInfo['name'])) {
+										unlink($uploadPath . $fileInfo['name']);
+									}
 								}
 							}
 						}
