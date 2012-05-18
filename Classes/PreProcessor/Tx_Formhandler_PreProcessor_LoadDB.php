@@ -162,6 +162,7 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 			$values = $this->globals->getSession()->get('values');
 			$arrKeys = array_keys($settings);
 			foreach ($arrKeys as $idx => $fieldname) {
+				$fieldname = preg_replace('/\.$/', '', $fieldname);
 
 				//post process the field value.
 				if (is_array($settings[$fieldname . '.']['preProcessing.'])) {
@@ -169,7 +170,6 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 					$values[$step][$fieldname] = $this->utilityFuncs->getSingle($settings[$fieldname . '.'], 'preProcessing');
 				}
 
-				$fN = preg_replace('/\.$/', '', $fieldname);
 				if (!isset($values[$step][$fieldname])) {
 					$values[$step][$fieldname] = $data[$this->utilityFuncs->getSingle($settings[$fieldname . '.'], 'mapping')];
 					if ($settings[$fieldname . '.']['separator']) {
