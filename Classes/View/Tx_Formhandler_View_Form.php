@@ -661,64 +661,68 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		//parse validation settings
 		if (is_array($settings['validators.'])) {
-			foreach ($settings['validators.'] as $key => $validatorSettings) {
-				$disableErrorCheckFields = array();
-				if(is_array($validatorSettings['config.']) && isset($validatorSettings['config.']['disableErrorCheckFields'])) {
-					$disableErrorCheckFields = t3lib_div::trimExplode(',', $validatorSettings['config.']['disableErrorCheckFields']);
-				}
-				if (is_array($validatorSettings['config.']) && is_array($validatorSettings['config.']['fieldConf.'])) {
-					foreach ($validatorSettings['config.']['fieldConf.'] as $fieldname => $fieldSettings) {
-						$replacedFieldname = str_replace('.', '', $fieldname);
-						if (is_array($fieldSettings['errorCheck.'])) {
-							foreach ($fieldSettings['errorCheck.'] as $key => $check) {
-								switch ($check) {
-									case 'fileMinSize':
-										$minSize = $fieldSettings['errorCheck.'][$key . '.']['minSize'];
-										$markers['###' . $replacedFieldname . '_minSize###'] = t3lib_div::formatSize($minSize, ' Bytes| KB| MB| GB');
-										break;
-									case 'fileMaxSize':
-										$maxSize = $fieldSettings['errorCheck.'][$key . '.']['maxSize'];
-										$markers['###' . $replacedFieldname . '_maxSize###'] = t3lib_div::formatSize($maxSize, ' Bytes| KB| MB| GB');
-										break;
-									case 'fileAllowedTypes':
-										$types = $fieldSettings['errorCheck.'][$key . '.']['allowedTypes'];
-										$markers['###' . $replacedFieldname . '_allowedTypes###'] = $types;
-										break;
-									case 'fileMaxCount':
-										$maxCount = $fieldSettings['errorCheck.'][$key . '.']['maxCount'];
-										$markers['###' . $replacedFieldname . '_maxCount###'] = $maxCount;
-
-										$fileCount = count($sessionFiles[$replacedFieldname]);
-										$markers['###' . $replacedFieldname . '_fileCount###'] = $fileCount;
-
-										$remaining = $maxCount - $fileCount;
-										$markers['###' . $replacedFieldname . '_remainingCount###'] = $remaining;
-										break;
-									case 'fileMinCount':
-										$minCount = $fieldSettings['errorCheck.'][$key.'.']['minCount'];
-										$markers['###' . $replacedFieldname . '_minCount###'] = $minCount;
-										break;
-									case 'fileMaxTotalSize':
-										$maxTotalSize = $fieldSettings['errorCheck.'][$key . '.']['maxTotalSize'];
-										$markers['###' . $replacedFieldname . '_maxTotalSize###'] = t3lib_div::formatSize($maxTotalSize, ' Bytes| KB| MB| GB');
-										$totalSize = 0;
-										if(is_array($sessionFiles[$replacedFieldname])) {
-											foreach ($sessionFiles[$replacedFieldname] as $file) {
-												$totalSize += intval($file['size']);
-											}
+			if(intval($this->utilityFuncs->getSingle($settings['validators.'], 'disable')) === 0) {
+				foreach ($settings['validators.'] as $key => $validatorSettings) {
+					if(intval($this->utilityFuncs->getSingle($validatorSettings, 'disable')) === 0) {
+						$disableErrorCheckFields = array();
+						if(is_array($validatorSettings['config.']) && isset($validatorSettings['config.']['disableErrorCheckFields'])) {
+							$disableErrorCheckFields = t3lib_div::trimExplode(',', $validatorSettings['config.']['disableErrorCheckFields']);
+						}
+						if (is_array($validatorSettings['config.']) && is_array($validatorSettings['config.']['fieldConf.'])) {
+							foreach ($validatorSettings['config.']['fieldConf.'] as $fieldname => $fieldSettings) {
+								$replacedFieldname = str_replace('.', '', $fieldname);
+								if (is_array($fieldSettings['errorCheck.'])) {
+									foreach ($fieldSettings['errorCheck.'] as $key => $check) {
+										switch ($check) {
+											case 'fileMinSize':
+												$minSize = $fieldSettings['errorCheck.'][$key . '.']['minSize'];
+												$markers['###' . $replacedFieldname . '_minSize###'] = t3lib_div::formatSize($minSize, ' Bytes| KB| MB| GB');
+												break;
+											case 'fileMaxSize':
+												$maxSize = $fieldSettings['errorCheck.'][$key . '.']['maxSize'];
+												$markers['###' . $replacedFieldname . '_maxSize###'] = t3lib_div::formatSize($maxSize, ' Bytes| KB| MB| GB');
+												break;
+											case 'fileAllowedTypes':
+												$types = $fieldSettings['errorCheck.'][$key . '.']['allowedTypes'];
+												$markers['###' . $replacedFieldname . '_allowedTypes###'] = $types;
+												break;
+											case 'fileMaxCount':
+												$maxCount = $fieldSettings['errorCheck.'][$key . '.']['maxCount'];
+												$markers['###' . $replacedFieldname . '_maxCount###'] = $maxCount;
+		
+												$fileCount = count($sessionFiles[$replacedFieldname]);
+												$markers['###' . $replacedFieldname . '_fileCount###'] = $fileCount;
+		
+												$remaining = $maxCount - $fileCount;
+												$markers['###' . $replacedFieldname . '_remainingCount###'] = $remaining;
+												break;
+											case 'fileMinCount':
+												$minCount = $fieldSettings['errorCheck.'][$key.'.']['minCount'];
+												$markers['###' . $replacedFieldname . '_minCount###'] = $minCount;
+												break;
+											case 'fileMaxTotalSize':
+												$maxTotalSize = $fieldSettings['errorCheck.'][$key . '.']['maxTotalSize'];
+												$markers['###' . $replacedFieldname . '_maxTotalSize###'] = t3lib_div::formatSize($maxTotalSize, ' Bytes| KB| MB| GB');
+												$totalSize = 0;
+												if(is_array($sessionFiles[$replacedFieldname])) {
+													foreach ($sessionFiles[$replacedFieldname] as $file) {
+														$totalSize += intval($file['size']);
+													}
+												}
+												$markers['###' . $replacedFieldname . '_currentTotalSize###'] = t3lib_div::formatSize($totalSize, ' Bytes| KB| MB| GB');
+												$markers['###' . $replacedFieldname . '_remainingTotalSize###'] = t3lib_div::formatSize($maxTotalSize - $totalSize, ' Bytes| KB| MB| GB');
+												break;
+											case 'required':case 'fileRequired':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathguard':
+												if(!in_array('all', $disableErrorCheckFields) && !in_array($replacedFieldname, $disableErrorCheckFields)) {
+													$requiredSign = $this->utilityFuncs->getSingle($settings, 'requiredSign');
+													if(strlen($requiredSign) === 0) {
+														$requiredSign = '*';
+													}
+													$markers['###required_' . $replacedFieldname . '###'] = $requiredSign;
+												}
+												break;
 										}
-										$markers['###' . $replacedFieldname . '_currentTotalSize###'] = t3lib_div::formatSize($totalSize, ' Bytes| KB| MB| GB');
-										$markers['###' . $replacedFieldname . '_remainingTotalSize###'] = t3lib_div::formatSize($maxTotalSize - $totalSize, ' Bytes| KB| MB| GB');
-										break;
-									case 'required':case 'fileRequired':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathguard':
-										if(!in_array('all', $disableErrorCheckFields) && !in_array($replacedFieldname, $disableErrorCheckFields)) {
-											$requiredSign = $this->utilityFuncs->getSingle($settings, 'requiredSign');
-											if(strlen($requiredSign) === 0) {
-												$requiredSign = '*';
-											}
-											$markers['###required_' . $replacedFieldname . '###'] = $requiredSign;
-										}
-										break;
+									}
 								}
 							}
 						}
