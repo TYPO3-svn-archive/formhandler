@@ -44,6 +44,7 @@ finishers {
 			<label index="error_checks_form_field_name_missing">Form field name missing for error check "%s"!</label>
 			<label index="error_checks_parameters_missing">No parameters found for error check "%s" although "%s" is mandatory!</label>
 			<label index="error_checks_unsufficient_parameters">Parameter "%s" for error check "%s" not found although it is mandatory!</label>
+			<label index="error_check_filemaxsize"><![CDATA[The configured "maxSize" (%s) for the field "%s" is bigger than the allowed max upload size configured in php.ini (%s). For more information see: <a target="_blank" href="http://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize">http://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize</a>!]]></label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="extension_required">L'extension "%s" est requise pour %s!</label>
@@ -66,6 +67,7 @@ finishers {
 			<label index="error_checks_form_field_name_missing">TRANSLATE: Form field name missing for error check "%s"!</label>
 			<label index="error_checks_parameters_missing">TRANSLATE: No parameters found for error check "%s" although "%s" is mandatory!</label>
 			<label index="error_checks_unsufficient_parameters">TRANSLATE: Parameter "%s" for error check "%s" not found although it is mandatory!</label>
+			<label index="error_check_filemaxsize"><![CDATA[TRANSLATE: The configured "maxSize" (%s) for the field "%s" is bigger than the allowed max upload size configured in php.ini (%s). For more information see: <a target="_blank" href="http://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize">http://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize</a>!]]></label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="extension_required"><![CDATA[Die Extension "%s" wird benötigt für %s!]]></label>
@@ -110,6 +112,7 @@ finishers {
 			<label index="error_checks_form_field_name_missing"><![CDATA[Name des Formularfelds fehlt für den Error-Check "%s"!]]></label>
 			<label index="error_checks_parameters_missing"><![CDATA[Keine Parameter gefunden für Error-Check "%s", "%s" wird benötigt!]]></label>
 			<label index="error_checks_unsufficient_parameters"><![CDATA[Parameter "%s" nicht gefunden für Error-Check "%s"!]]></label>
+			<label index="error_check_filemaxsize"><![CDATA[Die konfigurierte "maxSize" (%s) für das Feld "%s" ist größer das die max upload size in der php.ini (%s). Mehr Informationen: <a target="_blank" href="http://www.php.net/manual/de/ini.core.php#ini.upload-max-filesize">http://www.php.net/manual/de/ini.core.php#ini.upload-max-filesize</a>!]]></label>
 		</languageKey>
 	</data>
 </T3locallang>
