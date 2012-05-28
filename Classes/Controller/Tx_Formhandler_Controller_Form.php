@@ -471,6 +471,22 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return Output of a Finisher
 	 */
 	protected function processFinished() {
+		//If skipView is set, call preProcessors and initInterceptors here
+		if (intval($this->utilityFuncs->getSingle($this->settings, 'skipView')) === 1) {
+
+			//run preProcessors
+			$output = $this->runClasses($this->settings['preProcessors.']);
+			if (strlen($output) > 0) {
+				return $output;
+			}
+
+			//run init interceptors
+			$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
+			$output = $this->runClasses($this->settings['initInterceptors.']);
+			if (strlen($output) > 0) {
+				return $output;
+			}
+		}
 		$this->storeSettingsInSession();
 
 		//run save interceptors
