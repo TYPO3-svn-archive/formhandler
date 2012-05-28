@@ -280,7 +280,22 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	}
 
 	protected function handleIssetSubpartCondition($condition) {
-		return (strlen(trim($this->globals->getCObj()->getGlobal($condition, $this->gp))) > 0);
+		$fieldname = $condition;
+		$negate = FALSE;
+		if(substr($condition, 0, 1) === '!') {
+			$fieldname = substr($condition, 1);
+			$negate = TRUE;
+		}
+		$value = $this->globals->getCObj()->getGlobal($fieldname, $this->gp);
+		if(is_array($value)) {
+			$result = (empty($value));
+		} else {
+			$result = (strlen(trim($value)) > 0);
+		}
+		if($negate) {
+			$result = !$result;
+		}
+		return $result;
 	}
 
 	protected function handleHasTranslationSubpartCondition($condition) {
