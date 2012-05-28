@@ -51,16 +51,23 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 				if($this->settings['selectFields']) {
 					$selectFields = $this->utilityFuncs->getSingle($this->settings, 'selectFields');
 				}
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $uidField . '=' . $uid . ' AND ' . $hiddenField . '=1' . $this->cObj->enableFields($table, 1));
+				$query = $GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $table, $uidField . '=' . $uid . ' AND ' . $hiddenField . '=1' . $this->cObj->enableFields($table, 1));
+				$this->utilityFuncs->debugMessage('sql_request', array($query));
+				$res = $GLOBALS['TYPO3_DB']->sql_query($query);
+				if ($GLOBALS['TYPO3_DB']->sql_error()) {
+					$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
+				}
 				if(!$res || $GLOBALS['TYPO3_DB']->sql_num_rows($res) === 0) {
 					$this->utilityFuncs->throwException('validateauthcode_no_record_found');
 				}
 
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				$this->utilityFuncs->debugMessage('Selected row: ', array(), 1, $row);
 
 				$localAuthCode = md5(serialize($row));
 
+				$this->utilityFuncs->debugMessage('Comparing auth codes: ', array(), 1, array('Calculated:' => $localAuthCode, 'Given:' => $authCode));
 				if($localAuthCode !== $authCode) {
 					$this->utilityFuncs->throwException('validateauthcode_invalid_auth_code');
 				}

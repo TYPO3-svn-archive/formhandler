@@ -321,7 +321,7 @@ class Tx_Formhandler_UtilityFuncs {
 			$this->doRedirect($redirectPage, $correctRedirectUrl, $settings['additionalParams.'], $headerStatusCode);
 			exit();
 		} else {
-			$this->throwException('No redirectPage set. Aborting.');
+			$this->debugMessage('No redirectPage set.');
 		}
 	}
 
