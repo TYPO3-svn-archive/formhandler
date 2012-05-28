@@ -426,6 +426,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers = array();
 		$markers['###REL_URL###'] = $path;
 		$markers['###TIMESTAMP###'] = time();
+
+		//Calculate timestamp only once to prevent false positives when a small error in the form gets corrected fast.
+		if(strlen(trim($this->gp['formtime']))) {
+			$markers['###TIMESTAMP###'] = htmlspecialchars($this->gp['formtime']);
+		}
 		$markers['###RANDOM_ID###'] = htmlspecialchars($this->gp['randomID']);
 		$markers['###ABS_URL###'] = t3lib_div::locationHeaderUrl('') . $path;
 		$markers['###rel_url###'] = $markers['###REL_URL###'];
