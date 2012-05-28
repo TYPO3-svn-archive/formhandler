@@ -39,6 +39,23 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			$this->jQueryAlias = 'jQuery';
 		}
 
+		$this->validationStatusClasses = array(
+			'base' => 'formhandler-validation-status',
+			'valid' => 'form-valid',
+			'invalid' => 'form-invalid'
+		);
+		if(is_array($settings['ajax.']['config.']['validationStatusClasses.'])) {
+			if($settings['ajax.']['config.']['validationStatusClasses.']['base']) {
+				$this->validationStatusClasses['base'] = $this->utilityFuncs->getSingle($settings['ajax.']['config.']['validationStatusClasses.'], 'base');
+			}
+			if($settings['ajax.']['config.']['validationStatusClasses.']['valid']) {
+				$this->validationStatusClasses['valid'] = $this->utilityFuncs->getSingle($settings['ajax.']['config.']['validationStatusClasses.'], 'valid');
+			}
+			if($settings['ajax.']['config.']['validationStatusClasses.']['invalid']) {
+				$this->validationStatusClasses['invalid'] = $this->utilityFuncs->getSingle($settings['ajax.']['config.']['validationStatusClasses.'], 'invalid');
+			}
+		}
+
 		$autoDisableSubmitButton = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'autoDisableSubmitButton');
 		$js = '';
 		if(intval($autoDisableSubmitButton) === 1) {
@@ -105,7 +122,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 
 		$autoDisableSubmitButton = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'autoDisableSubmitButton');
 		if(intval($autoDisableSubmitButton) === 1) {
-			$markers['###validation-status###'] = 'formhandler-validation-status form-invalid';
+			$markers['###validation-status###'] = $this->validationStatusClasses['base'] . ' ' . $this->validationStatusClasses['invalid'];
 		}
 
 		$ajaxSubmit = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmit');
@@ -170,17 +187,17 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 								}
 								var valid = true;
 								' . $this->jQueryAlias . '("#' . $this->globals->getFormID() . ' .formhandler-ajax-validation-result").each(function() {
-									if(!field.data("isValid")) {
+									if(!' . $this->jQueryAlias . '(this).data("isValid")) {
 										valid = false;
 									}
 								});
-								var button = ' . $this->jQueryAlias . '("#' . $this->globals->getFormID() . ' INPUT.formhandler-validation-status");
+								var button = ' . $this->jQueryAlias . '("#' . $this->globals->getFormID() . ' INPUT.' . $this->validationStatusClasses['base'] . '");
 								if(valid) {
 									button.removeAttr("disabled");
-									button.removeClass("form-invalid").addClass("form-valid");
+									button.removeClass("' . $this->validationStatusClasses['invalid'] . '").addClass("' . $this->validationStatusClasses['valid'] . '");
 								} else {
 									button.attr("disabled", "disabled");
-									button.removeClass("form-valid").addClass("form-invalid");
+									button.removeClass("' . $this->validationStatusClasses['valid'] . '").addClass("' . $this->validationStatusClasses['invalid'] . '");
 								}
 							';
 						}
