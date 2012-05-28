@@ -33,8 +33,17 @@ class Tx_Formhandler_ErrorCheck_MaxItems extends Tx_Formhandler_AbstractErrorChe
 
 		if (isset($this->gp[$this->formFieldName])) {
 			$value = $this->utilityFuncs->getSingle($this->settings['params'], 'value');
+			$removeEmptyValues = $this->utilityFuncs->getSingle($this->settings['params'], 'removeEmptyValues');
 			if (is_array($this->gp[$this->formFieldName])) {
-				if (count($this->gp[$this->formFieldName]) > $value) {
+				$valuesArray = $this->gp[$this->formFieldName];
+				if (intval($removeEmptyValues) === 1) {
+					foreach($valuesArray as $key => $fieldName) {
+						if (empty($fieldName)) {
+							unset($valuesArray[$key]);
+						}
+					}
+				}
+				if (count($valuesArray) > $value) {
 					$checkFailed = $this->getCheckFailed();
 				}
 			} else {
