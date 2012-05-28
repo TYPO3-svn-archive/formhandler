@@ -103,40 +103,44 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			$queryFields = $this->parseFields();
 
 			//query the database
-			$this->save($queryFields);
+			$isSuccess = $this->save($queryFields);
 
 			if (!is_array($this->gp['saveDB'])) {
 				$this->gp['saveDB'] = array();
 			}
 
-			//Get DB info, including UID
-			if (!$this->doUpdate) {
-				$this->gp['inserted_uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
-				$this->gp[$this->table . '_inserted_uid'] = $this->gp['inserted_uid'];
-				$info = array(
-					'table' => $this->table,
-					'uid' => $this->gp['inserted_uid'],
-					'uidField' => $this->key
-				);
-				array_push($this->gp['saveDB'], $info);
-			} else {
-				$uid = $this->getUpdateUid();
-				$info = array(
-					'table' => $this->table,
-					'uid' => $uid,
-					'uidField' => $this->key
-				);
-				array_push($this->gp['saveDB'], $info);
-			}
+			//Store info in GP only if the query was successful
+			if($isSuccess) {
 
-			//Insert the data written to DB into GP array
-			$dataKeyName = $this->table;
-			$dataKeyIndex = 1;
-			while(isset($this->gp['saveDB'][$dataKeyName])) {
-				$dataKeyIndex++;
-				$dataKeyName = $this->table . '_' . $dataKeyIndex;
+				//Get DB info, including UID
+				if (!$this->doUpdate) {
+					$this->gp['inserted_uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
+					$this->gp[$this->table . '_inserted_uid'] = $this->gp['inserted_uid'];
+					$info = array(
+						'table' => $this->table,
+						'uid' => $this->gp['inserted_uid'],
+						'uidField' => $this->key
+					);
+					array_push($this->gp['saveDB'], $info);
+				} else {
+					$uid = $this->getUpdateUid();
+					$info = array(
+						'table' => $this->table,
+						'uid' => $uid,
+						'uidField' => $this->key
+					);
+					array_push($this->gp['saveDB'], $info);
+				}
+	
+				//Insert the data written to DB into GP array
+				$dataKeyName = $this->table;
+				$dataKeyIndex = 1;
+				while(isset($this->gp['saveDB'][$dataKeyName])) {
+					$dataKeyIndex++;
+					$dataKeyName = $this->table . '_' . $dataKeyIndex;
+				}
+				$this->gp['saveDB'][$dataKeyName] = $queryFields;
 			}
-			$this->gp['saveDB'][$dataKeyName] = $queryFields;
 		}
 
 		return $this->gp;
@@ -171,13 +175,15 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	 * Method to query the database making an insert or update statement using the given fields.
 	 *
 	 * @param array &$queryFields Array holding the query fields
-	 * @return void
+	 * @return boolean Success flag
 	 */
 	protected function save(&$queryFields) {
 
+		$isSuccess = FALSE;
+
 		//insert query
 		if (!$this->doUpdate) {
-			$this->doInsert($queryFields);
+			$isSuccess = $this->doInsert($queryFields);
 
 			//update query
 		} else {
@@ -186,9 +192,9 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			$uid = $this->getUpdateUid();
 
 			$andWhere = $this->utilityFuncs->getSingle($this->settings, 'andWhere');
-			$this->doUpdate($uid, $queryFields, $andWhere);
-			
+			$isSuccess = $this->doUpdate($uid, $queryFields, $andWhere);
 		}
+		return $isSuccess;
 	}
 
 	protected function doesRecordExist($uid) {
@@ -205,15 +211,19 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	}
 
 	protected function doInsert($queryFields) {
+		$isSuccess = TRUE;
 		$query = $GLOBALS['TYPO3_DB']->INSERTquery($this->table, $queryFields);
 		$this->utilityFuncs->debugMessage('sql_request', array($query));
 		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 		if ($GLOBALS['TYPO3_DB']->sql_error()) {
+			$isSuccess = FALSE;
 			$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 		}
+		return $isSuccess;
 	}
 
 	protected function doUpdate($uid, $queryFields, $andWhere) {
+		$isSuccess = TRUE;
 		$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
 		$andWhere = trim($andWhere);
 		if(substr($andWhere, 0, 3) === 'AND') {
@@ -226,8 +236,10 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		$this->utilityFuncs->debugMessage('sql_request', array($query));
 		$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 		if($GLOBALS['TYPO3_DB']->sql_error()) {
+			$isSuccess = FALSE;
 			$this->utilityFuncs->debugMessage('error', array($GLOBALS['TYPO3_DB']->sql_error()), 3);
 		}
+		return $isSuccess;
 	}
 
 	/**
