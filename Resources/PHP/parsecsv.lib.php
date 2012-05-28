@@ -234,6 +234,10 @@ class parseCSV {
 		if ( empty($filename) ) $filename = $this->output_filename;
 		if ( $delimiter === null ) $delimiter = $this->output_delimiter;
 		$data = $this->unparse($data, $fields, null, null, $delimiter);
+		if ($this->convert_encoding === TRUE) {
+			$csConvObj = t3lib_div::makeInstance('t3lib_cs');
+			$data = $csConvObj->conv($data, $this->input_encoding, $this->output_encoding);
+		}
 		if ( $filename !== null ) {
 			header('Content-type: application/csv');
 			header('Content-Disposition: attachment; filename="'.$filename.'"');

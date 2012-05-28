@@ -285,7 +285,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$generator = $this->componentManager->getComponent($className);
 
 			// check if TSconfig filter is set
-			if (strlen($tsconfig['properties']['config.']['csv']) > 0) {
+			if (strlen($tsconfig['properties']['config.']['pdf']) > 0) {
 				$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['pdf'], 1);
 				$generator->generateModulePDF($records, $configParams);	
 			} elseif (isset($gp['exportParams'])) {
@@ -370,7 +370,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 					$tsconfig['properties']['config.']['csv.']['enclosure'] = '"';
 				}
 				if(!$tsconfig['properties']['config.']['csv.']['encoding']) {
-					$tsconfig['properties']['config.']['csv.']['encoding'] = '"';
+					$tsconfig['properties']['config.']['csv.']['encoding'] = 'utf-8';
 				}
 
 				// check if TSconfig filter is set

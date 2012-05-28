@@ -113,7 +113,12 @@ class Tx_Formhandler_Generator_CSV {
 		$csv = new parseCSV();
 		$csv->delimiter = $csv->output_delimiter = $delimiter;
 		$csv->enclosure = $enclosure;
+		$csv->input_encoding = $this->getInputCharset();
 		$csv->output_encoding = $encoding;
+		$csv->convert_encoding = FALSE;
+		if($csv->input_encoding !== $csv->output_encoding) {
+			$csv->convert_encoding = TRUE;
+		}
 		$csv->output('formhandler.csv', $data, $exportParams);
 		die();
 	}
@@ -133,5 +138,21 @@ class Tx_Formhandler_Generator_CSV {
 		}
 		return $ordered + $array;
 	}
+	
+	/**
+	* Get charset used by TYPO3
+	*
+	* @return string Charset
+	*/
+	private function getInputCharset() {
+		if (is_object($GLOBALS['LANG']) && $GLOBALS['LANG']->charSet) {
+			$charset = $GLOBALS['LANG']->charSet;
+		} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
+			$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+		} else	{
+			$charset = 'utf-8';
+		}
+		return $charset;
+		}
 }
 ?>
