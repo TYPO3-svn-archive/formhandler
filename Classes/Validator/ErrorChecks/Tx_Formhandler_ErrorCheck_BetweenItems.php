@@ -32,12 +32,19 @@ class Tx_Formhandler_ErrorCheck_BetweenItems extends Tx_Formhandler_AbstractErro
 		$checkFailed = '';
 		$min = intval($this->utilityFuncs->getSingle($this->settings['params'], 'minValue'));
 		$max = intval($this->utilityFuncs->getSingle($this->settings['params'], 'maxValue'));
-		if (isset($this->gp[$this->formFieldName]) &&
-			is_array($this->gp[$this->formFieldName]) &&
-			(count($this->gp[$this->formFieldName]) < intval($min) || 
-			count($this->gp[$this->formFieldName]) > intval($max))) {
-
-			$checkFailed = $this->getCheckFailed();
+		$removeEmptyValues = $this->utilityFuncs->getSingle($this->settings['params'], 'removeEmptyValues');
+		if (isset($this->gp[$this->formFieldName]) && is_array($this->gp[$this->formFieldName])) {
+			$valuesArray = $this->gp[$this->formFieldName];
+			if (intval($removeEmptyValues) === 1) {
+				foreach($valuesArray as $key => $fieldName) {
+					if (empty($fieldName)) {
+						unset($valuesArray[$key]);
+					}
+				}
+			}
+			if (count($valuesArray) < $min || count($valuesArray) > $min) {
+				$checkFailed = $this->getCheckFailed();
+			}
 		} elseif($min > 0) {
 			$checkFailed = $this->getCheckFailed();
 		}
