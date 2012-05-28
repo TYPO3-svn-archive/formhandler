@@ -1290,6 +1290,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$return = '';
 		if (isset($classesArray) && is_array($classesArray) && intval($this->utilityFuncs->getSingle($classesArray, 'disable')) !== 1) {
 
+			//Load language files everytime before running a component. They may have been changed by previous components
+			$this->langFiles = $this->utilityFuncs->readLanguageFiles($this->langFiles, $this->settings);
+			$this->globals->setLangFiles($this->langFiles);
 			foreach ($classesArray as $idx => $tsConfig) {
 				if ($idx !== 'disable') {
 					$className = $this->utilityFuncs->getPreparedClassName($tsConfig);
