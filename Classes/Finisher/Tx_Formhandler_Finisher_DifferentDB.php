@@ -143,6 +143,7 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 	 * @return void
 	 */
 	public function init($gp, $settings) {
+		parent::init($gp, $settings);
 
 		//if adodb is installed
 		if (t3lib_extMgm::isLoaded('adodb')) {
@@ -161,7 +162,6 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 			$this->utilityFuncs->throwException('extension_required', 'adodb', 'Tx_Formhandler_Finisher_DifferentDB');
 		}
 
-		parent::init($gp, $settings);
 	}
 
 }
