@@ -145,7 +145,7 @@ class Tx_Formhandler_UtilityFuncs {
 
 			if (isset($settings['templateFile.']) && is_array($settings['templateFile.'])) {
 				$templateFile = $this->getSingle($settings, 'templateFile');
-				if (strpos($templateFile, "\n") === FALSE) {
+				if ($this->isTemplateFilePath($templateFile)) {
 					$templateFile = $this->resolvePath($templateFile);
 					if (!@file_exists($templateFile)) {
 						$this->throwException('template_file_not_found', $templateFile);
@@ -160,7 +160,7 @@ class Tx_Formhandler_UtilityFuncs {
 				$templateCode = t3lib_div::getURL($templateFile);
 			}
 		} else {
-			if (stristr($templateFile, '###TEMPLATE_') === FALSE) {
+			if ($this->isTemplateFilePath($templateFile)) {
 				$templateFile = $this->resolvePath($templateFile);
 				if (!@file_exists($templateFile)) {
 					$this->throwException('template_file_not_found', $templateFile);
@@ -878,6 +878,16 @@ class Tx_Formhandler_UtilityFuncs {
 			}
 			return $qty;
 		}
+	}
+
+	/**
+	 * Check if a given string is a file path or contains parsed HTML template data
+	 *
+	 * @param	string	$templateFile
+	 * @return	boolean
+	 */
+	public function isTemplateFilePath($templateFile) {
+		return (stristr($templateFile, '###TEMPLATE_') === FALSE);
 	}
 
 }
