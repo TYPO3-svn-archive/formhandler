@@ -70,7 +70,7 @@ abstract class Tx_Formhandler_AbstractErrorCheck extends Tx_Formhandler_Abstract
 				$this->utilityFuncs->throwException('error_checks_parameters_missing', $this->settings['check'], implode(',', $this->mandatoryParameters));
 			}
 			foreach($this->mandatoryParameters as $param) {
-				if(!$this->settings['params'][$param]) {
+				if(!isset($this->settings['params'][$param])) {
 					$this->utilityFuncs->throwException('error_checks_unsufficient_parameters', $param, $this->settings['check']);
 				}
 			}
