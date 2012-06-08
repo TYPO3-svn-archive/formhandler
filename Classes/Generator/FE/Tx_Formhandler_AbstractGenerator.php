@@ -25,7 +25,7 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 	* @param array $linkGP The GET parameters to set
 	* @return string The link
 	*/
-	public function getLink($linkGP) {
+	public function getLink($linkGP = array()) {
 		$text = $this->getLinkText();
 
 		$params = $this->getDefaultLinkParams();
