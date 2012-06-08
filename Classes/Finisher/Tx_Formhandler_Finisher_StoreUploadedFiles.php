@@ -80,6 +80,17 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 				foreach ($files as $key => $file) {
 					if ($file['uploaded_path'] != $uploadPath) {
 						$newFilename = $this->getNewFilename($file['uploaded_name']);
+						$filename = substr($newFilename, 0, strrpos($newFilename, '.'));
+						$ext = substr($newFilename, strrpos($newFilename, '.'));
+
+						$suffix = 1;
+
+						//rename if exists
+						while(file_exists($uploadPath . $newFilename)) {
+							$newFilename = $filename . '_' . $suffix . $ext;
+							$suffix++;
+						}
+
 						$this->utilityFuncs->debugMessage(
 							'copy_file', 
 							array(
@@ -132,8 +143,15 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 					$value = $options;
 
 					//use field value
-					if (isset($this->settings['schemeMarkers.'][$markerName.'.']) && !strcmp($options, 'fieldValue')) {
+					if (isset($this->settings['schemeMarkers.'][$markerName . '.']) && !strcmp($options, 'fieldValue')) {
 						$value = $this->gp[$this->settings['schemeMarkers.'][$markerName . '.']['field']];
+						if(is_array($value)) {
+							$separator = $this->utilityFuncs->getSingle($this->settings['schemeMarkers.'][$markerName . '.'], 'separator');
+							if(strlen($separator) === 0) {
+								$separator = '-';
+							}
+							$value = implode($separator, $value);
+						}
 					} elseif (isset($this->settings['schemeMarkers.'][$markerName . '.'])) {
 						$value = $this->utilityFuncs->getSingle($this->settings['schemeMarkers.'], $markerName);
 					}
