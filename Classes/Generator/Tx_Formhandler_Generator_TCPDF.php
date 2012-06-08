@@ -127,16 +127,16 @@ class Tx_Formhandler_Generator_TCPDF {
 							$this->pdf->Cell($feedWidth);
 							$this->pdf->Cell($nameWidth, '6', $key, 0, 0, 'L', $fill);
 							$arrayValue = array_shift($value);
-							if(strpos($arrayValue, "\n") === FALSE && strpos($arrayValue, "\r") === FALSE) {
-								$this->pdf->Cell($valueWidth, '6', array_shift($value), 0, 0, 'L', $fill);
+							if(strpos($arrayValue, "\n") === FALSE && strpos($arrayValue, "\r") === FALSE && strlen($arrayValue) < $valueWidth - 40) {
+								$this->pdf->Cell($valueWidth, '6', $arrayValue, 0, 0, 'L', $fill);
 							} else {
-								$this->pdf->MultiCell($valueWidth, '6', array_shift($value), 0, 0, 'L', $fill);
+								$this->pdf->MultiCell($valueWidth, '6', $arrayValue, 0, 0, 'L', $fill);
 							}
 							$this->pdf->Ln();
 							foreach ($value as $v) {
 								$this->pdf->Cell($feedWidth);
 								$this->pdf->Cell($nameWidth, '6', '', 0, 0, 'L', $fill);
-								if(strpos($v, "\n") === FALSE && strpos($v, "\r") === FALSE) {
+								if(strpos($v, "\n") === FALSE && strpos($v, "\r") === FALSE && strlen($v) < $valueWidth - 40) {
 									$this->pdf->Cell($valueWidth, '6', $v, 0, 0, 'L', $fill);
 								} else {
 									$this->pdf->MultiCell($valueWidth, '6', $v, 0, 0, 'L', $fill);
@@ -147,7 +147,7 @@ class Tx_Formhandler_Generator_TCPDF {
 						} else {
 							$this->pdf->Cell($feedWidth);
 							$this->pdf->Cell($nameWidth, '6', $key, 0, 0, 'L', $fill);
-							if(strpos($value, "\n") === FALSE && strpos($value, "\r") === FALSE) {
+							if(strpos($value, "\n") === FALSE && strpos($value, "\r") === FALSE && strlen($value) < $valueWidth - 40) {
 								$this->pdf->Cell($valueWidth, '6', $value, 0, 0, 'L', $fill);
 							} else {
 								$this->pdf->MultiCell($valueWidth, '6', $value, 0, 0, 'L', $fill);
