@@ -160,7 +160,7 @@ class Tx_Formhandler_UtilityFuncs {
 				$templateCode = t3lib_div::getURL($templateFile);
 			}
 		} else {
-			if (strpos($templateFile, "\n") === FALSE) {
+			if (stristr($templateFile, '###TEMPLATE_') === FALSE) {
 				$templateFile = $this->resolvePath($templateFile);
 				if (!@file_exists($templateFile)) {
 					$this->throwException('template_file_not_found', $templateFile);
