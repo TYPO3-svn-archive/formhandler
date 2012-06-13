@@ -162,7 +162,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 								' . $this->jQueryAlias . '(function() {
 									' . $this->jQueryAlias . '("*[name=\'' . $fieldname . '\']").blur(function() {
 										var field = ' . $this->jQueryAlias . '(this);
-										var fieldVal = escape(field.val());
+										var fieldVal = encodeURIComponent(field.val());
 										if(field.attr("type") == "radio" || field.attr("type") == "checkbox") {
 											if (field.attr("checked") == "") {
 												fieldVal = "";
