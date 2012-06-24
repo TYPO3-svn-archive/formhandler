@@ -173,10 +173,35 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 										loading.show();
 										result.hide();
 										var url = "' . $url . '";
-										url = url.replace("value=", "value=" + fieldVal);
-										result.load(url, function() {
-											loading.hide();
-											result.show();
+						';
+						if($validatorSettings['config.']['fieldConf.'][$replacedFieldname . '.']['errorCheck.']) {
+							foreach($validatorSettings['config.']['fieldConf.'][$replacedFieldname . '.']['errorCheck.'] as $key => $errorCheck) {
+								if($errorCheck === 'equalsField') {
+									$equalsField = $this->utilityFuncs->getSingle($validatorSettings['config.']['fieldConf.'][$replacedFieldname . '.']['errorCheck.'][$key . '.'], 'field');
+									if(strlen(trim($equalsField)) > 0) {
+										$equalsFieldName = $equalsField;
+										if ($this->globals->getFormValuesPrefix()) {
+											$equalsFieldName = $this->globals->getFormValuesPrefix() . '[' . $equalsField . ']';
+										}
+										$markers['###validate_' . $replacedFieldname . '###'] .= '
+											var equalsField = ' . $this->jQueryAlias . '("*[name=\'' . $equalsFieldName . '\']");
+											var equalsFieldVal = encodeURIComponent(equalsField.val());
+											if (equalsField.attr("type") == "radio" || equalsField.attr("type") == "checkbox") {
+												if (equalsField.attr("checked") == "") {
+													equalsFieldVal = "";
+												}
+											}
+											url += "&equalsFieldName=' . urlencode($equalsField) . '&equalsFieldValue=" + equalsFieldVal;
+										';
+									}
+								}
+							}
+						}
+						$markers['###validate_' . $replacedFieldname . '###'] .= '
+							url = url.replace("value=", "value=" + fieldVal);
+							result.load(url, function() {
+								loading.hide();
+								result.show();
 						';
 						if(intval($autoDisableSubmitButton) === 1) {
 							$markers['###validate_' . $replacedFieldname . '###'] .= '

@@ -88,6 +88,11 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 						$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
 						if (empty($restrictErrorChecks) || in_array($check['check'], $restrictErrorChecks)) {
 							$gp = array($field => $value);
+
+							if(strlen(trim($_GET['equalsFieldName'])) > 0) {
+								$gp[htmlspecialchars($_GET['equalsFieldName'])] = htmlspecialchars($_GET['equalsFieldValue']);
+							}
+
 							$errorCheckObject->init($gp, $check);
 							$errorCheckObject->setFormFieldName($field);
 							if($errorCheckObject->validateConfig()) {
