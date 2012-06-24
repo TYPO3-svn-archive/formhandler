@@ -436,6 +436,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers['###rel_url###'] = $markers['###REL_URL###'];
 		$markers['###timestamp###'] = $markers['###TIMESTAMP###'];
 		$markers['###abs_url###'] = $markers['###ABS_URL###'];
+		
+		$markers['###formID###'] = htmlspecialchars($this->globals->getFormID());
 
 		$name = 'submitted';
 		if ($this->globals->getFormValuesPrefix()) {
