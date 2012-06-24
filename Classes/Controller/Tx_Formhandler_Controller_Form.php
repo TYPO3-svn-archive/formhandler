@@ -271,6 +271,21 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			return $output;
 		}
 
+		//Search for completely unchecked checkbox arrays before validation to make sure that no values from session are taken.
+		if ($this->currentStep > $this->lastStep) {
+			$currentGP = $this->utilityFuncs->getMergedGP();
+			if ($this->settings['checkBoxFields']) {
+				$checkBoxFields = $this->utilityFuncs->getSingle($this->settings, 'checkBoxFields');
+				$fields = t3lib_div::trimExplode(',', $checkBoxFields);
+				foreach ($fields as $idx => $field) {
+					if(isset($this->gp[$field]) && !isset($currentGP[$field])) {
+						unset($this->gp[$field]);
+					}
+				}
+			}
+			$this->globals->setGP($this->gp);
+		}
+
 		//Parse conditions again. An interceptor might have added additional values.
 		$this->parseConditions();
 
@@ -807,6 +822,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$this->loadSettingsForStep($this->currentStep);
 		}
 		$data = $this->globals->getSession()->get('values');
+		
+		$checkBoxFields = $this->utilityFuncs->getSingle($this->settings, 'checkBoxFields');
+		$checkBoxFields = t3lib_div::trimExplode(',', $checkBoxFields);
 
 		//set the variables in session
 		if ($this->lastStep !== $this->currentStep) {
@@ -814,8 +832,15 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				if (!strstr($key, 'step-') && $key !== 'submitted' && $key !== 'randomID' && 
 					$key !== 'removeFile' && $key !== 'removeFileField' && $key !== 'submitField') {
 
-					$data[$this->lastStep][$key] = $this->gp[$key];
+					$data[$this->lastStep][$key] = $newGP[$key];
 				}
+			}
+		}
+
+		//Search for checkboxes which were unchecked in this step.
+		foreach($checkBoxFields as $field) {
+			if(!isset($newGP[$field])) {
+				unset($data[$this->lastStep][$field]);
 			}
 		}
 		$this->globals->getSession()->set('values', $data);
