@@ -892,27 +892,24 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 		}
 
+		$stepInSession = intval($this->globals->getSession()->get('currentStep'));
 		switch ($action) {
-			case 'next':
-				if ($step !== intval($this->globals->getSession()->get('currentStep'))) {
-					$this->currentStep = intval($this->globals->getSession()->get('currentStep')) + 1;
-				} else {
-					$this->currentStep = $step;
-				}
-				break;
 			case 'prev':
-				if ($step !== intval($this->globals->getSession()->get('currentStep'))) {
-					$this->currentStep = intval($this->globals->getSession()->get('currentStep')) - 1;
+			case 'next':
+				if ($step > $stepInSession) {
+					$this->currentStep = $stepInSession + 1;
+				} elseif ($step < $stepInSession) {
+					$this->currentStep = $stepInSession - 1;
 				} else {
 					$this->currentStep = $step;
-				}
-				if ($this->currentStep < 1) {
-					$this->currentStep = 1;
 				}
 				break;
 			default:
-				$this->currentStep = intval($this->globals->getSession()->get('currentStep'));
+				$this->currentStep = $stepInSession;
 				break;
+		}
+		if ($this->currentStep < 1) {
+			$this->currentStep = 1;
 		}
 		if (!$this->currentStep) {
 			$this->currentStep = 1;
