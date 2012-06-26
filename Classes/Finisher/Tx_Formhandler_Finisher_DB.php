@@ -346,6 +346,37 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 					}
 				} else {
 					switch ($options['special']) {
+						case 'date':
+							if(version_compare(PHP_VERSION, '5.3.0') < 0) {
+								$dateFormat = 'Y-m-d';
+								if($options['special.']['dateFormat']) {
+									$dateFormat = $this->utilityFuncs->getSingle($options['special.'], 'dateFormat');
+								}
+								$field = $this->utilityFuncs->getSingle($options['special.'], 'field');
+								$date = $this->gp[$field];
+								if(strlen(trim($date)) > 0) {
+									preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $dateFormat, $res);
+									$sep = $res[1];
+									$pattern = $this->utilityFuncs->normalizeDatePattern($dateFormat, $sep);
+
+									// find out correct positions of "d","m","y"
+									$pos1 = strpos($pattern, 'd');
+									$pos2 = strpos($pattern, 'm');
+									$pos3 = strpos($pattern, 'y');
+									$dateParts = t3lib_div::trimExplode($sep, $date);
+									$timestamp = mktime(0, 0, 0, $dateParts[$pos2], $dateParts[$pos1], $dateParts[$pos3]);
+									$fieldValue = $timestamp;
+								}
+							} else {
+								$fieldValue = $this->dateToTimestamp($options);
+							}
+							break;
+						case 'datetime':
+							if(version_compare(PHP_VERSION, '5.3.0') < 0) {
+								$this->utilityFuncs->throwException('error_datetime');
+							}
+							$fieldValue = $this->dateToTimestamp($options);
+							break;
 						case 'sub_datetime':
 							$dateFormat = 'Y-m-d H:i:s';
 							if($options['special.']['dateFormat']) {
@@ -390,6 +421,31 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			}
 		}
 		return $queryFields;
+	}
+
+	/**
+	 * Converts a date to a UNIX timestamp.
+	 *
+	 * @param array $options The TS settings of the "special" section
+	 * @return long The timestamp
+	*/
+	protected function dateToTimestamp($options) {
+		$format = 'Y-m-d';
+		if($options['special.']['format']) {
+			$format = $this->utilityFuncs->getSingle($options['special.'], 'format');
+		}
+		$field = $this->utilityFuncs->getSingle($options['special.'], 'field');
+		$date = $this->gp[$field];
+		if(strlen(trim($date)) > 0) {
+			$dateObj = DateTime::createFromFormat($format, $date);
+			if($dateObj) {
+				$fieldValue = $dateObj->getTimestamp();
+			} else {
+				$this->utilityFuncs->debugMessage('Error parsing the date. Supported formats: http://www.php.net/manual/en/datetime.createfromformat.php', array(), 3, array('format' => $format, 'date' => $date));
+				$fieldValue = 0;
+			}
+		}
+		return $fieldValue;
 	}
 
 	/**

@@ -890,6 +890,23 @@ class Tx_Formhandler_UtilityFuncs {
 		return (stristr($templateFile, '###TEMPLATE_') === FALSE);
 	}
 
+	/**
+	 * Internal method to normalize a specified date pattern for internal use
+	 *
+	 * @param string $pattern The pattern
+	 * @param string $sep The separator character
+	 * @return string The normalized pattern
+	 */
+	protected function normalizeDatePattern($pattern,$sep) {
+		$pattern = strtoupper($pattern);
+		$pattern = str_replace(
+			array($sep, 'DD', 'D', 'MM', 'M', 'YYYY', 'YY', 'Y'),
+			array('', 'd', 'd', 'm', 'm', 'y', 'y', 'y'),
+			$pattern
+		);
+		return $pattern;
+	}
+
 }
 
 ?>

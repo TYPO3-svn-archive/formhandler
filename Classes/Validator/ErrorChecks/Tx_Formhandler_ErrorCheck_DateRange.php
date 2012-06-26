@@ -39,7 +39,7 @@ class Tx_Formhandler_ErrorCheck_DateRange extends Tx_Formhandler_ErrorCheck_Date
 			$sep = $res[1];
 
 			// normalisation of format
-			$pattern = $this->normalizeDatePattern($pattern,$sep);
+			$pattern = $this->utilityFuncs->normalizeDatePattern($pattern, $sep);
 
 			// find out correct positioins of "d","m","y"
 			$pos1 = strpos($pattern, 'd');

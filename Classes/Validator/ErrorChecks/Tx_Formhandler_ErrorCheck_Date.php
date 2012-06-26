@@ -38,7 +38,7 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 			$sep = $res[1];
 
 			// normalisation of format
-			$pattern = $this->normalizeDatePattern($pattern, $sep);
+			$pattern = $this->utilityFuncs->normalizeDatePattern($pattern, $sep);
 
 			// find out correct positioins of "d","m","y"
 			$pos1 = strpos($pattern, 'd');
@@ -56,26 +56,6 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 			}
 		}
 		return $checkFailed;
-	}
-
-	/**
-	 * Internal method to normalize a specified date pattern for internal use
-	 *
-	 * @param string $pattern The pattern
-	 * @param string $sep The separator character
-	 * @return string The normalized pattern
-	 */
-	protected function normalizeDatePattern($pattern,$sep) {
-		$pattern = strtoupper($pattern);
-		$pattern = str_replace($sep, '', $pattern);
-		$pattern = str_replace('DD', 'd', $pattern);
-		$pattern = str_replace('D', 'd', $pattern);
-		$pattern = str_replace('MM', 'm', $pattern);
-		$pattern = str_replace('M', 'm', $pattern);
-		$pattern = str_replace('YYYY', 'y', $pattern);
-		$pattern = str_replace('YY', 'y', $pattern);
-		$pattern = str_replace('Y', 'y', $pattern);
-		return $pattern;
 	}
 
 }
