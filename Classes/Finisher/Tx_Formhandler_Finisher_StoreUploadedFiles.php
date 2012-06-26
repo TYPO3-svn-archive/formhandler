@@ -72,7 +72,13 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 
 		$newFolder = $this->utilityFuncs->getSingle($this->settings, 'finishedUploadFolder');
 		$newFolder = $this->utilityFuncs->sanitizePath($newFolder);
+		$newFolder = $this->replaceSchemeMarkers($newFolder);
+		$newFolder = $this->utilityFuncs->sanitizePath($newFolder);
 		$uploadPath = $this->utilityFuncs->getDocumentRoot() . $newFolder;
+		if(!file_exists($uploadPath)) {
+			t3lib_div::mkdir_deep($this->utilityFuncs->getDocumentRoot(), $newFolder);
+			$this->utilityFuncs->debugMessage('Creating directory "' . $newFolder . '"');
+		}
 		$sessionFiles = $this->globals->getSession()->get('files');
 		if (is_array($sessionFiles) && !empty($sessionFiles) && strlen($newFolder) > 0) {
 			foreach ($sessionFiles as $field => $files) {
@@ -137,6 +143,17 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 		$newFilename = str_replace('[time]', time(), $newFilename);
 		$newFilename = str_replace('[md5]', md5($filename), $newFilename);
 		$newFilename = str_replace('[pid]', $GLOBALS['TSFE']->id, $newFilename);
+		$newFilename = $this->replaceSchemeMarkers($newFilename);
+
+		//remove ',' from filename, would be handled as file separator 
+		$newFilename = str_replace(',', '', $newFilename);
+		$newFilename = $this->utilityFuncs->doFileNameReplace($newFilename);
+		$newFilename .= $fileext;
+		return $newFilename;
+	}
+
+	protected function replaceSchemeMarkers($str) {
+		$replacedStr = $str;
 		if (is_array($this->settings['schemeMarkers.'])) {
 			foreach ($this->settings['schemeMarkers.'] as $markerName => $options) {
 				if (!(strpos($markerName, '.') > 0)) {
@@ -155,16 +172,11 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 					} elseif (isset($this->settings['schemeMarkers.'][$markerName . '.'])) {
 						$value = $this->utilityFuncs->getSingle($this->settings['schemeMarkers.'], $markerName);
 					}
-					$newFilename = str_replace('[' . $markerName . ']', $value, $newFilename);
+					$replacedStr = str_replace('[' . $markerName . ']', $value, $replacedStr);
 				}
 			}
 		}
-
-		//remove ',' from filename, would be handled as file separator 
-		$newFilename = str_replace(',', '', $newFilename);
-		$newFilename = $this->utilityFuncs->doFileNameReplace($newFilename);
-		$newFilename .= $fileext;
-		return $newFilename;
+		return $replacedStr;
 	}
 
 }
