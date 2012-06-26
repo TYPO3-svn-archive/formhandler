@@ -76,8 +76,16 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 		$newFolder = $this->utilityFuncs->sanitizePath($newFolder);
 		$uploadPath = $this->utilityFuncs->getDocumentRoot() . $newFolder;
 		if(!file_exists($uploadPath)) {
-			t3lib_div::mkdir_deep($this->utilityFuncs->getDocumentRoot(), $newFolder);
-			$this->utilityFuncs->debugMessage('Creating directory "' . $newFolder . '"');
+			$doCreateNonExistingFolder = intval($this->utilityFuncs->getSingle($this->settings, 'createNonExistingFolder'));
+			if(!isset($this->settings['createNonExistingFolder'])) {
+				$doCreateNonExistingFolder = 1;
+			}
+			if($doCreateNonExistingFolder === 1) {
+				t3lib_div::mkdir_deep($this->utilityFuncs->getDocumentRoot(), $newFolder);
+				$this->utilityFuncs->debugMessage('Creating directory "' . $newFolder . '"');
+			} else {
+				$this->utilityFuncs->throwException('Directory "' . $newFolder . '" doesn\'t exist!');
+			}
 		}
 		$sessionFiles = $this->globals->getSession()->get('files');
 		if (is_array($sessionFiles) && !empty($sessionFiles) && strlen($newFolder) > 0) {
