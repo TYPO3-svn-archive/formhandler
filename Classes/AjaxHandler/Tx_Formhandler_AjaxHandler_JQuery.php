@@ -28,6 +28,22 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 	protected $jQueryAlias;
 
 	/**
+	 * Selector string for the submit button of the form
+	 *
+	 * @access protected
+	 * @var string
+	 */
+	protected $submitButtonSelector;
+
+	/**
+	 * Array holding the CSS classes to set for the various states of AJAX validation
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $validationStatusClasses;
+
+	/**
 	 * Initialize AJAX stuff
 	 *
 	 * @return void
@@ -38,6 +54,12 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		if(strlen(trim($this->jQueryAlias)) === 0) {
 			$this->jQueryAlias = 'jQuery';
 		}
+		
+		$this->submitButtonSelector = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'submitButtonSelector');
+		if(strlen(trim($this->submitButtonSelector)) === 0) {
+			$this->submitButtonSelector = '.Tx-Formhandler INPUT[type=\'submit\']';
+		}
+		$this->submitButtonSelector = str_replace('"', '\"', $this->submitButtonSelector);
 
 		$this->validationStatusClasses = array(
 			'base' => 'formhandler-validation-status',
@@ -67,8 +89,8 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			' . $this->jQueryAlias . '(".Tx-Formhandler FORM").live("submit", function() {
 				return false;
 			});
-			' . $this->jQueryAlias . '(".Tx-Formhandler INPUT[type=\'submit\']").live("click", function() {
-				' . $this->jQueryAlias . '(".Tx-Formhandler INPUT[type=\'submit\']").attr("disabled", "disabled");
+			' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").live("click", function() {
+				' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").attr("disabled", "disabled");
 				var container = ' . $this->jQueryAlias . '(this).closest(".Tx-Formhandler");
 				var form = ' . $this->jQueryAlias . '(this).closest("FORM");
 				var requestURL = "/index.php?id=' . $GLOBALS['TSFE']->id . '&eID=formhandler-ajaxsubmit&randomID=' . $this->globals->getRandomID() . '";
