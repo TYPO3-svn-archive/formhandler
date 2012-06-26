@@ -755,12 +755,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 								}
 							}
 							if (!$exists) {
+								$name = $this->utilityFuncs->doFileNameReplace($name);
 								$filename = substr($name, 0, strpos($name, '.'));
 								if (strlen($filename) > 0) {
 									$ext = substr($name, strpos($name, '.'));
 									$suffix = 1;
-
-									$filename = $this->utilityFuncs->doFileNameReplace($filename);
 
 									//build file name
 									$uploadedFileName = $filename . $ext;

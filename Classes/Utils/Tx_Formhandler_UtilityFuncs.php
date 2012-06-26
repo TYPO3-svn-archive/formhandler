@@ -831,7 +831,13 @@ class Tx_Formhandler_UtilityFuncs {
 			$replace = $this->getSingle($settings['files.'], 'replace');
 			$replace = explode(',', $replace);
 		}
-		$fileName = str_replace($search, $replace, $fileName);
+
+		$usePregReplace = $this->getSingle($settings['files.'], 'usePregReplace');
+		if(intval($usePregReplace) === 1) {
+			$fileName = preg_replace($search, $replace, $fileName);
+		} else {
+			$fileName = str_replace($search, $replace, $fileName);
+		}
 		return $fileName;
 	}
 	
