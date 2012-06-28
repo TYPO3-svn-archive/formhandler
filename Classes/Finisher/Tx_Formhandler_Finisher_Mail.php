@@ -401,8 +401,10 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 					foreach ($sessionFiles[$file] as $subIdx => $uploadedFile) {
 						array_push($parsed, $uploadedFile['uploaded_path'] . $uploadedFile['uploaded_name']);
 					}
-				} else {
+				} elseif(file_exists($file)) {
 					array_push($parsed, $file);
+				} else {
+					$this->utilityFuncs->debugMessage('attachment_not_found', array($file), 2);
 				}
 			}
 		}
