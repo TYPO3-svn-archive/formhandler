@@ -1,6 +1,6 @@
 <?php
 /***************************************************************
-*  Copyright notice
+ *  Copyright notice
 *
 *  (c) 2010 Dev-Team Typoheads (dev@typoheads.at)
 *  All rights reserved
@@ -30,18 +30,24 @@
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
 class tx_formhandler_tcafuncs {
-	
+
 	public function user_getParams($PA, $fobj) {
 		$params = unserialize($PA['itemFormElValue']);
-        return
-            '<input
-                readonly="readonly" style="display:none" 
-                name="' . $PA['itemFormElName'] . '"
-                value="' . htmlspecialchars($PA['itemFormElValue']) . '"
-                onchange="' . htmlspecialchars(implode('', $PA['fieldChangeFunc'])) . '"
-                ' . $PA['onFocus'] . '/>' .
-            t3lib_div::view_array($params);
+		$output =
+			'<input
+			readonly="readonly" style="display:none"
+			name="' . $PA['itemFormElName'] . '"
+			value="' . htmlspecialchars($PA['itemFormElValue']) . '"
+			onchange="' . htmlspecialchars(implode('', $PA['fieldChangeFunc'])) . '"
+			' . $PA['onFocus'] . '/>
+		';
+		if (t3lib_div::int_from_ver(TYPO3_branch) < t3lib_div::int_from_ver('4.5')) {
+			$output .= t3lib_div::view_array($params);
+		} else {
+			$output .= t3lib_utility_Debug::viewArray($params);
+		}
+		return $output;
 	}
-	
+
 }
 ?>
