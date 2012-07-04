@@ -284,7 +284,7 @@ class Tx_Formhandler_UtilityFuncs {
 
 		if ($url) {
 			if(!$this->globals->isAjaxMode()) {
-				$status = '307 Temporary Redirect';
+				$status = '303 See Other';
 				if($headerStatusCode) {
 					$status = $headerStatusCode;
 				}
