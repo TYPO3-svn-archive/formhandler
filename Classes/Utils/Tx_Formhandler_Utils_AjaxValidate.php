@@ -81,8 +81,8 @@ class Tx_Formhandler_Utils_AjaxValidate {
 	 * @return void
 	 */
 	protected function init() {
-		$this->fieldname = htmlspecialchars($_GET['field']);
-		$this->value = htmlspecialchars($_GET['value']);
+		$this->fieldname = htmlspecialchars(stripslashes($_GET['field']));
+		$this->value = htmlspecialchars(stripslashes($_GET['value']));
 		if (isset($_GET['pid'])) {
 			$this->id = intval($_GET['pid']);
 		} else {
