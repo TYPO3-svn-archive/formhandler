@@ -286,7 +286,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$fieldname = substr($condition, 1);
 			$negate = TRUE;
 		}
-		$value = $this->globals->getCObj()->getGlobal($fieldname, $this->gp);
+		$value = $this->utilityFuncs->getGlobal($fieldname, $this->gp);
 		if(is_array($value)) {
 			$result = (empty($value));
 		} else {
@@ -312,48 +312,48 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$conditionResult = FALSE;
 		switch($conditionOperator) {
 			case '!=':
-				$conditionResult = $this->globals->getCObj()->getGlobal($fieldName, $this->gp) != $valueConditions[2];
+				$conditionResult = $this->utilityFuncs->getGlobal($fieldName, $this->gp) != $valueConditions[2];
 				break;
 			case '^=':
-				$conditionResult = strpos($this->globals->getCObj()->getGlobal($fieldName, $this->gp), $valueConditions[2]) === 0;
+				$conditionResult = strpos($this->utilityFuncs->getGlobal($fieldName, $this->gp), $valueConditions[2]) === 0;
 				break;
 			case '$=':
-				$gpValue = $this->globals->getCObj()->getGlobal($fieldName, $this->gp);
+				$gpValue = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				$checkValue = substr($valueConditions[2], -strlen($gpValue));
 				$conditionResult = (strcmp($checkValue, $gpValue) === 0);
 				break;
 			case '~=':
-				$conditionResult = strpos($valueConditions[2], $this->globals->getCObj()->getGlobal($fieldName, $this->gp)) !== FALSE;
+				$conditionResult = strpos($valueConditions[2], $this->utilityFuncs->getGlobal($fieldName, $this->gp)) !== FALSE;
 				break;
 			case '=':
-				$conditionResult = $this->globals->getCObj()->getGlobal($fieldName, $this->gp) == $valueConditions[2];
+				$conditionResult = $this->utilityFuncs->getGlobal($fieldName, $this->gp) == $valueConditions[2];
 				break;
 			case '>':
-				$value = $this->globals->getCObj()->getGlobal($fieldName, $this->gp);
+				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				if(is_numeric($value)) {
 					$conditionResult = floatval($value) > floatval($valueConditions[2]);
 				}
 				break;
 			case '<':
-				$value = $this->globals->getCObj()->getGlobal($fieldName, $this->gp);
+				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				if(is_numeric($value)) {
 					$conditionResult = floatval($value) < floatval($valueConditions[2]);
 				}
 				break;
 			case '>=':
-				$value = $this->globals->getCObj()->getGlobal($fieldName, $this->gp);
+				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				if(is_numeric($value)) {
 					$conditionResult = floatval($value) >= floatval($valueConditions[2]);
 				}
 				break;
 			case '<=':
-				$value = $this->globals->getCObj()->getGlobal($fieldName, $this->gp);
+				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				if(is_numeric($value)) {
 					$conditionResult = floatval($value) <= floatval($valueConditions[2]);
 				}
 				break;
 			default:
-				$conditionResult = strlen(trim($this->globals->getCObj()->getGlobal($fieldName, $this->gp))) > 0;
+				$conditionResult = strlen(trim($this->utilityFuncs->getGlobal($fieldName, $this->gp))) > 0;
 		}
 
 		return $conditionResult;

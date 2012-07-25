@@ -974,16 +974,16 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				foreach ($andConditions as $subSubIdx => $andCondition) {
 					if (strstr($andCondition, '!=')) {
 						list($field, $value) = t3lib_div::trimExplode('!=', $andCondition);
-						$result = ($this->globals->getCObj()->getGlobal($field, $this->gp) !== $value);
+						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) !== $value);
 					} elseif (strstr($andCondition, '=')) {
 						list($field, $value) = t3lib_div::trimExplode('=', $andCondition);
-						$result = ($this->globals->getCObj()->getGlobal($field, $this->gp) === $value);
+						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) === $value);
 					} elseif (strstr($andCondition, '>')) {
 						list($field, $value) = t3lib_div::trimExplode('>', $andCondition);
-						$result = ($this->globals->getCObj()->getGlobal($field, $this->gp) > $value);
+						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) > $value);
 					} elseif (strstr($andCondition, '<')) {
 						list($field, $value) = t3lib_div::trimExplode('<', $andCondition);
-						$result = ($this->globals->getCObj()->getGlobal($field, $this->gp) < $value);
+						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) < $value);
 					} else {
 						$field = $andCondition;
 						$keys = explode('|', $field);

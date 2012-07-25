@@ -913,6 +913,36 @@ class Tx_Formhandler_UtilityFuncs {
 		return $pattern;
 	}
 
+	/**
+	 * Copy of tslib_content::getGlobal for use in Formhandler.
+	 * 
+	 * Changed to be able to return an array and not only scalar values.
+	 * 
+	 * @param string Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the GET parameter "id" back.
+	 * @param array Alternative array than $GLOBAL to get variables from.
+	 * @return mixed Whatever value. If none, then blank string.
+	 */
+	public function getGlobal($keyString, $source = NULL) {
+		$keys = explode('|', $keyString);
+		$numberOfLevels = count($keys);
+		$rootKey = trim($keys[0]);
+		$value = isset($source) ? $source[$rootKey] : $GLOBALS[$rootKey];
+
+		for ($i = 1; $i < $numberOfLevels && isset($value); $i++) {
+			$currentKey = trim($keys[$i]);
+			if (is_object($value)) {
+				$value = $value->$currentKey;
+			} elseif (is_array($value)) {
+				$value = $value[$currentKey];
+			} else {
+				$value = '';
+				break;
+			}
+		}
+
+		return $value;
+	}
+
 }
 
 ?>
