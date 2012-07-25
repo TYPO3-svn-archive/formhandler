@@ -53,6 +53,17 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 		} else {
 			$params = $tempParams;
 		}
+
+		if (is_array($this->settings['additionalParams.'])) {
+			foreach ($this->settings['additionalParams.'] as $param=>$value) {
+				if (FALSE === strpos($param, '.')) {
+					if (is_array($this->settings['additionalParams.'][$param . '.'])) {
+						$value = $this->utilityFuncs->getSingle($this->settings['additionalParams.'], $param);
+					}
+					$params[$param] = $value;
+				}
+			}
+		}
 		return $params;
 	}
 
