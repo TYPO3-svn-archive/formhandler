@@ -490,6 +490,23 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			';
 		}
 
+		$currentStepFromSession = $this->globals->getSession()->get('currentStep');
+		$hiddenActionFieldName = 'step-';
+		$prefix = $this->globals->getFormValuesPrefix();
+		if ($prefix) {
+			$hiddenActionFieldName = $prefix . '[' . $hiddenActionFieldName . '#step#-#action#]';
+		} else {
+			$hiddenActionFieldName = $hiddenActionFieldName . '#step#-#action#';
+		}
+
+		// submit name for next page
+		$hiddenActionFieldName = ' name="' . str_replace('#action#', 'next', $hiddenActionFieldName) . '" ';
+		$hiddenActionFieldName = str_replace('#step#', $currentStepFromSession + 1, $hiddenActionFieldName);
+
+		$markers['###HIDDEN_FIELDS###'] .= '
+			<input type="hidden" ' . $hiddenActionFieldName . ' value="1" />
+		';
+
 		$markers['###formValuesPrefix###'] = $this->globals->getFormValuesPrefix();
 
 		if ($this->gp['generated_authCode']) {
@@ -503,7 +520,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$markers['###PID###'] = $markers['###pid###'];
 
 		// current step
-		$currentStepFromSession = $this->globals->getSession()->get('currentStep');
 		$markers['###curStep###'] = $currentStepFromSession;
 
 		// maximum step/number of steps
