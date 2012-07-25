@@ -283,15 +283,17 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
 		//send e-mails
 		$recipients = $mailSettings['to_email'];
-		foreach($recipients as &$recipient) {
-			if(strpos($mailto, '@') === FALSE || strpos($mailto, '@') === 0) {
-				unset($recipient);
+		foreach($recipients as $key => $recipient) {
+			if(strpos($recipient, '@') === FALSE || strpos($recipient, '@') === 0 || strlen(trim($recipient)) === 0) {
+				unset($recipients[$key]);
  			}
 		}
-		$recipients = array_slice($recipients, 0, $max);
+		if(!empty($recipients) && count($recipients) > $max) {
+			$recipients = array_slice($recipients, 0, $max);
+		}
 		$sent = FALSE;
-		if ($doSend) {
-			$sent = $emailObj->send(implode(',', $recipients));
+		if ($doSend && !empty($recipients)) {
+			$sent = $emailObj->send($recipients);
 		}
 		if ($sent) {
 			$this->utilityFuncs->debugMessage('mail_sent', array(implode(',', $recipients)));
@@ -403,7 +405,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 					}
 				} elseif(file_exists($file)) {
 					array_push($parsed, $file);
-				} else {
+				} elseif(strlen($file) > 0) {
 					$this->utilityFuncs->debugMessage('attachment_not_found', array($file), 2);
 				}
 			}

@@ -3,12 +3,12 @@
 interface Tx_Formhandler_MailerInterface {
 
 	/**
-	 * Sends the email to the given reccipient
+	 * Sends the email to the given reccipients
 	 *
-	 * @param string $recipient
+	 * @param array $recipients
 	 * @return boolean Sent successfully?
 	 */
-	public function send($recipient);
+	public function send($recipients);
 
 	/**
 	 * Set the HTML content of the email

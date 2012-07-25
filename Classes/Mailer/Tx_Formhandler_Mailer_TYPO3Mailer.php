@@ -59,25 +59,13 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 		$this->emailObj = t3lib_div::makeInstance('t3lib_mail_Message');
 	}
 
-	/**
-	 * Sends the message to the given recipient if the
-	 * recipient is not empty
-	 *
-	 * The recipient can either be a single email address, an indexed array containing
-	 * multiple email addresses (e.g. array('mail1@domain.tld', 'mail2@domain.tld'))
-	 * or an associative array containing one or multiple email addresses and
-	 * recipient names (e.g. array('mail1@domain.tld' => 'John Doe',
-	 * 'mail2@domain.tld' => 'Bob Doe'))
-	 *
-	 * @param array|string $recipient the recipient(s) of the message
-	 * @see Swift_Mime_Headers_MailboxHeader::normalizeMailboxes()
-	 * @return boolean TRUE if email was sent, FALSE otherwise
-	 */
-	public function send($recipient) {
+	/* (non-PHPdoc)
+	 * @see Classes/Mailer/Tx_Formhandler_MailerInterface#send()
+	*/
+	public function send($recipients) {
+		if (!empty($recipients)) {
 
-		if (!empty($recipient)) {
-
-			$this->emailObj->setTo($recipient);
+			$this->emailObj->setTo($recipients);
 
 			$numberOfEmailsSent = $this->emailObj->send();
 

@@ -44,8 +44,8 @@ class Tx_Formhandler_Mailer_HtmlMail extends Tx_Formhandler_AbstractMailer imple
 	/* (non-PHPdoc)
 	 * @see Classes/Mailer/Tx_Formhandler_MailerInterface#send()
 	*/
-	public function send($recipient) {
-		$sent = $this->emailObj->send($recipient);
+	public function send($recipients) {
+		$sent = $this->emailObj->send(implode(',', $recipients));
 		return $sent;
 	}
 
