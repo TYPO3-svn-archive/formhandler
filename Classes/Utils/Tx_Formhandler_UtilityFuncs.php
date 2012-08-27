@@ -315,7 +315,7 @@ class Tx_Formhandler_UtilityFuncs {
 			$redirectPage = $gp[$redirectPage];
 		}
 
-		if(strlen($redirectPage > 0)) {
+		if(strlen($redirectPage) > 0) {
 			$correctRedirectUrl = $this->getSingle($settings, 'correctRedirectUrl');
 			$headerStatusCode = $this->getSingle($settings, 'headerStatusCode');
 			$this->doRedirect($redirectPage, $correctRedirectUrl, $settings['additionalParams.'], $headerStatusCode);
