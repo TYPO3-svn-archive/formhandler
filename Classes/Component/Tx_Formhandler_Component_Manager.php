@@ -319,7 +319,9 @@ class Tx_Formhandler_Component_Manager {
 						$classFiles = array_merge($classFiles, $this->buildArrayOfClassFiles($packageKey, $subDirectory . $filename . '/', ($recursionLevel+1)));
 					} else {
 						if (substr($filename, 0, 3) === self::PACKAGE_PREFIX . '_' && substr($filename, -4, 4) === '.php') {
-							$classFiles[substr($filename, 0, -4)] = $currentPath . $filename;
+							$absPath = $currentPath . $filename;
+							$relPath = str_replace(PATH_site, '', $absPath);
+							$classFiles[substr($filename, 0, -4)] = $relPath;
 						}
 					}
 				}
@@ -366,7 +368,10 @@ class Tx_Formhandler_Component_Manager {
 				}
 				t3lib_div::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
 			}
-			$classFilePathAndName = isset($this->classFiles[$classNameParts[1]][$className]) ? $this->classFiles[$classNameParts[1]][$className] : NULL;
+			$classFilePathAndName = NULL;
+			if(isset($this->classFiles[$classNameParts[1]][$className])) {
+				$classFilePathAndName = PATH_site . $this->classFiles[$classNameParts[1]][$className];
+			}
 			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
 				require_once ($classFilePathAndName);
 			}
