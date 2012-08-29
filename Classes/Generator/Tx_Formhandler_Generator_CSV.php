@@ -138,7 +138,7 @@ class Tx_Formhandler_Generator_CSV {
 		}
 		return $ordered + $array;
 	}
-	
+
 	/**
 	* Get charset used by TYPO3
 	*
@@ -153,6 +153,6 @@ class Tx_Formhandler_Generator_CSV {
 			$charset = 'utf-8';
 		}
 		return $charset;
-		}
+	}
 }
 ?>
