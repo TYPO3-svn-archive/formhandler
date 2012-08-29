@@ -151,6 +151,10 @@ class Tx_Formhandler_UtilityFuncs {
 						$this->throwException('template_file_not_found', $templateFile);
 					}
 					$templateCode = t3lib_div::getURL($templateFile);
+				} else {
+
+					//The setting "templateFile" was a cObject which returned HTML content. Just use that as template code.
+					$templateCode = $templateFile;
 				}
 			} else {
 				$templateFile = $this->resolvePath($templateFile);
