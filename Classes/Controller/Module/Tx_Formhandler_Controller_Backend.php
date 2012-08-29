@@ -799,10 +799,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$params = t3lib_div::_GP('formhandler');
 		$where = array();
 
-		// Get tsconfig from current page
 		if ($this->id) {
-			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'tx_formhandler_mod1'); 
+			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'tx_formhandler_mod1');
+			$isAllowedToShowAll = (intval($tsconfig['properties']['config.']['enableShowAllButton']) === 1);
 		}
+
 		$pidFilter = '';
 	
 		if (strlen(trim($params['pidFilter'])) > 0) {
@@ -824,7 +825,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$where[] = 'pid IN (' . $this->pidFilter . ')';
 
 		// show all entries (admin only)
-		} else if (trim($params['pidFilter']) == "*" && $GLOBALS['BE_USER']->user['admin']) {
+		} else if (trim($params['pidFilter']) == "*" && ($GLOBALS['BE_USER']->user['admin'] || $isAllowedToShowAll)) {
 			$this->pidFilter = "*";
 
 		// show clicked page (is always accessable)
@@ -884,7 +885,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$markers['###selected_howmuch_' . $params['howmuch'] . '###'] = 'selected="selected"';
 
 		// display show all function
-		if ($GLOBALS['BE_USER']->user['admin']) {
+		if ($this->id) {
+			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'tx_formhandler_mod1');
+			$isAllowedToShowAll = (intval($tsconfig['properties']['config.']['enableShowAllButton']) === 1);
+		}
+		if ($GLOBALS['BE_USER']->user['admin'] || $isAllowedToShowAll) {
 			$markers['###PID_FILTER_ALL###'] = '<input type="button" onclick="pidSelectAll()" id="pidFilter_all" value="' . $LANG->getLL('select_all') . '"/>';		
 		} else {
 			$markers['###PID_FILTER_ALL###'] = '';
