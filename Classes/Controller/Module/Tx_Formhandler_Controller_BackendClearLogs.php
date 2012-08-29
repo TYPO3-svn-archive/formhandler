@@ -67,6 +67,10 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 	 */
 	protected function init() {
 		global $LANG;
+
+		$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'tx_formhandler_mod1');
+		$this->settings = $tsconfig['properties']['config.'];
+
 		$LANG->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');
 		$templatePath = t3lib_extMgm::extPath('formhandler') . 'Resources/HTML/backend/';
 		$templateFile = $templatePath . 'template.html';
@@ -79,17 +83,32 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 	 * @return string rendered view
 	 */
 	public function process() {
-		
+		global $LANG;
+		$content = '';
+
 		//init
 		$this->init();
 
-		//init gp params
-		$params = t3lib_div::_GP('formhandler');
-		if (isset($params['clearTables']) && is_array($params['clearTables'])) {
-			$this->clearTables($params['clearTables']);
+		if(intval($this->settings['enableClearLogs']) !== 1 && !$GLOBALS['BE_USER']->user['admin']) {
+			return;
 		}
 
-		return $this->getOverview();
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('COUNT(*) as rowCount', 'tx_formhandler_log', '1=1');
+		$rowCount = $row['rowCount'];
+
+		//init gp params
+		$params = t3lib_div::_GP('formhandler');
+		if (isset($params['doDelete']) && intval($params['doDelete']) === 1) {
+			$messageHeader = $LANG->getLL('clear-logs-success-header');
+			$messageText = sprintf($LANG->getLL('clear-logs-success-message'), intval($rowCount));
+			$message = t3lib_div::makeInstance('t3lib_FlashMessage', $messageText, $messageHeader);
+			$content = $message->render();
+			$this->clearTables();
+			$rowCount = 0;
+		}
+
+		$content .= $this->getOverview($rowCount);
+		return $content;
 	}
 
 	/**
@@ -98,11 +117,8 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 	 * @param array The names of the tables to truncate
 	 * @return void
 	 */
-	protected function clearTables($tablesArray) {
-		$table = array_pop($tablesArray);
-		if($table === 'tx_formhandler_log') {
-				$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE ' . $table);
-		}
+	protected function clearTables() {
+		$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE tx_formhandler_log');
 	}
 
 	/**
@@ -111,32 +127,22 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 	 * @global $LANG
 	 * @return string
 	 */
-	protected function getOverview() {
+	protected function getOverview($rowCount) {
 		global $LANG;
-		$existingTables = $GLOBALS['TYPO3_DB']->admin_get_tables();
 		$code = $this->utilityFuncs->getSubpart($this->templateCode, '###CLEAR_LOGS###');
 		$markers = array();
 		$markers['###URL###'] = $_SERVER['PHP_SELF'];
 		$markers['###UID###'] = $this->id;
-		$markers['###LLL:table###'] = $LANG->getLL('table');
-		$markers['###LLL:total_rows###'] = $LANG->getLL('total_rows');
 
 		$markers['###TABLES###'] = '';
-		foreach ($existingTables as $table => $tableSettings) {
-			if (strpos($table, 'tx_formhandler_') > -1) {
-				$res = $GLOBALS['TYPO3_DB']->sql_query('SELECT COUNT(*) as rowCount FROM ' . $table);
-				if ($res) {
-					$rowCode = $this->utilityFuncs->getSubpart($this->templateCode, '###CLEAR_LOGS_TABLE###');
-					$tableMarkers = array();
-					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-					$tableMarkers['###TABLE###'] = $table;
-					$tableMarkers['###ROW_COUNT###'] = $row['rowCount'];
-					$GLOBALS['TYPO3_DB']->sql_free_result($res);
-					$markers['###TABLES###'] .= $this->utilityFuncs->substituteMarkerArray($rowCode, $tableMarkers);
-				}
-			}
+		if($rowCount > 0) {
+			$markers['###LLL:clear-logs-message###'] = sprintf($LANG->getLL('clear-logs-message'), intval($rowCount));
+			$markers['###LLL:clear###'] = $LANG->getLL('clear');
+		} else {
+			$code = $this->utilityFuncs->getSubpart($this->templateCode, '###NO_LOGS###');
+			$markers['###LLL:clear-logs-message###'] = $LANG->getLL('no-logs-message');
 		}
-		$markers['###LLL:clear###'] = $LANG->getLL('clear_selected_tables');
+		
 		return $this->utilityFuncs->substituteMarkerArray($code, $markers);
 	}
 

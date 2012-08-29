@@ -15,27 +15,17 @@
 
 ###CLEAR_LOGS###
 <form action="###URL###" method="post"> 
-			<input type="hidden" name="id" value="###UID###" />
-			<table>
-				<tr class="bgColor2">
-					<td>###LLL:table###</td>
-					<td>###LLL:total_rows###</td>
-					<td>&nbsp;</td>				
-				</tr>
-				###TABLES###
-			</table>
-			<br />
-			<input type="submit" value="###LLL:clear###" />
-			</form>
+	<input type="hidden" name="id" value="###UID###" />
+	<input type="hidden" name="formhandler[doDelete]" value="1" />
+	<p>###LLL:clear-logs-message###</p>
+	<br />
+	<input type="submit" value="###LLL:clear###" />
+</form>
 ###CLEAR_LOGS###
 
-###CLEAR_LOGS_TABLE###
-<tr class="bgColor3-20">
-	<td>###TABLE###</td>
-	<td>###ROW_COUNT###</td>
-	<td><input type="checkbox" name="formhandler[clearTables][]" value="###TABLE###"/></td>				
-</tr>
-###CLEAR_LOGS_TABLE###
+###NO_LOGS###
+<p>###LLL:clear-logs-message###</p>
+###NO_LOGS###
 
 ###EXPORT_FIELDS_SELECTOR###
 <h3>###LLL:select_export_fields###</h3><br />

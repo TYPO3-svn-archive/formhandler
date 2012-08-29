@@ -57,12 +57,23 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 	var $pageinfo;
 
 	/**
+	 * Array holding the TypoScript set in userTS or pageTS.
+	 * 
+	 * @access private
+	 * @var array
+	 */
+	private $settings;
+
+	/**
 	 * Initializes the Module
 	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
+		$id = intval(t3lib_div::_GP('id'));
+		$tsconfig = t3lib_BEfunc::getModTSconfig($id, 'tx_formhandler_mod1');
+		$this->settings = $tsconfig['properties']['config.'];
 		parent::init();
 
 		/*
@@ -79,13 +90,14 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 	 */
 	function menuConfig()	{
 		global $LANG;
-		$this->MOD_MENU = Array (
-						'function' => Array (
-							'1' => $LANG->getLL('function1'),
-							'2' => $LANG->getLL('function2'),
-							//'3' => $LANG->getLL('function3'),
-		)
+		$this->MOD_MENU = array (
+			'function' => array (
+				'1' => $LANG->getLL('function1')
+			)
 		);
+		if(intval($this->settings['enableClearLogs']) === 1 || $GLOBALS['BE_USER']->user['admin']) {
+			$this->MOD_MENU['function']['2'] = $LANG->getLL('function2');
+		}
 		parent::menuConfig();
 	}
 
