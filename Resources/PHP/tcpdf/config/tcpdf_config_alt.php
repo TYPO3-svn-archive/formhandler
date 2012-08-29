@@ -181,7 +181,7 @@ define ('PDF_MARGIN_RIGHT', 15);
 /**
  * default main font name
  */
-define ('PDF_FONT_NAME_MAIN', 'helvetica');
+define ('PDF_FONT_NAME_MAIN', 'freesans');
 
 /**
  * default main font size
@@ -191,7 +191,7 @@ define ('PDF_FONT_SIZE_MAIN', 10);
 /**
  * default data font name
  */
-define ('PDF_FONT_NAME_DATA', 'helvetica');
+define ('PDF_FONT_NAME_DATA', 'freesans');
 
 /**
  * default data font size
@@ -201,7 +201,7 @@ define ('PDF_FONT_SIZE_DATA', 8);
 /**
  * default monospaced font name
  */
-define ('PDF_FONT_MONOSPACED', 'courier');
+define ('PDF_FONT_MONOSPACED', 'freemono');
 
 /**
  * ratio used to adjust the conversion of pixels to user units
