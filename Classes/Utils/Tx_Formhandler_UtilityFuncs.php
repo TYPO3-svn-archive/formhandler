@@ -675,19 +675,24 @@ class Tx_Formhandler_UtilityFuncs {
 	 *
 	 * The default upload folder is: '/uploads/formhandler/tmp/'
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function getTempUploadFolder() {
+	public function getTempUploadFolder($fieldName = '') {
 
 		//set default upload folder
 		$uploadFolder = '/uploads/formhandler/tmp/';
 
 		//if temp upload folder set in TypoScript, take that setting
 		$settings = $this->globals->getSession()->get('settings');
-		if ($settings['files.']['uploadFolder']) {
+		if(strlen($fieldName) > 0 && $settings['files.']['uploadFolder.'][$fieldName]) {
+			$uploadFolder = $this->getSingle($settings['files.']['uploadFolder.'], $fieldName);
+		} elseif($settings['files.']['uploadFolder.']['default']) {
+			$uploadFolder = $this->getSingle($settings['files.']['uploadFolder.'], 'default');
+		} elseif ($settings['files.']['uploadFolder']) {
 			$uploadFolder = $this->getSingle($settings['files.'], 'uploadFolder');
-			$uploadFolder = $this->sanitizePath($uploadFolder);
 		}
+
+		$uploadFolder = $this->sanitizePath($uploadFolder);
 
 		//if the set directory doesn't exist, print a message and try to create
 		if (!is_dir($this->getTYPO3Root() . $uploadFolder)) {
@@ -695,6 +700,37 @@ class Tx_Formhandler_UtilityFuncs {
 			t3lib_div::mkdir_deep($this->getTYPO3Root() . '/', $uploadFolder);
 		}
 		return $uploadFolder;
+	}
+
+	/**
+	 * Searches for upload folders set in TypoScript setup.
+	 * Returns all upload folders as array.
+	 *
+	 * @return array
+	 */
+	public function getAllTempUploadFolders() {
+
+		$uploadFolders = array();
+
+		//set default upload folder
+		$defaultUploadFolder = '/uploads/formhandler/tmp/';
+
+		//if temp upload folder set in TypoScript, take that setting
+		$settings = $this->globals->getSession()->get('settings');
+
+		if(is_array($settings['files.']['uploadFolder.'])) {
+			foreach($settings['files.']['uploadFolder.'] as $fieldName => $folderSettings) {
+				$uploadFolders[] = $this->sanitizePath($this->getSingle($settings['files.']['uploadFolder.'], $fieldName));
+			}
+		} elseif ($settings['files.']['uploadFolder']) {
+			$defaultUploadFolder = $this->sanitizePath($this->getSingle($settings['files.'], 'uploadFolder'));
+		}
+
+		//If no special upload folder for a field was set, add the default upload folder
+		if(count($uploadFolders) === 0) {
+			$uploadFolders[] = $defaultUploadFolder;
+		}
+		return $uploadFolders;
 	}
 
 	/**

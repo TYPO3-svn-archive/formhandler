@@ -676,14 +676,14 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$sessionFiles = $this->globals->getSession()->get('files');
 			if (is_array($sessionFiles)) {
 
-				//get upload folder
-				$uploadFolder = $this->utilityFuncs->getTempUploadFolder();
-
-				//build absolute path to upload folder
-				$uploadPath = $this->utilityFuncs->getTYPO3Root() . $uploadFolder;
-
 				foreach ($sessionFiles as $field => $files) {
 					if (!strcmp($field, $fieldname)) {
+
+						//get upload folder
+						$uploadFolder = $this->utilityFuncs->getTempUploadFolder($field);
+
+						//build absolute path to upload folder
+						$uploadPath = $this->utilityFuncs->getTYPO3Root() . $uploadFolder;
 						$found = FALSE;
 						foreach ($files as $key => $fileInfo) {
 							if (!strcmp($fileInfo['uploaded_name'], $filename)) {
@@ -726,17 +726,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//if files were uploaded
 		if (isset($_FILES) && is_array($_FILES) && !empty($_FILES)) {
 
-			//get upload folder
-			$uploadFolder = $this->utilityFuncs->getTempUploadFolder();
-
-			//build absolute path to upload folder
-			$uploadPath = $this->utilityFuncs->getTYPO3Root() . $uploadFolder;
-
-			if (!file_exists($uploadPath)) {
-				$this->utilityFuncs->debugMessage('folder_doesnt_exist', array($uploadPath), 3);
-				return;
-			}
-
 			//for all file properties
 			foreach ($_FILES as $sthg => $files) {
 
@@ -746,6 +735,18 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					//for all file names
 					foreach ($files['name'] as $field => $name) {
 						if (!isset($this->errors[$field])) {
+
+							//get upload folder
+							$uploadFolder = $this->utilityFuncs->getTempUploadFolder($field);
+
+							//build absolute path to upload folder
+							$uploadPath = $this->utilityFuncs->getTYPO3Root() . $uploadFolder;
+
+							if (!file_exists($uploadPath)) {
+								$this->utilityFuncs->debugMessage('folder_doesnt_exist', array($uploadPath), 3);
+								return;
+							}
+
 							$exists = FALSE;
 							if (is_array($sessionFiles[$field])) {
 								foreach ($sessionFiles[$field] as $idx => $fileOptions) {

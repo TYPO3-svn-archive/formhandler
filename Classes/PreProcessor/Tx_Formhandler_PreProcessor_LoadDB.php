@@ -120,7 +120,7 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 						$images[$fN] = array();
 						if(!empty($this->gp[$fN])) {
 							$globalSettings = $this->globals->getSession()->get('settings');
-							$uploadPath = $this->utilityFuncs->getSingle($globalSettings['files.'], 'uploadFolder');
+							$uploadPath = $this->utilityFuncs->getTempUploadFolder($fN);
 							$filesArray = $this->gp[$fN];
 							if(!is_array($filesArray)) {
 								$filesArray = t3lib_div::trimExplode(',', $this->gp[$fN]);

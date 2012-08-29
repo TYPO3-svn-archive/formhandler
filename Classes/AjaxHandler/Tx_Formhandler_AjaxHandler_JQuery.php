@@ -278,14 +278,14 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		);
 		$url = $this->globals->getCObj()->getTypoLink_Url($GLOBALS['TSFE']->id, $params);
 		return '<a  
-				class="formhandler_removelink" 
+				class="formhandler_removelink_' . $field . '" 
 				href="' . $url . '"
 				>' . $text . '</a>
 				<script type="text/javascript">
 					' . $this->jQueryAlias . '(function() {
-						' . $this->jQueryAlias . '("a.formhandler_removelink").click(function() {
+						' . $this->jQueryAlias . '("a.formhandler_removelink_' . $field . '").click(function() {
 							var url = ' . $this->jQueryAlias . '(this).attr("href");
-							' . $this->jQueryAlias . '("#Tx_Formhandler_UploadedFiles_' . $field . '").load(url + "#Tx_Formhandler_UploadedFiles_picture");
+							' . $this->jQueryAlias . '("#Tx_Formhandler_UploadedFiles_' . $field . '").load(url + "#Tx_Formhandler_UploadedFiles_' . $field . '");
 							return false;
 						});
 					});

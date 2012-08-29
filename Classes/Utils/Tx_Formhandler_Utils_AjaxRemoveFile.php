@@ -36,14 +36,16 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 			$sessionFiles = $this->globals->getSession()->get('files');
 			if (is_array($sessionFiles)) {
 
-				//get upload folder
-				$uploadFolder = $this->utilityFuncs->getTempUploadFolder();
-
-				//build absolute path to upload folder
-				$uploadPath = $this->utilityFuncs->getTYPO3Root() . $uploadFolder;
 				foreach ($sessionFiles as $field => $files) {
 
 					if (!strcmp($field, $this->fieldName)) {
+
+						//get upload folder
+						$uploadFolder = $this->utilityFuncs->getTempUploadFolder();
+
+						//build absolute path to upload folder
+						$uploadPath = $this->utilityFuncs->getTYPO3Root() . $uploadFolder;
+
 						$found = FALSE;
 						foreach ($files as $key=>&$fileInfo) {
 							if (!strcmp($fileInfo['uploaded_name'], $this->uploadedFileName)) {
