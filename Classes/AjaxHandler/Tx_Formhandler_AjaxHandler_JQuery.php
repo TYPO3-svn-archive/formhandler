@@ -114,13 +114,21 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			});';
 		}
 		if(strlen($js) > 0) {
-			$GLOBALS['TSFE']->additionalHeaderData['Tx_Formhandler_AjaxHandler_Jquery'] = '
+			$fullJS = '
 				<script type="text/javascript">
 				' . $this->jQueryAlias . '(function() {
 				' . $js . '
 				});
 				</script>
 			';
+			
+
+			$jsPosition = trim($this->utilityFuncs->getSingle($this->settings, 'jsPosition'));
+			if($jsPosition === 'footer') {
+				$GLOBALS['TSFE']->additionalFooterData['Tx_Formhandler_AjaxHandler_Jquery_' . $this->globals->getCObj()->data['uid']] = $fullJS;
+			} else {
+				$GLOBALS['TSFE']->additionalHeaderData['Tx_Formhandler_AjaxHandler_Jquery_' . $this->globals->getCObj()->data['uid']] = $fullJS;
+			}
 		}
 	}
 
