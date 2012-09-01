@@ -48,6 +48,19 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		$keys = array_keys($this->gp);
 
 		$logParams = $this->gp;
+
+		if($this->settings['fields.']) {
+			foreach($this->settings['fields.'] as $field => $fieldConf) {
+				$field = str_replace('.', '', $field);
+				if($fieldConf['ifIsEmpty'] && (empty($logParams[$field]) || !isset($logParams[$field]))) {
+					$value = $this->utilityFuncs->getSingle($fieldConf, 'ifIsEmpty');
+					$logParams[$field] = $value;
+				}
+				if(intval($this->utilityFuncs->getSingle($fieldConf, 'nullIfEmpty')) === 1 && (empty($logParams[$field]) || !isset($logParams[$field]))) {
+					unset($logParams[$field]);
+				}
+			}
+		}
 		if($this->settings['excludeFields']) {
 			$excludeFields = $this->utilityFuncs->getSingle($this->settings, 'excludeFields');
 			$excludeFields = t3lib_div::trimExplode(',', $excludeFields);
