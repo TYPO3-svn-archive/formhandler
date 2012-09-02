@@ -726,6 +726,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//if files were uploaded
 		if (isset($_FILES) && is_array($_FILES) && !empty($_FILES)) {
 
+			$uploadedFilesWithSameNameAction = $this->utilityFuncs->getSingle($this->settings['files.'], 'uploadedFilesWithSameName');
+			if(!$uploadedFilesWithSameNameAction) {
+				$uploadedFilesWithSameNameAction = 'ignore';
+			}
+
 			//for all file properties
 			foreach ($_FILES as $sthg => $files) {
 
@@ -755,7 +760,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 									}
 								}
 							}
-							if (!$exists) {
+							if (!$exists || $uploadedFilesWithSameNameAction === 'replace' || $uploadedFilesWithSameNameAction === 'append') {
 								$name = $this->utilityFuncs->doFileNameReplace($name);
 								$filename = substr($name, 0, strpos($name, '.'));
 								if (strlen($filename) > 0) {
@@ -765,10 +770,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 									//build file name
 									$uploadedFileName = $filename . $ext;
 
-									//rename if exists
-									while(file_exists($uploadPath . $uploadedFileName)) {
-										$uploadedFileName = $filename . '_' . $suffix . $ext;
-										$suffix++;
+									if($uploadedFilesWithSameNameAction !== 'replace') {
+
+										//rename if exists
+										while(file_exists($uploadPath . $uploadedFileName)) {
+											$uploadedFileName = $filename . '_' . $suffix . $ext;
+											$suffix++;
+										}
 									}
 									$files['name'][$field] = $uploadedFileName;
 
@@ -790,11 +798,15 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 									if (!is_array($tempFiles[$field]) && strlen($field) > 0) {
 										$tempFiles[$field] = array();
 									}
-									array_push($tempFiles[$field], $tmp);
+									if(!$exists || $uploadedFilesWithSameNameAction !== 'replace') {
+										array_push($tempFiles[$field], $tmp);
+									}
 									if (!is_array($this->gp[$field])) {
 										$this->gp[$field] = array();
 									}
-									array_push($this->gp[$field], $uploadedFileName);
+									if(!$exists || $uploadedFilesWithSameNameAction !== 'replace') {
+										array_push($this->gp[$field], $uploadedFileName);
+									}
 								}
 							}
 						}
