@@ -818,15 +818,18 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 								onclick="' . str_replace(array("\n", '	'), '', $onClick) . '"
 								>' . $text . '</a>';
 					}
-
+					$stdWrappedFilename = $filename;
+					if($settings['singleFileMarkerTemplate.']['filenameWrap']) {
+						$stdWrappedFilename = str_replace('|', $filename, $settings['singleFileMarkerTemplate.']['filenameWrap']);
+					}
 					if (strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
-						$wrappedFilename = str_replace('|', $filename . $link, $singleWrap);
+						$wrappedFilename = str_replace('|', $stdWrappedFilename . $link, $singleWrap);
 						$wrappedThumb = str_replace('|', $thumb . $link, $singleWrap);
-						$wrappedThumbFilename = str_replace('|', $thumb . ' ' . $filename . $link, $singleWrap);
+						$wrappedThumbFilename = str_replace('|', $thumb . ' ' . $stdWrappedFilename . $link, $singleWrap);
 					} else {
-						$wrappedFilename = $filename . $link;
+						$wrappedFilename = $stdWrappedFilename . $link;
 						$wrappedThumb = $thumb . $link;
-						$wrappedThumbFilename = $thumb . ' ' . $filename . $link;
+						$wrappedThumbFilename = $thumb . ' ' . $stdWrappedFilename . $link;
 					}
 					if (intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 1) {
 						$markers['###' . $field . '_uploadedFiles###'] .= $wrappedThumb;
@@ -845,16 +848,20 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 							$imgConf['image.'] = $settings['singleFileMarkerTemplate.']['image.'];
 						}
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
-						
+
+					}
+					$stdWrappedFilename = $filename;
+					if($settings['totalFilesMarkerTemplate.']['filenameWrap']) {
+						$stdWrappedFilename = str_replace('|', $filename, $settings['totalFilesMarkerTemplate.']['filenameWrap']);
 					}
 					if (strlen($totalMarkerSingleWrap) > 0 && strstr($totalMarkerSingleWrap, '|')) {
-						$wrappedFilename = str_replace('|', $filename . $link, $totalMarkerSingleWrap);
+						$wrappedFilename = str_replace('|', $stdWrappedFilename . $link, $totalMarkerSingleWrap);
 						$wrappedThumb = str_replace('|', $thumb . $link, $totalMarkerSingleWrap);
-						$wrappedThumbFilename = str_replace('|', $thumb . ' ' . $filename . $link, $totalMarkerSingleWrap);
+						$wrappedThumbFilename = str_replace('|', $thumb . ' ' . $stdWrappedFilename . $link, $totalMarkerSingleWrap);
 					} else {
-						$wrappedFilename = $filename . $link;
+						$wrappedFilename = $stdWrappedFilename . $link;
 						$wrappedThumb = $thumb . $link;
-						$wrappedThumbFilename = $thumb . $filename . $link;
+						$wrappedThumbFilename = $thumb . $stdWrappedFilename . $link;
 					}
 					if (intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1) {
 						$markers['###total_uploadedFiles###'] .= $wrappedThumb;
