@@ -166,7 +166,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		if (is_array($rows)) {
 			$message .= "\n\n" . 'These are the submitted values:' . "\n\n";
 			foreach ($rows as $idx => $row) {
-				$message .= date('Y/m/d h:i:s' , $row['crdate']) . ":\n";
+				$message .= date('Y/m/d H:i:s' , $row['crdate']) . ":\n";
 				$message .= 'IP: ' . $row['ip'] . "\n";
 				$message .= 'Params:' . "\n";
 				$params = unserialize($row['params']);
@@ -181,29 +181,27 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		}
 
 		//init mailer object
-		require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
-		$emailObj = t3lib_div::makeInstance('t3lib_htmlmail');
-		$emailObj->start();
+		$emailClass = $this->utilityFuncs->getPreparedClassName($this->settings['mailer.'], 'Mailer_HtmlMail');
+		$emailObj = $this->componentManager->getComponent($emailClass);
+		$emailObj->init($this->gp, array());
 
 		//set e-mail options
-		$emailObj->subject = $subject;
-		$emailObj->from_email = $sender;
+		$emailObj->setSubject($subject);
+		$emailObj->setSender($sender, '');
 		$emailObj->setPlain($message);
 
 		//send e-mails
-		foreach ($email as $idx => $mailto) {
-			$sent = $emailObj->send($mailto);
-			if ($sent) {
-				$this->utilityFuncs->debugMessage('mail_sent', array($mailto));
-				$this->utilityFuncs->debugMessage('mail_sender', array($emailObj->from_email));
-				$this->utilityFuncs->debugMessage('mail_subject', array($emailObj->subject));
-				$this->utilityFuncs->debugMessage('mail_message', array(), 1, array($message));
-			} else {
-				$this->utilityFuncs->debugMessage('mail_not_sent', array($mailto), 2);
-				$this->utilityFuncs->debugMessage('mail_sender', array($emailObj->from_email));
-				$this->utilityFuncs->debugMessage('mail_subject', array($emailObj->subject));
-				$this->utilityFuncs->debugMessage('mail_message', array(), 1, array($message));
-			}
+		$sent = $emailObj->send($email);
+		if ($sent) {
+			$this->utilityFuncs->debugMessage('mail_sent', array($mailto));
+			$this->utilityFuncs->debugMessage('mail_sender', array($emailObj->from_email));
+			$this->utilityFuncs->debugMessage('mail_subject', array($emailObj->subject));
+			$this->utilityFuncs->debugMessage('mail_message', array(), 1, array($message));
+		} else {
+			$this->utilityFuncs->debugMessage('mail_not_sent', array($mailto), 2);
+			$this->utilityFuncs->debugMessage('mail_sender', array($emailObj->from_email));
+			$this->utilityFuncs->debugMessage('mail_subject', array($emailObj->subject));
+			$this->utilityFuncs->debugMessage('mail_message', array(), 1, array($message));
 		}
 	}
 
