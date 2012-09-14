@@ -1110,7 +1110,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	protected function getSelectedMarkers($values, $level = 0, $prefix = 'selected_') {
 		$markers = array();
 		$activeString = 'selected="selected"';
-		if($prefix === 'checked_') {
+		if(substr($prefix, 0, 8) === 'checked_') {
 			$activeString = 'checked="checked"';
 		}
 		if (is_array($values)) {
