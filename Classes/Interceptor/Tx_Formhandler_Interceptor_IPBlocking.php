@@ -76,7 +76,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		$globalMaxValue = $this->utilityFuncs->getSingle($this->settings['global.'], 'threshold');
 
 		if ($globalTimebaseValue && $globalTimebaseUnit && $globalMaxValue) {
-			$this->check($globalTimebaseValue, $globalTimebaseUnit, $globalMaxValue, TRUE);
+			$this->check($globalTimebaseValue, $globalTimebaseUnit, $globalMaxValue, FALSE);
 		}
 
 		return $this->gp;
@@ -100,7 +100,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,ip,crdate,params', $this->logTable, $where);
 		if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) >= $maxValue) {
 			$this->log(TRUE);
-			$message = 'You are not allowed to send more mails because form got submitted too many times ';
+			$message = 'You are not allowed to send more mails because the form got submitted too many times ';
 			if ($addIPToWhere) {
 				$message .= 'by your IP address ';
 			}
@@ -111,7 +111,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 				}
 				$intervalValue = $this->utilityFuncs->getSingle($this->settings['report.']['interval.'], 'value');
 				$intervalUnit = $this->utilityFuncs->getSingle($this->settings['report.']['interval.'], 'unit');
-				$send = TRUE;
+				$send = FALSE;
 				if ($intervalUnit && $intervalValue) {
 					$intervalTstamp = $this->utilityFuncs->getTimestamp($intervalValue, $intervalUnit);
 					$where = 'pid=' . $GLOBALS['TSFE']->id . ' AND crdate>' . $intervalTstamp;
@@ -121,8 +121,10 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 
 					$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $this->logTable, $where);
 					if ($count > 0) {
-						$send = FALSE;
+						$send = TRUE;
 					}
+				} else {
+					$send = TRUE;
 				}
 				if ($send) {
 					if ($addIPToWhere) {
@@ -150,7 +152,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	 * @param array The select rows of log table
 	 * @return void
 	 */
-	private function sendReport($type,&$rows) {
+	private function sendReport($type, $rows) {
 		$email = $this->utilityFuncs->getSingle($this->settings['report.'], 'email');
 		$email = t3lib_div::trimExplode(',', $email);
 		$sender = $this->utilityFuncs->getSingle($this->settings['report.'], 'sender');
