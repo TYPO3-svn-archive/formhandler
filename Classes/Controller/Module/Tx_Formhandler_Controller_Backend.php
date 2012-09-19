@@ -435,9 +435,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 					if ($params['csvFormat'] === '*') {
 						$exportParams = array();
 						foreach ($renderRecords as $record) {
-							foreach ($record['params'] as $key=>$value) {
-								if (!array_key_exists($key, $exportParams)) {
-									$exportParams[$key] = $value;
+							if(is_array($record['params'])) {
+								foreach ($record['params'] as $key=>$value) {
+									if (!array_key_exists($key, $exportParams)) {
+										$exportParams[$key] = $value;
+									}
 								}
 							}
 						}
