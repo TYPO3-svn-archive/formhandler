@@ -116,7 +116,7 @@ class Tx_Formhandler_Generator_CSV {
 		$csv->input_encoding = $this->getInputCharset();
 		$csv->output_encoding = $encoding;
 		$csv->convert_encoding = FALSE;
-		if($csv->input_encoding !== $csv->output_encoding) {
+		if(strtolower($csv->input_encoding) !== strtolower($csv->output_encoding)) {
 			$csv->convert_encoding = TRUE;
 		}
 		$csv->output('formhandler.csv', $data, $exportParams);
