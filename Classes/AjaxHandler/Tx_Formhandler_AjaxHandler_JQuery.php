@@ -108,7 +108,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 				' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").attr("disabled", "disabled");
 				var container = ' . $this->jQueryAlias . '(this).closest(".Tx-Formhandler");
 				var form = ' . $this->jQueryAlias . '(this).closest("FORM");
-				var requestURL = "/index.php?id=' . $GLOBALS['TSFE']->id . '&eID=formhandler-ajaxsubmit&randomID=' . $this->globals->getRandomID() . '";
+				var requestURL = "/index.php?id=' . $GLOBALS['TSFE']->id . '&uid=' . intval($this->globals->getCObj()->data['uid']) . '&eID=formhandler-ajaxsubmit&randomID=' . $this->globals->getRandomID() . '";
 				var postData = form.serialize() + "&" + ' . $this->jQueryAlias . '(this).attr("name") + "=submit";
 				container.find(".loading_ajax-submit").show();
 				jQuery.ajax({

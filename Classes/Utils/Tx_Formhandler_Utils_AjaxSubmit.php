@@ -52,12 +52,20 @@ class Tx_Formhandler_Utils_AjaxSubmit {
 		} else {
 			$this->id = intval($_GET['id']);
 		}
-		
+
 		$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 		$this->globals = Tx_Formhandler_Globals::getInstance();
 		$this->utilityFuncs = Tx_Formhandler_UtilityFuncs::getInstance();
 		tslib_eidtools::connectDB();
 		$this->utilityFuncs->initializeTSFE($this->id);
+
+		$elementUID = intval($_GET['uid']);
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $elementUID . ' AND pid=' . $this->id . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
+		if(!empty($row)) {
+			$GLOBALS['TSFE']->cObj->data = $row;
+			$GLOBALS['TSFE']->cObj->current = 'tt_content_' . $elementUID;
+		}
+
 		$this->globals->setCObj($GLOBALS['TSFE']->cObj);
 		$randomID = htmlspecialchars(t3lib_div::_GP('randomID'));
 		$this->globals->setRandomID($randomID);
