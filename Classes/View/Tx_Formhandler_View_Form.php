@@ -750,7 +750,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 												$markers['###' . $replacedFieldname . '_currentTotalSize###'] = t3lib_div::formatSize($totalSize, ' Bytes| KB| MB| GB');
 												$markers['###' . $replacedFieldname . '_remainingTotalSize###'] = t3lib_div::formatSize($maxTotalSize - $totalSize, ' Bytes| KB| MB| GB');
 												break;
-											case 'required':case 'fileRequired':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathguard':
+											case 'required':case 'fileRequired':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathGuard':
 												if(!in_array('all', $disableErrorCheckFields) && !in_array($replacedFieldname, $disableErrorCheckFields)) {
 													$requiredSign = $this->utilityFuncs->getSingle($settings, 'requiredSign');
 													if(strlen($requiredSign) === 0) {
