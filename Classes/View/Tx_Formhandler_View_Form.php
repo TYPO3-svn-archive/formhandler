@@ -169,11 +169,20 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					if (!empty($matchesSlave[0])) {
 						foreach ($matchesSlave[0] as $key=>$markerName) {
 							$fieldName = $matchesSlave[2][$key];
+							$params = array();
+							if(strpos($fieldName, ';')) {
+								$parts = explode(';', $fieldName);
+								$fieldName = array_shift($parts);
+								$params = explode(',', array_shift($parts));
+							}
 							if ($fieldName) {
 								$markers = array(
 									'###fieldname###' => $fieldName,
 									'###formValuesPrefix###' => $this->globals->getFormValuesPrefix()
 								);
+								foreach($params as $key => $paramValue) {
+									$markers['###param' . (++$key) . '###'] = $paramValue;
+								}
 								$replacedCode = $this->cObj->substituteMarkerArray($code, $markers);
 							} else {
 								$replacedCode = $code;
