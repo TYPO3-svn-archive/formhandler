@@ -61,6 +61,21 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 		if($this->settings['enclosure']) {
 			$csv->enclosure = $this->utilityFuncs->getSingle($this->settings, 'enclosure');
 		}
+		$inputEncoding = $this->utilityFuncs->getSingle($this->settings, 'inputEncoding');
+		if(strlen(trim($inputEncoding)) === 0) {
+			$inputEncoding = 'utf-8';
+		}
+		$outputEncoding = $this->utilityFuncs->getSingle($this->settings, 'outputEncoding');
+		if(strlen(trim($inputEncoding)) === 0) {
+			$outputEncoding = 'utf-8';
+		}
+		$csv->input_encoding = strtolower($inputEncoding);
+		$csv->output_encoding = strtolower($outputEncoding);
+
+		$csv->convert_encoding = FALSE;
+		if($csv->input_encoding !== $csv->output_encoding) {
+			$csv->convert_encoding = TRUE;
+		}
 		if(intval($this->settings['returnFileName']) === 1) {
 			$outputPath = $this->utilityFuncs->getDocumentRoot();
 			if ($this->settings['customTempOutputPath']) {
