@@ -783,10 +783,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			}
 		}
 		if (is_array($sessionFiles)) {
-			$singleWrap = $settings['singleFileMarkerTemplate.']['singleWrap'];
-			$totalMarkerSingleWrap = $settings['totalFilesMarkerTemplate.']['singleWrap'];
-			$totalWrap = $settings['singleFileMarkerTemplate.']['totalWrap'];
-			$totalMarkersTotalWrap = $settings['totalFilesMarkerTemplate.']['totalWrap'];
 			foreach ($sessionFiles as $field => $files) {
 				foreach ($files as $idx => $fileInfo) {
 					$filename = $fileInfo['name'];
@@ -832,19 +828,15 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 								onclick="' . str_replace(array("\n", '	'), '', $onClick) . '"
 								>' . $text . '</a>';
 					}
-					$stdWrappedFilename = $filename;
-					if($settings['singleFileMarkerTemplate.']['filenameWrap']) {
-						$stdWrappedFilename = str_replace('|', $filename, $settings['singleFileMarkerTemplate.']['filenameWrap']);
-					}
-					if (strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
-						$wrappedFilename = str_replace('|', $stdWrappedFilename . $link, $singleWrap);
-						$wrappedThumb = str_replace('|', $thumb . $link, $singleWrap);
-						$wrappedThumbFilename = str_replace('|', $thumb . ' ' . $stdWrappedFilename . $link, $singleWrap);
-					} else {
-						$wrappedFilename = $stdWrappedFilename . $link;
-						$wrappedThumb = $thumb . $link;
-						$wrappedThumbFilename = $thumb . ' ' . $stdWrappedFilename . $link;
-					}
+					$stdWrappedFilename = $this->utilityFuncs->wrap($filename, $this->settings['singleFileMarkerTemplate.'], 'filenameWrap');
+					$singleWrap = $settings['singleFileMarkerTemplate.']['singleWrap'];
+					$totalMarkerSingleWrap = $settings['totalFilesMarkerTemplate.']['singleWrap'];
+					$totalWrap = $settings['singleFileMarkerTemplate.']['totalWrap'];
+					$totalMarkersTotalWrap = $settings['totalFilesMarkerTemplate.']['totalWrap'];
+
+					$wrappedFilename = $this->utilityFuncs->wrap($stdWrappedFilename . $link, $settings['singleFileMarkerTemplate.'], 'singleWrap');
+					$wrappedThumb = $this->utilityFuncs->wrap($thumb . $link, $settings['singleFileMarkerTemplate.'], 'singleWrap');
+					$wrappedThumbFilename = $this->utilityFuncs->wrap($thumb . ' ' . $stdWrappedFilename . $link, $settings['singleFileMarkerTemplate.'], 'singleWrap');
 					if (intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 1) {
 						$markers['###' . $field . '_uploadedFiles###'] .= $wrappedThumb;
 					} elseif (intval($settings['singleFileMarkerTemplate.']['showThumbnails']) === 2) {
@@ -864,19 +856,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$thumb = $this->getThumbnail($imgConf, $fileInfo);
 
 					}
-					$stdWrappedFilename = $filename;
-					if($settings['totalFilesMarkerTemplate.']['filenameWrap']) {
-						$stdWrappedFilename = str_replace('|', $filename, $settings['totalFilesMarkerTemplate.']['filenameWrap']);
-					}
-					if (strlen($totalMarkerSingleWrap) > 0 && strstr($totalMarkerSingleWrap, '|')) {
-						$wrappedFilename = str_replace('|', $stdWrappedFilename . $link, $totalMarkerSingleWrap);
-						$wrappedThumb = str_replace('|', $thumb . $link, $totalMarkerSingleWrap);
-						$wrappedThumbFilename = str_replace('|', $thumb . ' ' . $stdWrappedFilename . $link, $totalMarkerSingleWrap);
-					} else {
-						$wrappedFilename = $stdWrappedFilename . $link;
-						$wrappedThumb = $thumb . $link;
-						$wrappedThumbFilename = $thumb . $stdWrappedFilename . $link;
-					}
+					$stdWrappedFilename = $this->utilityFuncs->wrap($filename, $this->settings['totalFilesMarkerTemplate.'], 'filenameWrap');
+
+					$wrappedFilename = $this->utilityFuncs->wrap($stdWrappedFilename . $link, $settings['totalFilesMarkerTemplate.'], 'singleWrap');
+					$wrappedThumb = $this->utilityFuncs->wrap($thumb . $link, $settings['totalFilesMarkerTemplate.'], 'singleWrap');
+					$wrappedThumbFilename = $this->utilityFuncs->wrap($thumb . ' ' . $stdWrappedFilename . $link, $settings['totalFilesMarkerTemplate.'], 'singleWrap');
+
 					if (intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1) {
 						$markers['###total_uploadedFiles###'] .= $wrappedThumb;
 					} elseif (intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 2) {
@@ -885,14 +870,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						$markers['###total_uploadedFiles###'] .= $wrappedFilename;
 					}
 				}
-				if (strlen($totalWrap) > 0 && strstr($totalWrap,'|')) {
-					$markers['###' . $field . '_uploadedFiles###'] = str_replace('|', $markers['###' . $field . '_uploadedFiles###'],$totalWrap);
-				}
+				$markers['###' . $field . '_uploadedFiles###'] = $this->utilityFuncs->wrap($markers['###' . $field . '_uploadedFiles###'], $settings['singleFileMarkerTemplate.'], 'totalWrap');
 				$markers['###' . $field . '_uploadedFiles###'] = '<div id="Tx_Formhandler_UploadedFiles_' . $field . '">' . $markers['###' . $field . '_uploadedFiles###'] . '</div>';
 			}
-			if (strlen($totalMarkersTotalWrap) > 0 && strstr($totalMarkersTotalWrap, '|')) {
-				$markers['###total_uploadedFiles###'] = str_replace('|', $markers['###total_uploadedFiles###'], $totalMarkersTotalWrap);
-			}
+			$markers['###total_uploadedFiles###'] = $this->utilityFuncs->wrap($markers['###total_uploadedFiles###'], $settings['totalFilesMarkerTemplate.'], 'totalWrap');
 			$markers['###TOTAL_UPLOADEDFILES###'] = $markers['###total_uploadedFiles###'];
 			$markers['###total_uploadedfiles###'] = $markers['###total_uploadedFiles###'];
 		}
@@ -966,16 +947,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillErrorMarkers(&$errors) {
 		$markers = array();
-		$singleWrap = $this->settings['singleErrorTemplate.']['singleWrap'];
+
 		foreach ($errors as $field => $types) {
 			$errorMessages = array();
 			$clearErrorMessages = array();
 			$temp = $this->utilityFuncs->getTranslatedMessage($this->langFiles, 'error_' . $field);
 			if (strlen($temp) > 0) {
-				$errorMessage = $temp;
-				if (strlen($singleWrap) > 0 && strstr($singleWrap, '|')) {
-					$errorMessage = str_replace('|', $errorMessage, $singleWrap);
-				}
+				$errorMessage = $this->utilityFuncs->wrap($temp, $this->settings['singleErrorTemplate.'], 'singleWrap');
 				$errorMessages[] = $errorMessage;
 			}
 			if (!is_array($types)) {
@@ -1016,10 +994,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				}
 			}
 			$errorMessage = implode('', $errorMessages);
-			$totalWrap = $this->settings['singleErrorTemplate.']['totalWrap'];
-			if (strlen($totalWrap) > 0 && strstr($totalWrap, '|')) {
-				$errorMessage = str_replace('|', $errorMessage, $totalWrap);
-			}
+			$errorMessage = $this->utilityFuncs->wrap($errorMessage, $this->settings['singleErrorTemplate.'], 'totalWrap');
 			$clearErrorMessage = $errorMessage;
 			if ($this->settings['addErrorAnchors']) {
 				$errorMessage = '<a name="' . $field . '">' . $errorMessage . '</a>';
@@ -1034,16 +1009,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			}
 
 			//list settings
-			$listSingleWrap = $this->settings['errorListTemplate.']['singleWrap'];
-			if (strlen($listSingleWrap) > 0 && strstr($listSingleWrap, '|')) {
-				$errorMessage = str_replace('|', $errorMessage, $listSingleWrap);
-			}
+			$errorMessage = $this->utilityFuncs->wrap($errorMessage, $this->settings['errorListTemplate.'], 'singleWrap');
 			$markers['###ERROR###'] .= $errorMessage;
 		}
-		$totalWrap = $this->settings['errorListTemplate.']['totalWrap'];
-		if (strlen($totalWrap) > 0 && strstr($totalWrap, '|')) {
-			$markers['###ERROR###'] = str_replace('|', $markers['###ERROR###'], $totalWrap);
-		}
+		$markers['###ERROR###'] = $this->utilityFuncs->wrap($markers['###ERROR###'], $this->settings['errorListTemplate.'], 'totalWrap');
 		$langMarkers = $this->utilityFuncs->getFilledLangMarkers($markers['###ERROR###'], $this->langFiles);
 		$markers['###ERROR###'] = $this->cObj->substituteMarkerArray($markers['###ERROR###'], $langMarkers);
 		$markers['###error###'] = $markers['###ERROR###'];
