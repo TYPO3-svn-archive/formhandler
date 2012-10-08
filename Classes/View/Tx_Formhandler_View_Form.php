@@ -224,68 +224,73 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	protected function substituteConditionalSubparts($type) {
 		$type = strtolower($type);
 		$write = TRUE;
-		$out = array();
 
-		$loopArr = explode(chr(10), $this->template);
-		foreach($loopArr as $line){
+		$pattern = '/(\<\!\-\-[^#]*)?(###' . $type . '_+([^#]*)_*###)([^\-]*\-\-\>)?/i';
+		preg_match_all($pattern, $this->template, $matches);
 
-			// works only on it's own line
-			$pattern = '/###' . $type . '_+([^#]*)_*###/i';
+		if(is_array($matches[0])) {
+			$resultCount = count($matches[0]);
 
-			// set for odd IF_xyz, else reset
-			if(preg_match($pattern, $line, $matches)) {
-				if(!$flags[$matches[0]] && strtolower($matches[1]) != 'end') { // set
-					$flags[$matches[0]] = TRUE;
+			for($i = 0; $i < $resultCount; $i = $i + 2) {
+				$conditionString = $matches[3][$i];
+				$endMarkerConditionString = $matches[3][$i + 1];
+				$fullMarkerName = $matches[0][$i];
+				$fullEndMarker = $matches[0][$i + 1];
+				$markerName = $matches[2][$i];
+				$conditions = preg_split('/\s*(\|\||&&)\s*/i', $conditionString, -1, PREG_SPLIT_DELIM_CAPTURE);
+				$operator = NULL;
+				$finalConditionResult = FALSE;
+				$count = 0;
 
-					$conditions = preg_split('/\s*(\|\||&&)\s*/i', $matches[1], -1, PREG_SPLIT_DELIM_CAPTURE);
-					$operator = NULL;
-					$finalConditionResult = FALSE;
-					$count = 0;
-					foreach($conditions as $condition) {
-
-						if($condition === '||' || $condition === '&&') {
-							$operator = $condition;
-						} else {
-							switch($type) {
-								case 'if':
-									$conditionResult = $this->handleIfSubpartCondition($condition);
-									break;
-								case 'isset':
-									$conditionResult = $this->handleIssetSubpartCondition($condition);
-									break;
-								case 'has_translation':
-									$conditionResult = $this->handleHasTranslationSubpartCondition($condition);
-									break;
-								default:
-									$this->utilityFuncs->throwException('Unsupported conditional subpart type: ' . $type);
-									break;
-							}
+				foreach($conditions as $condition) {
+					if($condition === '||' || $condition === '&&') {
+						$operator = $condition;
+					} else {
+						switch($type) {
+							case 'if':
+								$conditionResult = $this->handleIfSubpartCondition($condition);
+								break;
+							case 'isset':
+								$conditionResult = $this->handleIssetSubpartCondition($condition);
+								break;
+							case 'has_translation':
+								$conditionResult = $this->handleHasTranslationSubpartCondition($condition);
+								break;
+							default:
+								$this->utilityFuncs->throwException('Unsupported conditional subpart type: ' . $type);
+							break;
 						}
-						if($count === 0) {
-							$finalConditionResult = $conditionResult;
-						} elseif($operator === '&&') {
-							$finalConditionResult = ($finalConditionResult && $conditionResult);
-						} elseif($operator === '||') {
-							$finalConditionResult = ($finalConditionResult || $conditionResult);
-						} else {
-							$finalConditionResult = $conditionResult;
-						}
-						$count++;
 					}
-
-					$write = (boolean) $finalConditionResult;
-				} else if($flags[$matches[0]] || strtolower($matches[1]) == 'end') { // close it
-					$flags[$matches[0]] = FALSE;
-					$write = TRUE;
+					if($count === 0) {
+						$finalConditionResult = $conditionResult;
+					} elseif($operator === '&&') {
+						$finalConditionResult = ($finalConditionResult && $conditionResult);
+					} elseif($operator === '||') {
+						$finalConditionResult = ($finalConditionResult || $conditionResult);
+					} else {
+						$finalConditionResult = $conditionResult;
+					}
+					$count++;
 				}
-			} else if($write) {
-				$out[] = $line;
+				$write = (boolean) $finalConditionResult;
+				if($write) {
+					if($conditionString === $endMarkerConditionString) {
+						$content = $this->cObj->getSubpart($this->template, $markerName);
+						$this->template = $this->cObj->substituteSubpart($this->template, $markerName, $content);
+					} else {
+						$pattern = '/' . $fullMarkerName . '([^#]+)' . $fullEndMarker . '/im';
+						preg_replace($pattern, '${1}', $this->template);
+					}
+				} else {
+					if($conditionString === $endMarkerConditionString) {
+						$this->template = $this->cObj->substituteSubpart($this->template, $markerName, '');
+					} else {
+						$pattern = '/' . $fullMarkerName . '([^#]+)' . $fullEndMarker . '/im';
+						preg_replace($pattern, '', $this->template);
+					}
+				}
 			}
 		}
-
-		$out = implode(chr(10),$out);
-
-		$this->template = $out;
 	}
 
 	protected function handleIssetSubpartCondition($condition) {
