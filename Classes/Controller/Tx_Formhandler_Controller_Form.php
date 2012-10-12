@@ -407,7 +407,10 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 					foreach ($uploadFields as $field) {
 
 						//if a file was uploaded through this field
-						if(strlen($files['tmp_name'][$field]) > 0) {
+						if(!is_array($files['tmp_name'][$field])) {
+							$files['tmp_name'][$field] = array($files['tmp_name'][$field]);
+						}
+						if(count($files['tmp_name'][$field]) > 0) {
 							$valid = FALSE;
 							$hasAllowedTypesCheck = FALSE;
 							if (isset($this->settings['validators.']) && 
@@ -738,7 +741,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				if (isset($files['name']) && is_array($files['name'])) {
 
 					//for all file names
-					foreach ($files['name'] as $field => $name) {
+					foreach ($files['name'] as $field => $uploadedFiles) {
+
+						//If only a single file is uploaded
+						if(!is_array($uploadedFiles)) {
+							$uploadedFiles = array($uploadedFiles);
+						}
+
 						if (!isset($this->errors[$field])) {
 
 							//get upload folder
@@ -752,60 +761,62 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 								return;
 							}
 
-							$exists = FALSE;
-							if (is_array($sessionFiles[$field])) {
-								foreach ($sessionFiles[$field] as $idx => $fileOptions) {
-									if ($fileOptions['name'] === $name) {
-										$exists = TRUE;
-									}
-								}
-							}
-							if (!$exists || $uploadedFilesWithSameNameAction === 'replace' || $uploadedFilesWithSameNameAction === 'append') {
-								$name = $this->utilityFuncs->doFileNameReplace($name);
-								$filename = substr($name, 0, strpos($name, '.'));
-								if (strlen($filename) > 0) {
-									$ext = substr($name, strpos($name, '.'));
-									$suffix = 1;
-
-									//build file name
-									$uploadedFileName = $filename . $ext;
-
-									if($uploadedFilesWithSameNameAction !== 'replace') {
-
-										//rename if exists
-										while(file_exists($uploadPath . $uploadedFileName)) {
-											$uploadedFileName = $filename . '_' . $suffix . $ext;
-											$suffix++;
+							foreach($uploadedFiles as $name) {
+								$exists = FALSE;
+								if (is_array($sessionFiles[$field])) {
+									foreach ($sessionFiles[$field] as $idx => $fileOptions) {
+										if ($fileOptions['name'] === $name) {
+											$exists = TRUE;
 										}
 									}
-									$files['name'][$field] = $uploadedFileName;
-
-									//move from temp folder to temp upload folder
-									move_uploaded_file($files['tmp_name'][$field], $uploadPath . $uploadedFileName);
-									t3lib_div::fixPermissions($uploadPath . $uploadedFileName);
-									$files['uploaded_name'][$field] = $uploadedFileName;
-
-									//set values for session
-									$tmp['name'] = $name;
-									$tmp['uploaded_name'] = $uploadedFileName;
-									$tmp['uploaded_path'] = $uploadPath;
-									$tmp['uploaded_folder'] = $uploadFolder;
-									$uploadedUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $uploadFolder . $uploadedFileName;
-									$uploadedUrl = str_replace('//', '/', $uploadedUrl);
-									$tmp['uploaded_url'] = $uploadedUrl;
-									$tmp['size'] = $files['size'][$field];
-									$tmp['type'] = $files['type'][$field];
-									if (!is_array($tempFiles[$field]) && strlen($field) > 0) {
-										$tempFiles[$field] = array();
-									}
-									if(!$exists || $uploadedFilesWithSameNameAction !== 'replace') {
-										array_push($tempFiles[$field], $tmp);
-									}
-									if (!is_array($this->gp[$field])) {
-										$this->gp[$field] = array();
-									}
-									if(!$exists || $uploadedFilesWithSameNameAction !== 'replace') {
-										array_push($this->gp[$field], $uploadedFileName);
+								}
+								if (!$exists || $uploadedFilesWithSameNameAction === 'replace' || $uploadedFilesWithSameNameAction === 'append') {
+									$name = $this->utilityFuncs->doFileNameReplace($name);
+									$filename = substr($name, 0, strpos($name, '.'));
+									if (strlen($filename) > 0) {
+										$ext = substr($name, strpos($name, '.'));
+										$suffix = 1;
+	
+										//build file name
+										$uploadedFileName = $filename . $ext;
+	
+										if($uploadedFilesWithSameNameAction !== 'replace') {
+	
+											//rename if exists
+											while(file_exists($uploadPath . $uploadedFileName)) {
+												$uploadedFileName = $filename . '_' . $suffix . $ext;
+												$suffix++;
+											}
+										}
+										$files['name'][$field] = $uploadedFileName;
+	
+										//move from temp folder to temp upload folder
+										move_uploaded_file($files['tmp_name'][$field], $uploadPath . $uploadedFileName);
+										t3lib_div::fixPermissions($uploadPath . $uploadedFileName);
+										$files['uploaded_name'][$field] = $uploadedFileName;
+	
+										//set values for session
+										$tmp['name'] = $name;
+										$tmp['uploaded_name'] = $uploadedFileName;
+										$tmp['uploaded_path'] = $uploadPath;
+										$tmp['uploaded_folder'] = $uploadFolder;
+										$uploadedUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $uploadFolder . $uploadedFileName;
+										$uploadedUrl = str_replace('//', '/', $uploadedUrl);
+										$tmp['uploaded_url'] = $uploadedUrl;
+										$tmp['size'] = $files['size'][$field];
+										$tmp['type'] = $files['type'][$field];
+										if (!is_array($tempFiles[$field]) && strlen($field) > 0) {
+											$tempFiles[$field] = array();
+										}
+										if(!$exists || $uploadedFilesWithSameNameAction !== 'replace') {
+											array_push($tempFiles[$field], $tmp);
+										}
+										if (!is_array($this->gp[$field])) {
+											$this->gp[$field] = array();
+										}
+										if(!$exists || $uploadedFilesWithSameNameAction !== 'replace') {
+											array_push($this->gp[$field], $uploadedFileName);
+										}
 									}
 								}
 							}
@@ -1144,7 +1155,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->globals->getSession()->set('predef', $this->globals->getPredef());
 
 		//init view
-		$viewClass = $this->utilityFuncs->getPreparedClassName($this->settings['view'], 'View_Form');
+		$viewClass = $this->utilityFuncs->getPreparedClassName($this->settings['view.'], 'View_Form');
 		$this->utilityFuncs->debugMessage('using_view', array($viewClass));
 
 		$this->utilityFuncs->debugMessage('current_gp', array(), 1, $this->gp);
