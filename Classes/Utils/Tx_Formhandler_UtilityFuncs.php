@@ -983,6 +983,16 @@ class Tx_Formhandler_UtilityFuncs {
 		return $value;
 	}
 
+	public function wrap($str, $settingsArray, $key) {
+		$wrappedString = $str;
+		if(is_array($settingsArray[$key . '.'])) {
+			$wrappedString = $this->globals->getCObj()->stdWrap($str, $settingsArray[$key . '.']);
+		} elseif(strlen($settingsArray[$key]) > 0) {
+			$wrappedString = $this->globals->getCObj()->wrap($str, $settingsArray[$key]);
+		}
+		return $wrappedString;
+	}
+
 }
 
 ?>
