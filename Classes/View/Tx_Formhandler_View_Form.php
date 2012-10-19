@@ -618,7 +618,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		global $LANG;
 
 		if (t3lib_extMgm::isLoaded('captcha')){
-			$markers['###CAPTCHA###'] = '<img src="' . t3lib_extMgm::siteRelPath('captcha') . 'captcha/captcha.php" alt="" />';
+			$markers['###CAPTCHA###'] = '<img src="' . t3lib_extMgm::siteRelPath('captcha') . 'captcha/captcha.php?rand=' . rand() . '" alt="" />';
 			$markers['###captcha###'] = $markers['###CAPTCHA###'];
 		}
 		if (t3lib_extMgm::isLoaded('sr_freecap')){
