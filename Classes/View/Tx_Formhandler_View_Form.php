@@ -602,9 +602,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$this->fillFileMarkers($markers);
 
 		if (!strstr($this->template, '###HIDDEN_FIELDS###')) {
-			$this->template = str_replace(
-				'</form>', 
-				'<fieldset style="display: none;">' . $markers['###HIDDEN_FIELDS###'] . '</fieldset></form>', 
+			$this->template = preg_replace(
+				'/(<form[^>]*>)/i', 
+				'$1<fieldset style="display: none;">' . $markers['###HIDDEN_FIELDS###'] . '</fieldset>', 
 				$this->template
 			);
 		}
