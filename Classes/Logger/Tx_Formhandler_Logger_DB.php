@@ -96,6 +96,8 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 			'unique_hash' => $uniqueHash
 		);
 		$this->globals->getSession()->setMultiple($sessionValues);
+		$this->gp['inserted_uid'] = $insertedUID;
+		$this->gp[$table . '_inserted_uid'] = $this->gp['inserted_uid'];
 
 		if (intval($this->utilityFuncs->getSingle($this->settings, 'nodebug')) !== 1) {
 			$this->utilityFuncs->debugMessage('logging', array($table, implode(',', $fields)));
