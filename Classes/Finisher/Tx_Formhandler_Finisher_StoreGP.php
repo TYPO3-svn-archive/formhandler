@@ -46,10 +46,13 @@ class Tx_Formhandler_Finisher_StoreGP extends Tx_Formhandler_AbstractFinisher {
 	 * @return void
 	 */
 	protected function storeUserGPinSession() {
-		foreach ($this->gp as $key => $value) {
-			$GLOBALS['TSFE']->fe_user->setKey('ses', $key, $value);
-			$GLOBALS['TSFE']->fe_user->storeSessionData();
+		$sessionKey = 'finisher-storegp';
+		if($this->settings['sessionKey']) {
+			$sessionKey = $this->utilityFuncs->getSingle($this->settings, 'sessionKey');
 		}
+		$dataToStoreInSession = $this->gp;
+		$GLOBALS['TSFE']->fe_user->setKey('ses', $sessionKey, $dataToStoreInSession);
+		$GLOBALS['TSFE']->fe_user->storeSessionData();
 	}
 
 	/**
