@@ -59,7 +59,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		}
 
 		if (!empty($this->masterTemplates)) {
-			$this->replaceMarkersFromMaster();
+			$count = 0;
+			while($count < 5 && preg_match('/###(field|master)_[^#]*###/', $this->template)) {
+				$this->replaceMarkersFromMaster();
+				$count++;
+			}
 		}
 
 		if ($this->globals->getAjaxHandler()) {
