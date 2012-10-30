@@ -840,7 +840,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$ips = t3lib_div::trimExplode(',', $params['ipFilter'], 1);
 			$ip_search = array();
 			foreach ($ips as $value) {
-				$ip_search[] = $GLOBALS['TYPO3_DB']->fullQuoteStr(htmlspecialchars($value), $this->logTable) . "'";
+				$ip_search[] = $GLOBALS['TYPO3_DB']->fullQuoteStr(htmlspecialchars($value), $this->logTable);
 			}
 			$where[] = 'ip IN (' . implode(",", $ip_search) . ')';
  		}
