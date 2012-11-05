@@ -322,11 +322,11 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 					}
 
 					//process empty value handling
-					if ($options['ifIsEmpty'] && strlen($fieldValue) == 0) {
+					if (isset($options['ifIsEmpty']) && strlen($fieldValue) === 0) {
 						$fieldValue = $this->utilityFuncs->getSingle($options, 'ifIsEmpty');
 					}
 
-					if (intval($this->utilityFuncs->getSingle($options, 'zeroIfEmpty')) === 1 && strlen($fieldValue) == 0) {
+					if (intval($this->utilityFuncs->getSingle($options, 'zeroIfEmpty')) === 1 && strlen($fieldValue) === 0) {
 						$fieldValue = 0;
 					}
 
