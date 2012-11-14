@@ -1108,7 +1108,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->globals->setRandomID($randomID);
 
 		$sessionClass = $this->utilityFuncs->getPreparedClassName($this->settings['session.'], 'Session_PHP');
-		$this->globals->setSession($this->componentManager->getComponent($sessionClass));
+		$session = $this->componentManager->getComponent($sessionClass);
+		$session->init($this->gp, $this->settings['session.']['config.']);
+		$this->globals->setSession($session);
 
 		$action = t3lib_div::_GP('action');
 		if ($this->globals->getFormValuesPrefix()) {

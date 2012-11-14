@@ -83,14 +83,28 @@ abstract class Tx_Formhandler_AbstractSession extends Tx_Formhandler_AbstractCla
 	
 	protected function getOldSessionThreshold() {
 		$threshold = $this->utilityFuncs->getTimestamp(1, 'hours');
+
 		if($this->settings['clearSessionsOlderThan.']['value']) {
 			$thresholdValue = $this->utilityFuncs->getSingle($this->settings['clearSessionsOlderThan.'], 'value');
 			$thresholdUnit = $this->utilityFuncs->getSingle($this->settings['clearSessionsOlderThan.'], 'unit');
+
 			$threshold = $this->utilityFuncs->getTimestamp($thresholdValue, $thresholdUnit);
 		}
 		return $threshold;
 	}
 
+	/**
+	 * Initialize the class variables
+	 *
+	 * @param array $gp GET and POST variable array
+	 * @param array $settings Typoscript configuration for the component (component.1.config.*)
+	 *
+	 * @return void
+	 */
+	public function init($gp, $settings) {
+		$this->gp = $gp;
+		$this->settings = $settings;
+	}
 }
 
 ?>
