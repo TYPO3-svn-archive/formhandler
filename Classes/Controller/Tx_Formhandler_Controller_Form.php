@@ -874,7 +874,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 *
 	 * @return void
 	 */
-	protected function reset() {
+	protected function reset($gp = array()) {
 		$values = array (
 			'creationTstamp' => time(),
 			'values' => NULL,
@@ -889,7 +889,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			'finished' => NULL
 		);
 		$this->globals->getSession()->setMultiple($values);
-		$this->gp = array();
+		$this->gp = $gp;
 		$this->currentStep = 1;
 		$this->globals->setGP($this->gp);
 		$this->utilityFuncs->debugMessage('cleared_session');
@@ -915,7 +915,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 		}
 
-		$stepInSession = intval($this->globals->getSession()->get('currentStep'));
+		$stepInSession = max(intval($this->globals->getSession()->get('currentStep')), 1);
 		switch ($action) {
 			case 'prev':
 			case 'next':
@@ -1170,8 +1170,14 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->submitted = $this->isFormSubmitted();
 
 		$this->globals->setSubmitted($this->submitted);
-		if (!$this->submitted) {
-			$this->reset();
+		if ($this->globals->getSession()->get('creationTstamp') === NULL) {
+			if($this->submitted) {
+				$this->reset($this->gp);
+				$this->findCurrentStep();
+				$this->globals->getSession()->set('currentStep', $this->currentStep);
+			} else {
+				$this->reset();
+			}
 		}
 
 		// set stylesheet file(s)
