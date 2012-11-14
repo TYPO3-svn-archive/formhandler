@@ -862,6 +862,11 @@ class Tx_Formhandler_UtilityFuncs {
 		$search = array(' ', '%20');
 		$replace = array('_');
 
+		$usePregReplace = $this->getSingle($settings['files.'], 'usePregReplace');
+		if(intval($usePregReplace) === 1) {
+			$search = array('/ /', '/%20/');
+		}
+
 		//The settings "search" and "replace" are comma separated lists
 		if($settings['files.']['search']) {
 			$search = $this->getSingle($settings['files.'], 'search');
