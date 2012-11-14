@@ -90,6 +90,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 		}
 		tslib_eidtools::connectDB();
 		$this->globals = Tx_Formhandler_Globals::getInstance();
+		$this->globals->setAjaxMode(TRUE);
 		$this->utilityFuncs = Tx_Formhandler_UtilityFuncs::getInstance();
 		$this->utilityFuncs->initializeTSFE($this->id);
 	}
