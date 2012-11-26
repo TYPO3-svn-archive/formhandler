@@ -25,9 +25,10 @@ class Tx_Formhandler_Session_TYPO3 extends Tx_Formhandler_AbstractSession {
 	public function __construct(Tx_Formhandler_Component_Manager $componentManager, 
 								Tx_Formhandler_Configuration $configuration, 
 								Tx_Formhandler_Globals $globals,
-								Tx_Formhandler_UtilityFuncs $utilityFuncs) {
+								Tx_Formhandler_UtilityFuncs $utilityFuncs,
+								Tx_Formhandler_CompatibilityFuncs $compatibilityFuncs) {
 
-		parent::__construct($componentManager, $configuration, $globals, $utilityFuncs);
+		parent::__construct($componentManager, $configuration, $globals, $utilityFuncs, $compatibilityFuncs);
 		$this->start();
 
 	}

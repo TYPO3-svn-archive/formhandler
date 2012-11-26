@@ -54,6 +54,14 @@ abstract class Tx_Formhandler_AbstractClass {
 	protected $utilityFuncs;
 
 	/**
+	 * The Formhandler compatibility methods
+	 *
+	 * @access protected
+	 * @var Tx_Formhandler_CompatibilityFuncs
+	 */
+	protected $compatibilityFuncs;
+
+	/**
 	 * The cObj
 	 *
 	 * @access protected
@@ -71,12 +79,14 @@ abstract class Tx_Formhandler_AbstractClass {
 	public function __construct(Tx_Formhandler_Component_Manager $componentManager, 
 								Tx_Formhandler_Configuration $configuration, 
 								Tx_Formhandler_Globals $globals,
-								Tx_Formhandler_UtilityFuncs $utilityFuncs) {
+								Tx_Formhandler_UtilityFuncs $utilityFuncs,
+								Tx_Formhandler_CompatibilityFuncs $compatibilityFuncs) {
 
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		$this->globals = $globals;
 		$this->utilityFuncs = $utilityFuncs;
+		$this->compatibilityFuncs = $compatibilityFuncs;
 		$this->cObj = $this->globals->getCObj();
 	}
 }

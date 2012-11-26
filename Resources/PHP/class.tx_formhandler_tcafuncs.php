@@ -29,6 +29,7 @@
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
 class tx_formhandler_tcafuncs {
 
 	public function user_getParams($PA, $fobj) {
@@ -41,11 +42,8 @@ class tx_formhandler_tcafuncs {
 			onchange="' . htmlspecialchars(implode('', $PA['fieldChangeFunc'])) . '"
 			' . $PA['onFocus'] . '/>
 		';
-		if (t3lib_div::int_from_ver(TYPO3_branch) < t3lib_div::int_from_ver('4.5')) {
-			$output .= t3lib_div::view_array($params);
-		} else {
-			$output .= t3lib_utility_Debug::viewArray($params);
-		}
+		$compatFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
+		$output .= $compatFuncs->viewArray($params);
 		return $output;
 	}
 

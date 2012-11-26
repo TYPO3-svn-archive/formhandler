@@ -23,10 +23,28 @@ class Tx_Formhandler_UtilityFuncs {
 
 	static private $instance = NULL;
 
+	/**
+	 * The global Formhandler values
+	 *
+	 * @access protected
+	 * @var Tx_Formhandler_Globals
+	 */
+	protected $globals;
+
+	
+	/**
+	 * The Formhandler compatibility methods
+	 *
+	 * @access protected
+	 * @var Tx_Formhandler_CompatibilityFuncs
+	 */
+	protected $compatibilityFuncs;
+
 	static public function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new Tx_Formhandler_UtilityFuncs();
 			self::$instance->globals = Tx_Formhandler_Globals::getInstance();
+			self::$instance->compatibilityFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
 		}
 		return self::$instance;
 	}

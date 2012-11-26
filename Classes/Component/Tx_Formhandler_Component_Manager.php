@@ -23,6 +23,7 @@
  */
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
 class Tx_Formhandler_Component_Manager {
 	const PACKAGE_PREFIX = 'Tx';
 	const DIRECTORY_CLASSES = 'Classes/';
@@ -82,7 +83,6 @@ class Tx_Formhandler_Component_Manager {
 				if ($this->globals->getPredef() && is_array($setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][$this->globals->getPredef()]['additionalIncludePaths.'])) {
 					$predefIncludePaths = $setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][$this->globals->getPredef()]['additionalIncludePaths.'];
 					$predefIncludePaths = $this->getParsedIncludePaths($predefIncludePaths);
-
 					$conf = array_merge($conf, $predefIncludePaths);
 				}
 			} elseif (is_array($overrideSettings['settings.']['additionalIncludePaths.'])) {
@@ -119,7 +119,7 @@ class Tx_Formhandler_Component_Manager {
 	 * @author adapted for TYPO3v4 by Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getComponent($componentName) {
-		
+
 		//Avoid component manager creating multiple instances of itself:
 		if (get_class($this) === $componentName) {
 			return $this;
@@ -127,6 +127,8 @@ class Tx_Formhandler_Component_Manager {
 			return Tx_Formhandler_Globals::getInstance();
 		} elseif ('Tx_Formhandler_UtilityFuncs' === $componentName) {
 			return Tx_Formhandler_UtilityFuncs::getInstance();
+		} elseif ('Tx_Formhandler_CompatibilityFuncs' === $componentName) {
+			return Tx_Formhandler_CompatibilityFuncs::getInstance();
 		}
 
 		if (!is_array($this->classFiles)) {
@@ -161,7 +163,7 @@ class Tx_Formhandler_Component_Manager {
 	}
 
 	/**
-	 * Requires a class file and instanciates a class.
+	 * Requires a class file and instantiates a class.
 	 *
 	 * @param string $componentName 
 	 * @param array	$overridingConstructorArguments
@@ -350,7 +352,6 @@ class Tx_Formhandler_Component_Manager {
 				$this->classFiles[$classNameParts[1]] = $this->buildArrayOfClassFiles($classNameParts[1]);
 				if (is_array($this->additionalIncludePaths)) {
 					foreach ($this->additionalIncludePaths as $idx => $dir) {
-						$temp = array();
 						$temp = $this->buildArrayOfClassFiles($dir);
 						$this->classFiles[$classNameParts[1]] = array_merge($temp, $this->classFiles[$classNameParts[1]]);
 					}

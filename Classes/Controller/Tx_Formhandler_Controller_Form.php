@@ -369,13 +369,10 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			if ($this->finished) {
 				return $this->processFinished();
 			} else {
-
-				//display form
 				return $this->view->render($this->gp, $this->errors);
 			}
 		} else {
 
-			//read template file
 			$this->templateFile = $this->utilityFuncs->readTemplateFile($this->templateFile, $this->settings);
 			$this->globals->setTemplateCode($this->templateFile);
 			$this->langFiles = $this->utilityFuncs->readLanguageFiles($this->langFiles, $this->settings);
@@ -479,7 +476,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$this->mergeGPWithSession();
 		}
 
-		//display form
 		return $this->view->render($this->gp, $this->errors);
 	}
 
@@ -489,6 +485,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return Output of a Finisher
 	 */
 	protected function processFinished() {
+
 		//If skipView is set, call preProcessors and initInterceptors here
 		if (intval($this->utilityFuncs->getSingle($this->settings, 'skipView')) === 1) {
 
@@ -565,7 +562,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		$this->view->setSettings($this->settings);
 
-		//read template file
 		$this->templateFile = $this->utilityFuncs->readTemplateFile($this->templateFile, $this->settings);
 		$this->globals->setTemplateCode($this->templateFile);
 		$this->langFiles = $this->utilityFuncs->readLanguageFiles($this->langFiles, $this->settings);
@@ -574,13 +570,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->view->setLangFiles($this->langFiles);
 		$this->setViewSubpart($this->currentStep);
 
-		//run preProcessors
 		$output = $this->runClasses($this->settings['preProcessors.']);
 		if (strlen($output) > 0) {
 			return $output;
 		}
 
-		//run init interceptors
 		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
 		$output = $this->runClasses($this->settings['initInterceptors.']);
 		if (strlen($output) > 0) {
@@ -591,9 +585,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->parseConditions();
 		$this->loadSettingsForStep($this->currentStep);
 
-		//display form
-		$content = $this->view->render($this->gp, $this->errors);
-		return $content;
+		return $this->view->render($this->gp, $this->errors);
 	}
 
 	/**
@@ -726,7 +718,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$sessionFiles = $this->globals->getSession()->get('files');
 		$tempFiles = $sessionFiles;
 
-		//if files were uploaded
 		if (isset($_FILES) && is_array($_FILES) && !empty($_FILES)) {
 
 			$uploadedFilesWithSameNameAction = $this->utilityFuncs->getSingle($this->settings['files.'], 'uploadedFilesWithSameName');
@@ -942,7 +933,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 	/**
 	 * Validates the Formhandler config.
-	 * E.g. If email addresses were set in Fleform then Finisher_Mail must exist in the TS configuration.
+	 * E.g. If email addresses were set in flexform then Finisher_Mail must exist in the TS configuration.
 	 *
 	 * @return void
 	 */
@@ -965,8 +956,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			if (is_array($this->settings[$component . '.'])) {
 				foreach ($this->settings[$component . '.'] as $idx => $finisher) {
 					$className = $this->utilityFuncs->getPreparedClassName($finisher);
-					if ($className == $componentName
-						|| @is_subclass_of($className, $componentName)) {
+					if ($className == $componentName || @is_subclass_of($className, $componentName)) {
 
 						$isConfigOk = TRUE;
 						break;
@@ -974,7 +964,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				}
 			}
 
-			// Throws an Exception if a problem occurs
 			if ($value != '' && !$isConfigOk) {
 				$this->utilityFuncs->throwException('missing_component', $component, $value, $componentName);
 			}
@@ -1091,7 +1080,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->globals->setFormID($this->utilityFuncs->getSingle($this->settings, 'formID'));
 		$this->globals->setFormValuesPrefix($this->formValuesPrefix);
 
-		//set debug mode
 		$isDebugMode = $this->utilityFuncs->getSingle($this->settings, 'debug');
 		$this->debugMode = (intval($isDebugMode) === 1);
 
@@ -1166,7 +1154,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		$this->mergeGPWithSession();
 
-		//set submitted
 		$this->submitted = $this->isFormSubmitted();
 
 		$this->globals->setSubmitted($this->submitted);
@@ -1180,10 +1167,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 		}
 
-		// set stylesheet file(s)
 		$this->addCSS();
-
-		// add JavaScript file(s)
 		$this->addJS();
 
 		$this->utilityFuncs->debugMessage('current_session_params', array(), 1, (array)$this->globals->getSession()->get('values'));
@@ -1224,7 +1208,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		} elseif (intval($this->utilityFuncs->getSingle($this->settings, 'skipView')) === 1) {
 			$submitted = TRUE;
 		}
-		
+
 		return $submitted;
 	}
 
@@ -1282,6 +1266,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return void
 	 */
 	protected function loadSettingsForStep($step) {
+
 		//merge settings with specific settings for current step
 		if (isset($this->settings[$step . '.']) && is_array($this->settings[$step . '.'])) {
 			$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $this->settings[$step . '.']);
@@ -1296,20 +1281,16 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 */
 	protected function getStepInformation() {
 
-		//find current step
 		$this->findCurrentStep();
 
-		//set last step
 		$this->lastStep = $this->globals->getSession()->get('currentStep');
 		if (!$this->lastStep) {
 			$this->lastStep = 1;
 		}
 
-		//total steps
 		$this->templateFile = $this->utilityFuncs->readTemplateFile($this->templateFile, $this->settings);
 		preg_match_all('/(###TEMPLATE_FORM)([0-9]+)(_.*)?(###)/', $this->templateFile, $subparts);
 
-		//get step numbers
 		$subparts = array_unique($subparts[2]);
 		sort($subparts);
 		$countSubparts = count($subparts);
@@ -1336,7 +1317,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 
 		$maxStep = $this->currentStep;
-
 		foreach ($values as $step => &$params) {
 			if (is_array($params) && (!$maxStep || $step <= $maxStep)) {
 				unset($params['submitted']);
@@ -1446,7 +1426,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			if(strlen(trim($file)) > 0) {
 				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
 				if(file_exists($file)) {
-
 					$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
 						'<script type="text/javascript" src="' . $file . '"></script>' . "\n";
 				}

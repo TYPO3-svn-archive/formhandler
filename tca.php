@@ -1,6 +1,5 @@
 <?php
 
-
 require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/class.tx_formhandler_tcafuncs.php');
 
 $TCA['tx_formhandler_log'] = array (

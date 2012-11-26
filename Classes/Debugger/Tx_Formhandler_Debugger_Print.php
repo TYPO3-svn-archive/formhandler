@@ -37,11 +37,7 @@ class Tx_Formhandler_Debugger_Print extends Tx_Formhandler_AbstractDebugger {
 				$message = $this->globals->getCObj()->wrap($message, $this->utilityFuncs->getSingle($this->settings['severityWrap.'], $messageData['severity']));
 				$sectionContent .= $this->globals->getCObj()->wrap($message, $this->settings['messageWrap']);
 				if($messageData['data']) {
-					if (t3lib_div::int_from_ver(TYPO3_branch) < t3lib_div::int_from_ver('4.5')) {
-						$sectionContent .= t3lib_div::view_array($messageData['data']);
-					} else {
-						$sectionContent .= t3lib_utility_Debug::viewArray($messageData['data']);
-					}
+					$sectionContent .= $this->compatibilityFuncs->viewArray($messageData['data']);
 					$sectionContent .= '<br />';
 				}
 			}

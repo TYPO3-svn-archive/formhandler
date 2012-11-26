@@ -135,7 +135,6 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 				});
 				</script>
 			';
-			
 
 			$jsPosition = trim($this->utilityFuncs->getSingle($this->settings, 'jsPosition'));
 			if($jsPosition === 'footer') {
@@ -180,7 +179,6 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			$markers['###loading_ajax-submit###'] = $ajaxSubmitLoader;
 		}
 
-		//parse validation settings
 		if (is_array($settings['validators.']) && intval($this->utilityFuncs->getSingle($settings['validators.'],'disable')) !== 1) {
 			foreach ($settings['validators.'] as $key => $validatorSettings) {
 				if (is_array($validatorSettings['config.']['fieldConf.']) && intval($this->utilityFuncs->getSingle($validatorSettings['config.'], 'disable')) !== 1) {
@@ -299,7 +297,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			'randomID' => $this->globals->getRandomID()
 		);
 		$url = $this->globals->getCObj()->getTypoLink_Url($GLOBALS['TSFE']->id, $params);
-		return '<a  
+		return '<a 
 				class="formhandler_removelink formhandler_removelink_' . $field . '" 
 				href="' . $url . '"
 				>' . $text . '</a>
