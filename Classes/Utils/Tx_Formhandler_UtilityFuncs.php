@@ -1016,6 +1016,18 @@ class Tx_Formhandler_UtilityFuncs {
 		return $wrappedString;
 	}
 
+	public function getAjaxUrl($specialParams) {
+		$params = array(
+			'id' => $GLOBALS['TSFE']->id,
+			'L' => $GLOBALS['TSFE']->sys_language_uid,
+			'randomID' => $this->globals->getRandomID(),
+			'field' => $field,
+			'uploadedFileName' => $uploadedFileName
+		);
+		$params = array_merge($params, $specialParams);
+		return '/index.php?' . t3lib_div::implodeArrayForUrl('', $params);
+	}
+
 }
 
 ?>

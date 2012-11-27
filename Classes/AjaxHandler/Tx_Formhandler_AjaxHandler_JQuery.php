@@ -108,7 +108,15 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 				' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").attr("disabled", "disabled");
 				var container = ' . $this->jQueryAlias . '(this).closest(".Tx-Formhandler");
 				var form = ' . $this->jQueryAlias . '(this).closest("FORM");
-				var requestURL = "/index.php?id=' . $GLOBALS['TSFE']->id . '&uid=' . intval($this->globals->getCObj()->data['uid']) . '&eID=formhandler-ajaxsubmit&randomID=' . $this->globals->getRandomID() . '";
+			';
+
+			$params = array(
+				'eID' => 'formhandler-ajaxsubmit',
+				'uid' => intval($this->globals->getCObj()->data['uid'])
+			);
+			$url = $this->utilityFuncs->getAjaxUrl($params);
+			$js .= '	
+				var requestURL = "' . $url . '";
 				var postData = form.serialize() + "&" + ' . $this->jQueryAlias . '(this).attr("name") + "=submit";
 				container.find(".loading_ajax-submit").show();
 				jQuery.ajax({
@@ -190,12 +198,10 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 						}
 						$params = array(
 							'eID' => 'formhandler',
-							'pid' => $GLOBALS['TSFE']->id,
-							'randomID' => $this->globals->getRandomID(),
 							'field' => $replacedFieldname,
 							'value' => ''
 						);
-						$url = $this->globals->getCObj()->getTypoLink_Url($GLOBALS['TSFE']->id, $params);
+						$url = $this->utilityFuncs->getAjaxUrl($params);
 
 						$markers['###validate_' . $replacedFieldname . '###'] = '
 							<span class="loading" id="loading_' . $replacedFieldname . '" style="display:none">' . $loadingImg . '</span>
@@ -291,12 +297,10 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 	public function getFileRemovalLink($text, $field, $uploadedFileName) {
 		$params = array(
 			'eID' => 'formhandler-removefile',
-			'pid' => $GLOBALS['TSFE']->id,
 			'field' => $field,
-			'uploadedFileName' => $uploadedFileName,
-			'randomID' => $this->globals->getRandomID()
+			'uploadedFileName' => $uploadedFileName
 		);
-		$url = $this->globals->getCObj()->getTypoLink_Url($GLOBALS['TSFE']->id, $params);
+		$url = $this->utilityFuncs->getAjaxUrl($params);
 		return '<a 
 				class="formhandler_removelink formhandler_removelink_' . $field . '" 
 				href="' . $url . '"
