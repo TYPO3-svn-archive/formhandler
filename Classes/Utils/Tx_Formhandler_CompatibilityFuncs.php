@@ -61,5 +61,32 @@ class Tx_Formhandler_CompatibilityFuncs {
 			return t3lib_div::int_from_ver($versionNumber);
 		}
 	}
+
+	/**
+	 * @param mixed $value Value to be checked
+	 * @return boolean
+	 */
+	public function canBeInterpretedAsInteger($value) {
+		if (class_exists('t3lib_utility_Math') && is_callable('t3lib_utility_Math::canBeInterpretedAsInteger')) {
+			return t3lib_utility_Math::canBeInterpretedAsInteger($value);
+		} else {
+			return t3lib_div::testInt($value);
+		}
+	}
+
+	/**
+	 * @param string $llFile File to be loaded
+	 * @param string $lang Language to be loaded
+	 * @return array
+	 */
+	public function readLLXMLfile($llFile, $lang) {
+		if (class_exists('t3lib_l10n_parser_Llxml')) {
+			$xmlParser = t3lib_div::makeInstance('t3lib_l10n_parser_Llxml');
+			$LOCAL_LANG = $xmlParser->getParsedData($llFile, $lang);
+		} else {
+			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $lang);
+		}
+		return $LOCAL_LANG;
+	}
 }
 ?>

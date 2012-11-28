@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
+require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
 
 /**
  * Adds the wizard icon.
@@ -34,8 +34,8 @@ class tx_formhandler_wizicon {
 	/**
 	 * Adds the formhandler wizard icon
 	 *
-	 * @param	array		Input array with wizard items for plugins
-	 * @return	array		Modified input array, having the item for formhandler
+	 * @param array Input array with wizard items for plugins
+	 * @return array Modified input array, having the item for formhandler
 	 * pi1 added.
 	 */
 	function proc($wizardItems)	{
@@ -44,33 +44,27 @@ class tx_formhandler_wizicon {
 		$LL = $this->includeLocalLang();
 
 		$wizardItems['plugins_tx_formhandler_pi1'] = array(
-			'icon'        => t3lib_extMgm::extRelPath('formhandler').'Resources/Images/ce_wiz_pi1.png',
-			'title'       => $LANG->getLLL('wizard_pi1.title',$LL),
-			'description' => $LANG->getLLL('tt_content.pi1_plus_wiz_description',$LL),
-			'params'      => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=formhandler_pi1'
+			'icon' => t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ce_wiz_pi1.png',
+			'title' => $LANG->getLLL('wizard_pi1.title', $LL),
+			'description' => $LANG->getLLL('tt_content.pi1_plus_wiz_description', $LL),
+			'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=formhandler_pi1'
 		);
 
 		return $wizardItems;
 	}
-	
+
 	/**
 	 * Includes the locallang file for the 'formhandler' extension
 	 *
-	 * @return	array		The LOCAL_LANG array
+	 * @return array The LOCAL_LANG array
 	 */
 	function includeLocalLang()	{
 		$llFile = t3lib_extMgm::extPath('formhandler') . 'Resources/Language/locallang_db.xml';
-		if (class_exists('t3lib_l10n_parser_Llxml')) {
-			$xmlParser = t3lib_div::makeInstance('t3lib_l10n_parser_Llxml');
-			$LOCAL_LANG = $xmlParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
-		} else {
-			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
-		}
+		$compatibilityFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
+		$LOCAL_LANG = $compatibilityFuncs->readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
 		return $LOCAL_LANG;
 	}
 }
-
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/formhandler/Resources/PHP/class.tx_formhandler_wizicon.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/formhandler/Resources/PHP/class.tx_formhandler_wizicon.php']);

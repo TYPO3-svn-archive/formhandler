@@ -32,9 +32,9 @@ require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Controller/Tx_Formh
 
 class tx_formhandler_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_formhandler_pi1';
-	var $scriptRelPath = 'pi1/class.tx_formhandler_pi1.php';	
-	var $extKey = 'formhandler';	
-	
+	var $scriptRelPath = 'pi1/class.tx_formhandler_pi1.php';
+	var $extKey = 'formhandler';
+
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -42,7 +42,7 @@ class tx_formhandler_pi1 extends tslib_pibase {
 	 * @param	array		$conf: The PlugIn configuration
 	 * @return	The content that is displayed on the website
 	 */
-	public function main($content,$conf)	{
+	public function main($content, $conf) {
 		$dispatcher = new Tx_Formhandler_Dispatcher();
 		$dispatcher->cObj = &$this->cObj;
 		return $dispatcher->main($content, $conf);
