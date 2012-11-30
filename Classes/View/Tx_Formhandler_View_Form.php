@@ -522,7 +522,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$hiddenActionFieldName = str_replace('#step#', $currentStepFromSession + 1, $hiddenActionFieldName);
 
 		$markers['###HIDDEN_FIELDS###'] .= '
-			<input type="hidden" ' . $hiddenActionFieldName . ' value="1" />
+			<input type="hidden" ' . $hiddenActionFieldName . ' id="ieHiddenField-' . htmlspecialchars($this->gp['randomID']) . '" value="1" />
 		';
 
 		$markers['###formValuesPrefix###'] = $this->globals->getFormValuesPrefix();
@@ -818,7 +818,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 							document.getElementById('removeFile-" . $this->globals->getRandomID() . "').value='" . $uploadedFileName . "';
 							document.getElementById('removeFileField-" . $this->globals->getRandomID() . "').value='" . $field . "';
 							document.getElementById('submitField-" . $this->globals->getRandomID() . "').name='" . $submitName . "';
-							
+							document.getElementById('ieHiddenField-" . $this->globals->getRandomID() . "').name='dummy';
 						";
 						
 						if ($this->globals->getFormID()) {
@@ -826,9 +826,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 						} else {
 							$onClick .= 'document.forms[0].submit();';
 						}
-						
+
 						$onClick .= 'return false;';
-						
+
 						$link = '<a 
 								href="javascript:void(0)" 
 								class="formhandler_removelink" 
