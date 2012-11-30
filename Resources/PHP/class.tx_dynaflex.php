@@ -103,10 +103,18 @@ class tx_dynaflex_formhandler {
 
 			if (is_array($view)) {
 				$beName = $view['name'];
+				if(isset($view['name.']['data'])) {
+					$data = explode(':', $view['name.']['data']);
+					if(strtolower($data[0]) === 'lll') {
+						array_shift($data);
+					}
+					$langFileAndKey = implode(':', $data);
+					$beName = $LANG->sL('LLL:' . $langFileAndKey);
+				}
 				if (!$predef[$key]) $predef[$key] = $beName;
 			}
 		}
-		
+
 		$optionList = array();
 		$optionList[] = array(0 => $LANG->sL('LLL:EXT:formhandler/Resources/Language/locallang_db.xml:be_please_select'), 1 => '');
 		foreach($predef as $k => $v) {
