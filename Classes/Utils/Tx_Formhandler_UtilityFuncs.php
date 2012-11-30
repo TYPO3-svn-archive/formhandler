@@ -281,9 +281,9 @@ class Tx_Formhandler_UtilityFuncs {
 	public function doRedirect($redirect, $correctRedirectUrl, $additionalParams = array(), $headerStatusCode = '') {
 
 		// these parameters have to be added to the redirect url
-		$addparams = array();
+		$addParams = array();
 		if (t3lib_div::_GP('L')) {
-			$addparams['L'] = t3lib_div::_GP('L');
+			$addParams['L'] = t3lib_div::_GP('L');
 		}
 
 		if (is_array($additionalParams)) {
@@ -292,12 +292,12 @@ class Tx_Formhandler_UtilityFuncs {
 					if (is_array($additionalParams[$param . '.'])) {
 						$value = $this->getSingle($additionalParams, $param);
 					}
-					$addparams[$param] = $value;
+					$addParams[$param] = $value;
 				}
 			}
 		}
 
-		$url = $this->globals->getCObj()->getTypoLink_URL($redirect, $addparams);
+		$url = $this->globals->getCObj()->getTypoLink_URL($redirect, $addParams);
 
 		//correct the URL by replacing &amp;
 		if ($correctRedirectUrl) {
@@ -340,7 +340,18 @@ class Tx_Formhandler_UtilityFuncs {
 		if(strlen($redirectPage) > 0) {
 			$correctRedirectUrl = $this->getSingle($settings, 'correctRedirectUrl');
 			$headerStatusCode = $this->getSingle($settings, 'headerStatusCode');
-			$this->doRedirect($redirectPage, $correctRedirectUrl, $settings['additionalParams.'], $headerStatusCode);
+			if(isset($settings['additionalParams']) && isset($settings['additionalParams.'])) {
+				$additionalParamsString = $this->getSingle($settings, 'additionalParams');
+				$additionalParamsKeysAndValues = explode('&', $additionalParamsString);
+				$additionalParams = array();
+				foreach($additionalParamsKeysAndValues as $keyAndValue) {
+					list($key, $value) = explode('=', $keyAndValue, 2);
+					$additionalParams[$key] = $value;
+				}
+			} else {
+				$additionalParams = $settings['additionalParams.'];
+			}
+			$this->doRedirect($redirectPage, $correctRedirectUrl, $additionalParams, $headerStatusCode);
 			exit();
 		} else {
 			$this->debugMessage('No redirectPage set.');
