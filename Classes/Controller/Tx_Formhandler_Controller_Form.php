@@ -341,13 +341,13 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 		}
 
+		//process files
+		if ($this->currentStep >= $this->lastStep) {
+			$this->processFiles();
+		}
+
 		//if form is valid
 		if ($this->isValid($valid)) {
-
-			//process files
-			if ($this->currentStep >= $this->lastStep) {
-				$this->processFiles();
-			}
 
 			$this->loadSettingsForStep($this->currentStep);
 			$this->parseConditions();
