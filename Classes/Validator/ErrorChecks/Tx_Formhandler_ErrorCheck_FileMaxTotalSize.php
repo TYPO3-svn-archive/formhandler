@@ -20,12 +20,20 @@ class Tx_Formhandler_ErrorCheck_FileMaxTotalSize extends Tx_Formhandler_Abstract
 
 		// last we check currently uploaded file
 		foreach ($_FILES as $sthg => &$files) {
-			if (strlen($files['name'][$this->formFieldName]) > 0 &&
-				$maxSize &&
-				($size + intval($files['size'][$this->formFieldName])) > $maxSize) {
-
-				unset($files);
-				$checkFailed = $this->getCheckFailed();
+			if(!is_array($files['name'][$this->formFieldName])) {
+				$files['name'][$this->formFieldName] = array($files['name'][$this->formFieldName]);
+			}
+			if (strlen($files['name'][$this->formFieldName][0]) > 0 && $maxSize) {
+				if(!is_array($files['size'][$this->formFieldName])) {
+					$files['size'][$this->formFieldName] = array($files['size'][$this->formFieldName]);
+				}
+				foreach($files['size'][$this->formFieldName] as $fileSize) {
+					$size += $fileSize;
+				}
+				if($size > $maxSize) {
+					unset($files);
+					$checkFailed = $this->getCheckFailed();
+				}
 			}
 		}
 		return $checkFailed;

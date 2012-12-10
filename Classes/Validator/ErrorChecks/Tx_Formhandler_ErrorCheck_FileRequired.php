@@ -28,7 +28,10 @@ class Tx_Formhandler_ErrorCheck_FileRequired extends Tx_Formhandler_AbstractErro
 		$sessionFiles = $this->globals->getSession()->get('files');
 		$found = FALSE;
 		foreach ($_FILES as $sthg => &$files) {
-			if (strlen($files['name'][$this->formFieldName]) > 0) {
+			if(!is_array($files['name'][$this->formFieldName])) {
+				$files['name'][$this->formFieldName] = array($files['name'][$this->formFieldName]);
+			}
+			if(is_array($files['name'][$this->formFieldName]) && !empty($files['name'][$this->formFieldName][0])) {
 				$found = TRUE;
 			}
 		}

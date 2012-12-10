@@ -752,7 +752,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 								return;
 							}
 
-							foreach($uploadedFiles as $name) {
+							foreach($uploadedFiles as $idx => $name) {
 								$exists = FALSE;
 								if (is_array($sessionFiles[$field])) {
 									foreach ($sessionFiles[$field] as $idx => $fileOptions) {
@@ -779,12 +779,15 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 												$suffix++;
 											}
 										}
-										$files['name'][$field] = $uploadedFileName;
+										$files['name'][$field][$idx] = $uploadedFileName;
 	
 										//move from temp folder to temp upload folder
-										move_uploaded_file($files['tmp_name'][$field], $uploadPath . $uploadedFileName);
+										if(!is_array($files['tmp_name'][$field])) {
+											$files['tmp_name'][$field] = array($files['tmp_name'][$field]);
+										}
+										move_uploaded_file($files['tmp_name'][$field][$idx], $uploadPath . $uploadedFileName);
 										t3lib_div::fixPermissions($uploadPath . $uploadedFileName);
-										$files['uploaded_name'][$field] = $uploadedFileName;
+										$files['uploaded_name'][$field][$idx] = $uploadedFileName;
 	
 										//set values for session
 										$tmp['name'] = $name;
