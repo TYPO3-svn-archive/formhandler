@@ -10,8 +10,6 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
- *
- * $Id: Tx_Formhandler_UtilityFuncs.php 67840 2012-11-14 10:38:37Z reinhardfuehricht $
  *                                                                        */
 
 /**
