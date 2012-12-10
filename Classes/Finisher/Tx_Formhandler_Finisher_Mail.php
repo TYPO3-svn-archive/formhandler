@@ -217,6 +217,9 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		if (isset($mailSettings['return_path']) && is_array($mailSettings['return_path'])) {
 			$returnPath = implode(',', $mailSettings['return_path']);
 		}
+		if(strlen(trim($returnPath)) === 0) {
+			$returnPath = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
+		}
 
 		$emailObj->setReturnPath($returnPath);
 
