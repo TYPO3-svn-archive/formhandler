@@ -440,6 +440,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		}
 
 		$path = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $parameters);
+		$path = preg_replace('/ADMCMD_[^=]+=[^&]+(&)?/', '', $path);
 		$path = htmlspecialchars($path);
 		$markers = array();
 		$markers['###REL_URL###'] = $path;
