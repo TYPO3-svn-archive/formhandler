@@ -412,19 +412,56 @@ class Tx_Formhandler_UtilityFuncs {
 	}
 
 	/**
-	 * This function formats a date
+	 * This function formats a date used by the backend module
 	 *
 	 * @param string $date The date string to convert
 	 * @param boolean $end Is end date or start date
 	 * @return long timestamp
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
-	public function dateToTimestamp($date, $end = FALSE) {
+	public function dateToTimestampForBackendModule($date, $end = FALSE) {
 		$dateArr = t3lib_div::trimExplode('.', $date);
 		if ($end) {
 			return mktime(23, 59, 59, $dateArr[1], $dateArr[0], $dateArr[2]);
 		}
 		return mktime(0, 0, 0, $dateArr[1], $dateArr[0], $dateArr[2]);
+	}
+
+	/**
+	 * Converts a date to a UNIX timestamp.
+	 *
+	 * @param array $options The TS settings of the "special" section
+	 * @return long The timestamp
+	*/
+	public function dateToTimestamp($date, $format = 'Y-m-d') {
+		if(strlen(trim($date)) > 0) {
+			if(version_compare(PHP_VERSION, '5.3.0') < 0) {
+
+				// find out separator
+				preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $format, $res);
+				$sep = $res[1];
+
+				// normalisation of format
+				$pattern = $this->utilityFuncs->normalizeDatePattern($format, $sep);
+
+				// find out correct positioins of "d","m","y"
+				$pos1 = strpos($pattern, 'd');
+				$pos2 = strpos($pattern, 'm');
+				$pos3 = strpos($pattern, 'y');
+
+				$dateParts = t3lib_div::trimExplode($sep, $date);
+				$timestamp = mktime(0, 0, 0, $dateParts[$pos2], $dateParts[$pos1], $dateParts[$pos3]);
+			} else {
+				$dateObj = DateTime::createFromFormat($format, $date);
+				if($dateObj) {
+					$timestamp = $dateObj->getTimestamp();
+				} else {
+					$this->debugMessage('Error parsing the date. Supported formats: http://www.php.net/manual/en/datetime.createfromformat.php', array(), 3, array('format' => $format, 'date' => $date));
+					$timestamp = 0;
+				}
+			}
+		}
+		return $timestamp;
 	}
 
 	/**

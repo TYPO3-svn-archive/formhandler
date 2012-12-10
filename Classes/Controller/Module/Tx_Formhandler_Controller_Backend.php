@@ -847,13 +847,13 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 		//only records submitted after given timestamp
 		if (strlen(trim($params['startdateFilter'])) > 0) {
-			$tstamp = $this->utilityFuncs->dateToTimestamp($params['startdateFilter']);
+			$tstamp = $this->utilityFuncs->dateToTimestampForBackendModule($params['startdateFilter']);
 			$where[] = 'crdate >= ' . $tstamp;
 		}
 
 		//only records submitted before given timestamp
 		if (strlen(trim($params['enddateFilter'])) > 0) {
-			$tstamp = $this->utilityFuncs->dateToTimestamp($params['enddateFilter'], TRUE);
+			$tstamp = $this->utilityFuncs->dateToTimestampForBackendModule($params['enddateFilter'], TRUE);
 			$where[] = 'crdate <= ' . $tstamp;
 		}
 

@@ -10,49 +10,33 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
- *
- * $Id$
  *                                                                        */
 
 /**
- * Validates that a specified field's value is a valid date
+ * Validates that a person is older than a specified amount of years by converting a specified date field's value to a timestamp.
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @package	Tx_Formhandler
  * @subpackage	ErrorChecks
  */
-class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
+class Tx_Formhandler_ErrorCheck_IsYoungerThan extends Tx_Formhandler_AbstractErrorCheck {
 
 	public function init($gp, $settings) {
 		parent::init($gp, $settings);
-		$this->mandatoryParameters = array('pattern');
+		$this->mandatoryParameters = array('dateFormat', 'years');
 	}
 
 	public function check() {
 		$checkFailed = '';
 
 		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
-
-			// find out separator
-			$pattern = $this->utilityFuncs->getSingle($this->settings['params'], 'pattern');
-			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
-			$sep = $res[1];
-
-			// normalisation of format
-			$pattern = $this->utilityFuncs->normalizeDatePattern($pattern, $sep);
-
-			// find out correct positioins of "d","m","y"
-			$pos1 = strpos($pattern, 'd');
-			$pos2 = strpos($pattern, 'm');
-			$pos3 = strpos($pattern, 'y');
-			$dateCheck = t3lib_div::trimExplode($sep, $this->gp[$this->formFieldName]);
-			if (sizeof($dateCheck) !== 3) {
-				$checkFailed = $this->getCheckFailed();
-			} elseif (intval($dateCheck[0]) === 0 || intval($dateCheck[1]) === 0 || intval($dateCheck[2]) === 0) {
-				$checkFailed = $this->getCheckFailed();
-			} elseif (!checkdate($dateCheck[$pos2], $dateCheck[$pos1], $dateCheck[$pos3])) {
-				$checkFailed = $this->getCheckFailed();
-			} elseif (strlen($dateCheck[$pos3]) !== 4) {
+			$date = $this->gp[$this->formFieldName];
+			$dateFormat = $this->utilityFuncs->getSingle($this->settings['params'], 'dateFormat');
+			$mandatoryYears = intval($this->utilityFuncs->getSingle($this->settings['params'], 'years'));
+			$timestamp = $this->utilityFuncs->dateToTimestamp($date, $dateFormat);
+			$difference = time() - $timestamp;
+			$years = floor($difference / 60 / 60 / 24 / 365);
+			if($years >= $mandatoryYears) {
 				$checkFailed = $this->getCheckFailed();
 			}
 		}
