@@ -494,7 +494,7 @@ class Tx_Formhandler_UtilityFuncs {
 		}
 		return $path;
 	}
-	
+
 	public function generateHash() {
 		$result = '';
 		$charPool = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -554,48 +554,6 @@ class Tx_Formhandler_UtilityFuncs {
 	}
 
 	/**
-	 * Finds and fills value markers using given GET/POST parameters.
-	 *
-	 * @param array &$gp Reference to the GET/POST parameters
-	 * @return array The filled value markers
-	 */
-	public function getFilledValueMarkers(&$gp) {
-		if (isset($gp) && is_array($gp)) {
-			foreach ($gp as $k=>$v) {
-				if (is_array($v)) {
-					$v = implode(',', $v);
-				}
-				$v = trim($v);
-				if (strlen($v) > 0) {
-					if (get_magic_quotes_gpc()) {
-						$markers['###value_'.$k.'###'] = stripslashes($this->reverse_htmlspecialchars($v));
-					} else {
-						$markers['###value_'.$k.'###'] = $this->reverse_htmlspecialchars($v);
-					}
-				} else {
-					$markers['###value_'.$k.'###'] = '';
-				}
-			}
-		}
-		return $markers;
-	}
-
-	/**
-	 * I have no idea
-	 *
-	 * @author	Peter Luser <pl@typoheads.at>
-	 * @param string $mixed The value to process
-	 * @return string The processed value
-	 */
-	public function reverse_htmlspecialchars($mixed) {
-		$htmltable = get_html_translation_table(HTML_ENTITIES);
-		foreach ($htmltable as $key => $value) {
-			$mixed = preg_replace('/' . addslashes($value) . '/', $key, $mixed);
-		}
-		return $mixed;
-	}
-
-	/**
 	 * Method to log a debug message.
 	 * The message will be handled by one or more configured "Debuggers".
 	 *
@@ -606,9 +564,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @return void
 	 */
 	public function debugMessage($key, array $printfArgs = array(), $severity = 1, array $data = array()) {
-		
 		$severity = intval($severity);
-		
 		$message = $this->getDebugMessage($key);
 		if (strlen($message) == 0) {
 			$message = $key;
@@ -623,7 +579,7 @@ class Tx_Formhandler_UtilityFuncs {
 
 	public function debugMailContent($emailObj) {
 		$this->debugMessage('mail_subject', array($emailObj->getSubject()));
-		
+
 		$sender = $emailObj->getSender();
 		if(!is_array($sender)) {
 			$sender = array($sender);
@@ -852,16 +808,16 @@ class Tx_Formhandler_UtilityFuncs {
 		}
 		return $convertedValue;
 	}
-	
+
 	public function generateRandomID() {
 		$randomID = md5($this->globals->getFormValuesPrefix() . $GLOBALS['ACCESS_TIME']);
 		return $randomID;
 	}
-	
+
 	public function initializeTSFE($pid) {
 		global $TSFE;
 
-			// create object instances:
+		// create object instances:
 		$TSFE = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $pid, 0, TRUE);
 		$TSFE->tmpl = t3lib_div::makeInstance('t3lib_tstemplate');
 		$TSFE->tmpl->init();
@@ -945,7 +901,7 @@ class Tx_Formhandler_UtilityFuncs {
 		}
 		return $fileName;
 	}
-	
+
 	public function recursiveHtmlSpecialChars($values) {
 		if(is_array($values)) {
 			foreach($values as &$value) {
@@ -1008,7 +964,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @param string $sep The separator character
 	 * @return string The normalized pattern
 	 */
-	public function normalizeDatePattern($pattern,$sep) {
+	public function normalizeDatePattern($pattern, $sep) {
 		$pattern = strtoupper($pattern);
 		$pattern = str_replace(
 			array($sep, 'DD', 'D', 'MM', 'M', 'YYYY', 'YY', 'Y'),
