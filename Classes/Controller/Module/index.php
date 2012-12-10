@@ -53,7 +53,7 @@ require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formh
  * @package	Tx_Formhandler
  * @subpackage	Controller
  */
-class  tx_formhandler_module1 extends t3lib_SCbase {
+class tx_formhandler_module1 extends t3lib_SCbase {
 	var $pageinfo;
 
 	/**
@@ -120,7 +120,19 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 			// Draw the header.
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
 			$this->doc->backPath = $BACK_PATH;
-			#$this->doc->form='<form action="" method="POST">';
+
+			/** @var $pageRenderer t3lib_PageRenderer */
+			$pageRenderer = $this->doc->getPageRenderer();
+			$pageRenderer->loadExtJS();
+			$pageRenderer->addJsFile($BACK_PATH . '../t3lib/js/extjs/tceforms.js');
+			$pageRenderer->addJsFile($BACK_PATH . '../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
+
+			// Define settings for Date Picker
+			$typo3Settings = array(
+					'datePickerUSmode' => 0,
+					'dateFormat' => array('j.n.Y', 'j.n.Y G:i')
+			);
+			$pageRenderer->addInlineSettingArray('', $typo3Settings);
 
 			// JavaScript
 			$this->doc->JScode = '
@@ -187,10 +199,8 @@ class  tx_formhandler_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function moduleContent()	{
-		
-		
-		
-		switch ((string)$this->MOD_SETTINGS['function'])	{
+
+		switch ((string)$this->MOD_SETTINGS['function']) {
 			case 1:
 				// Render content:
 				$componentManager = Tx_Formhandler_Component_Manager::getInstance();

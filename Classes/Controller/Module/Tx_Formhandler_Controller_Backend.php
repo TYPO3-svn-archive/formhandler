@@ -906,10 +906,21 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$markers['###LLL:cal###'] = $LANG->getLL('cal');
 		$markers['###LLL:startdate###'] = $LANG->getLL('startdate');
 		$markers['###LLL:enddate###'] = $LANG->getLL('enddate');
-
+		$markers['###cal-icon-startdate###'] = t3lib_iconWorks::getSpriteIcon(
+			'actions-edit-pick-date',
+			array(
+				'style' => 'cursor:pointer;',
+				'id' => 'picker-tceforms-datefield-startdate'
+			)
+		);
+		$markers['###cal-icon-enddate###'] = t3lib_iconWorks::getSpriteIcon(
+			'actions-edit-pick-date',
+			array(
+				'style' => 'cursor:pointer;',
+				'id' => 'picker-tceforms-datefield-enddate'
+			)
+		);
 		$this->addValueMarkers($markers, $params);
-
-		$filter .= $this->getCalendarJS();
 
 		return $this->utilityFuncs->substituteMarkerArray($filter, $markers);
 	}
@@ -928,15 +939,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				$markers['###value_' . $key . '###'] = $value;
 			}
 		}
-	}
-
-	/**
-	 * This function returns the JavaScript code to initialize the popup calendar
-	 *
-	 * @return string JavaScript code
-	 */
-	protected function getCalendarJS() {
-		return $this->utilityFuncs->getSubpart($this->templateCode, '###CALENDAR_JS###');
 	}
 
 	/**
@@ -1088,7 +1090,9 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			'formhandler[howmuch]' => intval($gpParams['howmuch']),
 			'formhandler[pointer]' => intval($gpParams['pointer']),
 		);
-		if(!$params['formhandler[pidFilter]']) {
+		if($gpParams['pidFilter'] === '*') {
+			$params['formhandler[pidFilter]'] = '*';
+		} elseif(!$params['formhandler[pidFilter]']) {
 			$params['formhandler[pidFilter]'] = intval($_GET['id']);
 		}
 		$paramsString = '';

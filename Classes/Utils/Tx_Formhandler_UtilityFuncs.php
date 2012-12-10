@@ -414,12 +414,12 @@ class Tx_Formhandler_UtilityFuncs {
 	/**
 	 * This function formats a date
 	 *
-	 * @param long $date The timestamp to format
+	 * @param string $date The date string to convert
 	 * @param boolean $end Is end date or start date
-	 * @return string formatted date
+	 * @return long timestamp
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
-	public function dateToTimestamp($date,$end = FALSE) {
+	public function dateToTimestamp($date, $end = FALSE) {
 		$dateArr = t3lib_div::trimExplode('.', $date);
 		if ($end) {
 			return mktime(23, 59, 59, $dateArr[1], $dateArr[0], $dateArr[2]);
