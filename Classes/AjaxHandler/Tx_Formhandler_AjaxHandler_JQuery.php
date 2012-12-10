@@ -172,6 +172,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		$loadingImg = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'loading');
 		if(strlen($loadingImg) === 0) {
 			$loadingImg = t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ajax-loader.gif';
+			$loadingImg = str_replace('../', '', $loadingImg);
 			$loadingImg = '<img src="' . $loadingImg . '"/>';
 		}
 
@@ -186,6 +187,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			if(strlen($ajaxSubmitLoader) === 0) {
 				$loadingImg = t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ajax-loader.gif';
 				$loadingImg = '<img src="' . $loadingImg . '"/>';
+				$loadingImg = str_replace('../', '', $loadingImg);
 				$ajaxSubmitLoader = '<span class="loading_ajax-submit">' . $loadingImg . '</span>';
 			}
 			$markers['###loading_ajax-submit###'] = $ajaxSubmitLoader;

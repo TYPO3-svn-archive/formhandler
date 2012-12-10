@@ -1030,7 +1030,7 @@ class Tx_Formhandler_UtilityFuncs {
 			'uploadedFileName' => $uploadedFileName
 		);
 		$params = array_merge($params, $specialParams);
-		return '/index.php?' . t3lib_div::implodeArrayForUrl('', $params);
+		return t3lib_div::getIndpEnv('TYPO3_SITE_PATH') . 'index.php?' . t3lib_div::implodeArrayForUrl('', $params);
 	}
 
 }
