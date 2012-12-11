@@ -22,6 +22,14 @@
  */
 class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 
+	/**
+	 * Array holding the configured validators
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $validators;
+
 	public function validate(&$errors) {
 
 		//Nothing to do here
@@ -39,6 +47,13 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 		$found = FALSE;
 
 		$this->loadConfig();
+		if ($this->validators) {
+			foreach ($this->validators as $idx => $settings) {
+				if (is_array($settings['config.'])) {
+					$this->settings = $settings['config.'];
+				}
+			}
+		}
 		if (is_array($this->settings['fieldConf.'])) {
 			$disableErrorCheckFields = array();
 			if (isset($this->settings['disableErrorCheckFields'])) {
@@ -117,13 +132,7 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 	public function loadConfig() {
 		$tsConfig = $this->globals->getSession()->get('settings');
 		$this->settings = array();
-		if ($tsConfig['validators.']) {
-			foreach ($tsConfig['validators.'] as $idx => $settings) {
-				if (is_array($settings['config.'])) {
-					$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $settings['config.']);
-				}
-			}
-		}
+		$this->validators = $tsConfig['validators.'];
 		if($tsConfig['ajax.']) {
 			$this->settings['ajax.'] = $tsConfig['ajax.'];
 		}
