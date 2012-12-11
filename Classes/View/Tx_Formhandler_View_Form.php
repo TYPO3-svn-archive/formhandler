@@ -564,7 +564,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$prevName = ' name="' . str_replace('#action#', 'prev', $name) . '" ';
 		$prevName = str_replace('#step#', $currentStepFromSession - 1, $prevName);
 		$markers['###submit_prevStep###'] = $prevName;
-		
+
 			// submits for next/prev steps with template suffix
 		preg_match_all('/###submit_nextStep_[^#]+?###/Ssm', $this->template, $allNextSubmits);
 		foreach($allNextSubmits[0] as $nextSubmitSuffix){
@@ -586,6 +586,18 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$reloadName = ' name="' . str_replace('#action#', 'reload', $name) . '" ';
 		$reloadName = str_replace('#step#', $currentStepFromSession, $reloadName);
 		$markers['###submit_reload###'] = $reloadName;
+
+		preg_match_all('/###submit_step_([^#])+?###/Ssm', $this->template, $allJumpToStepSubmits);
+		foreach($allJumpToStepSubmits[0] as $idx => $allJumpToStepSubmit){
+			$step = intval($allJumpToStepSubmits[1][$idx]);
+			$action = 'next';
+			if($step < $this->currentStep) {
+				$action = 'prev';
+			}
+			$submitName = ' name="' . str_replace('#action#', $action, $name) . '" ';
+			$submitName = str_replace('#step#', $step, $submitName);
+			$markers['###submit_step_'. $step .'###'] = $submitName;
+		}
 
 		// step bar
 		$prevName = str_replace('#action#', 'prev', $name);

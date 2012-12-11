@@ -365,6 +365,17 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$this->storeGPinSession();
 			$this->mergeGPWithSession();
 
+				//mark step as finished
+			$finishedSteps = $this->globals->getSession()->get('finishedSteps');
+			if(!is_array($finishedSteps)) {
+				$finishedSteps = array();
+			}
+
+			if($this->currentStep > $this->lastStep && !in_array($this->currentStep - 1, $finishedSteps)) {
+				$finishedSteps[] = $this->currentStep - 1;
+			}
+			$this->globals->getSession()->set('finishedSteps', $finishedSteps);
+
 			//if no more steps
 			if ($this->finished) {
 				return $this->processFinished();
@@ -880,7 +891,8 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			'inserted_uid' => NULL,
 			'inserted_tstamp' => NULL,
 			'key_hash' => NULL,
-			'finished' => NULL
+			'finished' => NULL,
+			'finishedSteps' => array()
 		);
 		$this->globals->getSession()->setMultiple($values);
 		$this->gp = $gp;
@@ -909,14 +921,26 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			}
 		}
 
+		$allowStepJumps = FALSE;
+		if(isset($this->settings['allowStepJumps'])) {
+			$allowStepJumps = (bool)$this->utilityFuncs->getSingle($this->settings, 'allowStepJumps');
+		}
 		$stepInSession = max(intval($this->globals->getSession()->get('currentStep')), 1);
 		switch ($action) {
 			case 'prev':
 			case 'next':
 				if ($step > $stepInSession) {
-					$this->currentStep = $stepInSession + 1;
+					if($allowStepJumps) {
+						$this->currentStep = $step;
+					} else {
+						$this->currentStep = $stepInSession + 1;
+					}
 				} elseif ($step < $stepInSession) {
-					$this->currentStep = $stepInSession - 1;
+					if($allowStepJumps) {
+						$this->currentStep = $step;
+					} else {
+						$this->currentStep = $stepInSession - 1;
+					}
 				} else {
 					$this->currentStep = $step;
 				}
@@ -931,7 +955,25 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		if (!$this->currentStep) {
 			$this->currentStep = 1;
 		}
+
+		$isValidStep = TRUE;
+		$disableStepCheck = FALSE;
+		if(isset($this->settings['disableStepCheck'])) {
+			$disableStepCheck = (bool)$this->utilityFuncs->getSingle($this->settings, 'disableStepCheck');
+		}
+		if(!$disableStepCheck) {
+			for($i = 1; $i < $this->currentStep - 1; $i++) {
+				$finishedSteps = $this->globals->getSession()->get('finishedSteps');
+				if(is_array($finishedSteps) && !in_array($i, $finishedSteps)) {
+					$isValidStep = FALSE;
+				}
+			}
+		}
 		$this->utilityFuncs->debugMessage('current_step', array($this->currentStep));
+
+		if(!$isValidStep) {
+			$this->utilityFuncs->throwException('You are not allowed to go to this step!');
+		}
 	}
 
 	/**
