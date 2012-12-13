@@ -13,7 +13,7 @@ $compatFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
 if($compatFuncs->convertVersionNumberToInteger(TYPO3_version) >= 6000000) {
 	$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'][$_EXTKEY] = 'EXT:formhandler/Resources/PHP/Hooks/class.tx_formhandler_stdwrap.php:tx_formhandler_stdwrapHook';
 } else {
-	$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'][$_EXTKEY] = 'EXT:formhandler/Resources/PHP/Hooks/class.tx_formhandler_stdwrap4x.php:tx_formhandler_stdwrap';
+	$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'][$_EXTKEY] = 'EXT:formhandler/Resources/PHP/Hooks/class.tx_formhandler_stdwrap_4x.php:tx_formhandler_stdwrap';
 }
 
 //Delete cache file on "clear cache" command
