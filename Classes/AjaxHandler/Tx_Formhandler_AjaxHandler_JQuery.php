@@ -109,10 +109,10 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		$ajaxSubmit = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmit');
 		if(intval($ajaxSubmit) === 1) {
 			$js .= '
-			' . $this->jQueryAlias . '("' . $this->formSelector . '").live("submit", function() {
+			' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function() {
 				return false;
 			});
-			' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").live("click", function() {
+			' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function() {
 				' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").attr("disabled", "disabled");
 				var container = ' . $this->jQueryAlias . '(this).closest(".Tx-Formhandler");
 				var form = ' . $this->jQueryAlias . '(this).closest("FORM");
