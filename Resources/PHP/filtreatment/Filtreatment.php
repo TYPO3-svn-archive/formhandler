@@ -143,7 +143,20 @@ class Filtreatment {
 		* but it's unlikely to be a problem.
 		*
 		*/
-		$str = preg_replace('#(<[^>]+.*?)(onblur|onchange|onclick|onfocus|onload|onmouseover|onmouseup|onmousedown|onselect|onsubmit|onunload|onkeypress|onkeydown|onkeyup|onresize)[^>]*>#iU',"\\1>",$str);
+		$str = preg_replace('#(<[^>]+.*?)(onabort|onactivate|onafterprint|onafterupdate|onbeforeactivate|onbeforecopy|onbeforecut|onbeforedeactivate|onbeforeeditfocus|onbeforepaste|onbeforeprint|
+			onbeforeunload|onbeforeupdate|onblur|onbounce|oncanplay|oncanplaythrough|oncellchange|onchange|
+			onclick|oncontextmenu|oncontrolselect|oncopy|oncuechange|oncut|ondataavailable|ondatasetchanged|
+			ondatasetcomplete|ondblclick|ondeactivate|ondrag|ondragend|ondragenter|ondragleave|ondragover|
+			ondragstart|ondrop|ondurationchange|onemptied|onended|onerror|onerrorupdate|onfilterchange|
+			onfinish|onfocus|onfocusin|onfocusout|onformchange|onforminput|onhashchange|onhelp|oninput|oninvalid,|onkeydown|
+			onkeypress|onkeyup|onlayoutcomplete|onload|onloadeddata|onloadedmetadata|onloadstart|
+			onlosecapture|onmessage|onmousedown|onmouseenter|onmouseleave|onmousemove|onmouseout|
+			onmouseover|onmouseup|onmousewheel|onmove|onmoveend|onmovestart|onoffline|ononline|
+			onpagehide|onpageshow|onpaste|onpause|onplay|onplaying|onpopstate|onprogress|
+			onpropertychange|onratechange|onreadystatechange|onredo|onreset|onresize|onresizeend|
+			onresizestart|onrowenter|onrowexit|onrowsdelete|onrowsinserted|onscroll|onseeked|onseeking|
+			onselect|onselectionchange|onselectstart|onshow|onstalled|onstart|onstop|onstorage|onsubmit|
+			onsuspend|ontimeupdate|onundo|onunload|onvolumechange|onwaiting)[^>]*>#iU',"\\1>",$str);
 
 		/*
 		 * Sanitize naughty HTML elements
