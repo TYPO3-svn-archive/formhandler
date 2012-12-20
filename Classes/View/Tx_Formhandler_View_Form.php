@@ -122,6 +122,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		//remove markers that were not substituted
 		$content = $this->utilityFuncs->removeUnfilledMarkers($this->template);
+
+		if(is_array($this->settings['stdWrap.'])) {
+			$content = $this->cObj->stdWrap($content, $this->settings['stdWrap.']);
+		}
 		if(intval($this->settings['disableWrapInBaseClass']) !== 1) {
 			$content = $this->pi_wrapInBaseClass($content);
 		}
