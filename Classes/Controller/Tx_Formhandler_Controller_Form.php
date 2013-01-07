@@ -766,7 +766,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							foreach($uploadedFiles as $idx => $name) {
 								$exists = FALSE;
 								if (is_array($sessionFiles[$field])) {
-									foreach ($sessionFiles[$field] as $idx => $fileOptions) {
+									foreach ($sessionFiles[$field] as $fileId => $fileOptions) {
 										if ($fileOptions['name'] === $name) {
 											$exists = TRUE;
 										}
