@@ -32,11 +32,10 @@ class Tx_Formhandler_ErrorCheck_BetweenValue extends Tx_Formhandler_AbstractErro
 		$checkFailed = '';
 		$min = floatval(str_replace(',', '.', $this->utilityFuncs->getSingle($this->settings['params'], 'minValue')));
 		$max = floatval(str_replace(',', '.', $this->utilityFuncs->getSingle($this->settings['params'], 'maxValue')));
-		$valueToCheck = str_replace(',', '.', $this->gp[$this->formFieldName]);
+		$valueToCheck = floatval(str_replace(',', '.', $this->gp[$this->formFieldName]));
+		print $min . ' >= ' . $valueToCheck . ' <=' . $max;
 		if (isset($this->gp[$this->formFieldName]) &&
-			(!is_numeric($valueToCheck) || 
-			$valueToCheck < $min || 
-			$valueToCheck > $max)) {
+			($valueToCheck < $min || $valueToCheck > $max)) {
 
 			$checkFailed = $this->getCheckFailed();
 		}
