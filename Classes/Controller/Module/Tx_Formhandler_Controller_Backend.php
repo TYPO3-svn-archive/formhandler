@@ -358,20 +358,21 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$availableFormatsCount = count($availableFormats);
 
+			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1');
+			if(!$tsconfig['properties']['config.']['csv.']['delimiter']) {
+				$tsconfig['properties']['config.']['csv.']['delimiter'] = ',';
+			}
+			if(!$tsconfig['properties']['config.']['csv.']['enclosure']) {
+				$tsconfig['properties']['config.']['csv.']['enclosure'] = '"';
+			}
+			if(!$tsconfig['properties']['config.']['csv.']['encoding']) {
+				$tsconfig['properties']['config.']['csv.']['encoding'] = 'utf-8';
+			}
+
 			//only one format found
 			if ($availableFormatsCount === 1) {
-				$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1'); 
+
 				$configParams = array();
-				
-				if(!$tsconfig['properties']['config.']['csv.']['delimiter']) {
-					$tsconfig['properties']['config.']['csv.']['delimiter'] = ',';
-				}
-				if(!$tsconfig['properties']['config.']['csv.']['enclosure']) {
-					$tsconfig['properties']['config.']['csv.']['enclosure'] = '"';
-				}
-				if(!$tsconfig['properties']['config.']['csv.']['encoding']) {
-					$tsconfig['properties']['config.']['csv.']['encoding'] = 'utf-8';
-				}
 
 				// check if TSconfig filter is set
 				if ($tsconfig['properties']['config.']['csv'] != "") {
@@ -417,17 +418,28 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 						}
 					}
 				}
-				$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1'); 
 				$configParams = array();
 
 				// check if TSconfig filter is set
 				if ($tsconfig['properties']['config.']['csv'] != "") {
 					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
-					$generator->generateModuleCSV($renderRecords, $configParams);	
+					$generator->generateModuleCSV(
+						$renderRecords,
+						$configParams,
+						$tsconfig['properties']['config.']['csv.']['delimiter'],
+						$tsconfig['properties']['config.']['csv.']['enclosure'],
+						$tsconfig['properties']['config.']['csv.']['encoding']
+					);
 				} elseif (isset($params['exportParams'])) {
 
 					//if fields were chosen in the selection view, perform the export
-					$generator->generateModuleCSV($renderRecords, $params['exportParams']);
+					$generator->generateModuleCSV(
+							$renderRecords,
+							$params['exportParams'],
+							$tsconfig['properties']['config.']['csv.']['delimiter'],
+							$tsconfig['properties']['config.']['csv.']['enclosure'],
+							$tsconfig['properties']['config.']['csv.']['encoding']
+					);
 
 					//no fields chosen, show selection view.
 				} else {
