@@ -238,7 +238,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		if(is_array($matches[0])) {
 			$resultCount = count($matches[0]);
-
 			for($i = 0; $i < $resultCount; $i = $i + 2) {
 				$conditionString = $matches[3][$i];
 				$endMarkerConditionString = $matches[3][$i + 1];
@@ -281,22 +280,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					$count++;
 				}
 				$write = (boolean) $finalConditionResult;
+				$replacement = '';
 				if($write) {
-					if($conditionString === $endMarkerConditionString) {
-						$content = $this->cObj->getSubpart($this->template, $markerName);
-						$this->template = $this->cObj->substituteSubpart($this->template, $markerName, $content);
-					} else {
-						$pattern = '/' . $fullMarkerName . '([^#]+)' . $fullEndMarker . '/im';
-						preg_replace($pattern, '${1}', $this->template);
-					}
-				} else {
-					if($conditionString === $endMarkerConditionString) {
-						$this->template = $this->cObj->substituteSubpart($this->template, $markerName, '');
-					} else {
-						$pattern = '/' . $fullMarkerName . '([^#]+)' . $fullEndMarker . '/im';
-						preg_replace($pattern, '', $this->template);
-					}
+					$replacement = '${1}';
 				}
+				$pattern = '/' . $fullMarkerName . '([^#]+)' . $fullEndMarker . '/im';
+				$this->template = preg_replace($pattern, $replacement, $this->template);
 			}
 		}
 	}
