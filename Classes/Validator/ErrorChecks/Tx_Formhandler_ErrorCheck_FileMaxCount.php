@@ -80,7 +80,7 @@ class Tx_Formhandler_ErrorCheck_FileMaxCount extends Tx_Formhandler_AbstractErro
 				if(!is_array($info['name'][$this->formFieldName])) {
 					$info['name'][$this->formFieldName] = array($info['name'][$this->formFieldName]);
 				}
-				if (strlen($info['name'][$this->formFieldName][0]) > 0 && count($info['name'][$this->formFieldName]) + count($files[$this->formFieldName]) >= $maxCount) {
+				if (strlen($info['name'][$this->formFieldName][0]) > 0 && count($info['name'][$this->formFieldName]) + count($files[$this->formFieldName]) > $maxCount) {
 					$checkFailed = $this->getCheckFailed();
 				}
 			}
