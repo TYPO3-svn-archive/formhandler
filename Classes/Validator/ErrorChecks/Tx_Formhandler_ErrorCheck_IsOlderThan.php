@@ -34,13 +34,31 @@ class Tx_Formhandler_ErrorCheck_IsOlderThan extends Tx_Formhandler_AbstractError
 			$dateFormat = $this->utilityFuncs->getSingle($this->settings['params'], 'dateFormat');
 			$mandatoryYears = intval($this->utilityFuncs->getSingle($this->settings['params'], 'years'));
 			$timestamp = $this->utilityFuncs->dateToTimestamp($date, $dateFormat);
-			$difference = time() - $timestamp;
-			$years = floor($difference / 60 / 60 / 24 / 365);
+			$years = $this->getDateDifference($timestamp);
 			if($years < $mandatoryYears) {
 				$checkFailed = $this->getCheckFailed();
 			}
 		}
 		return $checkFailed;
+	}
+
+	protected function getDateDifference($timestamp) {
+		$now = time();
+		$years = date('Y', $now) - date('Y', $timestamp);
+
+		// get months of dates
+		$monthsTimestamp = date('n', $timestamp);
+		$monthsNow = date('n', $now);
+
+		// get days of dates
+		$daysTimestamp = date('j', $timestamp);
+		$daysNow = date('j', $now);
+
+		// if date not reached yet this year, we need to remove one year.
+		if ($monthsNow < $monthsTimestamp || ($monthsNow === $monthsTimestamp && $daysNow < $daysTimestamp)) {
+			$years--;
+		}
+		return $years;
 	}
 
 }
