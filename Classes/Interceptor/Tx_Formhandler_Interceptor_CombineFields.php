@@ -56,10 +56,10 @@ class Tx_Formhandler_Interceptor_CombineFields extends Tx_Formhandler_AbstractIn
 		$combinedString = '';
 		$hideEmptyValues = intval($this->utilityFuncs->getSingle($options, 'hideEmptyValues'));
 		foreach ($fieldsArr as $idx => $field) {
-			
+			$value = $this->utilityFuncs->getGlobal($field, $this->gp);
 			if ($hideEmptyValues === 0 || 
-				($hideEmptyValues === 1 && isset($this->gp[$field]) && strlen($this->gp[$field]) > 0)) {
-				$combinedString .= $this->gp[$field] . $separator;
+				($hideEmptyValues === 1 && strlen($value) > 0)) {
+				$combinedString .= $value . $separator;
 			}
 		}
 		if ($combinedString) {
