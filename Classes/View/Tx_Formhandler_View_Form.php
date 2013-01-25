@@ -284,6 +284,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				if($write) {
 					$replacement = '${1}';
 				}
+				$fullMarkerName = str_replace('|', '\\|', $fullMarkerName);
+				$fullEndMarker = str_replace('|', '\\|', $fullEndMarker);
 				$pattern = '/' . $fullMarkerName . '([^#]+)' . $fullEndMarker . '/im';
 				$this->template = preg_replace($pattern, $replacement, $this->template);
 			}
@@ -299,7 +301,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		}
 		$value = $this->utilityFuncs->getGlobal($fieldname, $this->gp);
 		if(is_array($value)) {
-			$result = (empty($value));
+			$result = (!empty($value));
 		} else {
 			$result = (strlen(trim($value)) > 0);
 		}
