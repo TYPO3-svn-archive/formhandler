@@ -41,7 +41,7 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 			// normalisation of format
 			$pattern = $this->utilityFuncs->normalizeDatePattern($pattern, $sep);
 
-			// find out correct positioins of "d","m","y"
+			// find out correct positions of "d","m","y"
 			$pos1 = strpos($pattern, 'd');
 			$pos2 = strpos($pattern, 'm');
 			$pos3 = strpos($pattern, 'y');

@@ -346,6 +346,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 							$dateFormat = 'Y-m-d';
 							if($options['special.']['dateFormat']) {
 								$dateFormat = $this->utilityFuncs->getSingle($options['special.'], 'dateFormat');
+							} elseif($options['special.']['format']) {
+								$dateFormat = $this->utilityFuncs->getSingle($options['special.'], 'format');
 							}
 							$fieldValue = $this->utilityFuncs->dateToTimestamp($date, $dateFormat);
 							break;
@@ -358,6 +360,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 							$dateFormat = 'Y-m-d H:i:s';
 							if($options['special.']['dateFormat']) {
 								$dateFormat = $this->utilityFuncs->getSingle($options['special.'], 'dateFormat');
+							} elseif($options['special.']['format']) {
+								$dateFormat = $this->utilityFuncs->getSingle($options['special.'], 'format');
 							}
 							$fieldValue = $this->utilityFuncs->dateToTimestamp($date, $dateFormat);
 							break;
@@ -365,6 +369,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 							$dateFormat = 'Y-m-d H:i:s';
 							if($options['special.']['dateFormat']) {
 								$dateFormat = $this->utilityFuncs->getSingle($options['special.'], 'dateFormat');
+							} elseif($options['special.']['format']) {
+								$dateFormat = $this->utilityFuncs->getSingle($options['special.'], 'format');
 							}
 							$fieldValue = date($dateFormat, time());
 							break;
