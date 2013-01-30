@@ -111,13 +111,10 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		$ajaxSubmit = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmit');
 		if(intval($ajaxSubmit) === 1) {
 			$js .= '
-			' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function() {
-				return false;
-			});
-			' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function() {
+			function submitButtonClick(el) {
 				' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").attr("disabled", "disabled");
-				var container = ' . $this->jQueryAlias . '(this).closest(".Tx-Formhandler");
-				var form = ' . $this->jQueryAlias . '(this).closest("FORM");
+				var container = el.closest(".Tx-Formhandler");
+				var form = el.closest("FORM");
 			';
 
 			$params = array(
@@ -139,10 +136,23 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 							window.location.href = data.redirect;
 						} else {
 							form.closest(".Tx-Formhandler").replaceWith(data.form);
+							' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function() {
+								submitButtonClick(' . $this->jQueryAlias . '(this));
+							});
+							' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function() {
+								return false;
+							});
 						}
 					}
 				});
 				return false;
+			}
+
+			' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function() {
+				return false;
+			});
+			' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function() {
+				submitButtonClick(' . $this->jQueryAlias . '(this));
 			});';
 		}
 		if(strlen($js) > 0) {
