@@ -1026,6 +1026,16 @@ class Tx_Formhandler_UtilityFuncs {
 		return t3lib_div::getIndpEnv('TYPO3_SITE_PATH') . 'index.php?' . t3lib_div::implodeArrayForUrl('', $params);
 	}
 
+	public function prepareAndWhereString($andWhere) {
+		$andWhere = trim($andWhere);
+		if(substr($andWhere, 0, 3) === 'AND') {
+			$andWhere = trim(substr($andWhere, 3));
+		}
+		if(strlen($andWhere) > 0) {
+			$andWhere = ' AND ' . $andWhere;
+		}
+		return $andWhere;
+	}
 }
 
 ?>

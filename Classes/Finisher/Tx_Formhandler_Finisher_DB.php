@@ -225,13 +225,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	protected function doUpdate($uid, $queryFields, $andWhere) {
 		$isSuccess = TRUE;
 		$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
-		$andWhere = trim($andWhere);
-		if(substr($andWhere, 0, 3) === 'AND') {
-			$andWhere = trim(substr($andWhere, 3));
-		}
-		if(strlen($andWhere) > 0) {
-			$andWhere = ' AND ' . $andWhere;
-		}
+		$andWhere = $this->utilityFuncs->prepareAndWhereString($andWhere);
 		$query = $GLOBALS['TYPO3_DB']->UPDATEquery($this->table, $this->key . '=' . $uid . $andWhere, $queryFields);
 		$this->utilityFuncs->debugMessage('sql_request', array($query));
 		$res = $GLOBALS['TYPO3_DB']->sql_query($query);

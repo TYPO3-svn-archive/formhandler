@@ -36,7 +36,8 @@ class Tx_Formhandler_ErrorCheck_IsNotInDBTable extends Tx_Formhandler_AbstractEr
 			$checkField = $this->utilityFuncs->getSingle($this->settings['params'], 'field');
 			$additionalWhere = $this->utilityFuncs->getSingle($this->settings['params'], 'additionalWhere');
 			if (!empty($checkTable) && !empty($checkField)) {
-				$where = $checkField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->gp[$this->formFieldName], $checkTable) . ' ' . $additionalWhere;
+				$additionalWhere = $this->utilityFuncs->prepareAndWhereString($additionalWhere);
+				$where = $checkField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->gp[$this->formFieldName], $checkTable) . $additionalWhere;
 				$showHidden = intval($this->settings['params']['showHidden']) === 1 ? 1 : 0;
 				$where .= $GLOBALS['TSFE']->sys_page->enableFields($checkTable, $showHidden);
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($checkField, $checkTable, $where);
