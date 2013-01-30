@@ -78,6 +78,8 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			$this->formSelector = '.Tx-Formhandler FORM';
 		}
 
+		$this->jsPosition = trim($this->utilityFuncs->getSingle($this->settings, 'jsPosition'));
+
 		$this->submitButtonSelector = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'submitButtonSelector');
 		if(strlen(trim($this->submitButtonSelector)) === 0) {
 			$this->submitButtonSelector = '.Tx-Formhandler INPUT[type=\'submit\']';
@@ -152,7 +154,6 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 				</script>
 			';
 
-			$this->jsPosition = trim($this->utilityFuncs->getSingle($this->settings, 'jsPosition'));
 			$this->addJS($fullJS);
 		}
 	}
