@@ -285,7 +285,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				}
 				$fullMarkerName = preg_quote($fullMarkerName);
 				$fullEndMarker = preg_quote($fullEndMarker);
-				$pattern = '/' . $fullMarkerName . '(.+?)' . $fullEndMarker . '/ism';
+				$pattern = '/' . $fullMarkerName . '(.*?)' . $fullEndMarker . '/ism';
 				$this->template = preg_replace($pattern, $replacement, $this->template);
 			}
 		}
