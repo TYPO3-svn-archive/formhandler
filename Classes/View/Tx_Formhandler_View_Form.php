@@ -235,7 +235,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		$pattern = '/(\<\!\-\-[^#]*)?(###' . $type . '_+([^#]*)_*###)([^\-]*\-\-\>)?/i';
 		preg_match_all($pattern, $this->template, $matches);
-
 		if(is_array($matches[0])) {
 			$resultCount = count($matches[0]);
 			for($i = 0; $i < $resultCount; $i = $i + 2) {
@@ -284,9 +283,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				if($write) {
 					$replacement = '${1}';
 				}
-				$fullMarkerName = str_replace('|', '\\|', $fullMarkerName);
-				$fullEndMarker = str_replace('|', '\\|', $fullEndMarker);
-				$pattern = '/' . $fullMarkerName . '([^#]+)' . $fullEndMarker . '/im';
+				$fullMarkerName = preg_quote($fullMarkerName);
+				$fullEndMarker = preg_quote($fullEndMarker);
+				$pattern = '/' . $fullMarkerName . '(.+?)' . $fullEndMarker . '/ism';
 				$this->template = preg_replace($pattern, $replacement, $this->template);
 			}
 		}
