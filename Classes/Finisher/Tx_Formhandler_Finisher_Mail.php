@@ -307,6 +307,14 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		if ($tmphtml) {
 			unlink($tmphtml);
 		}
+
+		// delete generated files
+		if ($mailSettings['deleteGeneratedFiles'] && $mailSettings['attachGeneratedFiles']) {
+			$files = t3lib_div::trimExplode(',', $mailSettings['attachGeneratedFiles']);
+			foreach($files as $file) {
+				unlink($file);
+			}
+		}
 	}
 
 	/**
@@ -496,6 +504,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			'return_path',
 			'attachment',
 			'attachGeneratedFiles',
+			'deleteGeneratedFiles',
 			'htmlEmailAsAttachment',
 			'plain.',
 			'html.'
@@ -581,6 +590,13 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 							$emailSettings['htmlEmailAsAttachment'] = 1;
 						}
 
+						break;
+					case 'deleteGeneratedFiles':
+						$htmlEmailAsAttachment = $this->utilityFuncs->getSingle($currentSettings, 'deleteGeneratedFiles');
+						if (intval($htmlEmailAsAttachment) === 1) {
+							$emailSettings['deleteGeneratedFiles'] = 1;
+						}
+					
 						break;
 					case 'filePrefix':
 						$filePrefix = $this->utilityFuncs->getSingle($currentSettings, 'filePrefix');
