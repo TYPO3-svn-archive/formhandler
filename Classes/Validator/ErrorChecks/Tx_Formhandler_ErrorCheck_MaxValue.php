@@ -31,15 +31,18 @@ class Tx_Formhandler_ErrorCheck_MaxValue extends Tx_Formhandler_AbstractErrorChe
 	public function check() {
 		$checkFailed = '';
 		$max = floatval(str_replace(',', '.', $this->utilityFuncs->getSingle($this->settings['params'], 'value')));
-		$this->settings['params']['value'] = $max;
-		$valueToCheck = floatval(str_replace(',', '.', $this->gp[$this->formFieldName]));
-		if (isset($this->gp[$this->formFieldName]) &&
-			$valueToCheck >= 0 &&
-			$max >= 0 &&
-			(!is_numeric($valueToCheck) || $valueToCheck > $max)) {
-
-			$checkFailed = $this->getCheckFailed();
+		if (isset($this->gp[$this->formFieldName]) && strlen($this->gp[$this->formFieldName]) > 0) {
+			$valueToCheck = str_replace(',', '.', $this->gp[$this->formFieldName]);
+			if(!is_numeric($valueToCheck)) {
+				$checkFailed = $this->getCheckFailed();
+			} else {
+				$valueToCheck = floatval($valueToCheck);
+				if ($valueToCheck > $max) {
+					$checkFailed = $this->getCheckFailed();
+				}
+			}
 		}
+
 		return $checkFailed;
 	}
 
