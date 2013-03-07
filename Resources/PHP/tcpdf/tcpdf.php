@@ -1,13 +1,13 @@
 <?php
 //============================================================+
 // File name   : tcpdf.php
-// Version     : 5.9.200
+// Version     : 5.9.207
 // Begin       : 2002-08-03
-// Last Update : 2012-12-05
+// Last Update : 2013-03-04
 // Author      : Nicola Asuni - Tecnick.com LTD - Manor Coach House, Church Hill, Aldershot, Hants, GU12 4RQ, UK - www.tecnick.com - info@tecnick.com
 // License     : http://www.tecnick.com/pagefiles/tcpdf/LICENSE.TXT GNU-LGPLv3
 // -------------------------------------------------------------------
-// Copyright (C) 2002-2012 Nicola Asuni - Tecnick.com LTD
+// Copyright (C) 2002-2013 Nicola Asuni - Tecnick.com LTD
 //
 // This file is part of TCPDF software library.
 //
@@ -139,7 +139,7 @@
  * Tools to encode your unicode fonts are on fonts/utils directory.</p>
  * @package com.tecnick.tcpdf
  * @author Nicola Asuni
- * @version 5.9.200
+ * @version 5.9.207
  */
 
 // Main configuration file. Define the K_TCPDF_EXTERNAL_CONFIG constant to skip this file.
@@ -151,7 +151,7 @@ require_once(dirname(__FILE__).'/config/tcpdf_config.php');
  * TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
  * @package com.tecnick.tcpdf
  * @brief PHP class for generating PDF documents without requiring external extensions.
- * @version 5.9.200
+ * @version 5.9.207
  * @author Nicola Asuni - info@tecnick.com
  */
 class TCPDF {
@@ -162,7 +162,7 @@ class TCPDF {
 	 * Current TCPDF version.
 	 * @private
 	 */
-	private $tcpdf_version = '5.9.200';
+	private $tcpdf_version = '5.9.207';
 
 	// Protected properties
 
@@ -1705,6 +1705,13 @@ class TCPDF {
 	 * @since 5.9.097 (2011-06-23)
 	 */
 	protected $n_dests;
+
+	/**
+	 * Embedded Files Names
+	 * @protected
+	 * @since 5.9.204 (2013-01-23)
+	 */
+	protected $efnames = array();
 
 	/**
 	 * Directory used for the last SVG image.
@@ -3835,8 +3842,13 @@ class TCPDF {
 	public function Error($msg) {
 		// unset all class variables
 		$this->_destroy(true);
+		$phpmainver = PHP_VERSION;
 		// exit program and print error
-		die('<strong>TCPDF ERROR: </strong>'.$msg);
+		if ((intval($phpmainver[0]) < 5) OR !defined('K_TCPDF_THROW_EXCEPTION_ERROR') OR !K_TCPDF_THROW_EXCEPTION_ERROR) {
+			die('<strong>TCPDF ERROR: </strong>'.$msg);
+		} else {
+			throw new Exception('TCPDF ERROR: '.$msg);
+		}
 	}
 
 	/**
@@ -5086,13 +5098,14 @@ class TCPDF {
 	 * @since 4.0.013 (2008-07-28)
 	 */
 	protected function getFontsList() {
-		$fontsdir = opendir($this->_getfontpath());
-		while (($file = readdir($fontsdir)) !== false) {
-			if (substr($file, -4) == '.php') {
-				array_push($this->fontlist, strtolower(basename($file, '.php')));
+		if (($fontsdir = opendir($this->_getfontpath())) !== false) {
+			while (($file = readdir($fontsdir)) !== false) {
+				if (substr($file, -4) == '.php') {
+					array_push($this->fontlist, strtolower(basename($file, '.php')));
+				}
 			}
+			closedir($fontsdir);
 		}
-		closedir($fontsdir);
 	}
 
 	/**
@@ -5324,7 +5337,7 @@ class TCPDF {
 			$cbbox = array();
 		}
 		// initialize subsetchars
-		$subsetchars = array();
+		$subsetchars = array_fill(0, 255, true);
 		$this->setFontBuffer($fontkey, array('fontkey' => $fontkey, 'i' => $this->numfonts, 'type' => $type, 'name' => $name, 'desc' => $desc, 'up' => $up, 'ut' => $ut, 'cw' => $cw, 'cbbox' => $cbbox, 'dw' => $dw, 'enc' => $enc, 'cidinfo' => $cidinfo, 'file' => $file, 'ctg' => $ctg, 'subset' => $subset, 'subsetchars' => $subsetchars));
 		if ($this->inxobj) {
 			// we are inside an XObject template
@@ -5671,6 +5684,18 @@ class TCPDF {
 	}
 
 	/**
+	 * Check if the URL exist.
+	 * @param $ur (string) URL to check.
+	 * @return Boolean true if the URl exist, false otherwise.
+	 * @public
+	 * @since 5.9.204 (2013-01-28)
+	 */
+	public function isValidURL($url) {
+		$headers = @get_headers($url);
+    	return (strpos($headers[0], '200') !== false);
+	}
+
+	/**
 	 * Puts a markup annotation on a rectangular area of the page.
 	 * !!!!THE ANNOTATION SUPPORT IS NOT YET FULLY IMPLEMENTED !!!!
 	 * @param $x (float) Abscissa of the upper-left corner of the rectangle
@@ -5747,12 +5772,12 @@ class TCPDF {
 		if (!isset($this->PageAnnots[$page])) {
 			$this->PageAnnots[$page] = array();
 		}
-		++$this->n;
-		$this->PageAnnots[$page][] = array('n' => $this->n, 'x' => $x, 'y' => $y, 'w' => $w, 'h' => $h, 'txt' => $text, 'opt' => $opt, 'numspaces' => $spaces);
+		$this->PageAnnots[$page][] = array('n' => ++$this->n, 'x' => $x, 'y' => $y, 'w' => $w, 'h' => $h, 'txt' => $text, 'opt' => $opt, 'numspaces' => $spaces);
 		if (!$this->pdfa_mode) {
-			if ((($opt['Subtype'] == 'FileAttachment') OR ($opt['Subtype'] == 'Sound')) AND (!$this->empty_string($opt['FS'])) AND file_exists($opt['FS']) AND (!isset($this->embeddedfiles[basename($opt['FS'])]))) {
-				++$this->n;
-				$this->embeddedfiles[basename($opt['FS'])] = array('n' => $this->n, 'file' => $opt['FS']);
+			if ((($opt['Subtype'] == 'FileAttachment') OR ($opt['Subtype'] == 'Sound')) AND (!$this->empty_string($opt['FS']))
+				AND (file_exists($opt['FS']) OR $this->isValidURL($opt['FS']))
+				AND (!isset($this->embeddedfiles[basename($opt['FS'])]))) {
+				$this->embeddedfiles[basename($opt['FS'])] = array('f' => ++$this->n, 'n' => ++$this->n, 'file' => $opt['FS']);
 			}
 		}
 		// Add widgets annotation's icons
@@ -5780,15 +5805,24 @@ class TCPDF {
 		}
 		reset($this->embeddedfiles);
 		foreach ($this->embeddedfiles as $filename => $filedata) {
+			// update name tree
+			$this->efnames[$filename] = $filedata['f'].' 0 R';
+			// embedded file specification  object
+			$out = $this->_getobj($filedata['f'])."\n";
+			$out .= '<</Type /Filespec /F '.$this->_datastring($filename, $filedata['f']).' /EF <</F '.$filedata['n'].' 0 R>> >>';
+			$out .= "\n".'endobj';
+			$this->_out($out);
+			// embedded file object
 			$data = file_get_contents($filedata['file']);
 			$filter = '';
+			$rawsize = strlen($data);
 			if ($this->compress) {
 				$data = gzcompress($data);
 				$filter = ' /Filter /FlateDecode';
 			}
 			$stream = $this->_getrawstream($data, $filedata['n']);
 			$out = $this->_getobj($filedata['n'])."\n";
-			$out .= '<< /Type /EmbeddedFile'.$filter.' /Length '.strlen($stream).' >>';
+			$out .= '<< /Type /EmbeddedFile'.$filter.' /Length '.strlen($stream).' /Params <</Size '.$rawsize.'>> >>';
 			$out .= ' stream'."\n".$stream."\n".'endstream';
 			$out .= "\n".'endobj';
 			$this->_out($out);
@@ -8673,12 +8707,20 @@ class TCPDF {
 			// clone image object
 			$imga = $this->objclone($img);
 			// extract alpha channel
-			$img->separateImageChannel(8); // 8 = (imagick::CHANNEL_ALPHA | imagick::CHANNEL_OPACITY | imagick::CHANNEL_MATTE);
-			$img->negateImage(true);
+			if (method_exists($img, 'setImageAlphaChannel') AND defined('Imagick::ALPHACHANNEL_EXTRACT')) {
+				$img->setImageAlphaChannel(Imagick::ALPHACHANNEL_EXTRACT);
+			} else {
+				$img->separateImageChannel(8); // 8 = (imagick::CHANNEL_ALPHA | imagick::CHANNEL_OPACITY | imagick::CHANNEL_MATTE);
+				$img->negateImage(true);
+			}
 			$img->setImageFormat('png');
 			$img->writeImage($tempfile_alpha);
 			// remove alpha channel
-			$imga->separateImageChannel(39); // 39 = (imagick::CHANNEL_ALL & ~(imagick::CHANNEL_ALPHA | imagick::CHANNEL_OPACITY | imagick::CHANNEL_MATTE));
+			if (method_exists($imga, 'setImageMatte')) {
+				$imga->setImageMatte(false);
+			} else {
+				$imga->separateImageChannel(39); // 39 = (imagick::CHANNEL_ALL & ~(imagick::CHANNEL_ALPHA | imagick::CHANNEL_OPACITY | imagick::CHANNEL_MATTE));
+			}
 			$imga->setImageFormat('png');
 			$imga->writeImage($tempfile_plain);
 		} elseif (function_exists('imagecreatefrompng')) { // GD extension
@@ -9834,17 +9876,24 @@ class TCPDF {
 								if ($pl['txt'][0] == '#') {
 									// internal destination
 									$annots .= ' /Dest /'.$this->encodeNameObject(substr($pl['txt'], 1));
+								} elseif ($pl['txt'][0] == '%') {
+									// embedded PDF file
+									$filename = basename(substr($pl['txt'], 1));
+									$annots .= ' /A << /S /GoToE /D [0 /Fit] /NewWindow true /T << /R /C /P '.($n - 1).' /A '.$this->embeddedfiles[$filename]['a'].' >> >>';
+								} elseif ($pl['txt'][0] == '*') {
+									// embedded generic file
+									$filename = basename(substr($pl['txt'], 1));
+									$jsa = 'var D=event.target.doc;var MyData=D.dataObjects;for (var i in MyData) if (MyData[i].path=="'.$filename.'") D.exportDataObject( { cName : MyData[i].name, nLaunch : 2});';
+									$annots .= ' /A << /S /JavaScript /JS '.$this->_textstring($jsa, $annot_obj_id).'>>';
 								} else {
 									// external URI link
 									$annots .= ' /A <</S /URI /URI '.$this->_datastring($this->unhtmlentities($pl['txt']), $annot_obj_id).'>>';
 								}
-							} else {
-								// internal link
-								if (isset($this->links[$pl['txt']])) {
-									$l = $this->links[$pl['txt']];
-									if (isset($this->page_obj_id[($l[0])])) {
-										$annots .= sprintf(' /Dest [%u 0 R /XYZ 0 %F null]', $this->page_obj_id[($l[0])], ($this->pagedim[$l[0]]['h'] - ($l[1] * $this->k)));
-									}
+							} elseif (isset($this->links[$pl['txt']])) {
+								// internal link ID
+								$l = $this->links[$pl['txt']];
+								if (isset($this->page_obj_id[($l[0])])) {
+									$annots .= sprintf(' /Dest [%u 0 R /XYZ 0 %F null]', $this->page_obj_id[($l[0])], ($this->pagedim[$l[0]]['h'] - ($l[1] * $this->k)));
 								}
 							}
 							$hmodes = array('N', 'I', 'O', 'P');
@@ -9941,14 +9990,16 @@ class TCPDF {
 								break;
 							}
 							$filename = basename($pl['opt']['fs']);
-							if (isset($this->embeddedfiles[$filename]['n'])) {
-								$annots .= ' /FS <</Type /Filespec /F '.$this->_datastring($filename, $annot_obj_id).' /EF <</F '.$this->embeddedfiles[$filename]['n'].' 0 R>> >>';
+							if (isset($this->embeddedfiles[$filename]['f'])) {
+								$annots .= ' /FS '.$this->embeddedfiles[$filename]['f'].' 0 R';
 								$iconsapp = array('Graph', 'Paperclip', 'PushPin', 'Tag');
 								if (isset($pl['opt']['name']) AND in_array($pl['opt']['name'], $iconsapp)) {
 									$annots .= ' /Name /'.$pl['opt']['name'];
 								} else {
 									$annots .= ' /Name /PushPin';
 								}
+								// index (zero-based) of the annotation in the Annots array of this page
+								$this->embeddedfiles[$filename]['a'] = $key;
 							}
 							break;
 						}
@@ -9957,10 +10008,10 @@ class TCPDF {
 								break;
 							}
 							$filename = basename($pl['opt']['fs']);
-							if (isset($this->embeddedfiles[$filename]['n'])) {
+							if (isset($this->embeddedfiles[$filename]['f'])) {
 								// ... TO BE COMPLETED ...
 								// /R /C /B /E /CO /CP
-								$annots .= ' /Sound <</Type /Filespec /F '.$this->_datastring($filename, $annot_obj_id).' /EF <</F '.$this->embeddedfiles[$filename]['n'].' 0 R>> >>';
+								$annots .= ' /Sound '.$this->embeddedfiles[$filename]['f'].' 0 R';
 								$iconsapp = array('Speaker', 'Mic');
 								if (isset($pl['opt']['name']) AND in_array($pl['opt']['name'], $iconsapp)) {
 									$annots .= ' /Name /'.$pl['opt']['name'];
@@ -12689,10 +12740,10 @@ class TCPDF {
 		$this->_putxobjects();
 		$this->_putresourcedict();
 		$this->_putdests();
-		$this->_putbookmarks();
 		$this->_putEmbeddedFiles();
 		$this->_putannotsobjs();
 		$this->_putjavascript();
+		$this->_putbookmarks();
 		$this->_putencryption();
 	}
 
@@ -12793,7 +12844,7 @@ class TCPDF {
 		$xmp .= "\t\t\t".'</dc:description>'."\n";
 		$xmp .= "\t\t\t".'<dc:subject>'."\n";
 		$xmp .= "\t\t\t\t".'<rdf:Bag>'."\n";
-		$xmp .= "\t\t\t\t\t".'<rdf:li>'.$this->_escapeXML($this->keywords).'</rdf:li>'."\n";
+		$xmp .= "\t\t\t\t\t".'<rdf:li>'.$this->_escapeXML($this->keywords).' TCPDF</rdf:li>'."\n";
 		$xmp .= "\t\t\t\t".'</rdf:Bag>'."\n";
 		$xmp .= "\t\t\t".'</dc:subject>'."\n";
 		$xmp .= "\t\t".'</rdf:Description>'."\n";
@@ -12924,12 +12975,19 @@ class TCPDF {
 		$out .= ' /Pages 1 0 R';
 		//$out .= ' /PageLabels ' //...;
 		$out .= ' /Names <<';
-		if ((!$this->pdfa_mode) AND ((!empty($this->javascript)) OR (!empty($this->js_objects)))) {
-			$out .= ' /JavaScript '.($this->n_js).' 0 R';
+		if ((!$this->pdfa_mode) AND !empty($this->n_js)) {
+			$out .= ' /JavaScript '.$this->n_js;
+		}
+		if (!empty($this->efnames)) {
+			$out .= ' /EmbeddedFiles <</Names [';
+			foreach ($this->efnames AS $fn => $fref) {
+				$out .= ' '.$this->_datastring($fn).' '.$fref;
+			}
+			$out .= ' ]>>';
 		}
 		$out .= ' >>';
 		if (!empty($this->dests)) {
-			$out .= ' /Dests '.$this->n_dests.' 0 R';
+			$out .= ' /Dests '.($this->n_dests).' 0 R';
 		}
 		$out .= $this->_putviewerpreferences();
 		if (isset($this->LayoutMode) AND (!$this->empty_string($this->LayoutMode))) {
@@ -16880,10 +16938,12 @@ class TCPDF {
 	 * @param $page (int) Target page number (leave empty for current page).
 	 * @param $style (string) Font style: B = Bold, I = Italic, BI = Bold + Italic.
 	 * @param $color (array) RGB color array (values from 0 to 255).
+	 * @param $x (float) X position in user units of the bookmark on the selected page (default = -1 = current position;).
+	 * @param $link (mixed) URL, or numerical link ID, or named destination (# character followed by the destination name), or embedded file (* character followed by the file name).
 	 * @public
 	 */
-	public function setBookmark($txt, $level=0, $y=-1, $page='', $style='', $color=array(0,0,0)) {
-		$this->Bookmark($txt, $level, $y, $page, $style, $color);
+	public function setBookmark($txt, $level=0, $y=-1, $page='', $style='', $color=array(0,0,0), $x=-1, $link='') {
+		$this->Bookmark($txt, $level, $y, $page, $style, $color, $x, $link);
 	}
 
 	/**
@@ -16895,11 +16955,11 @@ class TCPDF {
 	 * @param $style (string) Font style: B = Bold, I = Italic, BI = Bold + Italic.
 	 * @param $color (array) RGB color array (values from 0 to 255).
 	 * @param $x (float) X position in user units of the bookmark on the selected page (default = -1 = current position;).
+	 * @param $link (mixed) URL, or numerical link ID, or named destination (# character followed by the destination name), or embedded file (* character followed by the file name).
 	 * @public
-	 * @author Olivier Plathey, Nicola Asuni
 	 * @since 2.1.002 (2008-02-12)
 	 */
-	public function Bookmark($txt, $level=0, $y=-1, $page='', $style='', $color=array(0,0,0), $x=-1) {
+	public function Bookmark($txt, $level=0, $y=-1, $page='', $style='', $color=array(0,0,0), $x=-1, $link='') {
 		if ($level < 0) {
 			$level = 0;
 		}
@@ -16932,7 +16992,7 @@ class TCPDF {
 				return;
 			}
 		}
-		$this->outlines[] = array('t' => $txt, 'l' => $level, 'x' => $x, 'y' => $y, 'p' => $page, 's' => strtoupper($style), 'c' => $color);
+		$this->outlines[] = array('t' => $txt, 'l' => $level, 'x' => $x, 'y' => $y, 'p' => $page, 's' => strtoupper($style), 'c' => $color, 'u' => $link);
 	}
 
 	/**
@@ -17014,7 +17074,34 @@ class TCPDF {
 			if (isset($o['last'])) {
 				$out .= ' /Last '.($n + $o['last']).' 0 R';
 			}
-			if (isset($this->page_obj_id[($o['p'])])) {
+			if (isset($o['u']) AND !empty($o['u'])) {
+				// link
+				if (is_string($o['u'])) {
+					if ($o['u'][0] == '#') {
+						// internal destination
+						$out .= ' /Dest /'.$this->encodeNameObject(substr($o['u'], 1));
+					} elseif ($o['u'][0] == '%') {
+						// embedded PDF file
+						$filename = basename(substr($o['u'], 1));
+						$out .= ' /A <</S /GoToE /D [0 /Fit] /NewWindow true /T << /R /C /P '.($o['p'] - 1).' /A '.$this->embeddedfiles[$filename]['a'].' >> >>';
+					} elseif ($o['u'][0] == '*') {
+						// embedded generic file
+						$filename = basename(substr($o['u'], 1));
+						$jsa = 'var D=event.target.doc;var MyData=D.dataObjects;for (var i in MyData) if (MyData[i].path=="'.$filename.'") D.exportDataObject( { cName : MyData[i].name, nLaunch : 2});';
+						$out .= ' /A <</S /JavaScript /JS '.$this->_textstring($jsa, $oid).'>>';
+					} else {
+						// external URI link
+						$out .= ' /A <</S /URI /URI '.$this->_datastring($this->unhtmlentities($o['u']), $oid).'>>';
+					}
+				} elseif (isset($this->links[$o['u']])) {
+					// internal link ID
+					$l = $this->links[$o['u']];
+					if (isset($this->page_obj_id[($l[0])])) {
+						$out .= sprintf(' /Dest [%u 0 R /XYZ 0 %F null]', $this->page_obj_id[($l[0])], ($this->pagedim[$l[0]]['h'] - ($l[1] * $this->k)));
+					}
+				}
+			} elseif (isset($this->page_obj_id[($o['p'])])) {
+				// link to a page
 				$out .= ' '.sprintf('/Dest [%u 0 R /XYZ %F %F null]', $this->page_obj_id[($o['p'])], ($o['x'] * $this->k), ($this->pagedim[$o['p']]['h'] - ($o['y'] * $this->k)));
 			}
 			// set font style
@@ -17100,21 +17187,19 @@ class TCPDF {
 			$jsb = "getField('tcpdfdocsaved').value='saved';";
 			$this->javascript = $jsa."\n".$this->javascript."\n".$jsb;
 		}
-		$this->n_js = $this->_newobj();
-		$out = ' << /Names [';
+		// name tree for javascript
+		$this->n_js = '<< /Names [';
 		if (!empty($this->javascript)) {
-			$out .= ' (EmbeddedJS) '.($this->n + 1).' 0 R';
+			$this->n_js .= ' (EmbeddedJS) '.($this->n + 1).' 0 R';
 		}
 		if (!empty($this->js_objects)) {
 			foreach ($this->js_objects as $key => $val) {
 				if ($val['onload']) {
-					$out .= ' (JS'.$key.') '.$key.' 0 R';
+					$this->n_js .= ' (JS'.$key.') '.$key.' 0 R';
 				}
 			}
 		}
-		$out .= ' ] >>';
-		$out .= "\n".'endobj';
-		$this->_out($out);
+		$this->n_js .= ' ] >>';
 		// default Javascript object
 		if (!empty($this->javascript)) {
 			$obj_id = $this->_newobj();
@@ -17703,7 +17788,7 @@ class TCPDF {
 	/**
 	 * Creates a RadioButton field.
 	 * @param $name (string) Field name.
-	 * @param $w (int) Width or the radio button.
+	 * @param $w (int) Width of the radio button.
 	 * @param $prop (array) Javascript field properties. Possible values are described on official Javascript for Acrobat API reference.
 	 * @param $opt (array) Annotation parameters. Possible values are described on official PDF32000_2008 reference.
 	 * @param $onvalue (string) Value to be returned if selected.
@@ -17771,9 +17856,10 @@ class TCPDF {
 		// build appearance stream
 		$popt['ap'] = array();
 		$popt['ap']['n'] = array();
+		$fx = ((($w - $this->getAbsFontMeasure($tmpfont['cw'][108])) / 2) * $this->k);
 		$fy = (($w - ((($tmpfont['desc']['Ascent'] - $tmpfont['desc']['Descent']) * $this->FontSizePt / 1000) / $this->k)) * $this->k);
-		$popt['ap']['n'][$onvalue] = sprintf('q %s BT /F%d %F Tf %F %F Td ('.chr(108).') Tj ET Q', $this->TextColor, $tmpfont['i'], $this->FontSizePt, 0, $fy);
-		$popt['ap']['n']['Off'] = sprintf('q %s BT /F%d %F Tf %F %F Td ('.chr(109).') Tj ET Q', $this->TextColor, $tmpfont['i'], $this->FontSizePt, 0, $fy);
+		$popt['ap']['n'][$onvalue] = sprintf('q %s BT /F%d %F Tf %F %F Td ('.chr(108).') Tj ET Q', $this->TextColor, $tmpfont['i'], $this->FontSizePt, $fx, $fy);
+		$popt['ap']['n']['Off'] = sprintf('q %s BT /F%d %F Tf %F %F Td ('.chr(109).') Tj ET Q', $this->TextColor, $tmpfont['i'], $this->FontSizePt, $fx, $fy);
 		if (!isset($popt['mk'])) {
 			$popt['mk'] = array();
 		}
@@ -18025,10 +18111,10 @@ class TCPDF {
 		// build appearance stream
 		$popt['ap'] = array();
 		$popt['ap']['n'] = array();
-		$fy = ((($tmpfont['desc']['Ascent'] + $tmpfont['desc']['Descent']) * $this->FontSizePt) / (1000 * $this->k));
+		$fx = ((($w - $this->getAbsFontMeasure($tmpfont['cw'][110])) / 2) * $this->k);
 		$fy = (($w - ((($tmpfont['desc']['Ascent'] - $tmpfont['desc']['Descent']) * $this->FontSizePt / 1000) / $this->k)) * $this->k);
-		$popt['ap']['n']['Yes'] = sprintf('q %s BT /F%d %F Tf %F %F Td ('.chr(110).') Tj ET Q', $this->TextColor, $tmpfont['i'], $this->FontSizePt, 0, $fy);
-		$popt['ap']['n']['Off'] = sprintf('q %s BT /F%d %F Tf %F %F Td ('.chr(111).') Tj ET Q', $this->TextColor, $tmpfont['i'], $this->FontSizePt, 0, $fy);
+		$popt['ap']['n']['Yes'] = sprintf('q %s BT /F%d %F Tf %F %F Td ('.chr(110).') Tj ET Q', $this->TextColor, $tmpfont['i'], $this->FontSizePt, $fx, $fy);
+		$popt['ap']['n']['Off'] = sprintf('q %s BT /F%d %F Tf %F %F Td ('.chr(111).') Tj ET Q', $this->TextColor, $tmpfont['i'], $this->FontSizePt, $fx, $fy);
 		// merge options
 		$opt = array_merge($popt, $opt);
 		// set remaining annotation data
@@ -22259,6 +22345,9 @@ class TCPDF {
 	 * Prints a cell (rectangular area) with optional borders, background color and html text string.
 	 * The upper-left corner of the cell corresponds to the current position. After the call, the current position moves to the right or to the next line.<br />
 	 * If automatic page breaking is enabled and the cell goes beyond the limit, a page break is done before outputting.
+	 * IMPORTANT: The HTML must be well formatted - try to clean-up it using an application like HTML-Tidy before submitting.
+	 * Supported tags are: a, b, blockquote, br, dd, del, div, dl, dt, em, font, h1, h2, h3, h4, h5, h6, hr, i, img, li, ol, p, pre, small, span, strong, sub, sup, table, tcpdf, td, th, thead, tr, tt, u, ul
+	 * NOTE: all the HTML attributes must be enclosed in double-quote.
 	 * @param $w (float) Cell width. If 0, the cell extends up to the right margin.
 	 * @param $h (float) Cell minimum height. The cell extends automatically if needed.
 	 * @param $x (float) upper-left corner X coordinate
@@ -22282,6 +22371,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 	 * Allows to preserve some HTML formatting (limited support).<br />
 	 * IMPORTANT: The HTML must be well formatted - try to clean-up it using an application like HTML-Tidy before submitting.
 	 * Supported tags are: a, b, blockquote, br, dd, del, div, dl, dt, em, font, h1, h2, h3, h4, h5, h6, hr, i, img, li, ol, p, pre, small, span, strong, sub, sup, table, tcpdf, td, th, thead, tr, tt, u, ul
+	 * NOTE: all the HTML attributes must be enclosed in double-quote.
 	 * @param $html (string) text to display
 	 * @param $ln (boolean) if true add a new line after text (default = true)
 	 * @param $fill (boolean) Indicates if the background must be painted (true) or transparent (false).
@@ -23855,6 +23945,10 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 				} else {
 					$hbz = $this->FontSize * $this->cell_height_ratio;
 				}
+			}
+			if (isset($dom[($key - 1)]) AND ($dom[($key - 1)]['value'] == 'table')) {
+				// fix vertical space after table
+				$hbz = 0;
 			}
 		}
 		// Opening tag
