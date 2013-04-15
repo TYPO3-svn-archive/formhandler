@@ -435,7 +435,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			if (isset($value) && is_array($value)) {
 				$this->fillLangMarkersInSettings($value);
 			} else {
-				$langMarkers = $this->utilityFuncs->getFilledLangMarkers($value, $this->langFile);
+				$langMarkers = $this->utilityFuncs->getFilledLangMarkers($value, $this->globals->getLangFiles());
 				if (!empty($langMarkers)) {
 					$value = $this->cObj->substituteMarkerArray($value, $langMarkers);
 				}
