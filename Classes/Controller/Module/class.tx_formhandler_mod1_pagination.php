@@ -212,23 +212,27 @@ class tx_formhandler_mod1_pagination {
 	 * @return void
 	 */
 	protected function buildPager() {
-		
+
 		// pointers list for MOD_MENU
 		$pointers = array();
 
 		$GPvars = t3lib_div::_GP('formhandler');
-		if (!$GPvars) $GPvars = array();
+		if (!$GPvars) {
+			$GPvars = array();
+		}
 		unset($GPvars['pointer']);
-		if (!$GPvars['pidFilter'] && $this->id) $GPvars['pidFilter'] = intval($this->id);
+		if (!$GPvars['pidFilter'] && $this->id) {
+			$GPvars['pidFilter'] = intval($this->id);
+		}
 
 		$GP_url = t3lib_div::implodeArrayForUrl('formhandler', $GPvars);
-
+		$GP_url .= '&id=' . intval($this->id);
 		// Storage
 		$htmlCode = array();
 
 		// Check for multiple pages
 		if ($this->totalPages > 1) {
-			
+
 			// Number of pages to show
 			$showPages = ($this->totalPages < $this->maxBrowsePages) ? $this->totalPages : $this->maxBrowsePages;
 
