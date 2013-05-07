@@ -879,7 +879,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					if (intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 1) {
 						$markers['###total_uploadedFiles###'] .= $wrappedThumb;
 					} elseif (intval($settings['totalFilesMarkerTemplate.']['showThumbnails']) === 2) {
-						$markers['###total_uploadedFiles###'] .= wrappedThumbFilename;
+						$markers['###total_uploadedFiles###'] .= $wrappedThumbFilename;
 					} else {
 						$markers['###total_uploadedFiles###'] .= $wrappedFilename;
 					}
