@@ -206,7 +206,7 @@ abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
 	 * @return misc $model
 	 */
 	public function getModel() {
-		return $model;
+		return $this->model;
 	}
 
 	/**
