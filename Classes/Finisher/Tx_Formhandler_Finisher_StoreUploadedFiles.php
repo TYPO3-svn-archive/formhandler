@@ -40,7 +40,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		if ($this->settings['finishedUploadFolder']) {
+		if ($this->settings['finishedUploadFolder'] || is_array($this->settings['finishedUploadFolder.'])) {
 
 			//move the uploaded files
 			$this->moveUploadedFiles();
@@ -69,8 +69,64 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 	 * @return void
 	 */
 	protected function moveUploadedFiles() {
+		$sessionFiles = $this->globals->getSession()->get('files');
+		if (is_array($sessionFiles) && !empty($sessionFiles)) {
+			foreach ($sessionFiles as $field => $files) {
+				$this->gp[$field] = array();
+				$uploadPath = $this->getNewFolderPath($field);
+				if(strlen($uploadPath) > 0) {
+					foreach ($files as $key => $file) {
+						if ($file['uploaded_path'] != $uploadPath) {
+							$newFilename = $this->getNewFilename($file['uploaded_name']);
+							$filename = substr($newFilename, 0, strrpos($newFilename, '.'));
+							$ext = substr($newFilename, strrpos($newFilename, '.'));
+	
+							$suffix = 1;
+	
+							//rename if exists
+							while(file_exists($uploadPath . $newFilename)) {
+								$newFilename = $filename . '_' . $suffix . $ext;
+								$suffix++;
+							}
+	
+							$this->utilityFuncs->debugMessage(
+								'copy_file', 
+								array(
+									($file['uploaded_path'] . $file['uploaded_name']),
+									($uploadPath . $newFilename)
+								)
+							);
+							copy(($file['uploaded_path'] . $file['uploaded_name']), ($uploadPath . $newFilename));
+							t3lib_div::fixPermissions($uploadPath . $newFilename);
+							unlink(($file['uploaded_path'] . $file['uploaded_name']));
+							$sessionFiles[$field][$key]['uploaded_path'] = $uploadPath;
+							$sessionFiles[$field][$key]['uploaded_name'] = $newFilename;
+							$sessionFiles[$field][$key]['uploaded_folder'] = $newFolder;
+							$sessionFiles[$field][$key]['uploaded_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $newFolder . $newFilename;
+							if (!is_array($this->gp[$field])) {
+								$this->gp[$field] = array();
+							}
+							array_push($this->gp[$field], $newFilename);
+						}
+					}
+				}
+			}
+			$this->globals->getSession()->set('files', $sessionFiles);
+		}
+	}
 
-		$newFolder = $this->utilityFuncs->getSingle($this->settings, 'finishedUploadFolder');
+	/**
+	 * Builds the path to the final upload folder depending on the current field processed
+	 *
+	 * @param string The current field name
+	 * @return string The new path
+	 **/
+	protected function getNewFolderPath($field) {
+		if(is_array($this->settings['finishedUploadFolder.']) && isset($this->settings['finishedUploadFolder.'][$field])) {
+			$newFolder = $this->utilityFuncs->getSingle($this->settings['finishedUploadFolder.'], $field);
+		} else {
+			$newFolder = $this->utilityFuncs->getSingle($this->settings, 'finishedUploadFolder');
+		}
 		$newFolder = $this->utilityFuncs->sanitizePath($newFolder);
 		$newFolder = $this->replaceSchemeMarkers($newFolder);
 		$newFolder = $this->utilityFuncs->sanitizePath($newFolder);
@@ -87,47 +143,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 				$this->utilityFuncs->throwException('Directory "' . $newFolder . '" doesn\'t exist!');
 			}
 		}
-		$sessionFiles = $this->globals->getSession()->get('files');
-		if (is_array($sessionFiles) && !empty($sessionFiles) && strlen($newFolder) > 0) {
-			foreach ($sessionFiles as $field => $files) {
-				$this->gp[$field] = array();
-				foreach ($files as $key => $file) {
-					if ($file['uploaded_path'] != $uploadPath) {
-						$newFilename = $this->getNewFilename($file['uploaded_name']);
-						$filename = substr($newFilename, 0, strrpos($newFilename, '.'));
-						$ext = substr($newFilename, strrpos($newFilename, '.'));
-
-						$suffix = 1;
-
-						//rename if exists
-						while(file_exists($uploadPath . $newFilename)) {
-							$newFilename = $filename . '_' . $suffix . $ext;
-							$suffix++;
-						}
-
-						$this->utilityFuncs->debugMessage(
-							'copy_file', 
-							array(
-								($file['uploaded_path'] . $file['uploaded_name']),
-								($uploadPath . $newFilename)
-							)
-						);
-						copy(($file['uploaded_path'] . $file['uploaded_name']), ($uploadPath . $newFilename));
-						t3lib_div::fixPermissions($uploadPath . $newFilename);
-						unlink(($file['uploaded_path'] . $file['uploaded_name']));
-						$sessionFiles[$field][$key]['uploaded_path'] = $uploadPath;
-						$sessionFiles[$field][$key]['uploaded_name'] = $newFilename;
-						$sessionFiles[$field][$key]['uploaded_folder'] = $newFolder;
-						$sessionFiles[$field][$key]['uploaded_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $newFolder . $newFilename;
-						if (!is_array($this->gp[$field])) {
-							$this->gp[$field] = array();
-						}
-						array_push($this->gp[$field], $newFilename);
-					}
-				}
-			}
-			$this->globals->getSession()->set('files', $sessionFiles);
-		}
+		return $uploadPath;
 	}
 
 	/**
