@@ -406,23 +406,24 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @return string
 	 */
 	private function parseFilesList($settings ,$type, $key) {
+		$files = array();
 		if (isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
-			$parsed = $this->utilityFuncs->getSingle($settings, $key);
-			$parsed = t3lib_div::trimExplode(',', $parsed);
+			$files = $this->utilityFuncs->getSingle($settings, $key);
+			$files = t3lib_div::trimExplode(',', $parsed);
 		} elseif ($settings[$key]) {
 			$files = t3lib_div::trimExplode(',', $settings[$key]);
-			$parsed = array();
-			$sessionFiles = $this->globals->getSession()->get('files');
-			foreach ($files as $idx => $file) {
-				if (isset($sessionFiles[$file])) {
-					foreach ($sessionFiles[$file] as $subIdx => $uploadedFile) {
-						array_push($parsed, $uploadedFile['uploaded_path'] . $uploadedFile['uploaded_name']);
-					}
-				} elseif(file_exists($file)) {
-					array_push($parsed, $file);
-				} elseif(strlen($file) > 0) {
-					$this->utilityFuncs->debugMessage('attachment_not_found', array($file), 2);
+		}
+		$parsed = array();
+		$sessionFiles = $this->globals->getSession()->get('files');
+		foreach ($files as $idx => $file) {
+			if (isset($sessionFiles[$file])) {
+				foreach ($sessionFiles[$file] as $subIdx => $uploadedFile) {
+					array_push($parsed, $uploadedFile['uploaded_path'] . $uploadedFile['uploaded_name']);
 				}
+			} elseif(file_exists($file)) {
+				array_push($parsed, $file);
+			} elseif(strlen($file) > 0) {
+				$this->utilityFuncs->debugMessage('attachment_not_found', array($file), 2);
 			}
 		}
 		return $parsed;
