@@ -2,6 +2,7 @@
 <T3locallang>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="fe-exception">An error has occurred!</label>
 			<label index="extension_required">The extension "%s" is required for %s!</label>
 			<label index="missing_config">No TypoScript config found for Formhandler! Please add the static template or write your own configuration.</label>
 			<label index="insufficient_config">Insufficient config for %s!</label>
@@ -47,6 +48,7 @@ finishers {
 			<label index="error_check_filemaxsize"><![CDATA[The configured "maxSize" (%s) for the field "%s" is bigger than the allowed max upload size configured in php.ini (%s). For more information see: <a target="_blank" href="http://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize">http://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize</a>!]]></label>
 		</languageKey>
 		<languageKey index="fr" type="array">
+			<label index="fe-exception">Une erreur s'est produite!</label>
 			<label index="extension_required">L'extension "%s" est requise pour %s!</label>
 			<label index="insufficient_config">TRANSLATE: Insufficient config for %s!</label>
 			<label index="missing_component">Il manque %s! Le Flexform contient '%s' mais la configuration TypoScript est incomplète. Ajouter: %s</label>
@@ -70,6 +72,7 @@ finishers {
 			<label index="error_check_filemaxsize"><![CDATA[TRANSLATE: The configured "maxSize" (%s) for the field "%s" is bigger than the allowed max upload size configured in php.ini (%s). For more information see: <a target="_blank" href="http://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize">http://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize</a>!]]></label>
 		</languageKey>
 		<languageKey index="de" type="array">
+			<label index="fe-exception">Ein Fehler ist aufgetreten!</label>
 			<label index="extension_required"><![CDATA[Die Extension "%s" wird benötigt für %s!]]></label>
 			<label index="missing_config"><![CDATA[Keine TypoScript-Konfiguration für Formhandler gefunden! Fügen Sie das statische Template oder Ihre eigene Konfiguration ein.]]></label>
 			<label index="insufficient_config"><![CDATA[Unzureichende Konfiguration für %s!]]></label>
