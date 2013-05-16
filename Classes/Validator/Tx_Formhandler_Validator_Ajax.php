@@ -100,7 +100,17 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 					//foreach error checks
 					foreach ($errorChecks as $idx => $check) {
 						$classNameFix = ucfirst($check['check']);
-						$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
+						if(strpos($classNameFix, 'Tx_') === FALSE) {
+							$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
+							$fullClassName = 'Tx_Formhandler_Errorcheck_' . $classNameFix;
+						} else {
+							//Look for the whole error check name, maybe it is a custom check like Tx_SomeExt_ErrorCheck_Something
+							$errorCheckObject = $this->componentManager->getComponent($check['check']);
+							$fullClassName = $check['check'];
+						}
+						if(!$errorCheckObject) {
+							$this->utilityFuncs->debugMessage('check_not_found', array($fullClassName), 2);
+						}
 						if (empty($restrictErrorChecks) || in_array($check['check'], $restrictErrorChecks)) {
 							$gp = array($field => $value);
 
@@ -119,7 +129,7 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 									$errors[$field][] = $checkFailed;
 								}
 							} else {
-								$this->utilityFuncs->throwException('Configuration is not valid for class "Tx_Formhandler_ErrorCheck_' . $classNameFix . '"!');
+								$this->utilityFuncs->throwException('Configuration is not valid for class "' . $fullClassName . '"!');
 							}
 						}
 					}
