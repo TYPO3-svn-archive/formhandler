@@ -325,14 +325,18 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @return array
 	 */
 	private function explodeList($list, $sep = ',') {
-		$items = t3lib_div::trimExplode($sep, $list);
-		$splitArray = array();
-		foreach ($items as $idx => $item) {
-			if (isset($this->gp[$item])) {
-				array_push($splitArray, $this->gp[$item]);
-			} else {
-				array_push($splitArray, $item);
+		if(!is_array($list)) {
+			$items = t3lib_div::trimExplode($sep, $list);
+			$splitArray = array();
+			foreach ($items as $idx => $item) {
+				if (isset($this->gp[$item])) {
+					array_push($splitArray, $this->gp[$item]);
+				} else {
+					array_push($splitArray, $item);
+				}
 			}
+		} else {
+			$splitArray = $list;
 		}
 		return $splitArray;
 	}
@@ -386,7 +390,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		if (isset($this->emailSettings[$type][$key])) {
 			$parsed = $this->explodeList($this->emailSettings[$type][$key]);
 		} elseif (isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
-			$parsed = $this->utilityFuncs->getSingle($settings, $key);
+			$parsed = $parsed = $this->explodeList($this->utilityFuncs->getSingle($settings, $key));
 		} else {
 			$parsed = $this->explodeList($settings[$key]);
 		}
