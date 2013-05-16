@@ -197,11 +197,12 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 		return $isSuccess;
 	}
 
-	protected function doesRecordExist($uid) {
+	protected function doesRecordExist($uid, $andWhere) {
 		$exists = FALSE;
 		if($uid) {
 			$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($this->key, $this->table, $this->key . '=' . $uid);
+			$andWhere = $this->utilityFuncs->prepareAndWhereString($andWhere);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($this->key, $this->table, $this->key . '=' . $uid . $andWhere);
 			if($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 				$exists = TRUE;
 			}
