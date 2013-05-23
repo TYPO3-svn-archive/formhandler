@@ -52,6 +52,10 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 			$this->settings['arrayValueSeparator'] = $componentSettings[$this->currentMailSettings['mode']][$this->currentMailSettings['suffix'] . '.']['arrayValueSeparator'];
 			$this->settings['arrayValueSeparator.'] = $componentSettings[$this->currentMailSettings['mode']][$this->currentMailSettings['suffix'] . '.']['arrayValueSeparator.'];
 		}
+		$this->disableEncodingFields = array();
+		if($this->settings['disableEncodingFields']) {
+			$this->disableEncodingFields = explode(',', $this->utilityFuncs->getSingle($this->settings, 'disableEncodingFields'));
+		}
 
 		/*
 		 * getValueMarkers() will call htmlSpecialChars on all values before adding them to the marker array.
