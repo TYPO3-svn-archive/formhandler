@@ -107,6 +107,8 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 								$this->gp[$field] = array();
 							}
 							array_push($this->gp[$field], $newFilename);
+						}  else {
+							array_push($this->gp[$field], $file['uploaded_name']); 
 						}
 					}
 				}
