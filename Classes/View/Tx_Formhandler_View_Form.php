@@ -24,6 +24,14 @@
 class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 	/**
+	 * An array of fields to do not encode for output
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $disableEncodingFields;
+
+	/**
 	 * Main method called by the controller.
 	 *
 	 * @param array $gp The current GET/POST parameters
@@ -1063,6 +1071,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillValueMarkers() {
 		$values = $this->gp;
+		$this->disableEncodingFields = array();
+		if($this->settings['disableEncodingFields']) {
+			$this->disableEncodingFields = explode(',', $this->utilityFuncs->getSingle($this->settings, 'disableEncodingFields'));
+		}
 		$markers = $this->getValueMarkers($this->gp);
 		$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
 
@@ -1073,7 +1085,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 	protected function getValueMarkers($values, $level = 0, $prefix = 'value_', $doEncode = TRUE) {
 		$markers = array();
-		
+
 		$arrayValueSeparator = $this->utilityFuncs->getSingle($this->settings, 'arrayValueSeparator');
 		if(strlen($arrayValueSeparator) === 0) {
 			$arrayValueSeparator = ',';
@@ -1095,7 +1107,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					$v = implode($arrayValueSeparator, $v);
 					$level--;
 				} elseif($doEncode) {
-					$v = htmlspecialchars($v);
+					if(!in_array($k, $this->disableEncodingFields)) {
+						$v = htmlspecialchars($v);
+					}
 				}
 				$v = trim($v);
 				$markers['###' . $currPrefix . '###'] = $v;
