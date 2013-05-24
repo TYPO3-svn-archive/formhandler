@@ -79,7 +79,7 @@ class Tx_Formhandler_Generator_TCPDF {
 			}
 			if ($valid) {
 				$addedOneRecord = TRUE;
-				$this->pdf->AliasNbPages();
+				$this->pdf->getAliasNbPages();
 				$this->pdf->AddPage();
 				$this->pdf->SetFont('Helvetica', '', 12);
 				$standardWidth = 100;
