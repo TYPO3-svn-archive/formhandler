@@ -378,7 +378,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				}
 				break;
 			default:
-				$conditionResult = strlen(trim($this->utilityFuncs->getGlobal($fieldName, $this->gp))) > 0;
+				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
+				if(is_array($value)) {
+					$conditionResult = (count($value) > 0);
+				} else {
+					$conditionResult = strlen(trim($value)) > 0;
+				}
 		}
 
 		return $conditionResult;
