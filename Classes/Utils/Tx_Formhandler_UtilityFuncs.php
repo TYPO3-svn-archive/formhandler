@@ -834,6 +834,8 @@ class Tx_Formhandler_UtilityFuncs {
 		$TSFE->getConfigArray();
 		$TSFE->includeLibraries($TSFE->tmpl->setup['includeLibs.']);
 		$TSFE->newCObj();
+
+		$this->compatibilityFuncs->includeTCA();
 	}
 	
 	/**

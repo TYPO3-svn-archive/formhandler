@@ -86,5 +86,17 @@ class Tx_Formhandler_CompatibilityFuncs {
 		}
 		return $LOCAL_LANG;
 	}
+
+	/**
+	 * Loads TCA for TYPO3 version > 6.0
+	 *
+	 * @return void
+	 */
+	public function includeTCA() {
+		if(class_exists('\TYPO3\CMS\Core\Core\Bootstrap')) {
+			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+		}
+	}
+
 }
 ?>
