@@ -1032,15 +1032,19 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				foreach ($andConditions as $subSubIdx => $andCondition) {
 					if (strstr($andCondition, '!=')) {
 						list($field, $value) = t3lib_div::trimExplode('!=', $andCondition);
+						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
 						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) !== $value);
 					} elseif (strstr($andCondition, '=')) {
 						list($field, $value) = t3lib_div::trimExplode('=', $andCondition);
+						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
 						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) === $value);
 					} elseif (strstr($andCondition, '>')) {
 						list($field, $value) = t3lib_div::trimExplode('>', $andCondition);
+						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
 						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) > $value);
 					} elseif (strstr($andCondition, '<')) {
 						list($field, $value) = t3lib_div::trimExplode('<', $andCondition);
+						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
 						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) < $value);
 					} else {
 						$field = $andCondition;
@@ -1063,7 +1067,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							}
 						}
 					}
-					
 					$results[] = ($result ? 'TRUE' : 'FALSE');
 				}
 				$orConditions[] = '(' . implode(' && ', $results) . ')';

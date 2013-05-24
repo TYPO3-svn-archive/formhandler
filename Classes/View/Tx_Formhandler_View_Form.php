@@ -332,44 +332,49 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$conditionResult = FALSE;
 		switch($conditionOperator) {
 			case '!=':
-				$conditionResult = $this->utilityFuncs->getGlobal($fieldName, $this->gp) != $valueConditions[2];
+				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
+				$conditionResult = $this->utilityFuncs->getGlobal($fieldName, $this->gp) != $value;
 				break;
 			case '^=':
-				$conditionResult = strpos($this->utilityFuncs->getGlobal($fieldName, $this->gp), $valueConditions[2]) === 0;
+				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
+				$conditionResult = strpos($this->utilityFuncs->getGlobal($fieldName, $this->gp), $value) === 0;
 				break;
 			case '$=':
 				$gpValue = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				$checkValue = substr($valueConditions[2], -strlen($gpValue));
+				$checkValue = $this->utilityFuncs->parseOperand($checkValue, $this->gp);
 				$conditionResult = (strcmp($checkValue, $gpValue) === 0);
 				break;
 			case '~=':
-				$conditionResult = strpos($valueConditions[2], $this->utilityFuncs->getGlobal($fieldName, $this->gp)) !== FALSE;
+				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
+				$conditionResult = strpos($value, $this->utilityFuncs->getGlobal($fieldName, $this->gp)) !== FALSE;
 				break;
 			case '=':
-				$conditionResult = $this->utilityFuncs->getGlobal($fieldName, $this->gp) == $valueConditions[2];
+				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
+				$conditionResult = $this->utilityFuncs->getGlobal($fieldName, $this->gp) == $value;
 				break;
 			case '>':
 				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				if(is_numeric($value)) {
-					$conditionResult = floatval($value) > floatval($valueConditions[2]);
+					$conditionResult = floatval($value) > floatval($this->utilityFuncs->parseOperand($valueConditions[2], $this->gp));
 				}
 				break;
 			case '<':
 				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				if(is_numeric($value)) {
-					$conditionResult = floatval($value) < floatval($valueConditions[2]);
+					$conditionResult = floatval($value) < floatval($this->utilityFuncs->parseOperand($valueConditions[2], $this->gp));
 				}
 				break;
 			case '>=':
 				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				if(is_numeric($value)) {
-					$conditionResult = floatval($value) >= floatval($valueConditions[2]);
+					$conditionResult = floatval($value) >= floatval($this->utilityFuncs->parseOperand($valueConditions[2], $this->gp));
 				}
 				break;
 			case '<=':
 				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
 				if(is_numeric($value)) {
-					$conditionResult = floatval($value) <= floatval($valueConditions[2]);
+					$conditionResult = floatval($value) <= floatval($this->utilityFuncs->parseOperand($valueConditions[2], $this->gp));
 				}
 				break;
 			default:

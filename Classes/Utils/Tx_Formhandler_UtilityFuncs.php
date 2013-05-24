@@ -1001,6 +1001,9 @@ class Tx_Formhandler_UtilityFuncs {
 			}
 		}
 
+		if($value === NULL) {
+			$value = '';
+		}
 		return $value;
 	}
 
@@ -1035,6 +1038,28 @@ class Tx_Formhandler_UtilityFuncs {
 			$andWhere = ' AND ' . $andWhere;
 		}
 		return $andWhere;
+	}
+
+	/**
+	 * Interprets a string. If it starts with a { like {field:fieldname}
+	 * it calls TYPO3 getData function and returns its value, otherwise returns the string
+	 *
+	 * @param string $operand The operand to be interpreted
+	 * @param array $values The GET/POST values
+	 * @return string
+	 */
+	public function parseOperand($operand, $values) {
+		$returnValue = '';
+		if ($operand[0] == '{') {
+			$data = trim($operand, '{}');
+			$returnValue = $this->globals->getcObj()->getData($data, $values);
+		} else {
+			$returnValue = $operand;
+		}
+		if($returnValue === NULL) {
+			$returnValue = '';
+		}
+		return $returnValue;
 	}
 }
 
