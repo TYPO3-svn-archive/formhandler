@@ -99,8 +99,8 @@ class Tx_Formhandler_Template_TCPDF extends TCPDF {
 						'###PDF_TOTAL_PAGES###'
 					),
 					array(
-						$this->PageNo(),
-						$this->numpages
+						$this->getAliasNumPage(),
+						$this->getAliasNbPages()
 					),
 					$footerText
 			);
@@ -109,7 +109,7 @@ class Tx_Formhandler_Template_TCPDF extends TCPDF {
 			$text = $this->getLL('footer_text');
 			$text = sprintf($text,date('d.m.Y H:i:s', time()));
 			$this->Cell(0, 10, $text, 'T', 0, 'C');
-			$pageNumbers = $this->getLL('page') . ' ' . $this->PageNo() . '/' . $this->numpages;
+			$pageNumbers = $this->getLL('page') . ' ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages();
 			$this->Cell(0, 10, $pageNumbers, 'T', 0, 'R');
 		}
 		
