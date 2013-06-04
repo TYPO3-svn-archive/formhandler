@@ -335,6 +335,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$count = 0;
 			$hashes = array();
 			$availableFormats = array();
+			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1');
 
 			$className = 'Tx_Formhandler_Generator_CSV';
 			if($tsconfig['properties']['config.']['generators.']['csv']) {
@@ -358,7 +359,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$availableFormatsCount = count($availableFormats);
 
-			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1');
 			if(!$tsconfig['properties']['config.']['csv.']['delimiter']) {
 				$tsconfig['properties']['config.']['csv.']['delimiter'] = ',';
 			}
