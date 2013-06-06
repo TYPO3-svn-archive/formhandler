@@ -742,6 +742,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		}
 
 		$sessionFiles = $this->globals->getSession()->get('files');
+		
+		$requiredSign = $this->utilityFuncs->getSingle($settings, 'requiredSign');
+		if(strlen($requiredSign) === 0) {
+			$requiredSign = '*';
+		}
+		$requiredMarker = $this->utilityFuncs->getSingle($settings, 'requiredMarker');
 
 		//parse validation settings
 		if (is_array($settings['validators.'])) {
@@ -798,11 +804,8 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 												break;
 											case 'required':case 'fileRequired':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathGuard':
 												if(!in_array('all', $disableErrorCheckFields) && !in_array($replacedFieldname, $disableErrorCheckFields)) {
-													$requiredSign = $this->utilityFuncs->getSingle($settings, 'requiredSign');
-													if(strlen($requiredSign) === 0) {
-														$requiredSign = '*';
-													}
 													$markers['###required_' . $replacedFieldname . '###'] = $requiredSign;
+													$markers['###requiredMarker_' . $replacedFieldname . '###'] = $requiredMarker;
 												}
 												break;
 										}
