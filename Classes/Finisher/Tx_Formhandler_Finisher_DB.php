@@ -350,6 +350,32 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 
 							$fieldValue = $encryptedPassword;
 							break;
+						case 'files':
+							$field = $this->utilityFuncs->getSingle($options['special.'], 'field');
+							if(isset($options['special.']['separator'])) {
+								$separator = $this->utilityFuncs->getSingle($options['special.'], 'separator');
+							} else {
+								$separator = ',';
+							}
+							$files = $this->globals->getSession()->get('files');
+							$filesArray = array();
+							if(isset($options['special.']['info'])) {
+								$info = $this->utilityFuncs->getSingle($options['special.'], 'info');
+							} else {
+								$info = '[uploaded_name]';
+							}
+							$files = $this->globals->getSession()->get('files');
+							if (isset($files[$field]) && is_array($files[$field])) {
+								foreach ($files[$field] as $idx => $file) {
+									$infoString = $info;
+									foreach($file as $infoKey=>$infoValue) {
+										$infoString = str_replace('[' . $infoKey . ']', $infoValue, $infoString);
+									}
+									array_push($filesArray, $infoString);
+								}
+							}
+							$fieldValue = implode($separator, $filesArray);
+							break;
 						case 'date':
 							$field = $this->utilityFuncs->getSingle($options['special.'], 'field');
 							$date = $this->gp[$field];
