@@ -341,6 +341,15 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 					}
 				} else {
 					switch ($options['special']) {
+						case 'saltedpassword':
+							$field = $this->utilityFuncs->getSingle($options['special.'], 'field');
+
+							$saltedpasswords = tx_saltedpasswords_div::returnExtConf();
+							$tx_saltedpasswords = t3lib_div::makeInstance($saltedpasswords['saltedPWHashingMethod']);
+							$encryptedPassword = $tx_saltedpasswords->getHashedPassword($this->gp[$field]);
+
+							$fieldValue = $encryptedPassword;
+							break;
 						case 'date':
 							$field = $this->utilityFuncs->getSingle($options['special.'], 'field');
 							$date = $this->gp[$field];
