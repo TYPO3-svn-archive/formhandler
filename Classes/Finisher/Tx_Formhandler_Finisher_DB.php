@@ -270,7 +270,8 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			//check if uid of record to update is in GP
 			$uid = $this->getUpdateUid();
 
-			$recordExists = $this->doesRecordExist($uid);
+			$andWhere = $this->utilityFuncs->getSingle($this->settings, 'andWhere');
+			$recordExists = $this->doesRecordExist($uid, $andWhere);
 			if ($recordExists) {
 				$this->doUpdate = TRUE;
 			} elseif(intval($this->utilityFuncs->getSingle($this->settings, 'insertIfNoUpdatePossible')) !== 1) {
