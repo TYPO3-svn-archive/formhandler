@@ -324,7 +324,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @param string $sep
 	 * @return array
 	 */
-	private function explodeList($list, $sep = ',') {
+	protected function explodeList($list, $sep = ',') {
 		if(!is_array($list)) {
 			$items = t3lib_div::trimExplode($sep, $list);
 			$splitArray = array();
@@ -347,7 +347,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @param string $value
 	 * @return string
 	 */
-	private function parseSettingValue($value) {
+	protected function parseSettingValue($value) {
 		if (isset($this->gp[$value])) {
 			$parsed = $this->gp[$value];
 		} else {
@@ -365,7 +365,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @param string $key The key to parse in the settings array
 	 * @return string
 	 */
-	private function parseValue($settings,$type,$key) {
+	protected function parseValue($settings,$type,$key) {
 		if (isset($this->emailSettings[$type][$key])) {
 			$parsed = $this->parseSettingValue($this->emailSettings[$type][$key]);
 		} else if (isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
@@ -386,7 +386,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @param string $key The key to parse in the settings array
 	 * @return string|array
 	 */
-	private function parseList($settings, $type, $key) {
+	protected function parseList($settings, $type, $key) {
 		if (isset($this->emailSettings[$type][$key])) {
 			$parsed = $this->explodeList($this->emailSettings[$type][$key]);
 		} elseif (isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
@@ -405,7 +405,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @param string $key The key to parse in the settings array
 	 * @return string
 	 */
-	private function parseFilesList($settings ,$type, $key) {
+	protected function parseFilesList($settings ,$type, $key) {
 		$files = array();
 		if (isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
 			$files = $this->utilityFuncs->getSingle($settings, $key);
@@ -529,7 +529,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 * @param array $optionsToParse Array containing all option names to parse.
 	 * @return array The parsed email settings
 	 */
-	private function parseEmailSettingsByType($currentSettings, $type, $optionsToParse = array()) {
+	protected function parseEmailSettingsByType($currentSettings, $type, $optionsToParse = array()) {
 		$typeLower = strtolower($type);
 		$typeUpper = strtoupper($type);
 		$section = 'sEMAIL' . $typeUpper;
