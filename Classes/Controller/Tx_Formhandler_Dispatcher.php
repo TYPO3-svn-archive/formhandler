@@ -70,10 +70,12 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 			$templateFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'template_file', 'sDEF');
 			$langFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'lang_file', 'sDEF');
 			$predef = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'predefined', 'sDEF');
+			
 			$this->globals->setCObj($this->cObj);
 			if($setup['usePredef']) {
 				$predef = $this->utilityFuncs->getSingle($setup, 'usePredef');
 			}
+			$this->globals->getCObj()->setCurrentVal($predef);
 			$this->globals->setPredef($predef);
 			$this->globals->setOverrideSettings($setup);
 			$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
