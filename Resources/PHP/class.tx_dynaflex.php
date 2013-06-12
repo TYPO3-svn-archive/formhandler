@@ -12,7 +12,6 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-
 $compatibilityFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
 if($compatibilityFuncs->convertVersionNumberToInteger(TYPO3_version) < 6002000) {
 	require_once(PATH_t3lib . "class.t3lib_page.php");
