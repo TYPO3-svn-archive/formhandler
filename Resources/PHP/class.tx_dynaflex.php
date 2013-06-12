@@ -13,8 +13,11 @@
  *                                                                        */
 
 
-require_once(PATH_t3lib."class.t3lib_page.php");
-require_once(PATH_t3lib."class.t3lib_tsparser_ext.php");
+$compatibilityFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
+if($compatibilityFuncs->convertVersionNumberToInteger(TYPO3_version) < 6002000) {
+	require_once(PATH_t3lib . "class.t3lib_page.php");
+	require_once(PATH_t3lib . "class.t3lib_tsparser_ext.php");
+}
 
 /**
  * Flexform class for Formhandler spcific needs
