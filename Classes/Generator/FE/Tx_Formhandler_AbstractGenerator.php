@@ -31,7 +31,7 @@ abstract class Tx_Formhandler_AbstractGenerator extends Tx_Formhandler_AbstractC
 		$params = $this->getDefaultLinkParams();
 		$componentParams = $this->getComponentLinkParams($linkGP);
 		if (is_array($componentParams)) {
-			$params = t3lib_div::array_merge_recursive_overrule($params, $componentParams);
+			$params = $this->utilityFuncs->mergeConfiguration($params, $componentParams);
 		}
 		return $this->cObj->getTypolink($text, $GLOBALS['TSFE']->id, $params, $this->getLinkTarget());
 	}

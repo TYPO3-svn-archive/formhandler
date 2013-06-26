@@ -1063,6 +1063,17 @@ class Tx_Formhandler_UtilityFuncs {
 		}
 		return $returnValue;
 	}
+
+	/**
+	 * Merges 2 configuration arrays
+	 *
+	 * @param array The base settings
+	 * @param array The settings overriding the base settings.
+	 * @return array The merged settings
+	 */
+	public function mergeConfiguration($settings, $newSettings) {
+		return t3lib_div::array_merge($settings, $newSettings);
+	}
 }
 
 ?>
