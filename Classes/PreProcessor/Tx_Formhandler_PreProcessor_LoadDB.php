@@ -126,7 +126,12 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 		}
 
 		if ($value === NULL) {
-			$value = $this->data[$this->utilityFuncs->getSingle($settings[$fieldname . '.'], 'mapping')];
+			$mapping = $this->utilityFuncs->getSingle($settings[$fN.'.'], 'mapping');
+			if(isset($data[$mapping])) {
+				$this->gp[$fN] = $data[$mapping];
+			} else {
+				$this->gp[$fN] = $this->utilityFuncs->getSingle($settings, $fN);
+			}
 			if ($settings[$fieldname . '.']['separator']) {
 				$separator = $settings[$fieldname . '.']['separator'];
 				$value = t3lib_div::trimExplode($separator, $value);
