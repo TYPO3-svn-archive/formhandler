@@ -623,9 +623,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$nextName
 		);
 
-		if(!$this->globals->isAjaxMode()) {
-			$this->fillCaptchaMarkers($markers);
-		}
+		$this->fillCaptchaMarkers($markers);
 		$this->fillFEUserMarkers($markers);
 		$this->fillFileMarkers($markers);
 
