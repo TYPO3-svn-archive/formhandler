@@ -574,7 +574,18 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		// submit name for previous page
 		$prevName = ' name="' . str_replace('#action#', 'prev', $name) . '" ';
-		$prevName = str_replace('#step#', $currentStepFromSession - 1, $prevName);
+		$allowStepJumps = FALSE;
+		if(isset($this->settings['allowStepJumps'])) {
+			$allowStepJumps = (bool)$this->utilityFuncs->getSingle($this->settings, 'allowStepJumps');
+		}
+		$previousStep = $currentStepFromSession - 1;
+		if($allowStepJumps && $this->globals->getSession()->get('lastStep') < $currentStepFromSession) {
+			$previousStep = $this->globals->getSession()->get('lastStep');
+		}
+		if($previousStep < 1) {
+			$previousStep = 1;
+		}
+		$prevName = str_replace('#step#', $previousStep, $prevName);
 		$markers['###submit_prevStep###'] = $prevName;
 
 			// submits for next/prev steps with template suffix
