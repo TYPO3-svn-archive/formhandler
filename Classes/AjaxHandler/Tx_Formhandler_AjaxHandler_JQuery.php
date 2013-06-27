@@ -142,6 +142,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 							' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function() {
 								return false;
 							});
+							attachValidationEvents();
 						}
 					}
 				});
@@ -303,8 +304,11 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		if(strlen($fieldJS) > 0) {
 			$fieldJS = '
 				<script type="text/javascript">
-				' . $this->jQueryAlias . '(function() {
+				function attachValidationEvents() {
 					' . $fieldJS . '
+				}
+				' . $this->jQueryAlias . '(function() {
+					attachValidationEvents();
 				});
 				</script>
 			';
