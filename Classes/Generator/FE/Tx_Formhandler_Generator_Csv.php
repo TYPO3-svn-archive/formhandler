@@ -79,10 +79,11 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 		if(intval($this->settings['returnFileName']) === 1) {
 			$outputPath = $this->utilityFuncs->getDocumentRoot();
 			if ($this->settings['customTempOutputPath']) {
-				$outputPath .= $this->utilityFuncs->sanitizePath($this->settings['customTempOutputPath']);
+				$outputPath .= $this->settings['customTempOutputPath'];
 			} else {
 				$outputPath .= '/typo3temp/';
 			}
+			$outputPath = $this->utilityFuncs->sanitizePath($outputPath);
 			$filename = $outputPath . $this->settings['filePrefix'] . $this->utilityFuncs->generateHash() . '.csv';
 			$csv->save($filename, $data, FALSE, $fields);
 

@@ -38,10 +38,11 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 		if (intval($this->settings['storeInTempFile']) === 1) {
 			$this->outputPath = $this->utilityFuncs->getDocumentRoot();
 			if ($this->settings['customTempOutputPath']) {
-				$this->outputPath .= $this->utilityFuncs->sanitizePath($this->settings['customTempOutputPath']);
+				$this->outputPath .= $this->settings['customTempOutputPath'];
 			} else {
 				$this->outputPath .= '/typo3temp/';
 			}
+			$this->outputPath = $this->utilityFuncs->sanitizePath($this->outputPath);
 			$this->filename = $this->outputPath . $this->settings['filePrefix'] . $this->utilityFuncs->generateHash() . '.pdf';
 
 			$this->filenameOnly = $this->utilityFuncs->getSingle($this->settings, 'staticFileName');

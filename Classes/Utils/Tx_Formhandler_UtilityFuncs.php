@@ -492,6 +492,9 @@ class Tx_Formhandler_UtilityFuncs {
 		if (substr($path, (strlen($path) - 1)) != '/' && !strstr($path, '.')) {
 			$path = $path . '/';
 		}
+		while(strstr($path, '//')) {
+			$path = str_replace('//', '/', $path);
+		}
 		return $path;
 	}
 
