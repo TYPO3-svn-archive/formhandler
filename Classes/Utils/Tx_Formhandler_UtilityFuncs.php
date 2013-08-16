@@ -68,6 +68,11 @@ class Tx_Formhandler_UtilityFuncs {
 		if ($prefix) {
 			$gp = $gp[$prefix];
 		}
+
+		/*
+		 * Unset key "saveDB" to prevent conflicts with information set by Finisher_DB
+		 */
+		unset($gp['saveDB']);
 		return $gp;
 	}
 

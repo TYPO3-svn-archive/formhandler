@@ -101,7 +101,7 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 	 * @return string The auth code
 	 */
 	protected function generateAuthCode($row) {
-		return md5(serialize($row));
+		return t3lib_div::hmac(serialize($row), 'formhandler');
 	}
 
 }

@@ -87,88 +87,52 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
+		$this->utilityFuncs->debugMessage('data_stored');
 
-		$evaluation = TRUE;
-		if (isset($this->settings['condition'])) {
-			$condition = $this->parseCondition($this->utilityFuncs->getSingle($this->settings, 'condition'));
-			eval('$evaluation = ' . $condition . ';');
-			$evaluationMessage = ($evaluation === TRUE) ?  'TRUE' : 'FALSE';
-			$this->utilityFuncs->debugMessage('condition', array($evaluationMessage, $condition));
+		//set fields to insert/update
+		$queryFields = $this->parseFields();
+
+		//query the database
+		$isSuccess = $this->save($queryFields);
+
+		if (!is_array($this->gp['saveDB'])) {
+			$this->gp['saveDB'] = array();
 		}
 
-		if ($evaluation) {
-			$this->utilityFuncs->debugMessage('data_stored');
+		//Store info in GP only if the query was successful
+		if($isSuccess) {
 
-			//set fields to insert/update
-			$queryFields = $this->parseFields();
-
-			//query the database
-			$isSuccess = $this->save($queryFields);
-
-			if (!is_array($this->gp['saveDB'])) {
-				$this->gp['saveDB'] = array();
+			//Get DB info, including UID
+			if (!$this->doUpdate) {
+				$this->gp['inserted_uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
+				$this->gp[$this->table . '_inserted_uid'] = $this->gp['inserted_uid'];
+				$info = array(
+					'table' => $this->table,
+					'uid' => $this->gp['inserted_uid'],
+					'uidField' => $this->key
+				);
+				array_push($this->gp['saveDB'], $info);
+			} else {
+				$uid = $this->getUpdateUid();
+				$info = array(
+					'table' => $this->table,
+					'uid' => $uid,
+					'uidField' => $this->key
+				);
+				array_push($this->gp['saveDB'], $info);
 			}
 
-			//Store info in GP only if the query was successful
-			if($isSuccess) {
-
-				//Get DB info, including UID
-				if (!$this->doUpdate) {
-					$this->gp['inserted_uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
-					$this->gp[$this->table . '_inserted_uid'] = $this->gp['inserted_uid'];
-					$info = array(
-						'table' => $this->table,
-						'uid' => $this->gp['inserted_uid'],
-						'uidField' => $this->key
-					);
-					array_push($this->gp['saveDB'], $info);
-				} else {
-					$uid = $this->getUpdateUid();
-					$info = array(
-						'table' => $this->table,
-						'uid' => $uid,
-						'uidField' => $this->key
-					);
-					array_push($this->gp['saveDB'], $info);
-				}
-	
-				//Insert the data written to DB into GP array
-				$dataKeyName = $this->table;
-				$dataKeyIndex = 1;
-				while(isset($this->gp['saveDB'][$dataKeyName])) {
-					$dataKeyIndex++;
-					$dataKeyName = $this->table . '_' . $dataKeyIndex;
-				}
-				$this->gp['saveDB'][$dataKeyName] = $queryFields;
+			//Insert the data written to DB into GP array
+			$dataKeyName = $this->table;
+			$dataKeyIndex = 1;
+			while(isset($this->gp['saveDB'][$dataKeyName])) {
+				$dataKeyIndex++;
+				$dataKeyName = $this->table . '_' . $dataKeyIndex;
 			}
+			$this->gp['saveDB'][$dataKeyName] = $queryFields;
 		}
 
 		return $this->gp;
-	}
-
-	/**
-	 * Parses condition statement given by the typoscript configuration. Replaces field with real content for a proper PHP eval().
-	 *
-	 * @author	Fabien Udriot <fabien.udriot@ecodev.ch>
-	 * @param	string	$condition: the condition given by the typoscript configuration.
-	 * @return	string	$condition: the condition formated for evaluation.
-	 */
-	protected function parseCondition($condition) {
-		$pattern = '/[\w]+/is';
-		preg_match_all($pattern, $condition, $fields);
-		foreach ($fields[0] as $idx => $fieldName) {
-			if (isset($this->gp[$fieldName])) {
-
-				// Formats the value by surrounding it with '.
-				$value = "'" . str_replace("'", "\'", $this->gp[$fieldName]) . "'";
-
-				// Replace conditions
-				$condition = str_replace($fieldName, $value, $condition);
-			} else {
-				$condition = str_replace($fieldName, 'FALSE', $condition);
-			}
-		}
-		return $condition;
 	}
 
 	/**
