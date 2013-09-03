@@ -324,7 +324,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	}
 
 	protected function handleIfSubpartCondition($condition) {
-		$valueConditions = preg_split('/\s*(!=|\^=|\$=|~=|=|<|>)\s*/', $condition, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$valueConditions = preg_split('/\s*(!=|\^=|\$=|~=|>=|<=|=|<|>)\s*/', $condition, -1, PREG_SPLIT_DELIM_CAPTURE);
 
 		$conditionOperator = trim($valueConditions[1]);
 		$fieldName = trim($valueConditions[0]);
