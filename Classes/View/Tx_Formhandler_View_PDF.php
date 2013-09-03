@@ -60,6 +60,10 @@ class Tx_Formhandler_View_PDF extends Tx_Formhandler_View_Form {
 	}
 
 	protected function fillValueMarkers() {
+		$this->disableEncodingFields = array();
+		if($this->settings['disableEncodingFields']) {
+			$this->disableEncodingFields = explode(',', $this->utilityFuncs->getSingle($this->settings, 'disableEncodingFields'));
+		}
 		$markers = $this->getValueMarkers($this->gp);
 
 		$markers = $this->sanitizeMarkers($markers);

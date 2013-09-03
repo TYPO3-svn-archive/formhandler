@@ -185,7 +185,7 @@ if (!defined('PDF_FONT_SIZE_MAIN')) {
 }
 
 if (!defined('PDF_FONT_NAME_DATA')) {
-	define ('PDF_FONT_NAME_DATA', 'helvetica');
+	define ('PDF_FONT_NAME_DATA', 'freesans');
 }
 
 if (!defined('PDF_FONT_SIZE_DATA')) {
@@ -193,7 +193,7 @@ if (!defined('PDF_FONT_SIZE_DATA')) {
 }
 
 if (!defined('PDF_FONT_MONOSPACED')) {
-	define ('PDF_FONT_MONOSPACED', 'courier');
+	define ('PDF_FONT_MONOSPACED', 'freemono');
 }
 
 if (!defined('PDF_IMAGE_SCALE_RATIO')) {

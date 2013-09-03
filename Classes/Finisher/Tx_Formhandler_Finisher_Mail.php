@@ -574,7 +574,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 								if ($generatorClass) {
 									$generator = $this->componentManager->getComponent($generatorClass);
 									$generator->init($this->gp, $options['config.']);
-									$generator->getLink();
+									$generator->getLink(array());
 									$file = $generator->process();
 									$emailSettings['attachGeneratedFiles'] .= $file . ',';
 								}
