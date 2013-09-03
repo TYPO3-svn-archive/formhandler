@@ -265,7 +265,23 @@ class Tx_Formhandler_UtilityFuncs {
 		if (!isset($arr[$key . '.']['sanitize'])) {
 			$arr[$key . '.']['sanitize'] = 1;
 		}
+		if(!$this->isValidCObject($arr[$key])) {
+			return $arr[$key];
+		}
 		return $this->globals->getCObj()->cObjGetSingle($arr[$key], $arr[$key . '.']);
+	}
+
+	public function isValidCObject($str) {
+		return (
+			$str === 'CASE' || $str === 'CLEARGIF' || $str === 'COA' || $str === 'COA_INT' ||
+			$str === 'COLUMNS' || $str === 'CONTENT' || $str === 'CTABLE' || $str === 'EDITPANEL' ||
+			$str === 'FILE' || $str === 'FILES' || $str === 'FLUIDTEMPLATE' || $str === 'FORM' ||
+			$str === 'HMENU' || $str === 'HRULER' || $str === 'HTML' || $str === 'IMAGE' ||
+			$str === 'IMG_RESOURCE' || $str === 'IMGTEXT' || $str === 'LOAD_REGISTER' || $str === 'MEDIA' ||
+			$str === 'MULTIMEDIA' || $str === 'OTABLE' || $str === 'QTOBJECT' || $str === 'RECORDS' ||
+			$str === 'RESTORE_REGISTER' || $str === 'SEARCHRESULT' || $str === 'SVG' || $str === 'SWFOBJECT' ||
+			$str === 'TEMPLATE' || $str === 'TEXT' || $str === 'USER' || $str === 'USER_INT'
+		);
 	}
 
 	public function getPreparedClassName($settingsArray, $defaultClassName = '') {

@@ -1431,22 +1431,40 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	protected function addCSS() {
 		$cssFile = $this->settings['cssFile'];
 		$cssFiles = array();
-		if ($this->settings['cssFile.']) {
+		if (!$this->utilityFuncs->isValidCObject($cssFile) 
+			&& is_array($this->settings['cssFile.']) 
+			&& !isset($this->settings['cssFile.']['media'])) {
+
 			foreach ($this->settings['cssFile.'] as $idx => $file) {
 				if(strpos($idx, '.') === FALSE) {
 					$file = $this->utilityFuncs->getSingle($this->settings['cssFile.'], $idx);
-					$cssFiles[] = $file;
+					$media = 'screen';
+					if(isset($this->settings['cssFile.'][$idx . '.']['media'])) {
+						$media = $this->settings['cssFile.'][$idx . '.']['media'];
+					}
+					$cssFiles[] = array(
+						'file' => $file,
+						'media' => $media
+					);
 				}
 			}
 		} else {
-			$cssFiles[] = $cssFile;
+			$media = 'screen';
+			if(isset($this->settings['cssFile.']['media'])) {
+				$media = $this->settings['cssFile.']['media'];
+			}
+			$cssFiles[] = array(
+				'file' => $cssFile,
+				'media' => $media
+			);
 		}
-		foreach ($cssFiles as $idx => $file) {
+		foreach ($cssFiles as $idx => $fileOptions) {
+			$file = $fileOptions['file'];
 			if(strlen(trim($file)) > 0) {
 				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
 				if(file_exists($file)) {
 					$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
-						'<link rel="stylesheet" href="' . $file . '" type="text/css" media="screen" />' . "\n";
+						'<link rel="stylesheet" href="' . $file . '" type="text/css" media="' . $fileOptions['media'] . '" />' . "\n";
 				}
 			}
 		}
