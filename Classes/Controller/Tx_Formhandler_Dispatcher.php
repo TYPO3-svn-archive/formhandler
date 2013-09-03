@@ -17,7 +17,6 @@
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
 require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
-require_once(PATH_tslib.'class.tslib_pibase.php');
 
 /**
  * The Dispatcher instantiates the Component Manager and delegates the process to the given controller.
