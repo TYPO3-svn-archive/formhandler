@@ -1429,6 +1429,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return void
 	 */
 	protected function addCSS() {
+		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$cssFile = $this->settings['cssFile'];
 		$cssFiles = array();
 		if (!$this->utilityFuncs->isValidCObject($cssFile) 
@@ -1438,33 +1439,32 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			foreach ($this->settings['cssFile.'] as $idx => $file) {
 				if(strpos($idx, '.') === FALSE) {
 					$file = $this->utilityFuncs->getSingle($this->settings['cssFile.'], $idx);
-					$media = 'screen';
-					if(isset($this->settings['cssFile.'][$idx . '.']['media'])) {
-						$media = $this->settings['cssFile.'][$idx . '.']['media'];
-					}
-					$cssFiles[] = array(
-						'file' => $file,
-						'media' => $media
-					);
+					$fileOptions = $this->settings['cssFile.'][$idx . '.'];
+					$fileOptions['file'] = $file;
+					$cssFiles[] = $fileOptions;
 				}
 			}
 		} else {
-			$media = 'screen';
-			if(isset($this->settings['cssFile.']['media'])) {
-				$media = $this->settings['cssFile.']['media'];
-			}
-			$cssFiles[] = array(
-				'file' => $cssFile,
-				'media' => $media
-			);
+			$fileOptions = $this->settings['cssFile.'];
+			$fileOptions['file'] = $cssFile;
+			$cssFiles[] = $fileOptions;
 		}
+		
 		foreach ($cssFiles as $idx => $fileOptions) {
 			$file = $fileOptions['file'];
 			if(strlen(trim($file)) > 0) {
 				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
 				if(file_exists($file)) {
-					$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
-						'<link rel="stylesheet" href="' . $file . '" type="text/css" media="' . $fileOptions['media'] . '" />' . "\n";
+					$pageRenderer->addCssFile(
+						$file,
+						$fileOptions['alternate'] ? 'alternate stylesheet' : 'stylesheet',
+						$fileOptions['media'] ? $fileOptions['media'] : 'all',
+						$fileOptions['title'] ? $fileOptions['title'] : '',
+						empty($fileOptions['disableCompression']),
+						$fileOptions['forceOnTop'] ? TRUE : FALSE,
+						$fileOptions['allWrap'],
+						$fileOptions['excludeFromConcatenation'] ? TRUE : FALSE
+					);
 				}
 			}
 		}
@@ -1476,24 +1476,37 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return void
 	 */
 	protected function addJS() {
+		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$jsFile = $this->settings['jsFile'];
 		$jsFiles = array();
 		if ($this->settings['jsFile.']) {
 			foreach ($this->settings['jsFile.'] as $idx => $file) {
 				if(strpos($idx, '.') === FALSE) {
 					$file = $this->utilityFuncs->getSingle($this->settings['jsFile.'], $idx);
-					$jsFiles[] = $file;
+					$fileOptions = $this->settings['jsFile.'][$idx . '.'];
+					$fileOptions['file'] = $file;
+					$jsFiles[] = $fileOptions;
 				}
 			}
 		} else {
-			$jsFiles[] = $jsFile;
+			$fileOptions = $this->settings['jsFile.'];
+			$fileOptions['file'] = $jsFile;
+			$jsFiles[] = $fileOptions;
 		}
-		foreach ($jsFiles as $idx => $file) {
+		foreach ($jsFiles as $idx => $fileOptions) {
+			$file = $fileOptions['file'];
 			if(strlen(trim($file)) > 0) {
 				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
 				if(file_exists($file)) {
-					$GLOBALS['TSFE']->additionalHeaderData[$this->configuration->getPackageKeyLowercase()] .=
-						'<script type="text/javascript" src="' . $file . '"></script>' . "\n";
+					$pageRenderer->addJsFile(
+						$file, 
+						$fileOptions['type'] ? $fileOptions['type'] : 'text/javascript', 
+						empty($fileOptions['disableCompression']), 
+						$fileOptions['forceOnTop'] ? TRUE : FALSE, 
+						$fileOptions['allWrap'], 
+						$fileOptions['excludeFromConcatenation'] ? TRUE : FALSE
+					);
+					$pageRenderer->addJsFile($file);
 				}
 			}
 		}
