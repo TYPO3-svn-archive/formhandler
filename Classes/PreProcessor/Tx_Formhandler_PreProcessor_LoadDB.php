@@ -206,10 +206,13 @@ class Tx_Formhandler_PreProcessor_LoadDB extends Tx_Formhandler_AbstractPreProce
 		$this->utilityFuncs->debugMessage($sql);
 
 		$res = $GLOBALS['TYPO3_DB']->sql_query($sql);
-		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
+		$rowCount = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+		if ($rowCount === 1) {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			return $row;
+		} elseif($rowCount > 0) {
+			$this->utilityFuncs->debugMessage('sql_too_many_rows', array($rowCount), 3);
 		}
 		return array();
 	}
