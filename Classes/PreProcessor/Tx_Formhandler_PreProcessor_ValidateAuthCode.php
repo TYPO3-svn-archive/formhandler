@@ -41,6 +41,18 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 
 				$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
 
+				//Check if table is valid
+				$existingTables = array_keys($GLOBALS['TYPO3_DB']->admin_get_tables());
+				if(!in_array($table, $existingTables)) {
+					$this->utilityFuncs->throwException('validateauthcode_insufficient_params');
+				}
+				
+				//Check if uidField is valid
+				$existingFields = array_keys($GLOBALS['TYPO3_DB']->admin_get_fields($table));
+				if(!in_array($uidField, $existingFields)) {
+					$this->utilityFuncs->throwException('validateauthcode_insufficient_params');
+				}
+
 				$hiddenField = 'disable';
 				if($this->settings['hiddenField']) {
 					$hiddenField = $this->utilityFuncs->getSingle($this->settings, 'hiddenField');
