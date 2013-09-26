@@ -1,0 +1,123 @@
+@CHARSET "ISO-8859-1";
+
+.ui-helper-clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.ui-helper-clearfix {
+	display: inline-block;
+	margin: 10px 0;
+}
+
+* html .ui-helper-clearfix {
+	height: 1%;
+}
+
+.ui-helper-clearfix {
+	display: block;
+}
+
+.selection_box {
+	width: 200px;
+	float: left;
+}
+
+.delete_fields {
+	width: 50%;
+	float: left;
+}
+
+.export_fields {
+	width: 50%;
+	float: right;
+	text-align: right;
+}
+
+.export_fields input {
+	float: right;
+	margin: 0 0 0 4px;
+}
+
+.which_block {
+	text-align: right;
+}
+
+div.clear {
+	clear: both;
+}
+
+div.filter h2 {
+	text-align: center;
+}
+
+.label {
+	font-weight: bold;
+}
+
+tr.list_table_header {
+	font-weight: bold;
+}
+
+#list_table {
+	margin-top: 10px;
+}
+
+#list_table table {
+	width: 100%;
+}
+
+#list_table td {
+	padding: 3px 7px 3px 7px;
+}
+
+div.detailLabel {
+	width: 100px;
+	float: left;
+	margin-top: 5px;
+}
+
+div.detailLabel h4 {
+	margin: 0;
+}
+
+div.detailValue {
+	width: 200px;
+	float: left;
+	margin-top: 5px;
+}
+
+div.params_table {
+	width: 300px;
+	margin-left: 30px;
+}
+
+div.back_link {
+	margin-top: 30px;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+#list_table a {
+	text-decoration: underline;
+}
+
+.browsebox {
+	margin: 10px 0;
+	padding: 0;
+}
+
+.browsebox ul {
+	margin: 0;
+	padding: 0;
+	float: right;
+}
+
+.browsebox ul li {
+	float: left;
+	list-style-type: none;
+	margin: 0 5px;
+}
