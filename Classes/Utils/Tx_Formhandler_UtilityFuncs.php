@@ -90,10 +90,11 @@ class Tx_Formhandler_UtilityFuncs {
 	/**
 	 * Adds needed prefix to class name if not set in TS
 	 *
+	 * @param string $className
 	 * @return string
 	 */
 	public function prepareClassName($className) {
-		if (substr($className, 0, 3) !== 'Tx_') {
+		if (strstr($className, '\\') === FALSE && substr($className, 0, 3) !== 'Tx_') {
 			$className = 'Tx_Formhandler_' . $className;
 		}
 		return $className;
