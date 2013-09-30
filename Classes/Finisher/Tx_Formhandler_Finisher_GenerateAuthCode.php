@@ -81,6 +81,9 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 				if (!empty($formValuesPrefix)) {
 					$paramsArray = array($formValuesPrefix => $paramsArray);
 				}
+				
+				//Add no_cache parameter to make sure validating the auth code is done everytime.
+				$paramsArray['no_cache'] = 1;
 
 				// create the link, using typolink function, use baseUrl if set, else use t3lib_div::getIndpEnv('TYPO3_SITE_URL')
 				$url = $this->cObj->getTypoLink_URL($authCodePage, $paramsArray);
