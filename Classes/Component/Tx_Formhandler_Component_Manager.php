@@ -359,7 +359,7 @@ class Tx_Formhandler_Component_Manager {
 				t3lib_div::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
 
 				//If the package exists in the cache, but the class does not, look in the additionalIncludePaths again.
-			} elseif(!array_key_exists($className, $this->classFiles)) {
+			} elseif(!array_key_exists($className, $this->classFiles[$classNameParts[1]])) {
 				if (is_array($this->additionalIncludePaths)) {
 					foreach ($this->additionalIncludePaths as $idx => $dir) {
 						$temp = array();
