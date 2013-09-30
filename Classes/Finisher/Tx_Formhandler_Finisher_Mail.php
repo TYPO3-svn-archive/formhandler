@@ -177,12 +177,12 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
 		$cc = $mailSettings['cc_email'];
 		if (!is_array($cc)) {
-			$cc = array($cc);
+			$cc = t3lib_div::trimExplode(',', $cc);
 		}
 
 		$ccName = $mailSettings['cc_name'];
 		if (!is_array($ccName)) {
-			$ccName = array($ccName);
+			$ccName = t3lib_div::trimExplode(',', $ccName);
 		}
 		foreach ($cc as $key => $email) {
 			$name = '';
@@ -196,12 +196,12 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
 		$bcc = $mailSettings['bcc_email'];
 		if (!is_array($bcc)) {
-			$bcc = array($bcc);
+			$bcc = t3lib_div::trimExplode(',', $bcc);
 		}
 
 		$bccName = $mailSettings['bcc_name'];
 		if (!is_array($bccName)) {
-			$bccName = array($bccName);
+			$bccName = t3lib_div::trimExplode(',', $bccName);
 		}
 		foreach ($bcc as $key => $email) {
 			$name = '';
@@ -256,7 +256,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		}
 
 		if (!is_array($mailSettings['attachment'])) {
-			$mailSettings['attachment'] = array($mailSettings['attachment']);
+			$mailSettings['attachment'] = t3lib_div::trimExplode(',', $mailSettings['attachment']);
 		}
 		foreach ($mailSettings['attachment'] as $idx => $attachment) {
 			if (strlen($attachment) > 0 && @file_exists($attachment)) {
@@ -280,7 +280,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			$max = 2;
 		}
 		if (!is_array($mailSettings['to_email'])) {
-			$mailSettings['to_email'] = array($mailSettings['to_email']);
+			$mailSettings['to_email'] = t3lib_div::trimExplode(',', $mailSettings['to_email']);
 		}
 		reset($mailSettings['to_email']);
 
