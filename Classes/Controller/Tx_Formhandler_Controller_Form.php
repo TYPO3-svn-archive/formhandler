@@ -1053,15 +1053,15 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 						$rootKey = trim($keys[0]);
 						$value = $this->gp[$rootKey];
 
-						$result = isset($this->gp[$rootKey]);
+						$result = (isset($this->gp[$rootKey]) && !empty($this->gp[$rootKey]));
 						for ($i = 1; $i < $numberOfLevels && isset($value); $i++) {
 							$currentKey = trim($keys[$i]);
 							if (is_object($value)) {
 								$value = $value->$currentKey;
-								$result = isset($value->$currentKey);
+								$result = (isset($value->$currentKey) && !empty($value->$currentKey));
 							} elseif (is_array($value)) {
 								$value = $value[$currentKey];
-								$result = isset($value[$currentKey]);
+								$result = (isset($value[$currentKey]) && !empty($value[$currentKey]));
 							} else {
 								$result = FALSE;
 							}
