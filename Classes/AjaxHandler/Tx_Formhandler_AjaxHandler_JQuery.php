@@ -145,10 +145,12 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 							window.location.href = data.redirect;
 						} else {
 							form.closest(".Tx-Formhandler").replaceWith(data.form);
-							' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function() {
+							' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function(e) {
+								e.preventDefault();
 								submitButtonClick(' . $this->jQueryAlias . '(this));
 							});
-							' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function() {
+							' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function(e) {
+								e.preventDefault();
 								return false;
 							});
 							attachValidationEvents();
@@ -159,10 +161,12 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 				return false;
 			}
 
-			' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function() {
+			' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function(e) {
+				e.preventDefault();
 				return false;
 			});
-			' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function() {
+			' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function(e) {
+				e.preventDefault();
 				submitButtonClick(' . $this->jQueryAlias . '(this));
 			});';
 		}
