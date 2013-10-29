@@ -1097,7 +1097,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @return array The merged settings
 	 */
 	public function mergeConfiguration($settings, $newSettings) {
-		return t3lib_div::array_merge($settings, $newSettings);
+		return t3lib_div::array_merge_recursive_overrule($settings, $newSettings);
 	}
 }
 
