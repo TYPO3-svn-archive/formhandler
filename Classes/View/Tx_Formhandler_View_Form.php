@@ -241,7 +241,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$type = strtolower($type);
 		$write = TRUE;
 
-		$pattern = '/(\<\!\-\-[^#]*)?(###' . $type . '_+([^#]*)_*###)([^\-]*\-\-\>)?/i';
+		$pattern = '/(\<\!\-\-\s*)?(###' . $type . '_+([^#]*)_*###)([^\-]*\-\-\>)?/i';
 		preg_match_all($pattern, $this->template, $matches);
 		if(is_array($matches[0])) {
 			$resultCount = count($matches[0]);
