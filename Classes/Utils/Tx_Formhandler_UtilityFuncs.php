@@ -1036,6 +1036,7 @@ class Tx_Formhandler_UtilityFuncs {
 
 	public function wrap($str, $settingsArray, $key) {
 		$wrappedString = $str;
+		$this->globals->getCObj()->setCurrentVal($wrappedString);
 		if(is_array($settingsArray[$key . '.'])) {
 			$wrappedString = $this->globals->getCObj()->stdWrap($str, $settingsArray[$key . '.']);
 		} elseif(strlen($settingsArray[$key]) > 0) {
