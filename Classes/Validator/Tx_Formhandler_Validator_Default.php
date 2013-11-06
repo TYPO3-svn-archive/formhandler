@@ -218,7 +218,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 				}
 				if(empty($this->restrictErrorChecks) || in_array($check['check'], $this->restrictErrorChecks)) {
 					$this->utilityFuncs->debugMessage('calling_class', array($fullClassName));
-					$errorCheckObject->init($this->gp, $check);
+					$errorCheckObject->init($gp, $check);
 					$errorCheckObject->setFormFieldName($fieldName);
 					if($errorCheckObject->validateConfig()) {
 						$checkFailed = $errorCheckObject->check();
