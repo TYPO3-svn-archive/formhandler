@@ -223,7 +223,7 @@ class Tx_Formhandler_UtilityFuncs {
 			if (isset($settings['langFile']) && !isset($settings['langFile.'])) {
 				array_push($langFiles, $this->resolveRelPathFromSiteRoot($settings['langFile']));
 			} elseif (isset($settings['langFile']) && isset($settings['langFile.'])) {
-				array_push($langFiles, $this->globals->getSingle($settings, 'langFile'));
+				array_push($langFiles, $this->getSingle($settings, 'langFile'));
 			} elseif (isset($settings['langFile.']) && is_array($settings['langFile.'])) {
 				foreach ($settings['langFile.'] as $key => $langFile) {
 					if (FALSE === strpos($key, '.')) {
