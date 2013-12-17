@@ -128,6 +128,10 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 				$conn->Connect($host, $this->user, $this->password);
 			}
 
+			if($this->settings['setDBinit']) {
+				$conn->Execute($this->utilityFuncs->getSingle($this->settings, 'setDBinit'));
+			}
+
 			//insert data
 			$conn->Execute($query);
 
