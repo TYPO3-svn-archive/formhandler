@@ -167,7 +167,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	protected function replaceMarkersFromMaster() {
 		$fieldMarkers = array();
 		foreach ($this->masterTemplates as $idx => $masterTemplate) {
-			$masterTemplateCode = t3lib_div::getURL($masterTemplate);
+			$masterTemplateCode = t3lib_div::getURL($this->utilityFuncs->resolvePath($masterTemplate));
 			$matches = array();
 			preg_match_all('/###(field|master)_([^#]*)###/', $masterTemplateCode, $matches);
 			if (!empty($matches[0])) {
