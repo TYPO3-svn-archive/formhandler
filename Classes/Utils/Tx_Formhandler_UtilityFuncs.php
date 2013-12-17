@@ -991,7 +991,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @param string $sep The separator character
 	 * @return string The normalized pattern
 	 */
-	public function normalizeDatePattern($pattern, $sep) {
+	public function normalizeDatePattern($pattern, $sep = '') {
 		$pattern = strtoupper($pattern);
 		$pattern = str_replace(
 			array($sep, 'DD', 'D', 'MM', 'M', 'YYYY', 'YY', 'Y'),
