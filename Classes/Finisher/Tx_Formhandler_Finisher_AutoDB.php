@@ -118,7 +118,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 
 		foreach ($this->getFormFieldNames() as $fieldName) {
 			$keys = explode('[', str_replace(']', '', $fieldName));
-			if ($invokePrefix && $keys[0] == $prefix && !empty($keys[1])) {
+			if ($invokePrefix && (($keys[0] == $prefix) || ($keys[0] == '###formValuesPrefix###')) && !empty($keys[1])) {
 				$fields[$keys[1]] = $keys[1];
 			}
 			elseif (!$invokePrefix && strlen($keys[0])) {
