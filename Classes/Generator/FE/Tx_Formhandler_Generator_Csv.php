@@ -76,7 +76,7 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 		if($csv->input_encoding !== $csv->output_encoding) {
 			$csv->convert_encoding = TRUE;
 		}
-		if(intval($this->settings['returnFileName']) === 1) {
+		if(intval($this->settings['returnFileName']) === 1 || intval($this->settings['returnGP']) === 1) {
 			$outputPath = $this->utilityFuncs->getDocumentRoot();
 			if ($this->settings['customTempOutputPath']) {
 				$outputPath .= $this->settings['customTempOutputPath'];
@@ -86,8 +86,11 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 			$outputPath = $this->utilityFuncs->sanitizePath($outputPath);
 			$filename = $outputPath . $this->settings['filePrefix'] . $this->utilityFuncs->generateHash() . '.csv';
 			$csv->save($filename, $data, FALSE, $fields);
-
-			return $filename;
+			if(intval($this->settings['returnFileName']) === 1) {
+				return $filename;
+			} else {
+				return $this->gp;
+			}
 		} else {
 			$csv->output('formhandler.csv', $data, $fields);
 			die();
