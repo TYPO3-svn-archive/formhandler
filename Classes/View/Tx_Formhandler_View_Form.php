@@ -150,12 +150,18 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		if (isset($this->settings['masterTemplateFile']) && !isset($this->settings['masterTemplateFile.'])) {
 			array_push($this->masterTemplates, $this->utilityFuncs->resolveRelPathFromSiteRoot($this->settings['masterTemplateFile']));
 		} elseif (isset($this->settings['masterTemplateFile']) && isset($this->settings['masterTemplateFile.'])) {
-			array_push($this->masterTemplates, $this->utilityFuncs->getSingle($this->settings, 'masterTemplateFile'));
+			array_push(
+				$this->masterTemplates, 
+				$this->utilityFuncs->resolveRelPathFromSiteRoot($this->utilityFuncs->getSingle($this->settings, 'masterTemplateFile'))
+			);
 		} elseif (isset($this->settings['masterTemplateFile.']) && is_array($this->settings['masterTemplateFile.'])) {
 			foreach ($this->settings['masterTemplateFile.'] as $key => $masterTemplate) {
 				if (FALSE === strpos($key, '.')) {
 					if (is_array($this->settings['masterTemplateFile.'][$key . '.'])) {
-						array_push($this->masterTemplates, $this->utilityFuncs->getSingle($this->settings['masterTemplateFile.'], $key));
+						array_push(
+							$this->masterTemplates, 
+							$this->utilityFuncs->resolveRelPathFromSiteRoot($this->utilityFuncs->getSingle($this->settings['masterTemplateFile.'], $key))
+						);
 					} else {
 						array_push($this->masterTemplates, $this->utilityFuncs->resolveRelPathFromSiteRoot($masterTemplate));
 					}
