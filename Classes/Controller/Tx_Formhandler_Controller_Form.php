@@ -809,7 +809,11 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 										$uploadedUrl = str_replace('//', '/', $uploadedUrl);
 										$tmp['uploaded_url'] = $uploadedUrl;
 										$tmp['size'] = $files['size'][$field][$idx];
-										$tmp['type'] = $files['type'][$field][$idx];
+										if(is_array($files['type'][$field][$idx])) {
+											$tmp['type'] = $files['type'][$field][$idx];
+										} else {
+											$tmp['type'] = $files['type'][$field];
+										}
 										if (!is_array($tempFiles[$field]) && strlen($field) > 0) {
 											$tempFiles[$field] = array();
 										}
@@ -830,7 +834,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				}
 			}
 		}
-
 		$this->globals->getSession()->set('files', $tempFiles);
 		$this->utilityFuncs->debugMessage('Files:', array(), 1, (array)$tempFiles);
 	}
