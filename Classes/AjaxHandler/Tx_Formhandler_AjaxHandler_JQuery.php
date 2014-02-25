@@ -133,7 +133,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			$url = $this->utilityFuncs->getAjaxUrl($params);
 			$js .= '	
 				var requestURL = "' . $url . '";
-				var postData = form.serialize() + "&" + ' . $this->jQueryAlias . '(this).attr("name") + "=submit";
+				var postData = form.serialize() + "&" + el(this).attr("name") + "=submit";
 				container.find(".loading_ajax-submit").show();
 				jQuery.ajax({
 					type: "post",
