@@ -347,13 +347,13 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				break;
 			case '$=':
 				$gpValue = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
-				$checkValue = substr($valueConditions[2], -strlen($gpValue));
-				$checkValue = $this->utilityFuncs->parseOperand($checkValue, $this->gp);
+				$gpValue = substr($gpValue, -strlen($valueConditions[2]));
+				$checkValue = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
 				$conditionResult = (strcmp($checkValue, $gpValue) === 0);
 				break;
 			case '~=':
 				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
-				$conditionResult = strpos($value, $this->utilityFuncs->getGlobal($fieldName, $this->gp)) !== FALSE;
+				$conditionResult = strpos($this->utilityFuncs->getGlobal($fieldName, $this->gp), $value) !== FALSE;
 				break;
 			case '=':
 				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
