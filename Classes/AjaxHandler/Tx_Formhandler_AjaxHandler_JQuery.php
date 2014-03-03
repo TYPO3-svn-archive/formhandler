@@ -364,7 +364,9 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 	}
 
 	protected function addJS($js) {
-		if($this->jsPosition === 'footer') {
+		if($this->jsPosition === 'inline') {
+			$GLOBALS['TSFE']->content .= $js;
+		} elseif($this->jsPosition === 'footer') {
 			$GLOBALS['TSFE']->additionalFooterData['Tx_Formhandler_AjaxHandler_Jquery_' . $this->globals->getCObj()->data['uid']] .= $js;
 		} else {
 			$GLOBALS['TSFE']->additionalHeaderData['Tx_Formhandler_AjaxHandler_Jquery_' . $this->globals->getCObj()->data['uid']] .= $js;
