@@ -89,6 +89,10 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 			if(intval($this->settings['returnFileName']) === 1) {
 				return $filename;
 			} else {
+				if(!is_array($this->gp['generator-csv-generated-files'])) {
+					$this->gp['generator-csv-generated-files'] = array();
+				}
+				$this->gp['generator-csv-generated-files'][] = $filename;
 				return $this->gp;
 			}
 		} else {
