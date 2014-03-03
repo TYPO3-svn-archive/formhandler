@@ -98,5 +98,54 @@ class Tx_Formhandler_CompatibilityFuncs {
 		}
 	}
 
+		/**
+		 * Adds a CSS file to the page
+		 *
+		 * @param string File name
+		 * @param array The file options like "media" and "title"
+		 * @return void
+		 */
+		public function addCssFile($file, $fileOptions) {
+			if(class_exists('\TYPO3\CMS\Core\Page\PageRenderer')) {
+				$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+				$pageRenderer->addCssFile(
+					$file,
+					$fileOptions['alternate'] ? 'alternate stylesheet' : 'stylesheet',
+					$fileOptions['media'] ? $fileOptions['media'] : 'all',
+					$fileOptions['title'] ? $fileOptions['title'] : '',
+					empty($fileOptions['disableCompression']),
+					$fileOptions['forceOnTop'] ? TRUE : FALSE,
+					$fileOptions['allWrap'],
+					$fileOptions['excludeFromConcatenation'] ? TRUE : FALSE
+				);
+			} else {
+				$GLOBALS['TSFE']->additionalHeaderData['formhandler'] .=
+					'<link rel="stylesheet" href="' . $file . '" type="text/css" media="' . $fileOptions['media'] . '" />' . "\n";
+			}
+		}
+
+		/**
+		 * Adds a JS file to the page
+		 *
+		 * @param string File name
+		 * @param array The file options like "media" and "title"
+		 * @return void
+		 */
+		public function addJsFile($file, $fileOptions) {
+			if(class_exists('\TYPO3\CMS\Core\Page\PageRenderer')) {
+				$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+				$pageRenderer->addJsFile(
+					$file,
+					$fileOptions['type'] ? $fileOptions['type'] : 'text/javascript',
+					empty($fileOptions['disableCompression']),
+					$fileOptions['forceOnTop'] ? TRUE : FALSE,
+					$fileOptions['allWrap'],
+					$fileOptions['excludeFromConcatenation'] ? TRUE : FALSE
+				);
+			} else {
+				$GLOBALS['TSFE']->additionalHeaderData['formhandler'] .=
+					'<script type="text/javascript" src="' . $file . '"></script>' . "\n";
+			}
+		}
 }
 ?>
