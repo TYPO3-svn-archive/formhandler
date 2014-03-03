@@ -140,6 +140,46 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 		}
 	}
 
+	protected function doesRecordExist($uid) {
+		$exists = FALSE;
+		if($uid) {
+			$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
+
+			//if adodb is installed (already tested in init, but used to show adodb is used)
+			if (t3lib_extMgm::isLoaded('adodb')) {
+
+				//open connection
+				$conn = &NewADOConnection($this->driver);
+
+				$host = $this->host;
+
+				if ($this->port) {
+					$host .= ':' . $this->port;
+				}
+
+				if ($this->db) {
+					$conn->Connect($host, $this->user, $this->password, $this->db);
+				} else {
+					$conn->Connect($host, $this->user, $this->password);
+				}
+
+				$query = $GLOBALS['TYPO3_DB']->SELECTquery($this->key, $this->table, $this->key . '=' . $uid);
+
+				$temp = $conn->Execute($query);
+				$res = count($temp->GetArray());
+
+				//close connection
+				$conn->Close();
+			}
+
+			if($res > 0) {
+				$exists = TRUE;
+			}
+		}
+
+		return $exists;
+	}
+
 	/**
 	 * Inits the finisher mapping settings values to internal attributes.
 	 *
@@ -147,18 +187,17 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 	 * @return void
 	 */
 	public function init($gp, $settings) {
-		parent::init($gp, $settings);
 
 		//if adodb is installed
 		if (t3lib_extMgm::isLoaded('adodb')) {
 			require_once(t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php');
 
-			$this->driver = $this->utilityFuncs->getSingle($this->settings, 'driver');
-			$this->db = $this->utilityFuncs->getSingle($this->settings, 'db');
-			$this->host = $this->utilityFuncs->getSingle($this->settings, 'host');
-			$this->port = $this->utilityFuncs->getSingle($this->settings, 'port');
-			$this->user = $this->utilityFuncs->getSingle($this->settings, 'username');
-			$this->password = $this->utilityFuncs->getSingle($this->settings, 'password');
+			$this->driver = $this->utilityFuncs->getSingle($settings, 'driver');
+			$this->db = $this->utilityFuncs->getSingle($settings, 'db');
+			$this->host = $this->utilityFuncs->getSingle($settings, 'host');
+			$this->port = $this->utilityFuncs->getSingle($settings, 'port');
+			$this->user = $this->utilityFuncs->getSingle($settings, 'username');
+			$this->password = $this->utilityFuncs->getSingle($settings, 'password');
 			if (!$this->driver) {
 				throw new Exception('No driver given!');
 			}
@@ -166,6 +205,7 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 			$this->utilityFuncs->throwException('extension_required', 'adodb', 'Tx_Formhandler_Finisher_DifferentDB');
 		}
 
+		parent::init($gp, $settings);
 	}
 
 }
