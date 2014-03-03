@@ -1490,14 +1490,6 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			if(strlen(trim($file)) > 0) {
 				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
 				if(file_exists($file)) {
-					$pageRenderer->addJsFile(
-						$file, 
-						$fileOptions['type'] ? $fileOptions['type'] : 'text/javascript', 
-						empty($fileOptions['disableCompression']), 
-						$fileOptions['forceOnTop'] ? TRUE : FALSE, 
-						$fileOptions['allWrap'], 
-						$fileOptions['excludeFromConcatenation'] ? TRUE : FALSE
-					);
 					$this->compatibilityFuncs->addJsFile($file, $fileOptions);
 				}
 			}
