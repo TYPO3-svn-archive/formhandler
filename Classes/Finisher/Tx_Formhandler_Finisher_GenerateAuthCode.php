@@ -30,9 +30,13 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 	public function process() {
 		$firstInsertInfo = array();
 		if($this->utilityFuncs->getSingle($this->settings, 'uid')) {
+			$uidField = $this->utilityFuncs->getSingle($this->settings, 'uidField');
+			if(!$uidField) {
+				$uidField = 'uid';
+			}
 			$firstInsertInfo = array(
 				'table' => $this->utilityFuncs->getSingle($this->settings, 'table'),
-				'uidField' => $this->utilityFuncs->getSingle($this->settings, 'uidField'),
+				'uidField' => $uidField,
 				'uid' => $this->utilityFuncs->getSingle($this->settings, 'uid')
 			);
  		} elseif (is_array($this->gp['saveDB'])) {
