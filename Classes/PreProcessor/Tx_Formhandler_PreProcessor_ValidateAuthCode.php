@@ -64,11 +64,15 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 					$selectFields = $this->utilityFuncs->getSingle($this->settings, 'selectFields');
 				}
 				$hiddenStatusValue = 1;
-				if($this->settings['hiddenStatusValue']) {
+				if(isset($this->settings['hiddenStatusValue'])) {
 					$hiddenStatusValue = $this->utilityFuncs->getSingle($this->settings, 'hiddenStatusValue');
 				}
 				$hiddenStatusValue = $GLOBALS['TYPO3_DB']->fullQuoteStr($hiddenStatusValue, $table);
-				$query = $GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $table, $uidField . '=' . $uid . ' AND ' . $hiddenField . '=' . $hiddenStatusValue . $this->cObj->enableFields($table, 1));
+				$enableFieldsWhere = '';
+				if(intval($this->utilityFuncs->getSingle($this->settings, 'showDeleted')) !== 1) {
+					$enableFieldsWhere = $this->cObj->enableFields($table, 1);
+				}
+				$query = $GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $table, $uidField . '=' . $uid . ' AND ' . $hiddenField . '=' . $hiddenStatusValue . $enableFieldsWhere);
 				$this->utilityFuncs->debugMessage('sql_request', array($query));
 				$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 				if ($GLOBALS['TYPO3_DB']->sql_error()) {
@@ -89,7 +93,7 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 					$this->utilityFuncs->throwException('validateauthcode_invalid_auth_code');
 				}
 				$activeStatusValue = 0;
-				if($this->settings['activeStatusValue']) {
+				if(isset($this->settings['activeStatusValue'])) {
 					$activeStatusValue = $this->utilityFuncs->getSingle($this->settings, 'activeStatusValue');
 				}
 				$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $uidField . '=' . $uid, array($hiddenField => $activeStatusValue));
