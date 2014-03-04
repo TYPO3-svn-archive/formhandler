@@ -29,20 +29,26 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 	 */
 	public function process() {
 		$firstInsertInfo = array();
-		if (is_array($this->gp['saveDB'])) {
-			if (isset($this->settings['table'])) {
-				$table = $this->utilityFuncs->getSingle($this->settings, 'table');
-				foreach ($this->gp['saveDB'] as $idx => $insertInfo) {
-					if ($insertInfo['table'] === $table) {
-						$firstInsertInfo = $insertInfo;
-						break;
-					}
-				}
-			}
-			if (empty($firstInsertInfo)) {
-				reset($this->gp['saveDB']);
-				$firstInsertInfo = current($this->gp['saveDB']);
-			}
+		if($this->utilityFuncs->getSingle($this->settings, 'uid')) {
+			$firstInsertInfo = array(
+				'table' => $this->utilityFuncs->getSingle($this->settings, 'table'),
+				'uidField' => $this->utilityFuncs->getSingle($this->settings, 'uidField'),
+				'uid' => $this->utilityFuncs->getSingle($this->settings, 'uid')
+			);
+ 		} elseif (is_array($this->gp['saveDB'])) {
+ 			if (isset($this->settings['table'])) {
+ 				$table = $this->utilityFuncs->getSingle($this->settings, 'table');
+ 				foreach ($this->gp['saveDB'] as $idx => $insertInfo) {
+ 					if ($insertInfo['table'] === $table) {
+ 						$firstInsertInfo = $insertInfo;
+ 						break;
+ 					}
+ 				}
+ 			}
+ 			if (empty($firstInsertInfo)) {
+ 				reset($this->gp['saveDB']);
+ 				$firstInsertInfo = current($this->gp['saveDB']);
+ 			}
  		}
 		$table = $firstInsertInfo['table'];
 		$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($firstInsertInfo['uid'], $table);
