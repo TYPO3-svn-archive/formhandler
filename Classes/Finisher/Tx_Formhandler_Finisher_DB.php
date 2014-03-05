@@ -339,7 +339,14 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 									array_push($filesArray, $infoString);
 								}
 							}
-							$fieldValue = implode($separator, $filesArray);
+							if(isset($options['special.']['index'])) {
+								$index = $this->utilityFuncs->getSingle($options['special.'], 'index');
+								if(isset($filesArray[$index])) {
+									$fieldValue = $filesArray[$index];
+								}
+							} else {
+								$fieldValue = implode($separator, $filesArray);
+							}
 							break;
 						case 'date':
 							$field = $this->utilityFuncs->getSingle($options['special.'], 'field');
