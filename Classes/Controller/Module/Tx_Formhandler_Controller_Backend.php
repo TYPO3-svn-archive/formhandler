@@ -115,12 +115,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	/**
 	 * init method to load translation data and set log table.
 	 *
-	 * @global $LANG
+	 * @global $GLOBALS['LANG']
 	 * @return void
 	 */
 	protected function init() {
-		global $LANG;
-		$LANG->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');
 		$this->logTable = 'tx_formhandler_log';
 		$this->pageBrowser = new tx_formhandler_mod1_pagination($this->countRecords(), $this);
 	}
@@ -131,7 +130,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string rendered view
 	 */
 	public function process() {
-		global $LANG;
 
 		//init
 		$this->init();
@@ -475,7 +473,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string fields selection view
 	 */
 	protected function generateCSVExportFieldsSelector($params) {
-		global $LANG;
 
 		//if there are no params, initialize the array to ensure that foreach loops will not crash
 		if (!is_array($params)) {
@@ -487,7 +484,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$selectorCode = $this->utilityFuncs->getSubpart($this->templateCode, '###EXPORT_FIELDS_SELECTOR###');
 
 		$markers = array();
-		$markers['###LLL:select_export_fields###'] = $LANG->getLL('select_export_fields');
+		$markers['###LLL:select_export_fields###'] = $GLOBALS['LANG']->getLL('select_export_fields');
 		$markers['###SELECTION###'] = $this->getSelectionBox();
 		$markers['###URL###'] = $_SERVER['PHP_SELF'];
 
@@ -516,18 +513,18 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		$markers['###EXPORTFIELDS###'] = '';
-		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="ip" />' . $LANG->getLL('ip_address') . '</td></tr>';
-		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="submission_date" />' . $LANG->getLL('submission_date') .  '</td></tr>';
-		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="pid" />' . $LANG->getLL('page_id') . '</td></tr>';
+		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="ip" />' . $GLOBALS['LANG']->getLL('ip_address') . '</td></tr>';
+		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="submission_date" />' . $GLOBALS['LANG']->getLL('submission_date') .  '</td></tr>';
+		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="pid" />' . $GLOBALS['LANG']->getLL('page_id') . '</td></tr>';
 
 		//add a label and a checkbox for each available parameter
 		foreach ($params as $field=>$value) {
 			$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="' . $field . '">' . $field . '</td></tr>';
 		}
 		$markers['###UID###'] = $this->id;
-		$markers['###LLL:export###'] = $LANG->getLL('export');
+		$markers['###LLL:export###'] = $GLOBALS['LANG']->getLL('export');
 		$markers['###BACK_URL###'] = $_SERVER['PHP_SELF'] . '?' . $this->getDefaultGetParamsString();
-		$markers['###LLL:back###'] = $LANG->getLL('back');
+		$markers['###LLL:back###'] = $GLOBALS['LANG']->getLL('back');
 		$returnCode = $this->getSelectionJS();
 		$returnCode .= $this->utilityFuncs->substituteMarkerArray($selectorCode, $markers);
 
@@ -542,7 +539,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string fields selection view
 	 */
 	protected function generatePDFExportFieldsSelector($params) {
-		global $LANG;
 
 		//if there are no params, initialize the array to ensure that foreach loops will not crash
 		if (!is_array($params)) {
@@ -554,7 +550,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$selectorCode = $this->utilityFuncs->getSubpart($this->templateCode, '###EXPORT_FIELDS_SELECTOR###');
 
 		$markers = array();
-		$markers['###LLL:select_export_fields###'] = $LANG->getLL('select_export_fields');
+		$markers['###LLL:select_export_fields###'] = $GLOBALS['LANG']->getLL('select_export_fields');
 		$markers['###SELECTION###'] = $this->getSelectionBox();
 		$markers['###URL###'] = $_SERVER['PHP_SELF'];
 
@@ -583,18 +579,18 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		$markers['###EXPORTFIELDS###'] = '';
-		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="ip" />' . $LANG->getLL('ip_address') . '</td></tr>';
-		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="submission_date" />' . $LANG->getLL('submission_date') .  '</td></tr>';
-		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="pid" />' . $LANG->getLL('page_id') . '</td></tr>';
+		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="ip" />' . $GLOBALS['LANG']->getLL('ip_address') . '</td></tr>';
+		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="submission_date" />' . $GLOBALS['LANG']->getLL('submission_date') .  '</td></tr>';
+		$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="pid" />' . $GLOBALS['LANG']->getLL('page_id') . '</td></tr>';
 
 		//add a label and a checkbox for each available parameter
 		foreach ($params as $field => $value) {
 			$markers['###EXPORTFIELDS###'] .= '<tr><td><input type="checkbox" name="formhandler[exportParams][]" value="' . $field . '">' . $field . '</td></tr>';
 		}
 		$markers['###UID###'] = $this->id;
-		$markers['###LLL:export###'] = $LANG->getLL('export');
+		$markers['###LLL:export###'] = $GLOBALS['LANG']->getLL('export');
 		$markers['###BACK_URL###'] = $_SERVER['PHP_SELF'] . '?' . $this->getDefaultGetParamsString();
-		$markers['###LLL:back###'] = $LANG->getLL('back');
+		$markers['###LLL:back###'] = $GLOBALS['LANG']->getLL('back');
 		$returnCode = $this->getSelectionJS();
 		$returnCode .= $this->utilityFuncs->substituteMarkerArray($selectorCode, $markers);
 
@@ -607,12 +603,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string JavaScript code
 	 */
 	protected function getSelectionJS() {
-		global $LANG;
 		$content = "";		
 		$code = $this->utilityFuncs->getSubpart($this->templateCode, '###JS_CODE###');	
 		$markers = array();
 		$markers['###HOW_MUCH_JS###'] = ($this->pageBrowser) ? intval($this->pageBrowser->getMaxResPerPage()) : 0;
-		$markers['###LLL:delete_question###'] = $LANG->getLL('delete_question');
+		$markers['###LLL:delete_question###'] = $GLOBALS['LANG']->getLL('delete_question');
 		$content = $this->utilityFuncs->substituteMarkerArray($code, $markers);
 		return $content;
 	}
@@ -626,7 +621,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string formats selection view
 	 */
 	protected function generateFormatsSelector($formats, $detailId) {
-		global $LANG;
+
 		/*
 		 * if there is only one record to export, initialize an array with the one uid
 		 * to ensure that foreach loops will not crash.
@@ -655,7 +650,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				}
 				$formatMarkers['###KEY###'] = $key;
 				$formatMarkers['###UID###'] = $this->id;
-				$formatMarkers['###LLL:export###'] = $LANG->getLL('export');
+				$formatMarkers['###LLL:export###'] = $GLOBALS['LANG']->getLL('export');
 				$formatMarkers['###FORMAT###'] = implode(',', array_keys($format));
 				$markers['###FORMATS###'] .= $this->utilityFuncs->substituteMarkerArray($code, $formatMarkers);
 			}
@@ -670,13 +665,13 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 		$formatMarkers['###KEY###'] = '*';
 		$formatMarkers['###UID###'] = $this->id;
-		$formatMarkers['###LLL:export###'] = $LANG->getLL('export_all');
+		$formatMarkers['###LLL:export###'] = $GLOBALS['LANG']->getLL('export_all');
 		$formatMarkers['###FORMAT###'] = '';
 		$markers['###FORMATS###'] .= $this->utilityFuncs->substituteMarkerArray($code, $formatMarkers);
 		$markers['###UID###'] = $this->id;
-		$markers['###LLL:formats_found###'] = sprintf($LANG->getLL('formats_found'), $foundFormats);
+		$markers['###LLL:formats_found###'] = sprintf($GLOBALS['LANG']->getLL('formats_found'), $foundFormats);
 		$markers['###BACK_URL###'] = $_SERVER['PHP_SELF'] . '?' . $this->getDefaultGetParamsString();
-		$markers['###LLL:back###'] = $LANG->getLL('back');
+		$markers['###LLL:back###'] = $GLOBALS['LANG']->getLL('back');
 		return $this->utilityFuncs->substituteMarkerArray($selectorCode, $markers);
 	}
 
@@ -687,7 +682,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string single view
 	 */
 	protected function showSingleView($singleUid) {
-		global $LANG;
 
 		//select the record
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params', $this->logTable, ('uid=' . $singleUid));
@@ -708,9 +702,9 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$markers['###CRDATE###'] = date('Y/m/d H:i', $row['crdate']);
 			$markers['###IP###'] = $row['ip'];
 
-			$markers['###LLL:page_id###'] = $LANG->getLL('page_id');
-			$markers['###LLL:crdate###'] = $LANG->getLL('crdate');
-			$markers['###LLL:ip_address###'] = $LANG->getLL('ip_address');
+			$markers['###LLL:page_id###'] = $GLOBALS['LANG']->getLL('page_id');
+			$markers['###LLL:crdate###'] = $GLOBALS['LANG']->getLL('crdate');
+			$markers['###LLL:ip_address###'] = $GLOBALS['LANG']->getLL('ip_address');
 
 			//add the submitted params
 			if (isset($params) && is_array($params)) {
@@ -728,14 +722,14 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				}
 				$paramsTable .= '</table>';
 			}
-			$markers['###LLL:params###'] = $LANG->getLL('params');
+			$markers['###LLL:params###'] = $GLOBALS['LANG']->getLL('params');
 			$markers['###PARAMS###'] = $paramsTable;
 
 			$markers['###UID###'] = $this->id;
-			$markers['###LLL:export_as###'] = $LANG->getLL('export_as');
-			$markers['###EXPORT_LINKS###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $row['uid'] . '&formhandler[renderMethod]=pdf">' . $LANG->getLL('pdf') . '</a>
-						/<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $row['uid'] . '&formhandler[renderMethod]=csv">' . $LANG->getLL('csv') . '</a>';
-			$markers['###BACK_LINK###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?' . $this->getDefaultGetParamsString() . '">' . $LANG->getLL('back') . '</a>';
+			$markers['###LLL:export_as###'] = $GLOBALS['LANG']->getLL('export_as');
+			$markers['###EXPORT_LINKS###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $row['uid'] . '&formhandler[renderMethod]=pdf">' . $GLOBALS['LANG']->getLL('pdf') . '</a>
+						/<a href="' . $_SERVER['PHP_SELF'] . '?formhandler[detailId]=' . $row['uid'] . '&formhandler[renderMethod]=csv">' . $GLOBALS['LANG']->getLL('csv') . '</a>';
+			$markers['###BACK_LINK###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?' . $this->getDefaultGetParamsString() . '">' . $GLOBALS['LANG']->getLL('back') . '</a>';
 			$content = $this->utilityFuncs->substituteMarkerArray($viewCode, $markers);
 			$content = $this->addCSS($content);
 			return $content;
@@ -748,10 +742,9 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string HTML code with error message
 	 */
 	protected function getErrorMessage() {
-		global $LANG;
 		$code = $this->utilityFuncs->getSubpart($this->templateCode, '###NO_TABLE_ERROR###');
 		$markers = array();
-		$markers['###LLL:noLogTable###'] = $LANG->getLL('noLogTable');
+		$markers['###LLL:noLogTable###'] = $GLOBALS['LANG']->getLL('noLogTable');
 		return $this->utilityFuncs->substituteMarkerArray($code, $markers);
 	}
 
@@ -767,17 +760,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$where = $this->buildWhereClause();
 
 		//select the records
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params,is_spam', $this->logTable, $where, '', 'crdate DESC', $this->pageBrowser->getSqlLimitClause());
-
-		//if records found
-		if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
-			$count = 0;
-			while(FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-				$records[$count] = $row;
-				$count++;
-			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		}
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,crdate,ip,params,is_spam', $this->logTable, $where, '', 'crdate DESC', $this->pageBrowser->getSqlLimitClause());
 		return $records;
 	}
 
@@ -792,14 +775,8 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$where = $this->buildWhereClause();
 
 		//select the records
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COUNT(*)', $this->logTable, $where, '', 'crdate DESC');
-		$count = 0;
-		if ($res) {
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			$count = $row[0];
-		}
-		return $count;
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('COUNT(*) as rowCount', $this->logTable, $where, '', 'crdate DESC');
+		return $row['rowCount'];
 	}
 
 	/**
@@ -819,7 +796,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		$pidFilter = '';
-	
 		if (strlen(trim($params['pidFilter'])) > 0) {
 			$pidFilter = $params['pidFilter'];
 		}
@@ -881,7 +857,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string HTML
 	 */
 	protected function getFilterSection() {
-		global $LANG;
 
 		//init gp params
 		$params = t3lib_div::_GP('formhandler');
@@ -904,20 +879,20 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$isAllowedToShowAll = (intval($tsconfig['properties']['config.']['enableShowAllButton']) === 1);
 		}
 		if ($GLOBALS['BE_USER']->user['admin'] || $isAllowedToShowAll) {
-			$markers['###PID_FILTER_ALL###'] = '<input type="button" onclick="pidSelectAll()" id="pidFilter_all" value="' . $LANG->getLL('select_all') . '"/>';		
+			$markers['###PID_FILTER_ALL###'] = '<input type="button" onclick="pidSelectAll()" id="pidFilter_all" value="' . $GLOBALS['LANG']->getLL('select_all') . '"/>';		
 		} else {
 			$markers['###PID_FILTER_ALL###'] = '';
 		}
 
-		$markers['###LLL:filter###'] = $LANG->getLL('filter');
-		$markers['###LLL:pid_label###'] = $LANG->getLL('pid_label');
-		$markers['###LLL:ip_address###'] = $LANG->getLL('ip_address');
-		$markers['###LLL:pagination_how_much###'] = $LANG->getLL('pagination_how_much');
-		$markers['###LLL:pagination_entries###'] = $LANG->getLL('pagination_entries');
-		$markers['###LLL:pagination_all_entries###'] = $LANG->getLL('pagination_all_entries');
-		$markers['###LLL:cal###'] = $LANG->getLL('cal');
-		$markers['###LLL:startdate###'] = $LANG->getLL('startdate');
-		$markers['###LLL:enddate###'] = $LANG->getLL('enddate');
+		$markers['###LLL:filter###'] = $GLOBALS['LANG']->getLL('filter');
+		$markers['###LLL:pid_label###'] = $GLOBALS['LANG']->getLL('pid_label');
+		$markers['###LLL:ip_address###'] = $GLOBALS['LANG']->getLL('ip_address');
+		$markers['###LLL:pagination_how_much###'] = $GLOBALS['LANG']->getLL('pagination_how_much');
+		$markers['###LLL:pagination_entries###'] = $GLOBALS['LANG']->getLL('pagination_entries');
+		$markers['###LLL:pagination_all_entries###'] = $GLOBALS['LANG']->getLL('pagination_all_entries');
+		$markers['###LLL:cal###'] = $GLOBALS['LANG']->getLL('cal');
+		$markers['###LLL:startdate###'] = $GLOBALS['LANG']->getLL('startdate');
+		$markers['###LLL:enddate###'] = $GLOBALS['LANG']->getLL('enddate');
 		$markers['###cal-icon-startdate###'] = t3lib_iconWorks::getSpriteIcon(
 			'actions-edit-pick-date',
 			array(
@@ -960,7 +935,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string HTML and JavaScript
 	 */
 	protected function getFunctionArea() {
-		global $LANG;
 		$code = $this->utilityFuncs->getSubpart($this->templateCode, '###FUNCTION_AREA###');
 		$markers = array();
 		$markers['###URL###'] = $_SERVER['PHP_SELF'];
@@ -976,7 +950,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$content = $this->utilityFuncs->substituteMarkerArray($code, $markers);
 		$markers = array();
 		$markers['###UID###'] = $this->id;
-		$markers['###LLL:delete_selected###'] = $LANG->getLL('delete_selected');
+		$markers['###LLL:delete_selected###'] = $GLOBALS['LANG']->getLL('delete_selected');
 		return $this->utilityFuncs->substituteMarkerArray($content, $markers);
 	}
 
@@ -986,11 +960,10 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string HTML
 	 */
 	protected function getSelectionBox() {
-		global $LANG;
 		$code = $this->utilityFuncs->getSubpart($this->templateCode, '###SELECTION_BOX###');
 		$markers = array();
-		$markers['###LLL:select_all###'] = $LANG->getLL('select_all');
-		$markers['###LLL:deselect_all###'] = $LANG->getLL('deselect_all');
+		$markers['###LLL:select_all###'] = $GLOBALS['LANG']->getLL('select_all');
+		$markers['###LLL:deselect_all###'] = $GLOBALS['LANG']->getLL('deselect_all');
 		return $this->utilityFuncs->substituteMarkerArray($code, $markers);
 	}
 
@@ -1001,13 +974,12 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string HTML
 	 */
 	protected function getTable(&$records) {
-		global $LANG;
 
 		//get filter
 		$table = $this->getFilterSection();
 
 		if (count($records) === 0) {
-			return $table . '<div>' . $LANG->getLL('no_records') . '</div>';
+			return $table . '<div>' . $GLOBALS['LANG']->getLL('no_records') . '</div>';
 		}
 
 		//init gp params
@@ -1017,11 +989,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$tableCode = $this->utilityFuncs->getSubpart($this->templateCode, '###LIST_TABLE###');
 
 		$tableMarkers = array();
-		$tableMarkers['###LLL:PAGE_ID###'] = $LANG->getLL('page_id');
-		$tableMarkers['###LLL:SUBMISSION_DATE###'] = $LANG->getLL('submission_date');
-		$tableMarkers['###LLL:IP###'] = $LANG->getLL('ip_address');
+		$tableMarkers['###LLL:PAGE_ID###'] = $GLOBALS['LANG']->getLL('page_id');
+		$tableMarkers['###LLL:SUBMISSION_DATE###'] = $GLOBALS['LANG']->getLL('submission_date');
+		$tableMarkers['###LLL:IP###'] = $GLOBALS['LANG']->getLL('ip_address');
 		$tableMarkers['###LLL:DETAIL_VIEW###'] = '';
-		$tableMarkers['###LLL:EXPORT###'] = $LANG->getLL('export');
+		$tableMarkers['###LLL:EXPORT###'] = $GLOBALS['LANG']->getLL('export');
 
 		$count = 1;
 		$tableMarkers['###ROWS###'] = '';
@@ -1057,7 +1029,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		// add pagination
-		$tableMarkers['###LLL:ENTRIES###'] = $LANG->getLL('pagination_show_entries');
+		$tableMarkers['###LLL:ENTRIES###'] = $GLOBALS['LANG']->getLL('pagination_show_entries');
 		$tableMarkers['###WHICH_PAGEBROWSER###'] = $this->pageBrowser->displayBrowseBox();
 
 		//add Export as option
