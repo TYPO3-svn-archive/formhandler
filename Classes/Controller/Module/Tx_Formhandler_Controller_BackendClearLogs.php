@@ -66,7 +66,7 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 	 * @return void
 	 */
 	protected function init() {
-		$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'tx_formhandler_mod1');
+		$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'tx_formhandler_mod1');
 		$this->settings = $tsconfig['properties']['config.'];
 
 		$GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');

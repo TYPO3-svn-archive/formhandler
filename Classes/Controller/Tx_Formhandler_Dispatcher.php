@@ -23,7 +23,7 @@ require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formha
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-class Tx_Formhandler_Dispatcher extends tslib_pibase {
+class Tx_Formhandler_Dispatcher extends TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	/**
 	 * Compontent Manager

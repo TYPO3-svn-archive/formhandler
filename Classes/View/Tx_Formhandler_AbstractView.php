@@ -19,7 +19,7 @@
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-abstract class Tx_Formhandler_AbstractView extends tslib_pibase {
+abstract class Tx_Formhandler_AbstractView extends TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	/**
 	 * The prefix id

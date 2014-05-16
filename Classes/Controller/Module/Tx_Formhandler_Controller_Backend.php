@@ -273,7 +273,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 				$allParams = array_merge($allParams, $row['params']);
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1'); 
+			$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id,'tx_formhandler_mod1'); 
 			$configParams = array();
 
 			$className = 'Tx_Formhandler_Generator_TCPDF';
@@ -333,7 +333,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$count = 0;
 			$hashes = array();
 			$availableFormats = array();
-			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id,'tx_formhandler_mod1');
+			$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id,'tx_formhandler_mod1');
 
 			$className = 'Tx_Formhandler_Generator_CSV';
 			if($tsconfig['properties']['config.']['generators.']['csv']) {
@@ -791,7 +791,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$where = array();
 
 		if ($this->id) {
-			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'tx_formhandler_mod1');
+			$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'tx_formhandler_mod1');
 			$isAllowedToShowAll = (intval($tsconfig['properties']['config.']['enableShowAllButton']) === 1);
 		}
 
@@ -805,7 +805,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$pid_search = array();
 			// check is page shall be accessed by current BE user
 			foreach ($pids as $pid) {
-				if (t3lib_BEfunc::readPageAccess(intval($pid), $GLOBALS['BE_USER']->getPagePermsClause(1))) {
+				if (\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess(intval($pid), $GLOBALS['BE_USER']->getPagePermsClause(1))) {
 					$pid_search[] = intval($pid);
 				}
 			}
@@ -875,7 +875,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 		// display show all function
 		if ($this->id) {
-			$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'tx_formhandler_mod1');
+			$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'tx_formhandler_mod1');
 			$isAllowedToShowAll = (intval($tsconfig['properties']['config.']['enableShowAllButton']) === 1);
 		}
 		if ($GLOBALS['BE_USER']->user['admin'] || $isAllowedToShowAll) {

@@ -73,7 +73,7 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 	 */
 	function init()	{
 		$id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
-		$tsconfig = t3lib_BEfunc::getModTSconfig($id, 'tx_formhandler_mod1');
+		$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($id, 'tx_formhandler_mod1');
 		$this->settings = $tsconfig['properties']['config.'];
 		parent::init();
 
@@ -111,7 +111,7 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 
 		// Access check!
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
+		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
 		if (($this->id && $access) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id))	{
@@ -154,7 +154,7 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 			$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
-			$this->content .= $this->doc->section('', $this->doc->funcMenu('', t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
+			$this->content .= $this->doc->section('', $this->doc->funcMenu('', \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
 			$this->content .= $this->doc->divider(5);
 			$this->content .= $this->moduleContent();
 
