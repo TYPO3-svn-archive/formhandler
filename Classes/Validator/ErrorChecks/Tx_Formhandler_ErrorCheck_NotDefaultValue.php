@@ -34,7 +34,7 @@ class Tx_Formhandler_ErrorCheck_NotDefaultValue extends Tx_Formhandler_AbstractE
 		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
 			$defaultValue = $this->utilityFuncs->getSingle($this->settings['params'], 'defaultValue');
 			if (strlen($defaultValue) > 0) {
-				if (!strcmp($defaultValue, $this->gp[$this->formFieldName])) {
+				if (strcmp($defaultValue, $this->gp[$this->formFieldName]) === 0) {
 					$checkFailed = $this->getCheckFailed();
 				}
 			}
