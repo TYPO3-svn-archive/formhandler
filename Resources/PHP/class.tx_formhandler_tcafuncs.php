@@ -29,7 +29,6 @@
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
 class tx_formhandler_tcafuncs {
 
 	public function user_getParams($PA, $fobj) {
@@ -42,8 +41,7 @@ class tx_formhandler_tcafuncs {
 			onchange="' . htmlspecialchars(implode('', $PA['fieldChangeFunc'])) . '"
 			' . $PA['onFocus'] . '/>
 		';
-		$compatFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
-		$output .= $compatFuncs->viewArray($params);
+		$output .= \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($params);
 		return $output;
 	}
 

@@ -12,12 +12,6 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-$compatibilityFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
-if($compatibilityFuncs->convertVersionNumberToInteger(TYPO3_version) < 6002000) {
-	require_once(PATH_t3lib . "class.t3lib_page.php");
-	require_once(PATH_t3lib . "class.t3lib_tsparser_ext.php");
-}
-
 /**
  * Flexform class for Formhandler spcific needs
  *
@@ -133,9 +127,9 @@ class tx_dynaflex_formhandler {
 	 * @return array The TypoScript setup
 	 */
 	function loadTS($pageUid) {
-		$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageSelect');
+		$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
 		$rootLine = $sysPageObj->getRootLine($pageUid);
-		$TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tsparser_ext');
+		$TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
 		$TSObj->tt_track = 0;
 		$TSObj->init();
 		$TSObj->runThroughTemplates($rootLine);

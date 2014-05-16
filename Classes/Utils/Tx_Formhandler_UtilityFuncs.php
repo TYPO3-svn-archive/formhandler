@@ -31,20 +31,10 @@ class Tx_Formhandler_UtilityFuncs {
 	 */
 	protected $globals;
 
-	
-	/**
-	 * The Formhandler compatibility methods
-	 *
-	 * @access protected
-	 * @var Tx_Formhandler_CompatibilityFuncs
-	 */
-	protected $compatibilityFuncs;
-
 	static public function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new Tx_Formhandler_UtilityFuncs();
 			self::$instance->globals = Tx_Formhandler_Globals::getInstance();
-			self::$instance->compatibilityFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
 		}
 		return self::$instance;
 	}
@@ -120,7 +110,6 @@ class Tx_Formhandler_UtilityFuncs {
 	}
 
 	/**
-	 * copied from class t3lib_parsehtml
 	 *
 	 * Returns the first subpart encapsulated in the marker, $marker (possibly present in $content as a HTML comment)
 	 *
@@ -415,7 +404,7 @@ class Tx_Formhandler_UtilityFuncs {
 	public function pi_getFFvalueFromSheetArray($sheetArray, $fieldNameArr, $value) {
 		$tempArr = $sheetArray;
 		foreach ($fieldNameArr as $k => $v) {
-			if ($this->compatibilityFuncs->canBeInterpretedAsInteger($v)) {
+			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v)) {
 				if (is_array($tempArr)) {
 					$c = 0;
 					foreach ($tempArr as $idx => $values) {
@@ -850,7 +839,7 @@ class Tx_Formhandler_UtilityFuncs {
 		$GLOBALS['TSFE']->fe_user->fetchGroupData();
 
 			// Include the TCA
-		$GLOBALS['TSFE']->includeTCA();
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
 
 			// Get the page
 		$GLOBALS['TSFE']->fetch_the_id();

@@ -235,7 +235,7 @@ class parseCSV {
 		if ( $delimiter === null ) $delimiter = $this->output_delimiter;
 		$data = $this->unparse($data, $fields, null, null, $delimiter);
 		if ($this->convert_encoding === TRUE) {
-			$csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_cs');
+			$csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Charset\CharsetConverter');
 			$data = $csConvObj->conv($data, $this->input_encoding, $this->output_encoding);
 		}
 		if ( $filename !== null ) {

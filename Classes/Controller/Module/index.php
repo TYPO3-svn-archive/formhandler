@@ -36,11 +36,6 @@ unset($MCONF);
 require_once('conf.php');
 require_once($GLOBALS['BACK_PATH'] . 'init.php');
 
-$compatibilityFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
-if($compatibilityFuncs->convertVersionNumberToInteger(TYPO3_version) < 6002000) {
-	require_once($GLOBALS['BACK_PATH'] . 'template.php');
-	require_once(PATH_t3lib . 'class.t3lib_scbase.php');
-}
 $GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');
 
 $GLOBALS['BE_USER']->modAccess($MCONF, 1);	// This checks permissions and exits if the users has no permission for entry.
@@ -56,7 +51,7 @@ require_once (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formh
  * @package	Tx_Formhandler
  * @subpackage	Controller
  */
-class tx_formhandler_module1 extends t3lib_SCbase {
+class tx_formhandler_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	var $pageinfo;
 
 	/**
@@ -76,12 +71,6 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 		$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($id, 'tx_formhandler_mod1');
 		$this->settings = $tsconfig['properties']['config.'];
 		parent::init();
-
-		/*
-		 if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('clear_all_cache'))	{
-		 $this->include_once[] = PATH_t3lib.'class.t3lib_tcemain.php';
-		 }
-		 */
 	}
 
 	/**
@@ -120,11 +109,11 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('mediumDoc');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
-			/** @var $pageRenderer t3lib_PageRenderer */
+			/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 			$pageRenderer = $this->doc->getPageRenderer();
 			$pageRenderer->loadExtJS();
-			$pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . '../t3lib/js/extjs/tceforms.js');
-			$pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . '../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
+			$pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . '../typo3/sysext/backend/Resources/Public/JavaScript/tceforms.js');
+			$pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . '../typo3/js/extjs/ux/Ext.ux.DateTimePicker.js');
 
 			// Define settings for Date Picker
 			$typo3Settings = array(
@@ -154,7 +143,7 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 			$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
-			$this->content .= $this->doc->section('', $this->doc->funcMenu('', \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
+			$this->content .= $this->doc->section('', $this->doc->funcMenu('', \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], basename(PATH_thisScript))));
 			$this->content .= $this->doc->divider(5);
 			$this->content .= $this->moduleContent();
 

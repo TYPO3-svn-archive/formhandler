@@ -24,7 +24,7 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 	/**
 	 * The TYPO3 mail message object
 	 *
-	 * @var t3lib_mail_Message
+	 * @var TYPO3\CMS\Core\Mail\MailMessage
 	 */
 	protected $emailObj;
 
@@ -53,11 +53,10 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 	public function __construct(Tx_Formhandler_Component_Manager $componentManager, 
 								Tx_Formhandler_Configuration $configuration, 
 								Tx_Formhandler_Globals $globals, 
-								Tx_Formhandler_UtilityFuncs $utilityFuncs,
-								Tx_Formhandler_CompatibilityFuncs $compatibilityFuncs) {
+								Tx_Formhandler_UtilityFuncs $utilityFuncs) {
 	
-		parent::__construct($componentManager, $configuration, $globals, $utilityFuncs, $compatibilityFuncs);
-		$this->emailObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_Message');
+		parent::__construct($componentManager, $configuration, $globals, $utilityFuncs);
+		$this->emailObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Mail\MailMessage');
 	}
 
 	/* (non-PHPdoc)

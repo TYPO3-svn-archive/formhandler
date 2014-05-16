@@ -98,7 +98,7 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 		if (isset($params['doDelete']) && intval($params['doDelete']) === 1) {
 			$messageHeader = $GLOBALS['LANG']->getLL('clear-logs-success-header');
 			$messageText = sprintf($GLOBALS['LANG']->getLL('clear-logs-success-message'), intval($rowCount));
-			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_FlashMessage', $messageText, $messageHeader);
+			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage', $messageText, $messageHeader);
 			$content = $message->render();
 			$this->clearTables();
 			$rowCount = 0;

@@ -37,7 +37,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 	public $settings;
 
 	/**
-	 * @var t3lib_db
+	 * @var TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $db;
 

@@ -56,14 +56,14 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 	 * @return array $conf
 	 */
 	protected function readWebkitPdfConf() {
-		$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageSelect');
+		$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
 
 		if (!$GLOBALS['TSFE']->sys_page) {
 			$GLOBALS['TSFE']->sys_page = $sysPageObj;
 		}
 
 		$rootLine = $sysPageObj->getRootLine($GLOBALS['TSFE']->id);
-		$TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tsparser_ext');
+		$TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
 		$TSObj->tt_track = 0;
 		$TSObj->init();
 		$TSObj->runThroughTemplates($rootLine);

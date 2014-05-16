@@ -893,14 +893,14 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$markers['###LLL:cal###'] = $GLOBALS['LANG']->getLL('cal');
 		$markers['###LLL:startdate###'] = $GLOBALS['LANG']->getLL('startdate');
 		$markers['###LLL:enddate###'] = $GLOBALS['LANG']->getLL('enddate');
-		$markers['###cal-icon-startdate###'] = t3lib_iconWorks::getSpriteIcon(
+		$markers['###cal-icon-startdate###'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
 			'actions-edit-pick-date',
 			array(
 				'style' => 'cursor:pointer;',
 				'id' => 'picker-tceforms-datefield-startdate'
 			)
 		);
-		$markers['###cal-icon-enddate###'] = t3lib_iconWorks::getSpriteIcon(
+		$markers['###cal-icon-enddate###'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
 			'actions-edit-pick-date',
 			array(
 				'style' => 'cursor:pointer;',
@@ -1015,7 +1015,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$markers['###PID###'] = $record['pid'];
 			$markers['###SUBMISSION_DATE###'] = date('Y/m/d H:i', $record['crdate']);
 			$markers['###IP###'] = $record['ip'];
-			$markers['###DETAIL_LINK###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->id . '&formhandler[detailId]=' . $record['uid'] . $this->getDefaultGetParamsString() . '"><img ' . t3lib_iconWorks::skinImg('../../../../../../typo3/', 'gfx/zoom.gif') . '/></a>';
+			$markers['###DETAIL_LINK###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->id . '&formhandler[detailId]=' . $record['uid'] . $this->getDefaultGetParamsString() . '"><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('../../../../../../typo3/', 'gfx/zoom.gif') . '/></a>';
 			$markers['###EXPORT_LINKS###'] = '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->id . '&formhandler[detailId]=' . $record['uid'] . $this->getDefaultGetParamsString() . '&formhandler[renderMethod]=pdf">PDF</a>
 						/<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->id . '&formhandler[detailId]=' . $record['uid'] . $this->getDefaultGetParamsString() . '&formhandler[renderMethod]=csv">CSV</a>';
 			$checkbox = '<input type="checkbox" name="formhandler[markedUids][]" value="' . $record['uid'] . '" ';

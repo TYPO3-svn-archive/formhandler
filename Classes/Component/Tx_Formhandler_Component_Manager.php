@@ -23,7 +23,7 @@
  */
 require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
 require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
+
 class Tx_Formhandler_Component_Manager {
 	const PACKAGE_PREFIX = 'Tx';
 	const DIRECTORY_CLASSES = 'Classes/';
@@ -127,8 +127,6 @@ class Tx_Formhandler_Component_Manager {
 			return Tx_Formhandler_Globals::getInstance();
 		} elseif ('Tx_Formhandler_UtilityFuncs' === $componentName) {
 			return Tx_Formhandler_UtilityFuncs::getInstance();
-		} elseif ('Tx_Formhandler_CompatibilityFuncs' === $componentName) {
-			return Tx_Formhandler_CompatibilityFuncs::getInstance();
 		}
 
 		if (!is_array($this->classFiles)) {

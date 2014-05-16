@@ -1457,7 +1457,17 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			if(strlen(trim($file)) > 0) {
 				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
 				if(file_exists($file)) {
-					$this->compatibilityFuncs->addCssFile($file, $fileOptions);
+					$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+					$pageRenderer->addCssFile(
+						$file,
+						$fileOptions['alternate'] ? 'alternate stylesheet' : 'stylesheet',
+						$fileOptions['media'] ? $fileOptions['media'] : 'all',
+						$fileOptions['title'] ? $fileOptions['title'] : '',
+						empty($fileOptions['disableCompression']),
+						$fileOptions['forceOnTop'] ? TRUE : FALSE,
+						$fileOptions['allWrap'],
+						$fileOptions['excludeFromConcatenation'] ? TRUE : FALSE
+					);
 				}
 			}
 		}
@@ -1490,7 +1500,15 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			if(strlen(trim($file)) > 0) {
 				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
 				if(file_exists($file)) {
-					$this->compatibilityFuncs->addJsFile($file, $fileOptions);
+					$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+					$pageRenderer->addJsFile(
+						$file,
+						$fileOptions['type'] ? $fileOptions['type'] : 'text/javascript',
+						empty($fileOptions['disableCompression']),
+						$fileOptions['forceOnTop'] ? TRUE : FALSE,
+						$fileOptions['allWrap'],
+						$fileOptions['excludeFromConcatenation'] ? TRUE : FALSE
+					);
 				}
 			}
 		}
