@@ -66,7 +66,7 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 			$inputEncoding = 'utf-8';
 		}
 		$outputEncoding = $this->utilityFuncs->getSingle($this->settings, 'outputEncoding');
-		if(strlen(trim($inputEncoding)) === 0) {
+		if(strlen(trim($outputEncoding)) === 0) {
 			$outputEncoding = 'utf-8';
 		}
 		$csv->input_encoding = strtolower($inputEncoding);
