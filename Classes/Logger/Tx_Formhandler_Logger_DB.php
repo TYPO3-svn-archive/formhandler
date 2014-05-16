@@ -34,7 +34,7 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		$table = 'tx_formhandler_log';
 
 		$doDisableIPlog = $this->utilityFuncs->getSingle($this->settings, 'disableIPlog');
-		$fields['ip'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
+		$fields['ip'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR');
 		if(intval($doDisableIPlog) === 1) {
 			unset($fields['ip']);
 		}
@@ -63,7 +63,7 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 		}
 		if($this->settings['excludeFields']) {
 			$excludeFields = $this->utilityFuncs->getSingle($this->settings, 'excludeFields');
-			$excludeFields = t3lib_div::trimExplode(',', $excludeFields);
+			$excludeFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $excludeFields);
 			foreach($excludeFields as $excludeField) {
 				unset($logParams[$excludeField]);
 			}
@@ -71,7 +71,7 @@ class Tx_Formhandler_Logger_DB extends Tx_Formhandler_AbstractLogger {
 
 		if($this->settings['fieldOrder']) {
 			$fieldOrder = $this->utilityFuncs->getSingle($this->settings, 'fieldOrder');
-			$fieldOrder = t3lib_div::trimExplode(',', $fieldOrder);
+			$fieldOrder = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldOrder);
 			$orderedFields = $this->parseFieldOrder($fieldOrder);
 			$logParams = $this->sortFields($logParams, $orderedFields);
 		}

@@ -25,13 +25,13 @@ class Tx_Formhandler_ErrorCheck_WtCalculatingCaptcha extends Tx_Formhandler_Abst
 
 	public function check() {
 		$checkFailed = '';
-		if (t3lib_extMgm::isLoaded('wt_calculating_captcha')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('wt_calculating_captcha')) {
 
 				// include captcha class
-			require_once(t3lib_extMgm::extPath('wt_calculating_captcha') . 'class.tx_wtcalculatingcaptcha.php');
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('wt_calculating_captcha') . 'class.tx_wtcalculatingcaptcha.php');
 
 				// generate object
-			$captcha = t3lib_div::makeInstance('tx_wtcalculatingcaptcha');
+			$captcha = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_wtcalculatingcaptcha');
 
 				// check if code is correct
 			if (!$captcha->correctCode($this->gp[$this->formFieldName])) {

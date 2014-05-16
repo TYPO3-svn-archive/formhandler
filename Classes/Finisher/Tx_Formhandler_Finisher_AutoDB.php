@@ -138,7 +138,7 @@ class Tx_Formhandler_Finisher_AutoDB extends Tx_Formhandler_Finisher_DB {
 		$fields = $this->getFormFields();
 		$excludeFields = trim($this->utilityFuncs->getSingle($this->settings, 'excludeFields'));
 		if (strlen($excludeFields) > 0) {
-			$excludes = t3lib_div::trimExplode(',', $excludeFields);
+			$excludes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $excludeFields);
 			foreach ($excludes as $exclude) {
 				unset($fields[$exclude]);
 			}

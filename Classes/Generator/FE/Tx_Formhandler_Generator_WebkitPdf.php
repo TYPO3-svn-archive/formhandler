@@ -25,7 +25,7 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 	 * @return void
 	 */
 	public function process() {
-		if (t3lib_extMgm::isLoaded('webkitpdf')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('webkitpdf')) {
 			$linkGP = array();
 			if (strlen($this->globals->getFormValuesPrefix()) > 0) {
 				$linkGP[$this->globals->getFormValuesPrefix()] = $this->gp;
@@ -41,9 +41,9 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 			$config['fileOnly'] = 1;
 			$config['urls.'] = $url;
 			if (!class_exists('tx_webkitpdf_pi1')) {
-				require_once(t3lib_extMgm::extPath('webkitpdf') . 'pi1/class.tx_webkitpdf_pi1.php');
+				require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('webkitpdf') . 'pi1/class.tx_webkitpdf_pi1.php');
 			}
-			$generator = t3lib_div::makeInstance('tx_webkitpdf_pi1');
+			$generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_webkitpdf_pi1');
 			$generator->cObj = $this->globals->getCObj();
 
 			return $generator->main('', $config);
@@ -56,14 +56,14 @@ class Tx_Formhandler_Generator_WebkitPdf extends Tx_Formhandler_AbstractGenerato
 	 * @return array $conf
 	 */
 	protected function readWebkitPdfConf() {
-		$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
+		$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageSelect');
 
 		if (!$GLOBALS['TSFE']->sys_page) {
 			$GLOBALS['TSFE']->sys_page = $sysPageObj;
 		}
 
 		$rootLine = $sysPageObj->getRootLine($GLOBALS['TSFE']->id);
-		$TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
+		$TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tsparser_ext');
 		$TSObj->tt_track = 0;
 		$TSObj->init();
 		$TSObj->runThroughTemplates($rootLine);

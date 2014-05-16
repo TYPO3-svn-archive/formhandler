@@ -57,12 +57,12 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 		if (is_array($this->settings['fieldConf.'])) {
 			$disableErrorCheckFields = array();
 			if (isset($this->settings['disableErrorCheckFields'])) {
-				$disableErrorCheckFields = t3lib_div::trimExplode(',', $this->settings['disableErrorCheckFields']);
+				$disableErrorCheckFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['disableErrorCheckFields']);
 			}
 
 			$restrictErrorChecks = array();
 			if (isset($this->settings['restrictErrorChecks'])) {
-				$restrictErrorChecks = t3lib_div::trimExplode(',', $this->settings['restrictErrorChecks']);
+				$restrictErrorChecks = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['restrictErrorChecks']);
 			}
 
 			$fieldSettings = $this->settings['fieldConf.'][$field . '.'];

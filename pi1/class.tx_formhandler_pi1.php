@@ -31,7 +31,7 @@ $compatibilityFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
 if($compatibilityFuncs->convertVersionNumberToInteger(TYPO3_version) < 6002000) {
 	require_once(PATH_tslib . 'class.tslib_pibase.php');
 }
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Controller/Tx_Formhandler_Dispatcher.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Controller/Tx_Formhandler_Dispatcher.php');
 
 class tx_formhandler_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_formhandler_pi1';

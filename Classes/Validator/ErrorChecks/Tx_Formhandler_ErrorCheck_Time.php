@@ -35,7 +35,7 @@ class Tx_Formhandler_ErrorCheck_Time extends Tx_Formhandler_AbstractErrorCheck {
 			$pattern = $this->utilityFuncs->getSingle($this->settings['params'], 'pattern');
 			preg_match('/^[h|m]*(.)[h|m]*/i', $pattern, $res);
 			$sep = $res[1];
-			$timeCheck = t3lib_div::trimExplode($sep, $this->gp[$this->formFieldName]);
+			$timeCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($sep, $this->gp[$this->formFieldName]);
 			if (is_array($timeCheck)) {
 				$hours = $timeCheck[0];
 				if (!is_numeric($hours) || $hours < 0 || $hours > 23) {

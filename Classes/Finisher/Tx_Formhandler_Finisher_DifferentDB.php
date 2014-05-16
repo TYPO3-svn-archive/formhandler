@@ -95,7 +95,7 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 	protected function save(&$queryFields) {
 
 		//if adodb is installed
-		if (t3lib_extMgm::isLoaded('adodb')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('adodb')) {
 
 			//insert query
 			if (!$this->doUpdate) {
@@ -146,7 +146,7 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 			$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table);
 
 			//if adodb is installed (already tested in init, but used to show adodb is used)
-			if (t3lib_extMgm::isLoaded('adodb')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('adodb')) {
 
 				//open connection
 				$conn = &NewADOConnection($this->driver);
@@ -189,8 +189,8 @@ class Tx_Formhandler_Finisher_DifferentDB extends Tx_Formhandler_Finisher_DB {
 	public function init($gp, $settings) {
 
 		//if adodb is installed
-		if (t3lib_extMgm::isLoaded('adodb')) {
-			require_once(t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php');
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('adodb')) {
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('adodb') . 'adodb/adodb.inc.php');
 
 			$this->driver = $this->utilityFuncs->getSingle($settings, 'driver');
 			$this->db = $this->utilityFuncs->getSingle($settings, 'db');

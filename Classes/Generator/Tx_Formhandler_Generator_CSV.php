@@ -20,7 +20,7 @@
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @uses export2CSV in csv.lib.php
  */
-require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
 class Tx_Formhandler_Generator_CSV {
 
 	/**

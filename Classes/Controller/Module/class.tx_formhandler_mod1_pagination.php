@@ -81,7 +81,7 @@ class tx_formhandler_mod1_pagination {
 	public function __construct($totalCount, $pObj) {
 		
 		// Sets script name url
-		$this->scriptName = t3lib_div::getIndpEnv('SCRIPT_NAME');
+		$this->scriptName = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
 
 		// Sets Lang
 		$this->setLangLabels();
@@ -103,7 +103,7 @@ class tx_formhandler_mod1_pagination {
 		$this->id = intval($this->pObj->getId());
 
 		// get GetPost array Vars
-		$GPvars = t3lib_div::_GP('formhandler');
+		$GPvars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 
 		// max results records to display per page
 		if ($GPvars['howmuch']) {
@@ -216,7 +216,7 @@ class tx_formhandler_mod1_pagination {
 		// pointers list for MOD_MENU
 		$pointers = array();
 
-		$GPvars = t3lib_div::_GP('formhandler');
+		$GPvars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 		if (!$GPvars) {
 			$GPvars = array();
 		}
@@ -225,7 +225,7 @@ class tx_formhandler_mod1_pagination {
 			$GPvars['pidFilter'] = intval($this->id);
 		}
 
-		$GP_url = t3lib_div::implodeArrayForUrl('formhandler', $GPvars);
+		$GP_url = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('formhandler', $GPvars);
 		$GP_url .= '&id=' . intval($this->id);
 		// Storage
 		$htmlCode = array();

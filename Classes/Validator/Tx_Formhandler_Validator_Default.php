@@ -58,7 +58,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 
 		$flexformValue = $this->utilityFuncs->pi_getFFvalue($this->cObj->data['pi_flexform'], 'required_fields', 'sMISC');
 		if($flexformValue) {
-			$fields = t3lib_div::trimExplode(',', $flexformValue);
+			$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $flexformValue);
 			foreach($fields as $field) {
 				if(!is_array($this->settings['fieldConf.'][$field.'.']['errorCheck.'])) {
 					$this->settings['fieldConf.'][$field.'.']['errorCheck.'] = array();
@@ -86,11 +86,11 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 		}
 
 		if(isset($this->settings['disableErrorCheckFields'])) {
-			$this->disableErrorCheckFields = t3lib_div::trimExplode(',', $this->settings['disableErrorCheckFields']);
+			$this->disableErrorCheckFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['disableErrorCheckFields']);
 		}
 
 		if(isset($this->settings['restrictErrorChecks'])) {
-			$this->restrictErrorChecks = t3lib_div::trimExplode(',', $this->settings['restrictErrorChecks']);
+			$this->restrictErrorChecks = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['restrictErrorChecks']);
 		}
 
 		if (!in_array('all', $this->disableErrorCheckFields)) {

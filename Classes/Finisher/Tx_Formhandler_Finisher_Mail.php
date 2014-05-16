@@ -177,12 +177,12 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
 		$cc = $mailSettings['cc_email'];
 		if (!is_array($cc)) {
-			$cc = t3lib_div::trimExplode(',', $cc);
+			$cc = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $cc);
 		}
 
 		$ccName = $mailSettings['cc_name'];
 		if (!is_array($ccName)) {
-			$ccName = t3lib_div::trimExplode(',', $ccName);
+			$ccName = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $ccName);
 		}
 		foreach ($cc as $key => $email) {
 			$name = '';
@@ -196,12 +196,12 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
 		$bcc = $mailSettings['bcc_email'];
 		if (!is_array($bcc)) {
-			$bcc = t3lib_div::trimExplode(',', $bcc);
+			$bcc = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $bcc);
 		}
 
 		$bccName = $mailSettings['bcc_name'];
 		if (!is_array($bccName)) {
-			$bccName = t3lib_div::trimExplode(',', $bccName);
+			$bccName = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $bccName);
 		}
 		foreach ($bcc as $key => $email) {
 			$name = '';
@@ -256,7 +256,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		}
 
 		if (!is_array($mailSettings['attachment'])) {
-			$mailSettings['attachment'] = t3lib_div::trimExplode(',', $mailSettings['attachment']);
+			$mailSettings['attachment'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $mailSettings['attachment']);
 		}
 		foreach ($mailSettings['attachment'] as $idx => $attachment) {
 			if (strlen($attachment) > 0 && @file_exists($attachment)) {
@@ -266,7 +266,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			}
 		}
 		if ($mailSettings['attachGeneratedFiles']) {
-			$files = t3lib_div::trimExplode(',', $mailSettings['attachGeneratedFiles']);
+			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $mailSettings['attachGeneratedFiles']);
 			$this->utilityFuncs->debugMessage('adding_generated_files', array(), 1, $files);
 			foreach($files as $file) {
 				$emailObj->addAttachment($file);
@@ -280,7 +280,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 			$max = 2;
 		}
 		if (!is_array($mailSettings['to_email'])) {
-			$mailSettings['to_email'] = t3lib_div::trimExplode(',', $mailSettings['to_email']);
+			$mailSettings['to_email'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $mailSettings['to_email']);
 		}
 		reset($mailSettings['to_email']);
 
@@ -310,7 +310,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
 		// delete generated files
 		if ($mailSettings['deleteGeneratedFiles'] && $mailSettings['attachGeneratedFiles']) {
-			$files = t3lib_div::trimExplode(',', $mailSettings['attachGeneratedFiles']);
+			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $mailSettings['attachGeneratedFiles']);
 			foreach($files as $file) {
 				unlink($file);
 			}
@@ -326,7 +326,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function explodeList($list, $sep = ',') {
 		if(!is_array($list)) {
-			$items = t3lib_div::trimExplode($sep, $list);
+			$items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($sep, $list);
 			$splitArray = array();
 			foreach ($items as $idx => $item) {
 				if (isset($this->gp[$item])) {
@@ -409,9 +409,9 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		$files = array();
 		if (isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
 			$files = $this->utilityFuncs->getSingle($settings, $key);
-			$files = t3lib_div::trimExplode(',', $parsed);
+			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $parsed);
 		} elseif ($settings[$key]) {
-			$files = t3lib_div::trimExplode(',', $settings[$key]);
+			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $settings[$key]);
 		}
 		$parsed = array();
 		$sessionFiles = $this->globals->getSession()->get('files');

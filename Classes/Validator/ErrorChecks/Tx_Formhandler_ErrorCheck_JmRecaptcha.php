@@ -25,8 +25,8 @@ class Tx_Formhandler_ErrorCheck_JmRecaptcha extends Tx_Formhandler_AbstractError
 
 	public function check() {
 		$checkFailed = '';
-		if (t3lib_extMgm::isLoaded('jm_recaptcha')) {
-			require_once(t3lib_extMgm::extPath('jm_recaptcha') . 'class.tx_jmrecaptcha.php');
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('jm_recaptcha')) {
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('jm_recaptcha') . 'class.tx_jmrecaptcha.php');
 			$this->recaptcha = new tx_jmrecaptcha();
 			$status = $this->recaptcha->validateReCaptcha();
 			if (!$status['verified']) {

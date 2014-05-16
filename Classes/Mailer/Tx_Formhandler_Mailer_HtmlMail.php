@@ -37,8 +37,8 @@ class Tx_Formhandler_Mailer_HtmlMail extends Tx_Formhandler_AbstractMailer imple
 								Tx_Formhandler_CompatibilityFuncs $compatibilityFuncs) {
 	
 		parent::__construct($componentManager, $configuration, $globals, $utilityFuncs, $compatibilityFuncs);
-		require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/class.formhandler_htmlmail.php');
-		$this->emailObj = t3lib_div::makeInstance('formhandler_htmlmail');
+		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/class.formhandler_htmlmail.php');
+		$this->emailObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('formhandler_htmlmail');
 		$this->emailObj->start();
 	}
 

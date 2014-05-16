@@ -95,11 +95,11 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 				//Add no_cache parameter to make sure validating the auth code is done everytime.
 				$paramsArray['no_cache'] = 1;
 
-				// create the link, using typolink function, use baseUrl if set, else use t3lib_div::getIndpEnv('TYPO3_SITE_URL')
+				// create the link, using typolink function, use baseUrl if set, else use \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')
 				$url = $this->cObj->getTypoLink_URL($authCodePage, $paramsArray);
 				$tmpArr = parse_url($url);
 				if (empty($tmpArr['scheme'])) {
-					$url = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . ltrim($url, '/');
+					$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($url, '/');
 				}
 				$this->gp['authCodeUrl'] = $url;
 			}
@@ -114,7 +114,7 @@ class Tx_Formhandler_Finisher_GenerateAuthCode extends Tx_Formhandler_AbstractFi
 	 * @return string The auth code
 	 */
 	protected function generateAuthCode($row) {
-		return t3lib_div::hmac(serialize($row), 'formhandler');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($row), 'formhandler');
 	}
 
 }

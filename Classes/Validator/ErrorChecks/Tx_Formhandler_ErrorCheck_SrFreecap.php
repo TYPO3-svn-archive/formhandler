@@ -25,9 +25,9 @@ class Tx_Formhandler_ErrorCheck_SrFreecap extends Tx_Formhandler_AbstractErrorCh
 
 	public function check() {
 		$checkFailed = '';
-		if (t3lib_extMgm::isLoaded('sr_freecap')) {
-			require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
-			$this->freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sr_freecap')) {
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
+			$this->freeCap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_srfreecap_pi2');
 			if (!$this->freeCap->checkWord($this->gp[$this->formFieldName])) {
 				$checkFailed = $this->getCheckFailed();
 			}

@@ -70,9 +70,9 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 		$this->settings = $tsconfig['properties']['config.'];
 
 		$GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');
-		$templatePath = t3lib_extMgm::extPath('formhandler') . 'Resources/HTML/backend/';
+		$templatePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/HTML/backend/';
 		$templateFile = $templatePath . 'template.html';
-		$this->templateCode = t3lib_div::getURL($templateFile);
+		$this->templateCode = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($templateFile);
 	}
 
 	/**
@@ -94,11 +94,11 @@ class Tx_Formhandler_Controller_BackendClearLogs extends Tx_Formhandler_Abstract
 		$rowCount = $row['rowCount'];
 
 		//init gp params
-		$params = t3lib_div::_GP('formhandler');
+		$params = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 		if (isset($params['doDelete']) && intval($params['doDelete']) === 1) {
 			$messageHeader = $GLOBALS['LANG']->getLL('clear-logs-success-header');
 			$messageText = sprintf($GLOBALS['LANG']->getLL('clear-logs-success-message'), intval($rowCount));
-			$message = t3lib_div::makeInstance('t3lib_FlashMessage', $messageText, $messageHeader);
+			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_FlashMessage', $messageText, $messageHeader);
 			$content = $message->render();
 			$this->clearTables();
 			$rowCount = 0;

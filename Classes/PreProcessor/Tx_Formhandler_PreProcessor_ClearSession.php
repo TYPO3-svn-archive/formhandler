@@ -37,7 +37,7 @@ class Tx_Formhandler_PreProcessor_ClearSession extends Tx_Formhandler_AbstractPr
 			'finisher-storegp'
 		);
 		if($this->settings['sessionKeysToRemove']) {
-			$sessionKeysToRemove = t3lib_div::trimExplode(',', $this->utilityFuncs->getSingle($this->settings, 'sessionKeysToRemove'));
+			$sessionKeysToRemove = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->utilityFuncs->getSingle($this->settings, 'sessionKeysToRemove'));
 		}
 
 		foreach($sessionKeysToRemove as $sessionKey) {

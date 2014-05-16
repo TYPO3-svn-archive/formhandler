@@ -33,7 +33,7 @@ class Tx_Formhandler_ErrorCheck_FileMaxSize extends Tx_Formhandler_AbstractError
 		$maxSize = intval($this->utilityFuncs->getSingle($this->settings['params'], 'maxSize'));
 		$phpIniUploadMaxFileSize = $this->utilityFuncs->convertBytes(ini_get('upload_max_filesize'));
 		if($maxSize > $phpIniUploadMaxFileSize) {
-			$this->utilityFuncs->throwException('error_check_filemaxsize', t3lib_div::formatSize($maxSize, ' Bytes| KB| MB| GB'), $this->formFieldName, t3lib_div::formatSize($phpIniUploadMaxFileSize, ' Bytes| KB| MB| GB'));
+			$this->utilityFuncs->throwException('error_check_filemaxsize', \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($maxSize, ' Bytes| KB| MB| GB'), $this->formFieldName, \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($phpIniUploadMaxFileSize, ' Bytes| KB| MB| GB'));
 		}
 		foreach ($_FILES as $sthg => &$files) {
 			if(!is_array($files['name'][$this->formFieldName])) {

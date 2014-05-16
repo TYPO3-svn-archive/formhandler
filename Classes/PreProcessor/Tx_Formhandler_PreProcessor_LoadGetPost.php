@@ -38,7 +38,7 @@ class Tx_Formhandler_PreProcessor_LoadGetPost extends Tx_Formhandler_AbstractPre
 	 * @return array The loaded parameters
 	 */
 	protected function loadGP() {
-		$gp = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
+		$gp = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST());
 		$formValuesPrefix = $this->globals->getFormValuesPrefix();
 		if ($formValuesPrefix) {
 			$gp = $gp[$formValuesPrefix];

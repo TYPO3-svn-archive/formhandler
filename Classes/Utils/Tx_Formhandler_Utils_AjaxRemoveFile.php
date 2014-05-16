@@ -17,9 +17,9 @@
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 class Tx_Formhandler_Utils_AjaxRemoveFile {
 
@@ -107,7 +107,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 		tslib_eidtools::connectDB();
 		$this->utilityFuncs->initializeTSFE($this->id);
 		$this->globals->setCObj($GLOBALS['TSFE']->cObj);
-		$randomID = htmlspecialchars(t3lib_div::_GP('randomID'));
+		$randomID = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('randomID'));
 		$this->globals->setRandomID($randomID);
 
 		if(!$this->globals->getSession()) {
@@ -132,7 +132,7 @@ class Tx_Formhandler_Utils_AjaxRemoveFile {
 
 }
 
-$output = t3lib_div::makeInstance('Tx_Formhandler_Utils_AjaxRemoveFile');
+$output = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Formhandler_Utils_AjaxRemoveFile');
 $output->main();
 
 ?>

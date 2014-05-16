@@ -31,7 +31,7 @@ class Tx_Formhandler_Interceptor_ParseValues extends Tx_Formhandler_AbstractInte
 
 		//parse as float
 		$parseFloatFields = $this->utilityFuncs->getSingle($this->settings, 'parseFloatFields');
-		$fields = t3lib_div::trimExplode(',', $parseFloatFields, TRUE);
+		$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $parseFloatFields, TRUE);
 		$this->parseFloats($fields);
 		
 		return $this->gp;

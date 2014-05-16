@@ -57,7 +57,7 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 								Tx_Formhandler_CompatibilityFuncs $compatibilityFuncs) {
 	
 		parent::__construct($componentManager, $configuration, $globals, $utilityFuncs, $compatibilityFuncs);
-		$this->emailObj = t3lib_div::makeInstance('t3lib_mail_Message');
+		$this->emailObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_Message');
 	}
 
 	/* (non-PHPdoc)

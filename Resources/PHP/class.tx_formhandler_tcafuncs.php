@@ -29,7 +29,7 @@
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
 class tx_formhandler_tcafuncs {
 
 	public function user_getParams($PA, $fobj) {

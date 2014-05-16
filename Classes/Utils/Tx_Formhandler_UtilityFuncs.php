@@ -63,7 +63,7 @@ class Tx_Formhandler_UtilityFuncs {
 	}
 	
 	public function getMergedGP() {
-		$gp = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
+		$gp = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST());
 		$prefix = $this->globals->getFormValuesPrefix();
 		if ($prefix) {
 			$gp = $gp[$prefix];
@@ -82,7 +82,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @return string
 	 */
 	public function getTYPO3Root() {
-		$path = t3lib_div::getIndpEnv('SCRIPT_FILENAME');
+		$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_FILENAME');
 		$path = str_replace('/index.php', '', $path);
 		return $path;
 	}
@@ -174,7 +174,7 @@ class Tx_Formhandler_UtilityFuncs {
 					if (!@file_exists($templateFile)) {
 						$this->throwException('template_file_not_found', $templateFile);
 					}
-					$templateCode = t3lib_div::getURL($templateFile);
+					$templateCode = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($templateFile);
 				} else {
 
 					//The setting "templateFile" was a cObject which returned HTML content. Just use that as template code.
@@ -185,7 +185,7 @@ class Tx_Formhandler_UtilityFuncs {
 				if (!@file_exists($templateFile)) {
 					$this->throwException('template_file_not_found', $templateFile);
 				}
-				$templateCode = t3lib_div::getURL($templateFile);
+				$templateCode = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($templateFile);
 			}
 		} else {
 			if ($this->isTemplateFilePath($templateFile)) {
@@ -193,7 +193,7 @@ class Tx_Formhandler_UtilityFuncs {
 				if (!@file_exists($templateFile)) {
 					$this->throwException('template_file_not_found', $templateFile);
 				}
-				$templateCode = t3lib_div::getURL($templateFile);
+				$templateCode = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($templateFile);
 			} else {
 				// given variable $templateFile already contains the template code
 				$templateCode = $templateFile;
@@ -304,8 +304,8 @@ class Tx_Formhandler_UtilityFuncs {
 
 		// these parameters have to be added to the redirect url
 		$addParams = array();
-		if (t3lib_div::_GP('L')) {
-			$addParams['L'] = t3lib_div::_GP('L');
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('L')) {
+			$addParams['L'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('L');
 		}
 
 		if (is_array($additionalParams)) {
@@ -333,9 +333,9 @@ class Tx_Formhandler_UtilityFuncs {
 					$status = $headerStatusCode;
 				}
 				header('Status: ' . $status);
-				header('Location: ' . t3lib_div::locationHeaderUrl($url));
+				header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($url));
 			} else {
-				print '{' . json_encode('redirect') . ':' . json_encode(t3lib_div::locationHeaderUrl($url)) . '}';
+				print '{' . json_encode('redirect') . ':' . json_encode(\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($url)) . '}';
 				exit;
 			}
 			
@@ -398,7 +398,7 @@ class Tx_Formhandler_UtilityFuncs {
 			$sheetArray = '';
 		}
 		if (is_array($sheetArray))	{
-			return $this->pi_getFFvalueFromSheetArray($sheetArray, t3lib_div::trimExplode('/', $fieldName), $value);
+			return $this->pi_getFFvalueFromSheetArray($sheetArray, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $fieldName), $value);
 		}
 	}
 
@@ -442,7 +442,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 */
 	public function dateToTimestampForBackendModule($date, $end = FALSE) {
-		$dateArr = t3lib_div::trimExplode('.', $date);
+		$dateArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $date);
 		if ($end) {
 			return mktime(23, 59, 59, $dateArr[1], $dateArr[0], $dateArr[2]);
 		}
@@ -471,7 +471,7 @@ class Tx_Formhandler_UtilityFuncs {
 				$pos2 = strpos($pattern, 'm');
 				$pos3 = strpos($pattern, 'y');
 
-				$dateParts = t3lib_div::trimExplode($sep, $date);
+				$dateParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($sep, $date);
 				$timestamp = mktime(0, 0, 0, $dateParts[$pos2], $dateParts[$pos1], $dateParts[$pos3]);
 			} else {
 				$dateObj = DateTime::createFromFormat($format, $date);
@@ -492,7 +492,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @return string
 	 */
 	public function getHostname() {
-		return t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 	}
 
 	/**
@@ -544,7 +544,7 @@ class Tx_Formhandler_UtilityFuncs {
 	public function convertToRelativePath($absPath) {
 
 		//C:/xampp/htdocs/typo3/index.php
-		$scriptPath =  t3lib_div::getIndpEnv('SCRIPT_FILENAME');
+		$scriptPath =  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_FILENAME');
 
 		//C:/xampp/htdocs/typo3/
 		$rootPath = str_replace('index.php', '', $scriptPath);
@@ -664,7 +664,7 @@ class Tx_Formhandler_UtilityFuncs {
 		$path = explode('/', $path);
 		if (strpos($path[0], 'EXT') === 0) {
 			$parts = explode(':', $path[0]);
-			$path[0] = t3lib_extMgm::extPath($parts[1]);
+			$path[0] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($parts[1]);
 		}
 		$path = implode('/', $path);
 		$path = str_replace('//', '/', $path);
@@ -681,7 +681,7 @@ class Tx_Formhandler_UtilityFuncs {
 		$path = explode('/', $path);
 		if (strpos($path[0], 'EXT') === 0) {
 			$parts = explode(':', $path[0]);
-			$path[0] = t3lib_extMgm::extRelPath($parts[1]);
+			$path[0] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($parts[1]);
 		}
 		$path = implode('/', $path);
 		$path = str_replace('//', '/', $path);
@@ -701,7 +701,7 @@ class Tx_Formhandler_UtilityFuncs {
 		$path = explode('/', $path);
 		if (strpos($path[0], 'EXT') === 0) {
 			$parts = explode(':', $path[0]);
-			$path[0] = t3lib_extMgm::extRelPath($parts[1]);
+			$path[0] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($parts[1]);
 		}
 		$path = implode('/', $path);
 		$path = str_replace('//', '/', $path);
@@ -742,7 +742,7 @@ class Tx_Formhandler_UtilityFuncs {
 		//if the set directory doesn't exist, print a message and try to create
 		if (!is_dir($this->getTYPO3Root() . $uploadFolder)) {
 			$this->debugMessage('folder_doesnt_exist', array($this->getTYPO3Root() . '/' . $uploadFolder), 2);
-			t3lib_div::mkdir_deep($this->getTYPO3Root() . '/', $uploadFolder);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($this->getTYPO3Root() . '/', $uploadFolder);
 		}
 		return $uploadFolder;
 	}
@@ -840,27 +840,25 @@ class Tx_Formhandler_UtilityFuncs {
 	}
 
 	public function initializeTSFE($pid) {
-		global $TSFE;
-
 		// create object instances:
-		$TSFE = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $pid, 0, TRUE);
-		$TSFE->tmpl = t3lib_div::makeInstance('t3lib_tstemplate');
-		$TSFE->tmpl->init();
+		$GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'], $pid, 0, TRUE);
+		$GLOBALS['TSFE']->tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\TemplateService');
+		$GLOBALS['TSFE']->tmpl->init();
 
 			// then initialize fe user
-		$TSFE->initFEuser();
-		$TSFE->fe_user->fetchGroupData();
+		$GLOBALS['TSFE']->initFEuser();
+		$GLOBALS['TSFE']->fe_user->fetchGroupData();
 
 			// Include the TCA
-		$TSFE->includeTCA();
+		$GLOBALS['TSFE']->includeTCA();
 
 			// Get the page
-		$TSFE->fetch_the_id();
-		$TSFE->getConfigArray();
-		$TSFE->includeLibraries($TSFE->tmpl->setup['includeLibs.']);
-		$TSFE->newCObj();
-
-		$this->compatibilityFuncs->includeTCA();
+		$GLOBALS['TSFE']->fetch_the_id();
+		$GLOBALS['TSFE']->getConfigArray();
+		if(is_array($GLOBALS['TSFE']->tmpl->setup['includeLibs.'])) {
+			$GLOBALS['TSFE']->includeLibraries($GLOBALS['TSFE']->tmpl->setup['includeLibs.']);
+		}
+		$GLOBALS['TSFE']->newCObj();
 	}
 	
 	/**
@@ -1054,7 +1052,7 @@ class Tx_Formhandler_UtilityFuncs {
 			'uploadedFileName' => $uploadedFileName
 		);
 		$params = array_merge($params, $specialParams);
-		return t3lib_div::getIndpEnv('TYPO3_SITE_PATH') . 'index.php?' . t3lib_div::implodeArrayForUrl('', $params);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . 'index.php?' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $params);
 	}
 
 	public function prepareAndWhereString($andWhere) {
@@ -1098,7 +1096,7 @@ class Tx_Formhandler_UtilityFuncs {
 	 * @return array The merged settings
 	 */
 	public function mergeConfiguration($settings, $newSettings) {
-		return t3lib_div::array_merge_recursive_overrule($settings, $newSettings);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $newSettings);
 	}
 }
 

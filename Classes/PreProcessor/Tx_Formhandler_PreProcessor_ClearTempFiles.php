@@ -70,7 +70,7 @@ class Tx_Formhandler_PreProcessor_ClearTempFiles extends Tx_Formhandler_Abstract
 			$path = $this->utilityFuncs->sanitizePath($path);
 
 			//read files in directory
-			$tmpFiles = t3lib_div::getFilesInDir($path);
+			$tmpFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($path);
 
 			$this->utilityFuncs->debugMessage('cleaning_temp_files', array($path));
 

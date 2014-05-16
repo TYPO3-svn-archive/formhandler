@@ -113,7 +113,7 @@ class formhandler_htmlmail {
 		global $TYPO3_CONF_VARS;
 
 			// Sets the message id
-		$host = t3lib_div::getHostname();
+		$host = \TYPO3\CMS\Core\Utility\GeneralUtility::getHostname();
 		if (!$host || $host == '127.0.0.1' || $host == 'localhost' || $host == 'localhost.localdomain') {
 			$host = ($TYPO3_CONF_VARS['SYS']['sitename'] ? preg_replace('/[^A-Za-z0-9_\-]/', '_', $TYPO3_CONF_VARS['SYS']['sitename']) : 'localhost') . '.TYPO3';
 		}
@@ -193,7 +193,7 @@ class formhandler_htmlmail {
 		} elseif ($this->alt_8bit) {
 			return $content;
 		} else	{
-			return t3lib_div::quoted_printable($content);
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::quoted_printable($content);
 		}
 	}
 
@@ -329,7 +329,7 @@ class formhandler_htmlmail {
 
 			// From
 		if ($this->from_email) {
-			if ($this->from_name && !t3lib_div::isBrokenEmailEnvironment()) {
+			if ($this->from_name && !\TYPO3\CMS\Core\Utility\GeneralUtility::isBrokenEmailEnvironment()) {
 				$this->add_header('From: '.$this->from_name.' <'.$this->from_email.'>');
 			} else {
 				$this->add_header('From: '.$this->from_email);
@@ -371,8 +371,8 @@ class formhandler_htmlmail {
 		if (!$this->dontEncodeHeader) {
 			$enc = $this->alt_base64 ? 'base64' : 'quoted_printable';	// Header must be ASCII, therefore only base64 or quoted_printable are allowed!
 				// Quote recipient and subject
-			$this->recipient = t3lib_div::encodeHeader($this->recipient,$enc,$this->charset);
-			$this->subject = t3lib_div::encodeHeader($this->subject,$enc,$this->charset);
+			$this->recipient = \TYPO3\CMS\Core\Utility\GeneralUtility::encodeHeader($this->recipient,$enc,$this->charset);
+			$this->subject = \TYPO3\CMS\Core\Utility\GeneralUtility::encodeHeader($this->subject,$enc,$this->charset);
 		}
 	}
 
@@ -528,7 +528,7 @@ class formhandler_htmlmail {
 		// media is added
 		if (is_array($this->theParts['html']['media'])) {
 			foreach($this->theParts['html']['media'] as $key => $media) {
-				if (!$this->mediaList || t3lib_div::inList($this->mediaList, $key)) {
+				if (!$this->mediaList || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->mediaList, $key)) {
 					$this->add_message('--' . $boundary);
 					$this->add_message('Content-Type: ' . $media['ctype']);
 					$this->add_message('Content-ID: <part' . $key . '.' . $this->messageid . '>');
@@ -579,9 +579,9 @@ class formhandler_htmlmail {
 			// but instead the php.ini parameter sendmail_from is used.
 		$returnPath = (strlen($this->returnPath) > 0) ? '-f ' . escapeshellarg($this->returnPath) : '';
 		if($this->returnPath) {
-			@ini_set('sendmail_from', t3lib_div::normalizeMailAddress($this->returnPath));
+			@ini_set('sendmail_from', \TYPO3\CMS\Core\Utility\GeneralUtility::normalizeMailAddress($this->returnPath));
 		}
-		$recipient = t3lib_div::normalizeMailAddress($this->recipient);
+		$recipient = \TYPO3\CMS\Core\Utility\GeneralUtility::normalizeMailAddress($this->recipient);
 
 		// If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
 		$returnPathPossible = (!ini_get('safe_mode') && $this->forceReturnPath);
@@ -668,7 +668,7 @@ class formhandler_htmlmail {
 			$parts = explode(': ',$header,2);
 			if (count($parts) == 2) {
 				$enc = $this->alt_base64 ? 'base64' : 'quoted_printable';
-				$parts[1] = t3lib_div::encodeHeader($parts[1], $enc, $this->charset);
+				$parts[1] = \TYPO3\CMS\Core\Utility\GeneralUtility::encodeHeader($parts[1], $enc, $this->charset);
 				$header = implode(': ', $parts);
 			}
 		}
@@ -944,7 +944,7 @@ class formhandler_htmlmail {
 		if (is_array($this->theParts['html']['media'])) {
 			foreach ($this->theParts['html']['media'] as $key => $val) {
 				if ($val['use_jumpurl'] && $this->jumperURL_prefix) {
-					$subst = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($val['absRef']);
+					$subst = $this->jumperURL_prefix.\TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($val['absRef']);
 				} else {
 					$subst = ($absolute) ? $val['absRef'] : 'cid:part'.$key.'.'.$this->messageid;
 				}
@@ -973,7 +973,7 @@ class formhandler_htmlmail {
 				if ($this->jumperURL_useId) {
 					$substVal = $this->jumperURL_prefix.$key;
 				} else {
-					$substVal = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($val['absRef']);
+					$substVal = $this->jumperURL_prefix.\TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($val['absRef']);
 				}
 			} else {
 				$substVal = $val['absRef'];
@@ -1015,7 +1015,7 @@ class formhandler_htmlmail {
 					$this->theParts['plain']['link_ids'][$i] = $parts[0];
 					$parts[0] = $this->jumperURL_prefix.'-'.$i;
 				} else {
-					$parts[0] = $this->jumperURL_prefix.t3lib_div::rawUrlEncodeFP($parts[0]);
+					$parts[0] = $this->jumperURL_prefix.\TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($parts[0]);
 				}
 				$textstr .= $parts[0].$parts[1];
 			} else {
@@ -1148,7 +1148,7 @@ class formhandler_htmlmail {
 	 */
 	public function getURL($url) {
 		$url = $this->addUserPass($url);
-		return t3lib_div::getURL($url);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($url);
 	}
 
 
@@ -1182,7 +1182,7 @@ class formhandler_htmlmail {
 	 */
 	public function getMimeType($url) {
 		$mimeType = '';
-		$headers = trim(t3lib_div::getURL($url, 2));
+		$headers = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getURL($url, 2));
 		if ($headers) {
 			$matches = array();
 			if (preg_match('/(Content-Type:[\s]*)([a-zA-Z_0-9\/\-\.\+]*)([\s]|$)/', $headers, $matches)) {
@@ -1323,7 +1323,7 @@ class formhandler_htmlmail {
 
 	/**
 	 * Implementation of quoted-printable encode.
-	 * This function was a duplicate of t3lib_div::quoted_printable, thus it's going to be removed.
+	 * This function was a duplicate of \TYPO3\CMS\Core\Utility\GeneralUtility::quoted_printable, thus it's going to be removed.
 	 * Deprecated since TYPO3 4.0
 	 *
 	 * @param	string		Content to encode
@@ -1331,7 +1331,7 @@ class formhandler_htmlmail {
 	 * @deprecated since TYPO3 4.0, remove in TYPO 4.3
 	 */
 	public function quoted_printable($string) {
-		return t3lib_div::quoted_printable($string, 76);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::quoted_printable($string, 76);
 	}
 
 

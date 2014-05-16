@@ -95,7 +95,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 		$timestamp = $this->utilityFuncs->getTimestamp($value, $unit);
 		$where = 'crdate >= ' . $timestamp;
 		if ($addIPToWhere) {
-			$where = 'ip=\'' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '\' AND ' . $where;
+			$where = 'ip=\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' AND ' . $where;
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,ip,crdate,params', $this->logTable, $where);
 		if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res) >= $maxValue) {
@@ -116,7 +116,7 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 					$intervalTstamp = $this->utilityFuncs->getTimestamp($intervalValue, $intervalUnit);
 					$where = 'pid=' . $GLOBALS['TSFE']->id . ' AND crdate>' . $intervalTstamp;
 					if ($addIPToWhere) {
-						$where .= ' AND ip=\'' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '\'';
+						$where .= ' AND ip=\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\'';
 					}
 
 					$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $this->logTable, $where);
@@ -154,17 +154,17 @@ class Tx_Formhandler_Interceptor_IPBlocking extends Tx_Formhandler_AbstractInter
 	 */
 	private function sendReport($type, $rows) {
 		$email = $this->utilityFuncs->getSingle($this->settings['report.'], 'email');
-		$email = t3lib_div::trimExplode(',', $email);
+		$email = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $email);
 		$sender = $this->utilityFuncs->getSingle($this->settings['report.'], 'sender');
 		$subject = $this->utilityFuncs->getSingle($this->settings['report.'], 'subject');
 		$message = '';
 		if ($type == 'ip') {
-			$message = 'IP address "' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '" has submitted a form too many times!';
+			$message = 'IP address "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . '" has submitted a form too many times!';
 		} else {
 			$message = 'A form got submitted too many times!';
 		}
 
-		$message .= "\n\n" . 'This is the URL to the form: ' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		$message .= "\n\n" . 'This is the URL to the form: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		if (is_array($rows)) {
 			$message .= "\n\n" . 'These are the submitted values:' . "\n\n";
 			foreach ($rows as $idx => $row) {

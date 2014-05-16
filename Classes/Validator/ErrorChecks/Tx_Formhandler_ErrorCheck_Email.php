@@ -27,7 +27,7 @@ class Tx_Formhandler_ErrorCheck_Email extends Tx_Formhandler_AbstractErrorCheck 
 		$checkFailed = '';
 
 		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
-			$valid = t3lib_div::validEmail($this->gp[$this->formFieldName]);
+			$valid = \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->gp[$this->formFieldName]);
 			if (!$valid) {
 				$checkFailed = $this->getCheckFailed();
 			}

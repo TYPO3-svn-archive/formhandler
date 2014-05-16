@@ -14,9 +14,9 @@
  * $Id$
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
 
 /**
  * The Dispatcher instantiates the Component Manager and delegates the process to the given controller.
@@ -107,10 +107,10 @@ class Tx_Formhandler_Dispatcher extends tslib_pibase {
 
 			$result = $controller->process();
 		} catch(Exception $e) {
-			t3lib_div::sysLog(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
 				$e->getFile() . '(' . $e->getLine() . ')' . ' ' . $e->getMessage(),
 				'formhandler',
-				t3lib_div::SYSLOG_SEVERITY_ERROR
+				\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
 			);
 			$result = $this->utilityFuncs->getTranslatedMessage($this->globals->getLangFiles(), 'fe-exception');
 			if(!$result) {

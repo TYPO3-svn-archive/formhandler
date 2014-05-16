@@ -34,12 +34,12 @@ class Tx_Formhandler_Logger_DevLog extends Tx_Formhandler_AbstractLogger {
 		$logParams = $this->gp;
 		if($this->settings['excludeFields']) {
 			$excludeFields = $this->utilityFuncs->getSingle($this->settings, 'excludeFields');
-			$excludeFields = t3lib_div::trimExplode(',', $excludeFields);
+			$excludeFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $excludeFields);
 			foreach($excludeFields as $excludeField) {
 				unset($logParams[$excludeField]);
 			}
 		}
-		t3lib_div::devLog($message, 'formhandler', $severity, $logParams);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($message, 'formhandler', $severity, $logParams);
 
 		return $this->gp;
 	}

@@ -3,9 +3,9 @@
 if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
 
-t3lib_extMgm::addPItoST43($_EXTKEY, 'pi1/class.tx_formhandler_pi1.php', '_pi1', 'list_type', 0);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi1/class.tx_formhandler_pi1.php', '_pi1', 'list_type', 0);
 
 $compatFuncs = Tx_Formhandler_CompatibilityFuncs::getInstance();
 

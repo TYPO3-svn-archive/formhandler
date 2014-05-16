@@ -46,7 +46,7 @@ class Tx_Formhandler_ErrorCheck_Date extends Tx_Formhandler_AbstractErrorCheck {
 			$pos1 = strpos($pattern, 'd');
 			$pos2 = strpos($pattern, 'm');
 			$pos3 = strpos($pattern, 'y');
-			$dateCheck = t3lib_div::trimExplode($sep, $this->gp[$this->formFieldName]);
+			$dateCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($sep, $this->gp[$this->formFieldName]);
 			if (sizeof($dateCheck) !== 3) {
 				$checkFailed = $this->getCheckFailed();
 			} elseif (intval($dateCheck[0]) === 0 || intval($dateCheck[1]) === 0 || intval($dateCheck[2]) === 0) {

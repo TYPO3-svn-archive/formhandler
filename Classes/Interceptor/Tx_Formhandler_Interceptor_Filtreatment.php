@@ -48,7 +48,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 				//user entered a comma seperated list
 				$list = $globalSetting['removeChars'];
 			}
-			$this->removeChars = t3lib_div::trimExplode($sep, $list);
+			$this->removeChars = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($sep, $list);
 		} elseif (intval($this->utilityFuncs->getSingle($globalSetting['removeChars.'], 'disable')) === 1) {
 
 			//user disabled removal globally
@@ -71,7 +71,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 		}
 
 		if (!class_exists('Filtreatment')) {
-			require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/filtreatment/Filtreatment.php');
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/filtreatment/Filtreatment.php');
 		}
 		$filter = new Filtreatment();
 		foreach ($values as $key => $value) {
@@ -99,7 +99,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 						//user entered a comma seperated list
 						$list = $fieldSetting['removeChars'];
 					}
-					$removeChars = t3lib_div::trimExplode($sep, $list);
+					$removeChars = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($sep, $list);
 				} elseif (intval($this->utilityFuncs->getSingle($fieldSetting['removeChars.'], 'disable')) === 1) {
 
 					//user disabled removal for this field
@@ -179,7 +179,7 @@ class Tx_Formhandler_Interceptor_Filtreatment extends Tx_Formhandler_AbstractInt
 		parent::init($gp, $settings);
 		$this->doNotSanitizeFields = array();
 		if($this->settings['doNotSanitizeFields']) {
-			$this->doNotSanitizeFields = t3lib_div::trimExplode(',', $this->utilityFuncs->getSingle($this->settings, 'doNotSanitizeFields'));
+			$this->doNotSanitizeFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->utilityFuncs->getSingle($this->settings, 'doNotSanitizeFields'));
 		}
 	}
 

@@ -135,9 +135,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->storeFileNamesInGP();
 		$this->processFileRemoval();
 
-		$action = t3lib_div::_GP('action');
+		$action = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('action');
 		if ($this->globals->getFormValuesPrefix()) {
-			$temp = t3lib_div::_GP($this->globals->getFormValuesPrefix());
+			$temp = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->globals->getFormValuesPrefix());
 			$action = $temp['action'];
 		}
 		if ($action) {
@@ -177,7 +177,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$content = '';
 		$gp = $_GET;
 		if ($this->globals->getFormValuesPrefix()) {
-			$gp = t3lib_div::_GP($this->globals->getFormValuesPrefix());
+			$gp = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->globals->getFormValuesPrefix());
 		}
 		if (is_array($this->settings['finishers.'])) {
 			$finisherConf = array();
@@ -276,7 +276,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 			$currentGP = $this->utilityFuncs->getMergedGP();
 			if ($this->settings['checkBoxFields']) {
 				$checkBoxFields = $this->utilityFuncs->getSingle($this->settings, 'checkBoxFields');
-				$fields = t3lib_div::trimExplode(',', $checkBoxFields);
+				$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $checkBoxFields);
 				foreach ($fields as $idx => $field) {
 					if(isset($this->gp[$field]) && !isset($currentGP[$field])) {
 						unset($this->gp[$field]);
@@ -315,7 +315,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 							$validator = $this->componentManager->getComponent($className);
 							if ($this->currentStep === $this->lastStep) {
-								$userSetting = t3lib_div::trimExplode(',', $this->utilityFuncs->getSingle($tsConfig['config.'], 'restrictErrorChecks'));
+								$userSetting = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->utilityFuncs->getSingle($tsConfig['config.'], 'restrictErrorChecks'));
 								$autoSetting = array(
 									'fileAllowedTypes',
 									'fileRequired',
@@ -797,7 +797,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 											$files['tmp_name'][$field] = array($files['tmp_name'][$field]);
 										}
 										move_uploaded_file($files['tmp_name'][$field][$idx], $uploadPath . $uploadedFileName);
-										t3lib_div::fixPermissions($uploadPath . $uploadedFileName);
+										\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($uploadPath . $uploadedFileName);
 										$files['uploaded_name'][$field][$idx] = $uploadedFileName;
 	
 										//set values for session
@@ -805,7 +805,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 										$tmp['uploaded_name'] = $uploadedFileName;
 										$tmp['uploaded_path'] = $uploadPath;
 										$tmp['uploaded_folder'] = $uploadFolder;
-										$uploadedUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $uploadFolder . $uploadedFileName;
+										$uploadedUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $uploadFolder . $uploadedFileName;
 										$uploadedUrl = str_replace('//', '/', $uploadedUrl);
 										$tmp['uploaded_url'] = $uploadedUrl;
 										$tmp['size'] = $files['size'][$field][$idx];
@@ -855,7 +855,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$data = $this->globals->getSession()->get('values');
 		
 		$checkBoxFields = $this->utilityFuncs->getSingle($this->settings, 'checkBoxFields');
-		$checkBoxFields = t3lib_div::trimExplode(',', $checkBoxFields);
+		$checkBoxFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $checkBoxFields);
 
 		//set the variables in session
 		if ($this->lastStep !== $this->currentStep) {
@@ -1034,19 +1034,19 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				$results = array();
 				foreach ($andConditions as $subSubIdx => $andCondition) {
 					if (strstr($andCondition, '!=')) {
-						list($field, $value) = t3lib_div::trimExplode('!=', $andCondition);
+						list($field, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('!=', $andCondition);
 						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
 						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) !== $value);
 					} elseif (strstr($andCondition, '=')) {
-						list($field, $value) = t3lib_div::trimExplode('=', $andCondition);
+						list($field, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $andCondition);
 						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
 						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) === $value);
 					} elseif (strstr($andCondition, '>')) {
-						list($field, $value) = t3lib_div::trimExplode('>', $andCondition);
+						list($field, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('>', $andCondition);
 						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
 						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) > $value);
 					} elseif (strstr($andCondition, '<')) {
-						list($field, $value) = t3lib_div::trimExplode('<', $andCondition);
+						list($field, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('<', $andCondition);
 						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
 						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) < $value);
 					} else {
@@ -1151,9 +1151,9 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$session->init($this->gp, $this->settings['session.']['config.']);
 		$this->globals->setSession($session);
 
-		$action = t3lib_div::_GP('action');
+		$action = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('action');
 		if ($this->globals->getFormValuesPrefix()) {
-			$temp = t3lib_div::_GP($this->globals->getFormValuesPrefix());
+			$temp = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->globals->getFormValuesPrefix());
 			$action = $temp['action'];
 		}
 		if($this->globals->getSession()->get('finished') && !$action) {
@@ -1526,7 +1526,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		//check for checkbox fields using the values in $newGP
 		if ($this->settings['checkBoxFields']) {
 			$checkBoxFields = $this->utilityFuncs->getSingle($this->settings, 'checkBoxFields');
-			$fields = t3lib_div::trimExplode(',', $checkBoxFields);
+			$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $checkBoxFields);
 			foreach ($fields as $idx => $field) {
 				if (!isset($newGP[$field]) && isset($this->gp[$field]) && $this->lastStep < $this->currentStep) {
 					$this->gp[$field] = $newGP[$field] = array();

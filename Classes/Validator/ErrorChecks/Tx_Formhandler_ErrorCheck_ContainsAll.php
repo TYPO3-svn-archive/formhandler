@@ -35,7 +35,7 @@ class Tx_Formhandler_ErrorCheck_ContainsAll extends Tx_Formhandler_AbstractError
 		if (strlen($formValue) > 0) {
 			$checkValue = $this->utilityFuncs->getSingle($this->settings['params'], 'words');
 			if (!is_array($checkValue)) {
-				$checkValue = t3lib_div::trimExplode(',', $checkValue);
+				$checkValue = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $checkValue);
 			}
 			foreach ($checkValue as $idx => $word) {
 				if (!stristr($formValue, $word)) {

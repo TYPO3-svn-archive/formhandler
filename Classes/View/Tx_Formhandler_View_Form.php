@@ -173,7 +173,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	protected function replaceMarkersFromMaster() {
 		$fieldMarkers = array();
 		foreach ($this->masterTemplates as $idx => $masterTemplate) {
-			$masterTemplateCode = t3lib_div::getURL($this->utilityFuncs->resolvePath($masterTemplate));
+			$masterTemplateCode = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($this->utilityFuncs->resolvePath($masterTemplate));
 			$matches = array();
 			preg_match_all('/###(field|master)_([^#]*)###/', $masterTemplateCode, $matches);
 			if (!empty($matches[0])) {
@@ -446,7 +446,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 * @return void
 	 */
 	protected function fillDefaultMarkers() {
-		$parameters = t3lib_div::_GET();
+		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
 		if (isset($parameters['id'])) {
 			unset($parameters['id']);
 		}
@@ -469,7 +469,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers['###TIMESTAMP###'] = htmlspecialchars($this->gp['formtime']);
 		}
 		$markers['###RANDOM_ID###'] = htmlspecialchars($this->gp['randomID']);
-		$markers['###ABS_URL###'] = t3lib_div::locationHeaderUrl('') . $path;
+		$markers['###ABS_URL###'] = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl('') . $path;
 		$markers['###rel_url###'] = $markers['###REL_URL###'];
 		$markers['###timestamp###'] = $markers['###TIMESTAMP###'];
 		$markers['###abs_url###'] = $markers['###ABS_URL###'];
@@ -550,7 +550,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers['###auth_code###'] = $this->gp['generated_authCode'];
 		}
 
-		$markers['###ip###'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
+		$markers['###ip###'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR');
 		$markers['###IP###'] = $markers['###ip###'];
 		$markers['###submission_date###'] = date('d.m.Y H:i:s', time());
 		$markers['###pid###'] = $GLOBALS['TSFE']->id;
@@ -664,38 +664,38 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	protected function fillCaptchaMarkers(&$markers) {
 		global $LANG;
 
-		if (t3lib_extMgm::isLoaded('captcha')){
-			$captchaPath = t3lib_extMgm::siteRelPath('captcha') . 'captcha/captcha.php?rand=' . rand();
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('captcha')){
+			$captchaPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('captcha') . 'captcha/captcha.php?rand=' . rand();
 			if(substr($captchaPath, 0, 1) !== '/') {
 				$captchaPath = '/' . $captchaPath;
 			}
 			$markers['###CAPTCHA###'] = '<img src="' . $captchaPath . '" alt="" />';
 			$markers['###captcha###'] = $markers['###CAPTCHA###'];
 		}
-		if (t3lib_extMgm::isLoaded('sr_freecap')){
-			require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
-			$this->freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sr_freecap')){
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
+			$this->freeCap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_srfreecap_pi2');
 			$markers = array_merge($markers, $this->freeCap->makeCaptcha());
 		}
-		if (t3lib_extMgm::isLoaded('jm_recaptcha')) {
-			require_once(t3lib_extMgm::extPath('jm_recaptcha') . 'class.tx_jmrecaptcha.php');
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('jm_recaptcha')) {
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('jm_recaptcha') . 'class.tx_jmrecaptcha.php');
 			$this->recaptcha = new tx_jmrecaptcha();
 			$markers['###RECAPTCHA###'] = $this->recaptcha->getReCaptcha();
 			$markers['###recaptcha###'] = $markers['###RECAPTCHA###'];
 		}
 
-		if (t3lib_extMgm::isLoaded('wt_calculating_captcha')) {
-			require_once(t3lib_extMgm::extPath('wt_calculating_captcha') . 'class.tx_wtcalculatingcaptcha.php');
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('wt_calculating_captcha')) {
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('wt_calculating_captcha') . 'class.tx_wtcalculatingcaptcha.php');
 
-			$captcha = t3lib_div::makeInstance('tx_wtcalculatingcaptcha');
+			$captcha = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_wtcalculatingcaptcha');
 			$markers['###WT_CALCULATING_CAPTCHA###'] = $captcha->generateCaptcha();
 			$markers['###wt_calculating_captcha###'] = $markers['###WT_CALCULATING_CAPTCHA###'];
 		}
 
-		if (t3lib_extMgm::isLoaded('mathguard')) {
-			require_once(t3lib_extMgm::extPath('mathguard') . 'class.tx_mathguard.php');
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('mathguard')) {
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mathguard') . 'class.tx_mathguard.php');
 
-			$captcha = t3lib_div::makeInstance('tx_mathguard');
+			$captcha = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mathguard');
 			$markers['###MATHGUARD###'] = $captcha->getCaptcha();
 			$markers['###mathguard###'] = $markers['###MATHGUARD###'];
 		}
@@ -739,7 +739,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 
 		$flexformValue = $this->utilityFuncs->pi_getFFvalue($this->cObj->data['pi_flexform'], 'required_fields', 'sMISC');
 		if ($flexformValue) {
-			$fields = t3lib_div::trimExplode(',', $flexformValue);
+			$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $flexformValue);
 			if (is_array($settings['validators.'])) {
 
 				// Searches the index of Tx_Formhandler_Validator_Default
@@ -775,7 +775,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 					if(intval($this->utilityFuncs->getSingle($validatorSettings, 'disable')) === 0) {
 						$disableErrorCheckFields = array();
 						if(is_array($validatorSettings['config.']) && isset($validatorSettings['config.']['disableErrorCheckFields'])) {
-							$disableErrorCheckFields = t3lib_div::trimExplode(',', $validatorSettings['config.']['disableErrorCheckFields']);
+							$disableErrorCheckFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $validatorSettings['config.']['disableErrorCheckFields']);
 						}
 						if (is_array($validatorSettings['config.']) && is_array($validatorSettings['config.']['fieldConf.'])) {
 							foreach ($validatorSettings['config.']['fieldConf.'] as $fieldname => $fieldSettings) {
@@ -785,11 +785,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 										switch ($check) {
 											case 'fileMinSize':
 												$minSize = $fieldSettings['errorCheck.'][$key . '.']['minSize'];
-												$markers['###' . $replacedFieldname . '_minSize###'] = t3lib_div::formatSize($minSize, ' Bytes| KB| MB| GB');
+												$markers['###' . $replacedFieldname . '_minSize###'] = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($minSize, ' Bytes| KB| MB| GB');
 												break;
 											case 'fileMaxSize':
 												$maxSize = $fieldSettings['errorCheck.'][$key . '.']['maxSize'];
-												$markers['###' . $replacedFieldname . '_maxSize###'] = t3lib_div::formatSize($maxSize, ' Bytes| KB| MB| GB');
+												$markers['###' . $replacedFieldname . '_maxSize###'] = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($maxSize, ' Bytes| KB| MB| GB');
 												break;
 											case 'fileAllowedTypes':
 												$types = $fieldSettings['errorCheck.'][$key . '.']['allowedTypes'];
@@ -811,15 +811,15 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 												break;
 											case 'fileMaxTotalSize':
 												$maxTotalSize = $fieldSettings['errorCheck.'][$key . '.']['maxTotalSize'];
-												$markers['###' . $replacedFieldname . '_maxTotalSize###'] = t3lib_div::formatSize($maxTotalSize, ' Bytes| KB| MB| GB');
+												$markers['###' . $replacedFieldname . '_maxTotalSize###'] = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($maxTotalSize, ' Bytes| KB| MB| GB');
 												$totalSize = 0;
 												if(is_array($sessionFiles[$replacedFieldname])) {
 													foreach ($sessionFiles[$replacedFieldname] as $file) {
 														$totalSize += intval($file['size']);
 													}
 												}
-												$markers['###' . $replacedFieldname . '_currentTotalSize###'] = t3lib_div::formatSize($totalSize, ' Bytes| KB| MB| GB');
-												$markers['###' . $replacedFieldname . '_remainingTotalSize###'] = t3lib_div::formatSize($maxTotalSize - $totalSize, ' Bytes| KB| MB| GB');
+												$markers['###' . $replacedFieldname . '_currentTotalSize###'] = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($totalSize, ' Bytes| KB| MB| GB');
+												$markers['###' . $replacedFieldname . '_remainingTotalSize###'] = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($maxTotalSize - $totalSize, ' Bytes| KB| MB| GB');
 												break;
 											case 'required':case 'fileRequired':case 'jmRecaptcha':case 'captcha':case 'srFreecap':case 'mathGuard':
 												if(!in_array('all', $disableErrorCheckFields) && !in_array($replacedFieldname, $disableErrorCheckFields)) {
@@ -1014,10 +1014,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				$types = array($types);
 			}
 			foreach ($types as $idx => $type) {
-				$temp = t3lib_div::trimExplode(';', $type);
+				$temp = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(';', $type);
 				$type = array_shift($temp);
 				foreach ($temp as $subIdx => $item) {
-					$item = t3lib_div::trimExplode('::', $item);
+					$item = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('::', $item);
 					$values[$item[0]] = $item[1];
 				}
 
@@ -1060,7 +1060,7 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers['###ERROR_' . strtoupper($field) . '###'] = $errorMessage;
 			$errorMessage = $clearErrorMessage;
 			if ($this->settings['addErrorAnchors']) {
-				$errorMessage = '<a href="' . t3lib_div::getIndpEnv('REQUEST_URI') . '#' . $field . '">' . $errorMessage . '</a>';
+				$errorMessage = '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '#' . $field . '">' . $errorMessage . '</a>';
 			}
 
 			//list settings
@@ -1239,9 +1239,9 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 		$bgcolor = '#EAEAEA';
 		$bgcolor = $this->settings['stepbar_color'] ? $this->settings['stepbar_color'] : $bgcolor;
 
-		$nrcolor = t3lib_div::modifyHTMLcolor($bgcolor, 30, 30, 30);
+		$nrcolor = \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLcolor($bgcolor, 30, 30, 30);
 		$errorbgcolor = '#dd7777';
-		$errornrcolor = t3lib_div::modifyHTMLcolor($errorbgcolor, 30, 30, 30);
+		$errornrcolor = \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLcolor($errorbgcolor, 30, 30, 30);
 
 		$classprefix = $this->globals->getFormValuesPrefix() . '_stepbar';
 

@@ -21,9 +21,9 @@
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_CompatibilityFuncs.php');
 class Tx_Formhandler_Component_Manager {
 	const PACKAGE_PREFIX = 'Tx';
 	const DIRECTORY_CLASSES = 'Classes/';
@@ -356,7 +356,7 @@ class Tx_Formhandler_Component_Manager {
 						$this->classFiles[$classNameParts[1]] = array_merge($temp, $this->classFiles[$classNameParts[1]]);
 					}
 				}
-				t3lib_div::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
 
 				//If the package exists in the cache, but the class does not, look in the additionalIncludePaths again.
 			} elseif(!array_key_exists($className, $this->classFiles[$classNameParts[1]])) {
@@ -367,7 +367,7 @@ class Tx_Formhandler_Component_Manager {
 						$this->classFiles[$classNameParts[1]] = array_merge($temp, $this->classFiles[$classNameParts[1]]);
 					}
 				}
-				t3lib_div::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
 			}
 			$classFilePathAndName = NULL;
 			if(isset($this->classFiles[$classNameParts[1]][$className])) {
@@ -380,10 +380,10 @@ class Tx_Formhandler_Component_Manager {
 	}
 
 	protected function getPackagePath($packageKey) {
-		if (strpos($packageKey, '/') === FALSE && t3lib_extMgm::isLoaded(strtolower($packageKey))) {
-			$path = t3lib_extMgm::extPath(strtolower($packageKey));
+		if (strpos($packageKey, '/') === FALSE && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded(strtolower($packageKey))) {
+			$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(strtolower($packageKey));
 		} else {
-			$path = t3lib_div::getFileAbsFileName($packageKey);
+			$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($packageKey);
 			if (substr($path,strlen($path) -1) !== '/') {
 				$path .= '/';
 			}

@@ -35,7 +35,7 @@ class Tx_Formhandler_Debugger_DevLog extends Tx_Formhandler_AbstractDebugger {
 				if(is_array($messageData['data'])) {
 					$data = $messageData['data'];
 				}
-				t3lib_div::devLog($message, 'formhandler', $severity, $data);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($message, 'formhandler', $severity, $data);
 			}
 		}
 

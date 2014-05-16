@@ -97,13 +97,13 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 								)
 							);
 							copy(($file['uploaded_path'] . $file['uploaded_name']), ($uploadPath . $newFilename));
-							t3lib_div::fixPermissions($uploadPath . $newFilename);
+							\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($uploadPath . $newFilename);
 							unlink(($file['uploaded_path'] . $file['uploaded_name']));
 							$newFolder = str_replace($this->utilityFuncs->getDocumentRoot(), '', $uploadPath);
 							$sessionFiles[$field][$key]['uploaded_path'] = $uploadPath;
 							$sessionFiles[$field][$key]['uploaded_name'] = $newFilename;
 							$sessionFiles[$field][$key]['uploaded_folder'] = $newFolder;
-							$sessionFiles[$field][$key]['uploaded_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $newFolder . $newFilename;
+							$sessionFiles[$field][$key]['uploaded_url'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $newFolder . $newFilename;
 							if (!is_array($this->gp[$field])) {
 								$this->gp[$field] = array();
 							}
@@ -140,7 +140,7 @@ class Tx_Formhandler_Finisher_StoreUploadedFiles extends Tx_Formhandler_Abstract
 				$doCreateNonExistingFolder = 1;
 			}
 			if($doCreateNonExistingFolder === 1) {
-				t3lib_div::mkdir_deep($this->utilityFuncs->getDocumentRoot(), $newFolder);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($this->utilityFuncs->getDocumentRoot(), $newFolder);
 				$this->utilityFuncs->debugMessage('Creating directory "' . $newFolder . '"');
 			} else {
 				$this->utilityFuncs->throwException('Directory "' . $newFolder . '" doesn\'t exist!');

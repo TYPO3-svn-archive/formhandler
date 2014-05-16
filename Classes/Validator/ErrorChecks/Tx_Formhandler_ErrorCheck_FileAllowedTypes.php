@@ -38,7 +38,7 @@ class Tx_Formhandler_ErrorCheck_FileAllowedTypes extends Tx_Formhandler_Abstract
 			foreach($files['name'][$this->formFieldName] as $fileName) {
 				if (strlen($fileName) > 0) {
 					if ($allowed) {
-						$types = t3lib_div::trimExplode(',', $allowed);
+						$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $allowed);
 						$fileext = substr($fileName, strrpos($fileName, '.') + 1);
 						$fileext = strtolower($fileext);
 						if (!in_array($fileext, $types)) {

@@ -12,7 +12,7 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Controller/Module/class.tx_formhandler_mod1_pagination.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Controller/Module/class.tx_formhandler_mod1_pagination.php');
 
 /**
  * Controller for Backend Module of Formhandler
@@ -87,9 +87,9 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	public function __construct(Tx_Formhandler_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration, Tx_Formhandler_UtilityFuncs $utilityFuncs) {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
-		$this->templatePath = t3lib_extMgm::extPath('formhandler') . 'Resources/HTML/backend/';
+		$this->templatePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/HTML/backend/';
 		$this->templateFile = $this->templatePath . 'template.html';
-		$this->templateCode = t3lib_div::getURL($this->templateFile);
+		$this->templateCode = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($this->templateFile);
 		$this->utilityFuncs = $utilityFuncs;
 	}
 
@@ -135,7 +135,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		$this->init();
 
 		//init gp params
-		$params = t3lib_div::_GP('formhandler');
+		$params = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 
 		if(isset($params['markedUids']) && is_array($params['markedUids'])) {
 			foreach($params['markedUids'] as &$uidValue) {
@@ -249,7 +249,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		//init gp params
-		$gp = t3lib_div::_GP('formhandler');
+		$gp = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 
 		//select the records
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params', $this->logTable, ('uid IN (' . implode(',', $detailId) . ')'));
@@ -284,7 +284,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 			// check if TSconfig filter is set
 			if (strlen($tsconfig['properties']['config.']['pdf']) > 0) {
-				$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['pdf'], 1);
+				$configParams = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsconfig['properties']['config.']['pdf'], 1);
 				$generator->generateModulePDF($records, $configParams);	
 			} elseif (isset($gp['exportParams'])) {
 
@@ -322,7 +322,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		//init gp params
-		$params = t3lib_div::_GP('formhandler');
+		$params = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 
 		//select the records to export
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,crdate,ip,params,key_hash', $this->logTable, $where);
@@ -374,7 +374,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 				// check if TSconfig filter is set
 				if ($tsconfig['properties']['config.']['csv'] != "") {
-					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
+					$configParams = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
 					$generator->generateModuleCSV(
 						$records,
 						$configParams,
@@ -420,7 +420,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 				// check if TSconfig filter is set
 				if ($tsconfig['properties']['config.']['csv'] != "") {
-					$configParams = t3lib_div::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
+					$configParams = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsconfig['properties']['config.']['csv'], 1);
 					$generator->generateModuleCSV(
 						$renderRecords,
 						$configParams,
@@ -480,7 +480,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		//init gp params
-		$gp = t3lib_div::_GP('formhandler');
+		$gp = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 		$selectorCode = $this->utilityFuncs->getSubpart($this->templateCode, '###EXPORT_FIELDS_SELECTOR###');
 
 		$markers = array();
@@ -546,7 +546,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		//init gp params
-		$gp = t3lib_div::_GP('formhandler');
+		$gp = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 		$selectorCode = $this->utilityFuncs->getSubpart($this->templateCode, '###EXPORT_FIELDS_SELECTOR###');
 
 		$markers = array();
@@ -787,7 +787,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	protected function buildWhereClause() {
 
 		//init gp params
-		$params = t3lib_div::_GP('formhandler');
+		$params = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 		$where = array();
 
 		if ($this->id) {
@@ -801,7 +801,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		if (strlen(trim($params['pidFilter'])) > 0 && trim($params['pidFilter']) != "*") {
-			$pids = t3lib_div::trimExplode(',', $params['pidFilter'], 1);
+			$pids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $params['pidFilter'], 1);
 			$pid_search = array();
 			// check is page shall be accessed by current BE user
 			foreach ($pids as $pid) {
@@ -825,7 +825,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		if (trim($params['ipFilter']) > 0) {
-			$ips = t3lib_div::trimExplode(',', $params['ipFilter'], 1);
+			$ips = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $params['ipFilter'], 1);
 			$ip_search = array();
 			foreach ($ips as $value) {
 				$ip_search[] = $GLOBALS['TYPO3_DB']->fullQuoteStr(htmlspecialchars($value), $this->logTable);
@@ -859,7 +859,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	protected function getFilterSection() {
 
 		//init gp params
-		$params = t3lib_div::_GP('formhandler');
+		$params = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 
 		$filter = '';
 		$filter .= $this->getSelectionJS();
@@ -983,7 +983,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 		}
 
 		//init gp params
-		$params = t3lib_div::_GP('formhandler');
+		$params = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 
 		$table .= $this->getFunctionArea();
 		$tableCode = $this->utilityFuncs->getSubpart($this->templateCode, '###LIST_TABLE###');
@@ -1065,7 +1065,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * @return string The parameter string
 	 */
 	protected function getDefaultGetParamsString() {
-		$gpParams = t3lib_div::_GP('formhandler');
+		$gpParams = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formhandler');
 		$params = array(
 			'formhandler[pidFilter]' => intval($gpParams['pidFilter']),
 			'formhandler[ipFilter]' => urlencode($gpParams['ipFilter']),

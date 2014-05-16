@@ -86,7 +86,7 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$this->utilityFuncs->debugMessage('Selected row: ', array(), 1, $row);
 
-				$localAuthCode = t3lib_div::hmac(serialize($row), 'formhandler');
+				$localAuthCode = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($row), 'formhandler');
 
 				$this->utilityFuncs->debugMessage('Comparing auth codes: ', array(), 1, array('Calculated:' => $localAuthCode, 'Given:' => $authCode));
 				if($localAuthCode !== $authCode) {

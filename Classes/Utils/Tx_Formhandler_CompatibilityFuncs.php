@@ -43,7 +43,7 @@ class Tx_Formhandler_CompatibilityFuncs {
 		if (class_exists('t3lib_utility_Debug') && is_callable('t3lib_utility_Debug::viewArray')) {
 			return t3lib_utility_Debug::viewArray($array);
 		} else {
-			return t3lib_div::view_array($array);
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::view_array($array);
 		}
 	}
 
@@ -56,7 +56,7 @@ class Tx_Formhandler_CompatibilityFuncs {
 		if (class_exists('t3lib_utility_VersionNumber') && is_callable('t3lib_utility_VersionNumber::convertVersionNumberToInteger')) {
 			return t3lib_utility_VersionNumber::convertVersionNumberToInteger($versionNumber);
 		} else {
-			return t3lib_div::int_from_ver($versionNumber);
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::int_from_ver($versionNumber);
 		}
 	}
 
@@ -68,7 +68,7 @@ class Tx_Formhandler_CompatibilityFuncs {
 		if (class_exists('t3lib_utility_Math') && is_callable('t3lib_utility_Math::canBeInterpretedAsInteger')) {
 			return t3lib_utility_Math::canBeInterpretedAsInteger($value);
 		} else {
-			return t3lib_div::testInt($value);
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::testInt($value);
 		}
 	}
 
@@ -79,10 +79,10 @@ class Tx_Formhandler_CompatibilityFuncs {
 	 */
 	public function readLLXMLfile($llFile, $lang) {
 		if (class_exists('t3lib_l10n_parser_Llxml')) {
-			$xmlParser = t3lib_div::makeInstance('t3lib_l10n_parser_Llxml');
+			$xmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_l10n_parser_Llxml');
 			$LOCAL_LANG = $xmlParser->getParsedData($llFile, $lang);
 		} else {
-			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $lang);
+			$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLXMLfile($llFile, $lang);
 		}
 		return $LOCAL_LANG;
 	}

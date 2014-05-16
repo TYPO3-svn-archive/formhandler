@@ -46,8 +46,8 @@ $GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Language/locallang.xm
 $GLOBALS['BE_USER']->modAccess($MCONF, 1);	// This checks permissions and exits if the users has no permission for entry.
 // DEFAULT initialization of a module [END]
 
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+require_once (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 /**
  * Module 'Formhandler' for the 'formhandler' extension.
@@ -72,13 +72,13 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function init()	{
-		$id = intval(t3lib_div::_GP('id'));
+		$id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
 		$tsconfig = t3lib_BEfunc::getModTSconfig($id, 'tx_formhandler_mod1');
 		$this->settings = $tsconfig['properties']['config.'];
 		parent::init();
 
 		/*
-		 if (t3lib_div::_GP('clear_all_cache'))	{
+		 if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('clear_all_cache'))	{
 		 $this->include_once[] = PATH_t3lib.'class.t3lib_tcemain.php';
 		 }
 		 */
@@ -117,7 +117,7 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 		if (($this->id && $access) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id))	{
 
 			// Draw the header.
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('mediumDoc');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 			/** @var $pageRenderer t3lib_PageRenderer */
@@ -149,7 +149,7 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 				</script>
 			';
 
-			//$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
+			//$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_pre($this->pageinfo['_thePath'],50);
 
 			$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
@@ -167,7 +167,7 @@ class tx_formhandler_module1 extends t3lib_SCbase {
 		} else {
 			// If no access or if ID == zero
 
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('mediumDoc');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 			$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
@@ -232,7 +232,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/formhan
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_formhandler_module1');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_formhandler_module1');
 $SOBE->init();
 
 // Include files?

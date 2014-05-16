@@ -87,7 +87,7 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 		$componentSettings = $this->getComponentSettings();
 		$checkBinaryCrLf = $componentSettings['checkBinaryCrLf'];
 		if (strlen($checkBinaryCrLf) > 0) {
-			$paramsToCheck = t3lib_div::trimExplode(',', $checkBinaryCrLf);
+			$paramsToCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $checkBinaryCrLf);
 			foreach ($markers as $markerName => &$value) {
 				
 				$fieldName = str_replace(array('value_', 'VALUE_', '###'), '', $markerName);

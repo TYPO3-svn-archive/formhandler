@@ -18,9 +18,9 @@
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
-require_once(t3lib_extMgm::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_UtilityFuncs.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
 
 class Tx_Formhandler_Utils_AjaxValidate {
 
@@ -33,7 +33,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 		$this->init();
 		if ($this->fieldname) {
 			$this->globals->setCObj($GLOBALS['TSFE']->cObj);
-			$randomID = htmlspecialchars(t3lib_div::_GP('randomID'));
+			$randomID = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('randomID'));
 			$this->globals->setRandomID($randomID);
 			$this->componentManager = Tx_Formhandler_Component_Manager::getInstance();
 			if(!$this->globals->getSession()) {
@@ -49,7 +49,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 			if ($valid) {
 				$content = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'ok');
 				if(strlen($content) === 0) {
-					$content = '<img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/ok.png' . '" />';
+					$content = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Images/ok.png' . '" />';
 				} else {
 					$gp = array(
 						$_GET['field'] => $_GET['value']
@@ -61,7 +61,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 			} else {
 				$content = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'notOk');
 				if(strlen($content) === 0) {
-					$content = '<img src="' . t3lib_extMgm::extRelPath('formhandler') . 'Resources/Images/notok.png' . '" />';
+					$content = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Images/notok.png' . '" />';
 				} else {
 					$view = $this->initView($content);
 					$gp = array(
@@ -115,7 +115,7 @@ class Tx_Formhandler_Utils_AjaxValidate {
 
 }
 
-$validator = t3lib_div::makeInstance('Tx_Formhandler_Utils_AjaxValidate');
+$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Formhandler_Utils_AjaxValidate');
 $validator->main();
 
 ?>

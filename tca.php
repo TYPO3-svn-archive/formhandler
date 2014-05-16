@@ -1,6 +1,6 @@
 <?php
 
-require_once(t3lib_extMgm::extPath('formhandler') . 'Resources/PHP/class.tx_formhandler_tcafuncs.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/class.tx_formhandler_tcafuncs.php');
 
 $TCA['tx_formhandler_log'] = array (
 	'ctrl' => $TCA['tx_formhandler_log']['ctrl'],
