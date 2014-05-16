@@ -358,12 +358,17 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		$url = $this->utilityFuncs->getAjaxUrl($params);
 		$js = '
 			<script type="text/javascript">
-				' . $this->jQueryAlias . '(function() {
+				function attachFileRemovalEvents' . $field . '() {
 					' . $this->jQueryAlias . '("' . $this->formSelector . ' a.formhandler_removelink_' . $field . '").click(function() {
 						var url = ' . $this->jQueryAlias . '(this).attr("href");
-						' . $this->jQueryAlias . '("' . $this->formSelector . ' #Tx_Formhandler_UploadedFiles_' . $field . '").load(url + "#Tx_Formhandler_UploadedFiles_' . $field . '");
+						' . $this->jQueryAlias . '("' . $this->formSelector . ' #Tx_Formhandler_UploadedFiles_' . $field . '").load(url + "#Tx_Formhandler_UploadedFiles_' . $field . '", function() {
+							attachFileRemovalEvents' . $field . '();
+						});
 						return false;
 					});
+				}
+				' . $this->jQueryAlias . '(function() {
+					attachFileRemovalEvents' . $field . '();
 				});
 			</script>
 		';
