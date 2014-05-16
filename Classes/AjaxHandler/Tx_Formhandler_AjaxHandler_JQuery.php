@@ -199,7 +199,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		if(strlen($loadingImg) === 0) {
 			$loadingImg = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Images/ajax-loader.gif';
 			$loadingImg = str_replace('../', '', $loadingImg);
-			$loadingImg = '<img src="' . $loadingImg . '"/>';
+			$loadingImg = '<img src="' . $loadingImg . '" alt="loading" />';
 		}
 
 		$autoDisableSubmitButton = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'autoDisableSubmitButton');
@@ -212,7 +212,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			$ajaxSubmitLoader = $this->utilityFuncs->getSingle($settings['ajax.']['config.'], 'ajaxSubmitLoader');
 			if(strlen($ajaxSubmitLoader) === 0) {
 				$loadingImg = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Images/ajax-loader.gif';
-				$loadingImg = '<img src="' . $loadingImg . '"/>';
+				$loadingImg = '<img src="' . $loadingImg . '" alt="loading" />';
 				$loadingImg = str_replace('../', '', $loadingImg);
 				$ajaxSubmitLoader = '<span class="loading_ajax-submit">' . $loadingImg . '</span>';
 			}
