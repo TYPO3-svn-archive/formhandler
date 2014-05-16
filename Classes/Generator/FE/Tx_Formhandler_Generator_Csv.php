@@ -96,7 +96,11 @@ class Tx_Formhandler_Generator_Csv extends Tx_Formhandler_AbstractGenerator {
 				return $this->gp;
 			}
 		} else {
-			$csv->output('formhandler.csv', $data, $fields);
+			$fileName = 'formhandler.csv';
+			if($this->settings['outputFileName']) {
+				$fileName = $this->utilityFuncs->getSingle($this->settings, 'outputFileName');
+			}
+			$csv->output($fileName, $data, $fields);
 			die();
 		}
 	}

@@ -58,7 +58,7 @@ class Tx_Formhandler_Generator_TCPDF {
 	 * @see Tx_Formhandler_Controller_Backend::generatePDF()
 	 * @return void
 	 */
-	function generateModulePDF($records, $exportFields = array()) {
+	function generateModulePDF($records, $exportFields = array(), $fileName = 'formhandler.pdf') {
 
 		//init pdf object
 		$this->pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
@@ -167,7 +167,7 @@ class Tx_Formhandler_Generator_TCPDF {
 			$this->pdf->Cell(300, 100, 'No valid records found! Try to select more fields to export!', 0, 0, 'L');
 		}
 
-		$this->pdf->Output('formhandler.pdf','D');
+		$this->pdf->Output($fileName, 'D');
 		exit;
 	}
 

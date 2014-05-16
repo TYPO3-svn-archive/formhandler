@@ -84,7 +84,11 @@ class Tx_Formhandler_Generator_TcPdf extends Tx_Formhandler_AbstractGenerator {
 			header('Location: ' . $downloadpath);
 			exit;
 		} else {
-			$this->pdf->Output('formhandler.pdf','D');
+			$fileName = 'formhandler.pdf';
+			if($this->settings['outputFileName']) {
+				$fileName = $this->utilityFuncs->getSingle($this->settings, 'outputFileName');
+			}
+			$this->pdf->Output($fileName, 'D');
 			exit;
 		}
 	}
