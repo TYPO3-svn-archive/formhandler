@@ -405,7 +405,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 			}
 
 			//post process the field value after formhandler did it's magic.
-			if (is_array($options['postProcessing.'])) {
+			if (isset($options['postProcessing.']) && is_array($options['postProcessing.'])) {
 				if(!isset($options['postProcessing.']['value'])) {
 					$options['postProcessing.']['value'] = $fieldValue;
 				}
