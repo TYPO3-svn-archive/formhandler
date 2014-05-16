@@ -38,7 +38,10 @@ class tx_dynaflex_formhandler {
 				$newRecord = 'false';
 			}
 		}
-		$uid = key($GLOBALS['SOBE']->editconf['tt_content']);
+		$uid = NULL;
+		if(is_array($GLOBALS['SOBE']->editconf['tt_content'])) {
+			$uid = key($GLOBALS['SOBE']->editconf['tt_content']);
+		}
 		if($uid < 0 || empty($uid) || !strstr($uid,'NEW')) {
 			$uid = $GLOBALS['SOBE']->elementsData[0]['uid'];
 		}
