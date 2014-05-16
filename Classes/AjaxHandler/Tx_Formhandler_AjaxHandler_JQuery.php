@@ -121,9 +121,9 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			}
 			$js .= '
 			function submitButtonClick(el) {
-				' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").attr("disabled", "disabled");
 				var container = el.closest(".Tx-Formhandler");
 				var form = el.closest("FORM");
+				el.attr("disabled", "disabled");
 			';
 
 			$params = array(
