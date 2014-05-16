@@ -847,6 +847,7 @@ class Tx_Formhandler_UtilityFuncs {
 		if(is_array($GLOBALS['TSFE']->tmpl->setup['includeLibs.'])) {
 			$GLOBALS['TSFE']->includeLibraries($GLOBALS['TSFE']->tmpl->setup['includeLibs.']);
 		}
+		$GLOBALS['TSFE']->settingLanguage();
 		$GLOBALS['TSFE']->newCObj();
 	}
 	
