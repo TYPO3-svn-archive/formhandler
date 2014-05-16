@@ -182,7 +182,10 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				if (is_array($subparts)) {
 					foreach ($subparts as $index => $subpart) {
 						$subpartKey = str_replace('#', '', $subpart);
-						$subpartsCodes[$subpartKey] = $this->cObj->getSubpart($masterTemplateCode, $subpart);
+						$code = $this->cObj->getSubpart($masterTemplateCode, $subpart);
+						if (!empty($code)) {
+							$subpartsCodes[$subpartKey] = $code;
+						}
 					}
 				}
 				foreach ($subpartsCodes as $subpart=>$code) {
