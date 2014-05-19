@@ -309,7 +309,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 						case 'saltedpassword':
 							$field = $this->utilityFuncs->getSingle($options['special.'], 'field');
 
-							$saltedpasswords = tx_saltedpasswords_div::returnExtConf();
+							$saltedpasswords = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::returnExtConf();
 							$tx_saltedpasswords = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($saltedpasswords['saltedPWHashingMethod']);
 							$encryptedPassword = $tx_saltedpasswords->getHashedPassword($this->gp[$field]);
 
