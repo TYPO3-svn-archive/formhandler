@@ -191,7 +191,7 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 
 			//set other errorChecks
 			foreach($fieldSettings['errorCheck.'] as $key=>$check) {
-				if(!strstr($key, '.')) {
+				if(!strstr($key, '.') && strlen(trim($check)) > 0) {
 					$errorChecks[$counter]['check'] = $check;
 					if(is_array($fieldSettings['errorCheck.'][$key . '.'])) {
 						$errorChecks[$counter]['params'] = $fieldSettings['errorCheck.'][$key . '.'];

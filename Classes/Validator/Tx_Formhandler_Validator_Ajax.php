@@ -74,7 +74,7 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 
 				//set required to first position if set
 				foreach ($fieldSettings['errorCheck.'] as $key => $check) {
-					if (!strstr($key, '.')) {
+					if(!strstr($key, '.') && strlen(trim($check)) > 0) {
 						if (!strcmp($check, 'required') || !strcmp($check, 'file_required')) {
 							$errorChecks[$counter]['check'] = $check;
 							unset($fieldSettings['errorCheck.'][$key]);
