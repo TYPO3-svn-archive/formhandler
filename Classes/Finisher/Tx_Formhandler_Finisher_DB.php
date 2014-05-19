@@ -264,7 +264,7 @@ class Tx_Formhandler_Finisher_DB extends Tx_Formhandler_AbstractFinisher {
 						$mapping = $fieldname;
 					}
 
-					$fieldValue = $this->gp[$mapping];
+					$fieldValue = $this->utilityFuncs->getGlobal($mapping, $this->gp);
 
 					//pre process the field value. e.g. to format a date
 					if (isset($options['preProcessing.']) && is_array($options['preProcessing.'])) {
