@@ -1088,6 +1088,25 @@ class Tx_Formhandler_UtilityFuncs {
 	public function mergeConfiguration($settings, $newSettings) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($settings, $newSettings);
 	}
+
+	public function parseResourceFiles($settings, $key) {
+		$resourceFile = $settings[$key];
+		$resourceFiles = array();
+		if (!$this->isValidCObject($resourceFile) && $settings[$key . '.']) {
+			foreach ($settings[$key . '.'] as $idx => $file) {
+				if(strpos($idx, '.') === FALSE) {
+					$file = $this->getSingle($settings[$key . '.'], $idx);
+					$fileOptions = $settings[$key . '.'][$idx . '.'];
+					$fileOptions['file'] = $file;
+					$resourceFiles[] = $fileOptions;
+				}
+			}
+		} else {
+			$fileOptions = array('file' => $resourceFile);
+			$resourceFiles[] = $fileOptions;
+		}
+		return $resourceFiles;
+	}
 }
 
 ?>

@@ -1221,6 +1221,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 
 		$this->addCSS();
 		$this->addJS();
+		$this->addJSFooter();
 
 		$this->utilityFuncs->debugMessage('current_session_params', array(), 1, (array)$this->globals->getSession()->get('values'));
 		$this->view = $this->componentManager->getComponent($viewClass);
@@ -1433,26 +1434,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return void
 	 */
 	protected function addCSS() {
-		$cssFile = $this->settings['cssFile'];
-		$cssFiles = array();
-		if (!$this->utilityFuncs->isValidCObject($cssFile) 
-			&& is_array($this->settings['cssFile.']) 
-			&& !isset($this->settings['cssFile.']['media'])) {
-
-			foreach ($this->settings['cssFile.'] as $idx => $file) {
-				if(strpos($idx, '.') === FALSE) {
-					$file = $this->utilityFuncs->getSingle($this->settings['cssFile.'], $idx);
-					$fileOptions = $this->settings['cssFile.'][$idx . '.'];
-					$fileOptions['file'] = $file;
-					$cssFiles[] = $fileOptions;
-				}
-			}
-		} else {
-			$fileOptions = $this->settings['cssFile.'];
-			$fileOptions['file'] = $cssFile;
-			$cssFiles[] = $fileOptions;
-		}
-		
+		$cssFiles = $this->utilityFuncs->parseResourceFiles($this->settings, 'cssFile');
 		foreach ($cssFiles as $idx => $fileOptions) {
 			$file = $fileOptions['file'];
 			if(strlen(trim($file)) > 0) {
@@ -1480,22 +1462,33 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 	 * @return void
 	 */
 	protected function addJS() {
-		$jsFile = $this->settings['jsFile'];
-		$jsFiles = array();
-		if ($this->settings['jsFile.']) {
-			foreach ($this->settings['jsFile.'] as $idx => $file) {
-				if(strpos($idx, '.') === FALSE) {
-					$file = $this->utilityFuncs->getSingle($this->settings['jsFile.'], $idx);
-					$fileOptions = $this->settings['jsFile.'][$idx . '.'];
-					$fileOptions['file'] = $file;
-					$jsFiles[] = $fileOptions;
+		$jsFiles = $this->utilityFuncs->parseResourceFiles($this->settings, 'jsFile');
+		foreach ($jsFiles as $idx => $fileOptions) {
+			$file = $fileOptions['file'];
+			if(strlen(trim($file)) > 0) {
+				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
+				if(file_exists($file)) {
+					$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+					$pageRenderer->addJsFile(
+						$file,
+						$fileOptions['type'] ? $fileOptions['type'] : 'text/javascript',
+						empty($fileOptions['disableCompression']),
+						$fileOptions['forceOnTop'] ? TRUE : FALSE,
+						$fileOptions['allWrap'],
+						$fileOptions['excludeFromConcatenation'] ? TRUE : FALSE
+					);
 				}
 			}
-		} else {
-			$fileOptions = $this->settings['jsFile.'];
-			$fileOptions['file'] = $jsFile;
-			$jsFiles[] = $fileOptions;
 		}
+	}
+
+	/**
+	 * Read JavaScript file(s) set in TypoScript. If set add to footer data
+	 *
+	 * @return void
+	 */
+	protected function addJSFooter() {
+		$jsFiles = $this->utilityFuncs->parseResourceFiles($this->settings, 'jsFileFooter');
 		foreach ($jsFiles as $idx => $fileOptions) {
 			$file = $fileOptions['file'];
 			if(strlen(trim($file)) > 0) {
