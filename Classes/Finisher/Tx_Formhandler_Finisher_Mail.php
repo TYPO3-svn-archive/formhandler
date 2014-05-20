@@ -409,7 +409,7 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 		$files = array();
 		if (isset($settings[$key . '.']) && is_array($settings[$key . '.'])) {
 			$files = $this->utilityFuncs->getSingle($settings, $key);
-			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $parsed);
+			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $files);
 		} elseif ($settings[$key]) {
 			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $settings[$key]);
 		}
