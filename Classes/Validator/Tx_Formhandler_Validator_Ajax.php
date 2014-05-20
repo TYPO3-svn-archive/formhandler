@@ -56,8 +56,25 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 		}
 		if (is_array($this->settings['fieldConf.'])) {
 			$disableErrorCheckFields = array();
-			if (isset($this->settings['disableErrorCheckFields'])) {
-				$disableErrorCheckFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['disableErrorCheckFields']);
+			if(isset($this->settings['disableErrorCheckFields.'])) {
+				foreach($this->settings['disableErrorCheckFields.'] as $disableCheckField => $checks) {
+					if(!strstr($disableCheckField, '.')) {
+						$checkString = $this->utilityFuncs->getSingle($this->settings['disableErrorCheckFields.'], $disableCheckField);
+						if(strlen(trim($checkString)) > 0) {
+							$disableErrorCheckFields[$disableCheckField] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+								',', 
+								$checkString
+							);
+						} else {
+							$disableErrorCheckFields[$disableCheckField] = array();
+						}
+					}
+				}
+			} elseif(isset($this->settings['disableErrorCheckFields'])) {
+				$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['disableErrorCheckFields']);
+				foreach($fields as $disableCheckField) {
+					$disableErrorCheckFields[$disableCheckField] = array();
+				}
 			}
 
 			$restrictErrorChecks = array();
@@ -95,45 +112,59 @@ class Tx_Formhandler_Validator_Ajax extends Tx_Formhandler_AbstractValidator {
 				}
 
 				$checkFailed = '';
-				if (!isset($disableErrorCheckFields) || !in_array($field, $disableErrorCheckFields)) {
 
-					//foreach error checks
-					foreach ($errorChecks as $idx => $check) {
-						$classNameFix = ucfirst($check['check']);
-						if(strpos($classNameFix, 'Tx_') === FALSE) {
-							$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
-							$fullClassName = 'Tx_Formhandler_Errorcheck_' . $classNameFix;
-						} else {
-							//Look for the whole error check name, maybe it is a custom check like Tx_SomeExt_ErrorCheck_Something
-							$errorCheckObject = $this->componentManager->getComponent($check['check']);
-							$fullClassName = $check['check'];
+				//foreach error checks
+				foreach ($errorChecks as $idx => $check) {
+					
+					//Skip error check if the check is disabled for this field or if all checks are disabled for this field
+					if(!empty($disableErrorCheckFields) &&
+						in_array('all', array_keys($disableErrorCheckFields)) || 
+						(
+							in_array($field, array_keys($disableErrorCheckFields)) && 
+							(
+								in_array($check['check'], $disableErrorCheckFields[$field]) ||
+								empty($disableErrorCheckFields[$field])
+							)
+						)) {
+
+						continue;
+					}
+
+					$classNameFix = ucfirst($check['check']);
+					if(strpos($classNameFix, 'Tx_') === FALSE) {
+						$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
+						$fullClassName = 'Tx_Formhandler_Errorcheck_' . $classNameFix;
+					} else {
+						//Look for the whole error check name, maybe it is a custom check like Tx_SomeExt_ErrorCheck_Something
+						$errorCheckObject = $this->componentManager->getComponent($check['check']);
+						$fullClassName = $check['check'];
+					}
+					if(!$errorCheckObject) {
+						$this->utilityFuncs->debugMessage('check_not_found', array($fullClassName), 2);
+					}
+					if (empty($restrictErrorChecks) || in_array($check['check'], $restrictErrorChecks)) {
+						$gp = array($field => $value);
+
+						if(strlen(trim($_GET['equalsFieldName'])) > 0) {
+							$gp[htmlspecialchars($_GET['equalsFieldName'])] = htmlspecialchars($_GET['equalsFieldValue']);
 						}
-						if(!$errorCheckObject) {
-							$this->utilityFuncs->debugMessage('check_not_found', array($fullClassName), 2);
-						}
-						if (empty($restrictErrorChecks) || in_array($check['check'], $restrictErrorChecks)) {
-							$gp = array($field => $value);
 
-							if(strlen(trim($_GET['equalsFieldName'])) > 0) {
-								$gp[htmlspecialchars($_GET['equalsFieldName'])] = htmlspecialchars($_GET['equalsFieldValue']);
-							}
-
-							$errorCheckObject->init($gp, $check);
-							$errorCheckObject->setFormFieldName($field);
-							if($errorCheckObject->validateConfig()) {
-								$checkFailed = $errorCheckObject->check();
-								if(strlen($checkFailed) > 0) {
-									if(!is_array($errors[$errorFieldName])) {
-										$errors[$field] = array();
-									}
-									$errors[$field][] = $checkFailed;
+						$errorCheckObject->init($gp, $check);
+						$errorCheckObject->setFormFieldName($field);
+						if($errorCheckObject->validateConfig()) {
+							$checkFailed = $errorCheckObject->check();
+							if(strlen($checkFailed) > 0) {
+								if(!is_array($errors[$errorFieldName])) {
+									$errors[$field] = array();
 								}
-							} else {
-								$this->utilityFuncs->throwException('Configuration is not valid for class "' . $fullClassName . '"!');
+								$errors[$field][] = $checkFailed;
 							}
+						} else {
+							$this->utilityFuncs->throwException('Configuration is not valid for class "' . $fullClassName . '"!');
 						}
 					}
 				}
+
 			}
 		}
 		return empty($errors);

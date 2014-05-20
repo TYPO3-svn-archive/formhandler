@@ -85,15 +85,33 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 			return TRUE;
 		}
 
-		if(isset($this->settings['disableErrorCheckFields'])) {
-			$this->disableErrorCheckFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['disableErrorCheckFields']);
+		if(isset($this->settings['disableErrorCheckFields.'])) {
+			$this->disableErrorCheckFields = array();
+			foreach($this->settings['disableErrorCheckFields.'] as $disableCheckField => $checks) {
+				if(!strstr($disableCheckField, '.')) {
+					$checkString = $this->utilityFuncs->getSingle($this->settings['disableErrorCheckFields.'], $disableCheckField);
+					if(strlen(trim($checkString)) > 0) {
+						$this->disableErrorCheckFields[$disableCheckField] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+							',', 
+							$checkString
+						);
+					} else {
+						$this->disableErrorCheckFields[$disableCheckField] = array();
+					}
+				}
+			}
+		} elseif(isset($this->settings['disableErrorCheckFields'])) {
+			$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['disableErrorCheckFields']);
+			foreach($fields as $disableCheckField) {
+				$this->disableErrorCheckFields[$disableCheckField] = array();
+			}
 		}
 
 		if(isset($this->settings['restrictErrorChecks'])) {
 			$this->restrictErrorChecks = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['restrictErrorChecks']);
 		}
 
-		if (!in_array('all', $this->disableErrorCheckFields)) {
+		if (!in_array('all', array_keys($this->disableErrorCheckFields))) {
 			$errors = $this->validateRecursive($errors, $this->gp, (array) $this->settings['fieldConf.']);
 		}
 
@@ -155,15 +173,10 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 	protected function validateRecursive($errors, $gp, $fieldConf, $rootField = null) {
 		//foreach configured form field
 		foreach($fieldConf as $key => $fieldSettings) {
-			
 			$fieldName = trim($key, '.');
+
 			$errorFieldName = ($rootField === null) ? $fieldName : $rootField;
 
-		
-			if(in_array($errorFieldName, $this->disableErrorCheckFields)) {
-				continue;
-			}
-			
 			$tempSettings = $fieldSettings;
 			unset($tempSettings['errorCheck.']);
 			if (count($tempSettings)) {
@@ -204,6 +217,17 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 
 				//foreach error checks
 			foreach($errorChecks as $check) {
+
+				//Skip error check if the check is disabled for this field or if all checks are disabled for this field
+				if(!empty($this->disableErrorCheckFields) &&
+					in_array($errorFieldName, array_keys($this->disableErrorCheckFields)) && 
+					(
+						in_array($check['check'], $this->disableErrorCheckFields[$errorFieldName]) ||
+						empty($this->disableErrorCheckFields[$errorFieldName])
+					)) {
+
+					continue;
+				}
 				$classNameFix = ucfirst($check['check']);
 				if(strpos($classNameFix, 'Tx_') === FALSE) {
 					$errorCheckObject = $this->componentManager->getComponent('Tx_Formhandler_ErrorCheck_' . $classNameFix);
@@ -239,5 +263,16 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 		return $errors;
 	}
 
+	public function validateConfig() {
+		if(is_array($this->settings['fieldConf.'])) {
+			$fieldConf = $this->settings['fieldConf.'];
+			foreach($fieldConf as $key => $fieldSettings) {
+				$fieldName = trim($key, '.');
+				if(!isset($fieldSettings['errorCheck.'])) {
+					$this->utilityFuncs->throwException('errorcheck_not_found', $fieldName);
+				}
+			}
+		}
+	}
 }
 ?>

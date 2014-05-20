@@ -41,6 +41,7 @@ finishers {
 			<label index="validateauthcode_insufficient_params">Insufficient parameters! Unable to validate the auth code!</label>
 			<label index="validateauthcode_no_record_found">No matching auth code found!</label>
 			<label index="validateauthcode_update_failed">Updating your data failed! Please try again.</label>
+			<label index="errorcheck_not_found">Configuration is not valid for field "%s"! Fieldname found in section "fieldConf" of Validator_Default, but there is no setting "errorCheck" defined!</label>
 			<label index="error_checks_missing">Error check missing! Your setup misses error check "%s" for the field "%s"!</label>
 			<label index="error_checks_form_field_name_missing">Form field name missing for error check "%s"!</label>
 			<label index="error_checks_parameters_missing">No parameters found for error check "%s" although "%s" is mandatory!</label>

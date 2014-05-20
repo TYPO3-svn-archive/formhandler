@@ -331,6 +331,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 							}
 							$tsConfig['config.'] = $this->addDefaultComponentConfig($tsConfig['config.']);
 							$validator->init($this->gp, $tsConfig['config.']);
+							$validator->validateConfig();
 							$res = $validator->validate($this->errors);
 							array_push($valid, $res);
 						}
