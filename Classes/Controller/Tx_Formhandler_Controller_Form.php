@@ -1343,9 +1343,21 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		}
 
 		$this->templateFile = $this->utilityFuncs->readTemplateFile($this->templateFile, $this->settings);
-		preg_match_all('/(###TEMPLATE_FORM)([0-9]+)(_.*)?(###)/', $this->templateFile, $subparts);
 
-		$subparts = array_unique($subparts[2]);
+		//Parse all template files and search for step subparts to calculate total step count
+		$allTemplateFiles = array();
+		$step = 1;
+		while(isset($this->settings[$step . '.']['templateFile'])) {
+			$allTemplateCodes[] = $this->utilityFuncs->readTemplateFile($this->templateFile, $this->settings[$step . '.']);
+			$step++;
+		}
+
+		$subparts = array();
+		foreach($allTemplateCodes as $templateCode) {
+			preg_match_all('/(###TEMPLATE_FORM)([0-9]+)(_.*)?(###)/', $templateCode, $matches);
+
+			$subparts = array_merge($subparts, array_unique($matches[2]));
+		}
 		sort($subparts);
 		$countSubparts = count($subparts);
 		$this->totalSteps = $subparts[$countSubparts - 1];
