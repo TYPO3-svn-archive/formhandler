@@ -530,6 +530,18 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			';
 		}
 
+		if(is_array($this->settings['session.'])
+			&& intval($this->utilityFuncs->getSingle($this->settings['session.']['config.'], 'disableCookies')) === 1
+			&& intval(ini_get('session.use_trans_sid')) === 0) {
+
+			/*
+			 * User currently does not have a session cookie and php is not configured to
+			 * automatically add session info to forms and links
+			 */
+			$markers['###HIDDEN_FIELDS###'] .= '
+				<input type="hidden" name="' . session_name() . '" value="' . session_id() . '" />
+			';
+		}
 		$currentStepFromSession = $this->globals->getSession()->get('currentStep');
 		$hiddenActionFieldName = 'step-';
 		$prefix = $this->globals->getFormValuesPrefix();

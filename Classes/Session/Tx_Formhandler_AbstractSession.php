@@ -28,11 +28,15 @@ abstract class Tx_Formhandler_AbstractSession extends Tx_Formhandler_AbstractCla
 	protected $started = FALSE;
 
 	/**
-	 * Starts a new PHP session
+	 * Starts a new session
 	 *
 	 * @return void
 	 */
-	protected function start() {
+	public function start() {
+		if(intval($this->utilityFuncs->getSingle($this->settings, 'disableCookies')) === 1) {
+			ini_set('session.use_only_cookies', 'off');
+			ini_set('session.use_cookies', '0');
+		}
 		if (!$this->started) {
 			$current_session_id = session_id();
 			if (empty($current_session_id)) {

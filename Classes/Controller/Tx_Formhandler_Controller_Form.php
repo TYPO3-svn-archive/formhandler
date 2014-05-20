@@ -1150,6 +1150,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$sessionClass = $this->utilityFuncs->getPreparedClassName($this->settings['session.'], 'Session_PHP');
 		$session = $this->componentManager->getComponent($sessionClass);
 		$session->init($this->gp, $this->settings['session.']['config.']);
+		$session->start();
 		$this->globals->setSession($session);
 
 		$action = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('action');
