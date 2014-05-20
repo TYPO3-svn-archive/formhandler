@@ -27,15 +27,24 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 	 * @return array The probably modified GET/POST parameters
 	 */
 	public function process() {
-		if($this->gp['authCode']) {
+		if(strlen(trim($this->gp['authCode'])) > 0) {
 
 			try {
 				$authCode = trim($this->gp['authCode']);
 				$table = trim($this->gp['table']);
+				if($this->settings['table']) {
+					$table = $this->utilityFuncs->getSingle($this->settings, 'table');
+				}
 				$uidField = trim($this->gp['uidField']);
+				if($this->settings['uidField']) {
+					$uidField = $this->utilityFuncs->getSingle($this->settings, 'uidField');
+				}
+				if(strlen($uidField) === 0) {
+					$uidField = 'uid';
+				}
 				$uid = trim($this->gp['uid']);
 
-				if(!(strlen($table) > 0 && strlen($uidField) > 0 && strlen($authCode) > 0 && strlen($uid) > 0)) {
+				if(!(strlen($table) > 0 && strlen($uid) > 0)) {
 					$this->utilityFuncs->throwException('validateauthcode_insufficient_params');
 				}
 
@@ -46,7 +55,7 @@ class Tx_Formhandler_PreProcessor_ValidateAuthCode extends Tx_Formhandler_Abstra
 				if(!in_array($table, $existingTables)) {
 					$this->utilityFuncs->throwException('validateauthcode_insufficient_params');
 				}
-				
+
 				//Check if uidField is valid
 				$existingFields = array_keys($GLOBALS['TYPO3_DB']->admin_get_fields($table));
 				if(!in_array($uidField, $existingFields)) {
