@@ -185,6 +185,9 @@ class Tx_Formhandler_Mailer_HtmlMail extends Tx_Formhandler_AbstractMailer imple
 		return $this->emailObj->returnPath;
 	}
 
+	public function embed($image) {
+		throw new Exception('This mailer doesn\'t support mebedding images. Please use Mailer_TYPO3Mailer.');
+	}
 }
 
 ?>

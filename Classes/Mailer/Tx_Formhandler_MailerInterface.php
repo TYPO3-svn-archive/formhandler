@@ -150,6 +150,14 @@ interface Tx_Formhandler_MailerInterface {
 	 */
 	public function getReturnPath();
 
+	/**
+	 * Embeds an image to the email content
+	 *
+	 * @param string $image The image path
+	 * @return void
+	 */
+	public function embed($image);
+
 }
 
 ?>

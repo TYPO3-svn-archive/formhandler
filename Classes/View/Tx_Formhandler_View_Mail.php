@@ -45,6 +45,19 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 	public function pi_wrapInBaseClass($content) {
 		return $content;
 	}
+
+	protected function fillEmbedMarkers($content) {
+		$componentSettings = $this->getComponentSettings();
+		
+		$mailSettings = $componentSettings[$this->currentMailSettings['mode']];
+		if (isset($mailSettings['embedFiles']) && is_array($mailSettings['embedFiles'])) {
+			$markers = array();
+			foreach ($mailSettings['embedFiles'] as $key => $cid) {
+				$markers['###embed_' . $key . '###'] = $cid;
+			}
+			$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
+		}
+	}
 	
 	protected function fillValueMarkers() {
 		$componentSettings = $this->getComponentSettings();
@@ -76,6 +89,7 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 		//remove remaining VALUE_-markers
 		//needed for nested markers like ###LLL:tx_myextension_table.field1.i.###value_field1###### to avoid wrong marker removal if field1 isn't set
 		$this->template = preg_replace('/###value_.*?###/i', '', $this->template);
+		$this->fillEmbedMarkers();
 	}
 
 	/**

@@ -254,6 +254,11 @@ class Tx_Formhandler_Mailer_TYPO3Mailer extends Tx_Formhandler_AbstractMailer im
 	public function getReturnPath() {
 		return $this->emailObj->getReturnPath();
 	}
+
+	public function embed($image) {
+		return $this->emailObj->embed(Swift_Image::fromPath($image));
+	}
+
 }
 
 ?>
