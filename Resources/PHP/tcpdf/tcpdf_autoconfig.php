@@ -181,7 +181,7 @@ if (!defined('PDF_MARGIN_RIGHT')) {
 }
 
 if (!defined('PDF_FONT_NAME_MAIN')) {
-	define ('PDF_FONT_NAME_MAIN', 'freesans');
+	define ('PDF_FONT_NAME_MAIN', 'helvetica');
 }
 
 if (!defined('PDF_FONT_SIZE_MAIN')) {
@@ -189,7 +189,7 @@ if (!defined('PDF_FONT_SIZE_MAIN')) {
 }
 
 if (!defined('PDF_FONT_NAME_DATA')) {
-	define ('PDF_FONT_NAME_DATA', 'freesans');
+	define ('PDF_FONT_NAME_DATA', 'helvetica');
 }
 
 if (!defined('PDF_FONT_SIZE_DATA')) {
@@ -197,7 +197,7 @@ if (!defined('PDF_FONT_SIZE_DATA')) {
 }
 
 if (!defined('PDF_FONT_MONOSPACED')) {
-	define ('PDF_FONT_MONOSPACED', 'freemono');
+	define ('PDF_FONT_MONOSPACED', 'courier');
 }
 
 if (!defined('PDF_IMAGE_SCALE_RATIO')) {
