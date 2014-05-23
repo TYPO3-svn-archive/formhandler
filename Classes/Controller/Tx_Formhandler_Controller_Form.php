@@ -1345,7 +1345,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 		$this->templateFile = $this->utilityFuncs->readTemplateFile($this->templateFile, $this->settings);
 
 		//Parse all template files and search for step subparts to calculate total step count
-		$allTemplateFiles = array();
+		$allTemplateCodes = array();
 		$step = 1;
 		while(isset($this->settings[$step . '.']['templateFile'])) {
 			$allTemplateCodes[] = $this->utilityFuncs->readTemplateFile($this->templateFile, $this->settings[$step . '.']);
