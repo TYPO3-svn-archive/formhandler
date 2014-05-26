@@ -46,9 +46,8 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 		return $content;
 	}
 
-	protected function fillEmbedMarkers($content) {
+	protected function fillEmbedMarkers() {
 		$componentSettings = $this->getComponentSettings();
-		
 		$mailSettings = $componentSettings[$this->currentMailSettings['mode']];
 		if (isset($mailSettings['embedFiles']) && is_array($mailSettings['embedFiles'])) {
 			$markers = array();
@@ -58,7 +57,7 @@ class Tx_Formhandler_View_Mail extends Tx_Formhandler_View_Form {
 			$this->template = $this->cObj->substituteMarkerArray($this->template, $markers);
 		}
 	}
-	
+
 	protected function fillValueMarkers() {
 		$componentSettings = $this->getComponentSettings();
 		if ($componentSettings[$this->currentMailSettings['mode']][$this->currentMailSettings['suffix'] . '.']['arrayValueSeparator']) {

@@ -434,17 +434,19 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 	 */
 	protected function parseEmbedFilesList($settings) {
 		$cids = array();
-		foreach ($settings['embedFiles.'] as $key => $embedFileSettings) {
-			if(strpos($key, '.') === FALSE) {
-				$embedFile = $this->utilityFuncs->getSingle($settings['embedFiles.'], $key);
-				if (strlen($embedFile) > 0) {
-					if(!strstr($embedFile, $this->utilityFuncs->getDocumentRoot())) {
-						$embedFile = $this->utilityFuncs->getDocumentRoot() . '/' . $embedFile;
+		if (isset($settings['embedFiles.']) && is_array($settings['embedFiles.'])) {
+			foreach ($settings['embedFiles.'] as $key => $embedFileSettings) {
+				if(strpos($key, '.') === FALSE) {
+					$embedFile = $this->utilityFuncs->getSingle($settings['embedFiles.'], $key);
+					if (strlen($embedFile) > 0) {
+						if(!strstr($embedFile, $this->utilityFuncs->getDocumentRoot())) {
+							$embedFile = $this->utilityFuncs->getDocumentRoot() . '/' . $embedFile;
+						}
+						$embedFile = $this->utilityFuncs->sanitizePath($embedFile);
+						$cids[$key] = $this->emailObj->embed($embedFile);
+					} else {
+						$this->utilityFuncs->debugMessage('attachment_not_found', array($embedFile), 2);
 					}
-					$embedFile = $this->utilityFuncs->sanitizePath($embedFile);
-					$cids[$key] = $this->emailObj->embed($embedFile);
-				} else {
-					$this->utilityFuncs->debugMessage('attachment_not_found', array($embedFile), 2);
 				}
 			}
 		}
