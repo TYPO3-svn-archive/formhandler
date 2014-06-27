@@ -308,7 +308,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 										valid = false;
 									}
 								});
-								var button = ' . $this->jQueryAlias . '("' . $this->formSelector . ' INPUT.' . $this->validationStatusClasses['base'] . '");
+								var button = ' . $this->jQueryAlias . '("' . $this->formSelector . ' .' . $this->validationStatusClasses['base'] . '");
 								if(valid) {
 									button.removeAttr("disabled");
 									button.removeClass("' . $this->validationStatusClasses['invalid'] . '").addClass("' . $this->validationStatusClasses['valid'] . '");
