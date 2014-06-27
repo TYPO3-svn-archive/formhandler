@@ -86,7 +86,15 @@ class Tx_Formhandler_Finisher_Mail extends Tx_Formhandler_AbstractFinisher {
 
 	protected function initMailer($type) {
 		//init mailer object
-		$emailClass = $this->utilityFuncs->getPreparedClassName($this->settings['mailer.'], 'Mailer_HtmlMail');
+		$globalSettings = $this->globals->getSettings();
+		if(is_array($this->settings['mailer.'])) {
+			$emailClass = $this->utilityFuncs->getPreparedClassName($this->settings['mailer.'], 'Mailer_HtmlMail');
+		} elseif(is_array($globalSettings['mailer.'])) {
+			$emailClass = $this->utilityFuncs->getPreparedClassName($globalSettings['mailer.'], 'Mailer_HtmlMail');
+		} else {
+			$emailClass = 'Tx_Formhandler_Mailer_HtmlMail';
+		}
+
 		$this->emailObj = $this->componentManager->getComponent($emailClass);
 		$this->emailObj->init($this->gp, $this->settings['mailer.']['config.']);
 
