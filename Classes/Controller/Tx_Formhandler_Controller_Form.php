@@ -1508,7 +1508,7 @@ class Tx_Formhandler_Controller_Form extends Tx_Formhandler_AbstractController {
 				$file = $this->utilityFuncs->resolveRelPathFromSiteRoot($file);
 				if(file_exists($file)) {
 					$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-					$pageRenderer->addJsFile(
+					$pageRenderer->addJsFooterFile(
 						$file,
 						$fileOptions['type'] ? $fileOptions['type'] : 'text/javascript',
 						empty($fileOptions['disableCompression']),
