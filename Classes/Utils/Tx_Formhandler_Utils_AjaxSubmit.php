@@ -60,7 +60,7 @@ class Tx_Formhandler_Utils_AjaxSubmit {
 		$this->utilityFuncs->initializeTSFE($this->id);
 
 		$elementUID = intval($_GET['uid']);
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $elementUID . ' AND pid=' . $this->id . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $elementUID . $GLOBALS['TSFE']->cObj->enableFields('tt_content'));
 		if(!empty($row)) {
 			$GLOBALS['TSFE']->cObj->data = $row;
 			$GLOBALS['TSFE']->cObj->current = 'tt_content_' . $elementUID;
