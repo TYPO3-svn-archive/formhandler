@@ -27,9 +27,11 @@ class Tx_Formhandler_Finisher_RestoreLanguage extends Tx_Formhandler_AbstractFin
 	 */
 	public function process() {
 		if($this->globals->getSession()->get('originalLanguage') !== NULL) {
-			$GLOBALS['TSFE']->lang = $this->globals->getSession()->get('originalLanguage');
+			$lang = $this->globals->getSession()->get('originalLanguage');
+			$GLOBALS['TSFE']->config['config']['language'] = $lang;
+			$GLOBALS['TSFE']->initLLvars();
 			$this->globals->getSession()->set('originalLanguage', NULL);
-			$this->utilityFuncs->debugMessage('Language restored to "' . $GLOBALS['TSFE']->lang . '"!', array(), 1);
+			$this->utilityFuncs->debugMessage('Language restored to "' . $lang . '"!', array(), 1);
 		} else {
 			$this->utilityFuncs->debugMessage('Unable to restore language! No original language found!', array(), 2);
 		}

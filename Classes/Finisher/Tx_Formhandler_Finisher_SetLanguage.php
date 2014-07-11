@@ -31,8 +31,10 @@ class Tx_Formhandler_Finisher_SetLanguage extends Tx_Formhandler_AbstractFinishe
 		}
 		$languageCode = $this->utilityFuncs->getSingle($this->settings, 'languageCode');
 		if($languageCode) {
-			$GLOBALS['TSFE']->lang = strtolower($languageCode);
-			$this->utilityFuncs->debugMessage('Language set to "' . $GLOBALS['TSFE']->lang . '"!', array(), 1);
+			$lang = strtolower($languageCode);
+			$GLOBALS['TSFE']->config['config']['language'] = $lang;
+			$GLOBALS['TSFE']->initLLvars();
+			$this->utilityFuncs->debugMessage('Language set to "' . $lang . '"!', array(), 1);
 		} else {
 			$this->utilityFuncs->debugMessage('Unable to set language! Language code set in TypoScript is empty!', array(), 2);
 		}
