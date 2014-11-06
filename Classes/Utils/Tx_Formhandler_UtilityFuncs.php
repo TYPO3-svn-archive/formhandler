@@ -824,7 +824,7 @@ class Tx_Formhandler_UtilityFuncs {
 	}
 
 	public function generateRandomID() {
-		$randomID = md5($this->globals->getFormValuesPrefix() . $GLOBALS['ACCESS_TIME']);
+		$randomID = md5($this->globals->getFormValuesPrefix() . \TYPO3\CMS\Core\Utility\GeneralUtility::generateRandomBytes(10));
 		return $randomID;
 	}
 
