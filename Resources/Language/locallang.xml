@@ -15,6 +15,7 @@
 			<label index="export_all">Export all</label>
 			<label index="export_as">Export as</label>
 			<label index="ip_address">IP address</label>
+			<label index="search">Search</label>
 			<label index="submission_date">Submission date</label>
 			<label index="submitted_values">Submitted values</label>
 			<label index="submission_details">Submission details</label>
@@ -85,6 +86,7 @@
 			<label index="export_all">Export all</label>
 			<label index="export_as">Export as</label>
 			<label index="ip_address">IP address</label>
+			<label index="search">Search</label>
 			<label index="submission_date">Submission date</label>
 			<label index="submitted_values">Submitted values</label>
 			<label index="submission_details">Submission details</label>
@@ -157,6 +159,7 @@
 			<label index="export_all">Alle exportieren</label>
 			<label index="export_as">Exportieren als</label>
 			<label index="ip_address">IP-Adresse</label>
+			<label index="search">Suchen</label>
 			<label index="submission_date">Absendedatum</label>
 			<label index="submitted_values">Submitted values</label>
 			<label index="fieldname">Name</label>
