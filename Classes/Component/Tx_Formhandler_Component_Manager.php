@@ -182,15 +182,9 @@ class Tx_Formhandler_Component_Manager {
 		}
 		$class = new ReflectionClass($className);
 		$constructorArguments = $this->autoWireConstructorArguments($constructorArguments, $class);
-		$injectedArguments = array();
-		$preparedArguments = array();
-		$this->injectConstructorArguments($constructorArguments, $injectedArguments, $preparedArguments);
+		$constructorArguments = $this->prepareConstructorArguments($constructorArguments);
 
-		$instruction = '$componentObject = new ' . $className .'(';
-		$instruction .= implode(', ',$preparedArguments);
-		$instruction .= ');';
-
-		eval($instruction);
+		$componentObject = $class->newInstanceArgs($constructorArguments);
 
 		if (!is_object($componentObject)) {
 			$errorMessage = error_get_last();
@@ -246,13 +240,11 @@ class Tx_Formhandler_Component_Manager {
 	 * arguments (strings) which can be used in a "new" statement to instantiate the component.
 	 *
 	 * @param array $constructorArguments: Array of constructor arguments for the current component
-	 * @param array &$injectedArguments: An empty array passed by reference. Will contain instances of the components which were injected into the constructor
-	 * @param array &$preparedArguments: An empty array passed by reference: Will contain constructor parameters as strings to be used in a new statement
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author adapted for TYPO3v4 by Jochen Rau <jochen.rau@typoplanet.de>
 	 */
-	public function injectConstructorArguments($constructorArguments, &$injectedArguments, &$preparedArguments) {
+	public function prepareConstructorArguments($constructorArguments) {
 		foreach ($constructorArguments as $index => $constructorArgument) {
 
 			// TODO Testing the prefix is not very sophisticated. Should be is_object()
@@ -261,18 +253,9 @@ class Tx_Formhandler_Component_Manager {
 			} else {
 				$value = $constructorArgument;
 			}
-			if (is_string($value)) {
-				$escapedValue = str_replace("'", "\\'", str_replace('\\', '\\\\', $value));
-				$preparedArguments[] = "'" . $escapedValue . "'";
-			} elseif (is_numeric($value)) {
-				$preparedArguments[] = $value;
-			} elseif ($value === NULL) {
-				$preparedArguments[] = 'NULL';
-			} else {
-				$preparedArguments[] = '$injectedArguments[' . $index . ']';
-				$injectedArguments[$index] = $value;
-			}
+			$constructorArguments[$index] = $value;
 		}
+		return $constructorArguments;
 	}
 
 	/**
