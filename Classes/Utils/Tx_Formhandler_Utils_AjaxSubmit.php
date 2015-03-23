@@ -37,7 +37,7 @@ class Tx_Formhandler_Utils_AjaxSubmit {
 		
 		$content = $GLOBALS['TSFE']->cObj->cObjGetSingle('USER', $settings);
 
-		$content = '{' . json_encode('form') . ':' . json_encode($content) . '}';
+		$content = '{' . json_encode('form') . ':' . json_encode($content, JSON_HEX_QUOT|JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS) . '}';
 		print $content;
 	}
 
