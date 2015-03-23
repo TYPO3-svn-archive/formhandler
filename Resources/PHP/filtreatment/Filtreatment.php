@@ -148,7 +148,7 @@ class Filtreatment {
 			onclick|oncontextmenu|oncontrolselect|oncopy|oncuechange|oncut|ondataavailable|ondatasetchanged|
 			ondatasetcomplete|ondblclick|ondeactivate|ondrag|ondragend|ondragenter|ondragleave|ondragover|
 			ondragstart|ondrop|ondurationchange|onemptied|onended|onerror|onerrorupdate|onfilterchange|
-			onfinish|onfocus|onfocusin|onfocusout|onformchange|onforminput|onhashchange|onhelp|oninput|oninvalid,|onkeydown|
+			onfinish|onfocus|onfocusin|onfocusout|onformchange|onforminput|onhashchange|onhelp|oninput|oninvalid|onkeydown|
 			onkeypress|onkeyup|onlayoutcomplete|onload|onloadeddata|onloadedmetadata|onloadstart|
 			onlosecapture|onmessage|onmousedown|onmouseenter|onmouseleave|onmousemove|onmouseout|
 			onmouseover|onmouseup|onmousewheel|onmove|onmoveend|onmovestart|onoffline|ononline|
