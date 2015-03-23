@@ -892,6 +892,7 @@ class Tx_Formhandler_UtilityFuncs {
 		//Default: Replace spaces with underscores
 		$search = array(' ', '%20');
 		$replace = array('_');
+		$separator = ',';
 
 		$usePregReplace = $this->getSingle($settings['files.'], 'usePregReplace');
 		if(intval($usePregReplace) === 1) {
@@ -901,11 +902,17 @@ class Tx_Formhandler_UtilityFuncs {
 		//The settings "search" and "replace" are comma separated lists
 		if($settings['files.']['search']) {
 			$search = $this->getSingle($settings['files.'], 'search');
-			$search = explode(',', $search);
+			if($settings['files.']['search.']['separator']) {
+				$separator = $this->getSingle($settings['files.']['search.'], 'separator');
+			}
+			$search = explode($separator, $search);
 		}
 		if($settings['files.']['replace']) {
 			$replace = $this->getSingle($settings['files.'], 'replace');
-			$replace = explode(',', $replace);
+			if($settings['files.']['replace.']['separator']) {
+				$separator = $this->getSingle($settings['files.']['replace.'], 'separator');
+			}
+			$replace = explode($separator, $replace);
 		}
 
 		$usePregReplace = $this->getSingle($settings['files.'], 'usePregReplace');
