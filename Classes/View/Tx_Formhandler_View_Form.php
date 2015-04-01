@@ -1021,7 +1021,6 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 	 */
 	protected function fillErrorMarkers(&$errors) {
 		$markers = array();
-
 		foreach ($errors as $field => $types) {
 			$errorMessages = array();
 			$clearErrorMessages = array();
@@ -1080,7 +1079,11 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 			$markers['###ERROR_' . strtoupper($field) . '###'] = $errorMessage;
 			$errorMessage = $clearErrorMessage;
 			if ($this->settings['addErrorAnchors']) {
-				$errorMessage = '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '#' . $field . '">' . $errorMessage . '</a>';
+				$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
+				if($this->globals->isAjaxMode()) {
+					$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER');
+				}
+				$errorMessage = '<a href="' . $baseUrl . '#' . $field . '">' . $errorMessage . '</a>';
 			}
 
 			//list settings
