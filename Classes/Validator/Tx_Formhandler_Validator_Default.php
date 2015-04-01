@@ -174,6 +174,9 @@ class Tx_Formhandler_Validator_Default extends Tx_Formhandler_AbstractValidator 
 		//foreach configured form field
 		foreach($fieldConf as $key => $fieldSettings) {
 			$fieldName = trim($key, '.');
+			if (!array_key_exists($fieldName, $gp)) {
+				$this->utilityFuncs->debugMessage('missing_field_for_error_check', array($fieldName), 2);
+			}
 
 			$errorFieldName = ($rootField === null) ? $fieldName : $rootField;
 

@@ -45,6 +45,7 @@
 			<label index="mail_sender">Sender:</label>
 			<label index="mail_sent">Mail successfully sent to: %s</label>
 			<label index="mail_subject">Subject: %s</label>
+			<label index="missing_field_for_error_check">Trying to validate a field that doesn't exist: "%s"! Either you forgot to remove an error check or yorgot to add a field to your HTML! Maybe it is just an unset checkbox field! In that case, everything is fine.</label>
 			<label index="no_submittedok_template">SubmittedOK template not found! Make sure that the subpart ###TEMPLATE_SUBMITTEDOK### is in your HTML template!</label>
 			<label index="no_error_message">Could not find error message with key "%s"!</label>
 			<label index="no_mail_template">E-Mail template not found for mode %s and type %s! This mail is skipped!</label>
@@ -101,6 +102,7 @@
 			<label index="mail_sender">Absender:</label>
 			<label index="mail_sent">E-Mail verschickt an: %s</label>
 			<label index="mail_subject">Betreff: %s</label>
+			<label index="missing_field_for_error_check">Validierung eines nicht existenten Feldes: "%s"! Vielleicht haben Sie vergessen einen Error Check zu entfernen oder ein Feld zum HTML hinzuzufügen. Vielleicht ist das Feld aber auch nur eine Checkbox. In diesem Fall ist alles OK.</label>
 			<label index="no_submittedok_template">SubmittedOK-Template nicht gefunden! Stellen Sie sicher, dass der Subpart ###TEMPLATE_SUBMITTEDOK### im HTML-Template ist!</label>
 			<label index="no_error_message">Konnte Fehlermeldung mit Key "%s" nicht finden!</label>
 			<label index="no_mail_template">E-Mail-Template für Modus %s und Typ %s nicht gefunden! Diese E-Mail wird übersprungen!</label>
