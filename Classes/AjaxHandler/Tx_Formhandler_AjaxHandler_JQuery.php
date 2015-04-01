@@ -120,7 +120,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 				';
 			}
 			$js .= '
-			function submitButtonClick(el) {
+			function submitButtonClick_' . $this->globals->getRandomID() . '(el) {
 				var container = el.closest(".Tx-Formhandler");
 				var form = el.closest("FORM");
 				el.attr("disabled", "disabled");
@@ -147,13 +147,13 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 							form.closest(".Tx-Formhandler").replaceWith(data.form);
 							' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function(e) {
 								e.preventDefault();
-								submitButtonClick(' . $this->jQueryAlias . '(this));
+								submitButtonClick_' . $this->globals->getRandomID() . '(' . $this->jQueryAlias . '(this));
 							});
 							' . $this->jQueryAlias . '("' . $this->formSelector . '").on("submit", function(e) {
 								e.preventDefault();
 								return false;
 							});
-							attachValidationEvents();
+							attachValidationEvents_' . $this->globals->getRandomID() . '();
 							' . $ajaxSubmitCallbackJS . '
 						}
 					}
@@ -167,7 +167,7 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 			});
 			' . $this->jQueryAlias . '("' . $this->submitButtonSelector . '").on("click", function(e) {
 				e.preventDefault();
-				submitButtonClick(' . $this->jQueryAlias . '(this));
+				submitButtonClick_' . $this->globals->getRandomID() . '(' . $this->jQueryAlias . '(this));
 			});';
 		}
 		if(strlen($js) > 0) {
@@ -329,11 +329,11 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		if(strlen($fieldJS) > 0) {
 			$fieldJS = '
 				<script type="text/javascript">
-				function attachValidationEvents() {
+				function attachValidationEvents_' . $this->globals->getRandomID() . '() {
 					' . $fieldJS . '
 				}
 				' . $this->jQueryAlias . '(function() {
-					attachValidationEvents();
+					attachValidationEvents_' . $this->globals->getRandomID() . '();
 				});
 				</script>
 			';
@@ -358,17 +358,17 @@ class Tx_Formhandler_AjaxHandler_Jquery extends Tx_Formhandler_AbstractAjaxHandl
 		$url = $this->utilityFuncs->getAjaxUrl($params);
 		$js = '
 			<script type="text/javascript">
-				function attachFileRemovalEvents' . $field . '() {
+				function attachFileRemovalEvents' . $field . '_' . $this->globals->getRandomID() . '() {
 					' . $this->jQueryAlias . '("' . $this->formSelector . ' a.formhandler_removelink_' . $field . '").click(function() {
 						var url = ' . $this->jQueryAlias . '(this).attr("href");
 						' . $this->jQueryAlias . '("' . $this->formSelector . ' #Tx_Formhandler_UploadedFiles_' . $field . '").load(url + "#Tx_Formhandler_UploadedFiles_' . $field . '", function() {
-							attachFileRemovalEvents' . $field . '();
+							attachFileRemovalEvents' . $field . '_' . $this->globals->getRandomID() . '();
 						});
 						return false;
 					});
 				}
 				' . $this->jQueryAlias . '(function() {
-					attachFileRemovalEvents' . $field . '();
+					attachFileRemovalEvents' . $field . '_' . $this->globals->getRandomID() . '();
 				});
 			</script>
 		';
