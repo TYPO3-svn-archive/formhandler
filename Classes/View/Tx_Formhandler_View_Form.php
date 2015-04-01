@@ -356,7 +356,12 @@ class Tx_Formhandler_View_Form extends Tx_Formhandler_AbstractView {
 				break;
 			case '~=':
 				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
-				$conditionResult = strpos($this->utilityFuncs->getGlobal($fieldName, $this->gp), $value) !== FALSE;
+				$gpValue = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
+				if(is_array($gpValue)) {
+					$conditionResult = in_array($value, $gpValue);
+				} else {
+					$conditionResult = strpos($this->utilityFuncs->getGlobal($fieldName, $this->gp), $value) !== FALSE;
+				}
 				break;
 			case '=':
 				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
