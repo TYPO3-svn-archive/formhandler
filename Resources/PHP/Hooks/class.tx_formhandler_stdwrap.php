@@ -15,7 +15,7 @@ class tx_formhandler_stdwrapHook implements \TYPO3\CMS\Frontend\ContentObject\Co
 	 */
 	public function stdWrapPreProcess($content, array $configuration, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject) {
 		if(intval($configuration['sanitize']) === 1) {
-			$globals = Tx_Formhandler_Globals::getInstance();
+			$globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
 			$this->originalGET = $_GET;
 			$this->originalPOST = $_POST;
 			$prefix = $globals->getFormValuesPrefix();
