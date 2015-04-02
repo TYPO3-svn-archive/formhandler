@@ -25,7 +25,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * The Formhandler component manager
 	 *
 	 * @access protected
-	 * @var Tx_Formhandler_Component_Manager
+	 * @var \Typoheads\Formhandler\Component\Manager
 	 */
 	protected $componentManager;
 
@@ -33,7 +33,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	 * The global Formhandler configuration
 	 *
 	 * @access protected
-	 * @var Tx_Formhandler_Configuration
+	 * @var \Typoheads\Formhandler\Controller\Configuration
 	 */
 	protected $configuration;
 
@@ -80,11 +80,11 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	/**
 	 * The constructor for a finisher setting the component manager and the configuration.
 	 *
-	 * @param Tx_Formhandler_Component_Manager $componentManager
-	 * @param Tx_Formhandler_Configuration $configuration
+	 * @param \Typoheads\Formhandler\Component\Manager $componentManager
+	 * @param \Typoheads\Formhandler\Controller\Configuration $configuration
 	 * @return void
 	 */
-	public function __construct(Tx_Formhandler_Component_Manager $componentManager, Tx_Formhandler_Configuration $configuration, Tx_Formhandler_UtilityFuncs $utilityFuncs) {
+	public function __construct(\Typoheads\Formhandler\Component\Manager $componentManager, \Typoheads\Formhandler\Controller\Configuration $configuration, \Typoheads\Formhandler\Utils\UtilityFuncs $utilityFuncs) {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		$this->templatePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/HTML/backend/';

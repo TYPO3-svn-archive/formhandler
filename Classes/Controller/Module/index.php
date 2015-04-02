@@ -41,8 +41,8 @@ $GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Language/locallang.xm
 $GLOBALS['BE_USER']->modAccess($MCONF, 1);	// This checks permissions and exits if the users has no permission for entry.
 // DEFAULT initialization of a module [END]
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/Tx_Formhandler_Globals.php');
-require_once (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Component/Tx_Formhandler_Component_Manager.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Utils/\Typoheads\Formhandler\Utils\Globals.php');
+require_once (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Classes/Component/\Typoheads\Formhandler\Component\Manager.php');
 
 /**
  * Module 'Formhandler' for the 'formhandler' extension.
@@ -187,7 +187,7 @@ class tx_formhandler_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		switch ((string)$this->MOD_SETTINGS['function']) {
 			case 1:
 				// Render content:
-				$componentManager = Tx_Formhandler_Component_Manager::getInstance();
+				$componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
 				$controllerClass = 'Tx_Formhandler_Controller_Backend';
 				$controller = $componentManager->getComponent($controllerClass);
 				$controller->setId($this->id);
@@ -196,7 +196,7 @@ class tx_formhandler_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				break;
 			case 2:
 				// Render content:
-				$componentManager = Tx_Formhandler_Component_Manager::getInstance();
+				$componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
 				$controllerClass = 'Tx_Formhandler_Controller_BackendClearLogs';
 				$controller = $componentManager->getComponent($controllerClass);
 				$controller->setId($this->id);

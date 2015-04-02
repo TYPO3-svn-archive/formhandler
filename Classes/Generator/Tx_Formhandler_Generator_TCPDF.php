@@ -36,17 +36,17 @@ class Tx_Formhandler_Generator_TCPDF {
 	 * The Formhandler component manager
 	 *
 	 * @access protected
-	 * @var Tx_Formhandler_Component_Manager
+	 * @var \Typoheads\Formhandler\Component\Manager
 	 */
 	protected $componentManager;
 
 	/**
 	 * Default Constructor
 	 *
-	 * @param Tx_Formhandler_Component_Manager $componentManager The component manager of Formhandler
+	 * @param \Typoheads\Formhandler\Component\Manager $componentManager The component manager of Formhandler
 	 * @return void
 	 */
-	public function __construct(Tx_Formhandler_Component_Manager $componentManager) {
+	public function __construct(\Typoheads\Formhandler\Component\Manager $componentManager) {
 		$this->componentManager = $componentManager;
 	}
 
