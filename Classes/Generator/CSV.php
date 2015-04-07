@@ -1,4 +1,5 @@
 <?php
+namespace Typoheads\Formhandler\Generator;
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -21,7 +22,7 @@
  * @uses export2CSV in csv.lib.php
  */
 require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
-class Tx_Formhandler_Generator_CSV {
+class CSV {
 
 	/**
 	 * The internal CSV object
@@ -110,7 +111,7 @@ class Tx_Formhandler_Generator_CSV {
 		$data = $dataSorted;
 
 		// create new parseCSV object.
-		$csv = new parseCSV();
+		$csv = new \parseCSV();
 		$csv->delimiter = $csv->output_delimiter = $delimiter;
 		$csv->enclosure = $enclosure;
 		$csv->input_encoding = strtolower($this->getInputCharset());

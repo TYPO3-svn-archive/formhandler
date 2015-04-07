@@ -1,4 +1,5 @@
 <?php
+namespace Typoheads\Formhandler\Generator;
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -22,7 +23,7 @@
  * @subpackage	Generator
  * @uses Tx_Formhandler_Template_TCPDF
  */
-class Tx_Formhandler_Generator_TCPDF {
+class TCPDF {
 
 	/**
 	 * The internal PDF object
@@ -61,7 +62,7 @@ class Tx_Formhandler_Generator_TCPDF {
 	function generateModulePDF($records, $exportFields = array(), $fileName = 'formhandler.pdf') {
 
 		//init pdf object
-		$this->pdf = $this->componentManager->getComponent('Tx_Formhandler_Template_TCPDF');
+		$this->pdf = $this->componentManager->getComponent('Typoheads\Formhandler\Utils\TemplateTCPDF');
 		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 		$addedOneRecord = FALSE;
 

@@ -1,4 +1,5 @@
 <?php
+namespace Typoheads\Formhandler\Controller;
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -19,7 +20,7 @@ require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formha
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractController {
+class Backend extends \Typoheads\Formhandler\Controller\AbstractController {
 
 	/**
 	 * The Formhandler component manager
@@ -121,7 +122,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 	protected function init() {
 		$GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');
 		$this->logTable = 'tx_formhandler_log';
-		$this->pageBrowser = new tx_formhandler_mod1_pagination($this->countRecords(), $this);
+		$this->pageBrowser = new \tx_formhandler_mod1_pagination($this->countRecords(), $this);
 	}
 
 	/**
@@ -172,8 +173,6 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 
 				//show index table
 			} else {
-
-				$this->pageBrowser = new tx_formhandler_mod1_pagination($this->countRecords(), $this);
 
 				//select all records
 				$records = $this->fetchRecords();
@@ -276,7 +275,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id,'tx_formhandler_mod1'); 
 			$configParams = array();
 
-			$className = 'Tx_Formhandler_Generator_TCPDF';
+			$className = '\Typoheads\Formhandler\Generator\TCPDF';
 			if($tsconfig['properties']['config.']['generators.']['pdf']) {
 				$className = $this->utilityFuncs->prepareClassName($tsconfig['properties']['config.']['generators.']['pdf']);
 			}
@@ -335,7 +334,7 @@ class Tx_Formhandler_Controller_Backend extends Tx_Formhandler_AbstractControlle
 			$availableFormats = array();
 			$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id,'tx_formhandler_mod1');
 
-			$className = 'Tx_Formhandler_Generator_CSV';
+			$className = '\Typoheads\Formhandler\Generator\CSV';
 			if($tsconfig['properties']['config.']['generators.']['csv']) {
 				$className = $this->utilityFuncs->prepareClassName($tsconfig['properties']['config.']['generators.']['csv']);
 			}

@@ -24,7 +24,7 @@ if (TYPO3_MODE == 'BE') {
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-class TemplateTCPDF extends TCPDF {
+class TemplateTCPDF extends \TCPDF {
 
 	/**
 	 * Path to language file
