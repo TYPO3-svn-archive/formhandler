@@ -86,7 +86,6 @@ class AjaxValidate {
 		} else {
 			$this->id = intval($_GET['id']);
 		}
-		tslib_eidtools::connectDB();
 		$this->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
 		$this->globals->setAjaxMode(TRUE);
 		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
@@ -100,7 +99,7 @@ class AjaxValidate {
 	 * @return Tx_Formhandler_View_AjaxValidation The view class
 	 */
 	protected function initView($content) {
-		$viewClass = 'Tx_Formhandler_View_AjaxValidation';
+		$viewClass = '\Typoheads\Formhandler\View\AjaxValidation';
 		$view = $this->componentManager->getComponent($viewClass);
 		$view->setLangFiles($this->utilityFuncs->readLanguageFiles(array(), $this->settings));
 		$view->setSettings($this->settings);
@@ -113,5 +112,5 @@ class AjaxValidate {
 
 }
 
-$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\Typoheads\Formhandler\Utils\AjaxValidate');
+$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Typoheads\Formhandler\Utils\AjaxValidate');
 $validator->main();

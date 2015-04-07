@@ -20,7 +20,7 @@ namespace Typoheads\Formhandler\AjaxHandler;
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @abstract
  */
-abstract class AbstractAjaxHandler extends Typoheads\Formhandler\Component\AbstractClass {
+abstract class AbstractAjaxHandler extends \Typoheads\Formhandler\Component\AbstractClass {
 
 	/**
 	 * Initialize AJAX stuff

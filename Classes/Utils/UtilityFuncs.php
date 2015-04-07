@@ -85,6 +85,7 @@ class UtilityFuncs {
 	 * @return string
 	 */
 	public function prepareClassName($className) {
+		$className = str_replace('Tx_Formhandler_', '\\Typoheads\\Formhandler\\', $className);
 		if(strstr($className, '_') !== FALSE) {
 			$className = str_replace('_', '\\', $className);
 		}

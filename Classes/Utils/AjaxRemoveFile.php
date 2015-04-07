@@ -101,7 +101,6 @@ class AjaxRemoveFile {
 		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
 		$this->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
 		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
-		tslib_eidtools::connectDB();
 		$this->utilityFuncs->initializeTSFE($this->id);
 		$this->globals->setCObj($GLOBALS['TSFE']->cObj);
 		$randomID = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('randomID'));
@@ -129,6 +128,6 @@ class AjaxRemoveFile {
 
 }
 
-$output = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\Typoheads\Formhandler\Utils\AjaxRemoveFile');
+$output = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Typoheads\Formhandler\Utils\AjaxRemoveFile');
 $output->main();
 

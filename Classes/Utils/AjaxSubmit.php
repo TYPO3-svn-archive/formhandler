@@ -54,7 +54,6 @@ class AjaxSubmit {
 		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
 		$this->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
 		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
-		tslib_eidtools::connectDB();
 		$this->utilityFuncs->initializeTSFE($this->id);
 
 		$elementUID = intval($_GET['uid']);
@@ -90,5 +89,5 @@ class AjaxSubmit {
 
 }
 
-$output = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\Typoheads\Formhandler\Utils\AjaxSubmit');
+$output = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Typoheads\Formhandler\Utils\AjaxSubmit');
 $output->main();
