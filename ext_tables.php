@@ -26,9 +26,25 @@ if (TYPO3_MODE === 'BE') {
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('web', 'txformhandlermoduleM1', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/Module/');
 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_formhandler_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Resources/PHP/class.tx_formhandler_wizicon.php';
+	
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		'TYPOHEADS.' . $_EXTKEY,
+		'web',
+		'tx_Formhandler',
+		'bottom',
+		array(
+			'Module' => 'index, view, clearLogs'
+		),
+		array(
+			'access' => 'admin,user',
+			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/moduleicon.gif',
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml'
+		)
+	);
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/Settings/', 'Example Configuration');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/DefaultConfiguration', 'Default Configuration');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/ExampleConfiguration', 'Example Configuration');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY . '_pi1'), 'list_type');
 
 $TCA['tx_formhandler_log'] = array (

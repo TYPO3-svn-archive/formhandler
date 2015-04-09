@@ -138,6 +138,7 @@ class tx_formhandler_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			//$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_pre($this->pageinfo['_thePath'],50);
 
 			$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
+			$this->content .= '<div id="typo3-inner-docbody">';
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
 			$this->content .= $this->doc->section('', $this->doc->funcMenu('', \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], basename(PATH_thisScript))));
@@ -150,6 +151,7 @@ class tx_formhandler_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 
 			$this->content .= $this->doc->spacer(10);
+			$this->content .= '</div>';
 		} else {
 			// If no access or if ID == zero
 
@@ -157,10 +159,12 @@ class tx_formhandler_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 			$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
+			$this->content .= '<div id="typo3-inner-docbody">';
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
 			$this->content .= $GLOBALS['LANG']->getLL('no_id');
 			$this->content .= $this->doc->spacer(10);
+			$this->content .= '</div>';
 		}
 	}
 

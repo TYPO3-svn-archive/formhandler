@@ -244,23 +244,21 @@
 
 
 ###LIST_TABLE###
-<div id="list_table">
-<table>
-
-	<tr class="bgColor2 list_table_header">
-		<td>###LLL:PAGE_ID###</td>
-		<td>###LLL:SUBMISSION_DATE###</td>
-		<td>###LLL:IP###</td>
-		<td>###LLL:DETAIL_VIEW###</td>
-		<td>###LLL:EXPORT###</td>
-		<td>&nbsp;</td>
-	</tr>
-	
-	
-	
-
-	###ROWS###
-
+<div class="table-fit">
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>###LLL:PAGE_ID###</td>
+			<th>###LLL:SUBMISSION_DATE###</th>
+			<th>###LLL:IP###</th>
+			<th>###LLL:DETAIL_VIEW###</th>
+			<th>###LLL:EXPORT###</th>
+			<th class="col-control">&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+		###ROWS###
+	</tbody>
 </table>
 </div>
 <div class="browsebox ui-helper-clearfix">

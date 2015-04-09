@@ -1,0 +1,24 @@
+config.tx_extbase.persistence.classes {
+	Typoheads\Formhandler\Domain\Model\LogData {
+		mapping {
+			tableName = tx_formhandler_log
+			columns {
+				crdate.mapOnProperty = crdate
+				is_spam.mapOnProperty = isSpam
+				params.mapOnProperty = params
+				ip.mapOnProperty = ip
+			}
+		}
+	}
+	Typoheads\Formhandler\Domain\Model\Demand {
+		mapping {
+			tableName = tx_formhandler_log
+			columns {
+				crdate.mapOnProperty = crdate
+				is_spam.mapOnProperty = isSpam
+				params.mapOnProperty = params
+				ip.mapOnProperty = ip
+			}
+		}
+	}
+}
