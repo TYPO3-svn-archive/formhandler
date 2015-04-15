@@ -866,7 +866,7 @@ class UtilityFuncs {
 	 * @return string
 	 */
 	public function getDebugMessage($key) {
-		return trim($GLOBALS['TSFE']->sL('LLL:EXT:formhandler/Resources/Language/locallang_debug.xml:' . $key));
+		return trim($GLOBALS['TSFE']->sL('LLL:EXT:formhandler/Resources/Private/Language/locallang_debug.xml:' . $key));
 	}
 
 	/**
@@ -876,7 +876,7 @@ class UtilityFuncs {
 	 * @return string
 	 */
 	public function getExceptionMessage($key) {
-		return trim($GLOBALS['TSFE']->sL('LLL:EXT:formhandler/Resources/Language/locallang_exceptions.xml:' . $key));
+		return trim($GLOBALS['TSFE']->sL('LLL:EXT:formhandler/Resources/Private/Language/locallang_exceptions.xml:' . $key));
 	}
 	
 	/**

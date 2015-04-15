@@ -10,7 +10,7 @@ $TCA['tx_formhandler_log'] = array (
 	'columns' => array (
 		'crdate' => array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log.submission_date',
+			'label' => 'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tx_formhandler_log.submission_date',
 			'config' => array (
 				'type' => 'input',
 				'size' => '10',
@@ -21,14 +21,14 @@ $TCA['tx_formhandler_log'] = array (
 			)
 		),
 		'ip' => array (
-			'label' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log.ip',
+			'label' => 'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tx_formhandler_log.ip',
 			'config' => array (
 				'type' => 'input'
 			)
 		),
 		'params' => array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log.params',
+			'label' => 'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tx_formhandler_log.params',
 			'config' => array (
 				'type' => 'user',
 				'userFunc' => 'tx_formhandler_tcafuncs->user_getParams'
@@ -36,7 +36,7 @@ $TCA['tx_formhandler_log'] = array (
 		),
 		'is_spam' => array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log.is_spam',
+			'label' => 'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tx_formhandler_log.is_spam',
 			'config' => array (
 				'type' => 'check'
 			)

@@ -70,7 +70,7 @@ class BackendClearLogs extends \Typoheads\Formhandler\Controller\AbstractControl
 		$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'tx_formhandler_mod1');
 		$this->settings = $tsconfig['properties']['config.'];
 
-		$GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Private/Language/locallang.xml');
 		$templatePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/HTML/backend/';
 		$templateFile = $templatePath . 'template.html';
 		$this->templateCode = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($templateFile);

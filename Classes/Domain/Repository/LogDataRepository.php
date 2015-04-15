@@ -33,6 +33,26 @@ class LogDataRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$this->setDefaultQuerySettings($querySettings);
 	}
 
+	/**
+	 * Find by multiple uids using, seperated string
+	 * 
+	 * @param string String containing uids
+	 */
+	public function findByUids($uids) {
+		$uidArray = explode(",", $uids);
+		$query = $this->createQuery();
+		foreach ($uidArray as $key => $value) {
+			$constraints[] =  $query->equals('uid', $value);
+		}
+		return $query->matching(
+			$query->logicalAnd(
+				$query->logicalOr(
+					$constraints
+				)
+			)
+		)->execute();
+	}
+
 	public function findDemanded(\Typoheads\Formhandler\Domain\Model\Demand $demand = NULL) {
 
 		$query = $this->createQuery();

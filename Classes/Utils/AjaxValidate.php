@@ -47,7 +47,7 @@ class AjaxValidate {
 			if ($valid) {
 				$content = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'ok');
 				if(strlen($content) === 0) {
-					$content = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Images/ok.png' . '" />';
+					$content = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Public/Images/ok.png' . '" />';
 				} else {
 					$gp = array(
 						$_GET['field'] => $_GET['value']
@@ -59,7 +59,7 @@ class AjaxValidate {
 			} else {
 				$content = $this->utilityFuncs->getSingle($this->settings['ajax.']['config.'], 'notOk');
 				if(strlen($content) === 0) {
-					$content = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Images/notok.png' . '" />';
+					$content = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Public/Images/notok.png' . '" />';
 				} else {
 					$view = $this->initView($content);
 					$gp = array(

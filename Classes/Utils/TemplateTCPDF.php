@@ -13,11 +13,7 @@ namespace Typoheads\Formhandler\Utils;
 * Public License for more details.                                       *
 *                                                                        */
 
-if (TYPO3_MODE == 'BE') {
-	require_once('../../../Resources/PHP/tcpdf/tcpdf.php');
-} else {
-	require_once('typo3conf/ext/formhandler/Resources/PHP/tcpdf/tcpdf.php');
-}
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/tcpdf/tcpdf.php');
 
 /**
  * A PDF Template class for Formhandler generated PDF files for usage with Generator_TCPDF.
@@ -52,7 +48,7 @@ class TemplateTCPDF extends \TCPDF {
 
 	public function __construct() {
 		parent::__construct();
-		$this->sysLangFile = 'EXT:formhandler/Resources/Language/locallang.xml';
+		$this->sysLangFile = 'EXT:formhandler/Resources/Private/Language/locallang.xml';
 	}
 
 	/**
@@ -118,7 +114,7 @@ class TemplateTCPDF extends \TCPDF {
 	}
 
 	/**
-	 * Get a translation for given key from "EXT:formhandler/Resources/Language/locallang.xml"
+	 * Get a translation for given key from "EXT:formhandler/Resources/Private/Language/locallang.xml"
 	 *
 	 * @param string $key The key
 	 * @return string The translation

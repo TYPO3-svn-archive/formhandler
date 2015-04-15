@@ -19,7 +19,7 @@ if (TYPO3_MODE === 'BE') {
 	// Add flexform field to plugin options
 	$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi1'] = 'pi_flexform';
 
-	$file = 'FILE:EXT:' . $_EXTKEY . '/Resources/XML/flexform_ds.xml';
+	$file = 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_ds.xml';
 
 	// Add flexform DataStructure
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi1', $file);
@@ -33,7 +33,7 @@ if (TYPO3_MODE === 'BE') {
 		'tx_Formhandler',
 		'bottom',
 		array(
-			'Module' => 'index, view, clearLogs'
+			'Module' => 'index, view, selectFields, export, clearLogs'
 		),
 		array(
 			'access' => 'admin,user',
@@ -45,11 +45,11 @@ if (TYPO3_MODE === 'BE') {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/DefaultConfiguration', 'Default Configuration');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/ExampleConfiguration', 'Example Configuration');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY . '_pi1'), 'list_type');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY . '_pi1'), 'list_type');
 
 $TCA['tx_formhandler_log'] = array (
 	'ctrl' => array (
-		'title' => 'LLL:EXT:formhandler/Resources/Language/locallang_db.xml:tx_formhandler_log',
+		'title' => 'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tx_formhandler_log',
 		'label' => 'uid',
 		'default_sortby' => 'ORDER BY crdate DESC',
 		'crdate' => 'crdate',
@@ -62,10 +62,10 @@ $TCA['tx_formhandler_log'] = array (
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_formhandler_log');
 
 $TCA['pages']['columns']['module']['config']['items'][] = array(
-	'LLL:EXT:' . $_EXTKEY . '/Resources/Language/locallang.xml:title',
+	'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml:title',
 	'formlogs',
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'ext_icon.gif'
 );
-\TYPO3\CMS\Backend\Sprite\SpriteManager::addTcaTypeIcon('pages', 'contains-formlogs', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Images/pagetreeicon.png');
+\TYPO3\CMS\Backend\Sprite\SpriteManager::addTcaTypeIcon('pages', 'contains-formlogs', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/pagetreeicon.png');
 
 ?>

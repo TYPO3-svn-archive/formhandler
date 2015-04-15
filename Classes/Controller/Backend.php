@@ -120,7 +120,7 @@ class Backend extends \Typoheads\Formhandler\Controller\AbstractController {
 	 * @return void
 	 */
 	protected function init() {
-		$GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Language/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:formhandler/Resources/Private/Language/locallang.xml');
 		$this->logTable = 'tx_formhandler_log';
 		$this->pageBrowser = new \tx_formhandler_mod1_pagination($this->countRecords(), $this);
 	}
