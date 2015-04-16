@@ -61,7 +61,7 @@
 
 	<f:if condition="{logDataRows -> f:count()} > 0">
 		<f:then>
-			<f:be.widget.paginate objects="{logDataRows}" as="paginatedLogDataRows" configuration="{itemsPerPage: 50, insertBelow: 1}">
+			<f:be.widget.paginate objects="{logDataRows}" as="paginatedLogDataRows" configuration="{itemsPerPage: 5, insertBelow: 1}">
 				<div class="table-fit">
 					<table class="table table-striped table-hover">
 						<thead>
@@ -69,8 +69,7 @@
 								<th><f:translate key="label.pid" /></td>
 								<th><f:translate key="label.submissionDate" /></th>
 								<th><f:translate key="label.ip" /></th>
-								<th><f:translate key="label.detailView" /></th>
-								<th><f:translate key="label.export" /></th>
+								<th><f:translate key="label.actions" /></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -79,8 +78,11 @@
 									<td>{logDataRow.pid}</td>
 									<td><f:format.date format="{dateFormat} {timeFormat}">{logDataRow.crdate}</f:format.date></td>
 									<td>{logDataRow.ip}</td>
-									<td><f:link.action action="view" arguments="{logDataRow: logDataRow}"> View </f:link.action></td>
-									<td>Export</td>
+									<td>
+										<f:link.action action="view" class="btn btn-default" arguments="{logDataRow: logDataRow}"><span class="t3-icon fa fa-info-circle"> </span></f:link.action>
+										<f:link.action action="selectFields" class="btn btn-default" arguments="{logDataUids: {0: logDataRow}, filetype: 'pdf'}"> PDF </f:link.action>
+										<f:link.action action="selectFields" class="btn btn-default" arguments="{logDataUids: {0: logDataRow}, filetype: 'csv'}"> CSV </f:link.action>
+									</td>
 								</tr>
 							</f:for>
 						</tbody>
