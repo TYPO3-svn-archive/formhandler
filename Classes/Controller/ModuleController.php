@@ -51,9 +51,15 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @return void
 	 */
 	public function initializeAction() {
+		$this->id = intval($_GET['id']);
+		$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'module.tx_formhandler');
+		if(!empty($tsconfig['properties']['settings.'])) {
+			$this->settings = $tsconfig['properties']['settings.'];
+		} else {
+			$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'tx_formhandler_mod1');
+			$this->settings = $tsconfig['properties']['config.'];
+		}
 
-		print_r($this->settings);
-		exit;
 		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
 		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
 		$this->pageRenderer = $this->objectManager->get(\TYPO3\CMS\Core\Page\PageRenderer::class);
@@ -79,8 +85,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		}
 		$logDataRows = $this->logDataRepository->findDemanded($demand);
 		$this->view->assign('demand', $demand);
-		$this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'm-d-Y' : 'd-m-Y');
-		$this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
+		$this->view->assign('dateFormat', $this->settings['dateFormat']);
+		$this->view->assign('timeFormat', $this->settings['timeFormat']);
 		$this->view->assign('logDataRows', $logDataRows);
 	}
 
@@ -88,8 +94,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 		if($logDataRow !== NULL) {
 			$logDataRow->setParams(unserialize($logDataRow->getParams()));
-			$this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'm-d-Y' : 'd-m-Y');
-			$this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
+			$this->view->assign('dateFormat', $this->settings['dateFormat']);
+			$this->view->assign('timeFormat', $this->settings['timeFormat']);
 			$this->view->assign('data', $logDataRow);
 		}
 	}
@@ -105,12 +111,33 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$uids = implode(',', $logDataUids);
 			$logDataRows = $this->logDataRepository->findByUids($uids);
 			$fields = array(
-				'pid',
-				'ip',
-				'submission_date'
+				'global' => array(
+					'pid',
+					'ip',
+					'submission_date'
+				),
+				'system' => array(
+					'randomID',
+					'removeFile',
+					'removeFileField',
+					'submitField',
+					'submitted'
+				),
+				'custom' => array()
 			);
 			foreach($logDataRows as $logDataRow) {
-				$fields = array_merge($fields, array_keys(unserialize($logDataRow->getParams())));
+				$rowFields = array_keys(unserialize($logDataRow->getParams()));
+				foreach($rowFields as $idx =>$rowField) {
+					if(in_array($rowField, $fields['system'])) {
+						unset($rowFields[$idx]);
+					} elseif(substr($rowField, 0, 5) === 'step-') {
+						unset($rowFields[$idx]);
+						if(!in_array($rowField, $fields['system'])) {
+							$fields['system'][] = $rowField;
+						}
+					}
+				}
+				$fields['custom'] = array_merge($fields['custom'], $rowFields);
 			}
 			$this->view->assign('fields', $fields);
 			$this->view->assign('logDataUids', $uids);
@@ -139,47 +166,48 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			}
 			if($filetype === 'pdf') {
 				$className = '\Typoheads\Formhandler\Generator\TCPDF';
-				if($tsconfig['properties']['config.']['generators.']['pdf']) {
-					$className = $this->utilityFuncs->prepareClassName($tsconfig['properties']['config.']['generators.']['pdf']);
+				if($this->settings['generators.']['pdf']) {
+					$className = $this->utilityFuncs->prepareClassName($this->settings['generators.']['pdf']);
 				}
 				$generator = $this->componentManager->getComponent($className);
-				$generator->generateModulePDF($convertedLogDataRows, $fields);
+				if(!$this->settings['pdf.']['outputFileName']) {
+					$this->settings['pdf.']['outputFileName'] = 'formhandler.pdf';
+				}
+				$generator->generateModulePDF(
+					$convertedLogDataRows,
+					$fields,
+					$this->settings['pdf.']['outputFileName']
+				);
 			} elseif($filetype === 'csv') {
 				$className = '\Typoheads\Formhandler\Generator\CSV';
-				if($tsconfig['properties']['config.']['generators.']['csv']) {
-					$className = $this->utilityFuncs->prepareClassName($tsconfig['properties']['config.']['generators.']['csv']);
+				if($this->settings['generators.']['csv']) {
+					$className = $this->utilityFuncs->prepareClassName($this->settings['generators.']['csv']);
 				}
 				$generator = $this->componentManager->getComponent($className);
 
-				if(!$tsconfig['properties']['config.']['csv.']['delimiter']) {
-					$tsconfig['properties']['config.']['csv.']['delimiter'] = ',';
+				if(!$this->settings['csv.']['delimiter']) {
+					$this->settings['csv.']['delimiter'] = ',';
 				}
-				if(!$tsconfig['properties']['config.']['csv.']['enclosure']) {
-					$tsconfig['properties']['config.']['csv.']['enclosure'] = '"';
+				if(!$this->settings['csv.']['enclosure']) {
+					$this->settings['csv.']['enclosure'] = '"';
 				}
-				if(!$tsconfig['properties']['config.']['csv.']['encoding']) {
-					$tsconfig['properties']['config.']['csv.']['encoding'] = 'utf-8';
+				if(!$this->settings['csv.']['encoding']) {
+					$this->settings['csv.']['encoding'] = 'utf-8';
+				}
+				if(!$this->settings['csv.']['outputFileName']) {
+					$this->settings['csv.']['outputFileName'] = 'formhandler.csv';
 				}
 				$generator->generateModuleCSV(
 					$convertedLogDataRows,
 					$fields,
-					$tsconfig['properties']['config.']['csv.']['delimiter'],
-					$tsconfig['properties']['config.']['csv.']['enclosure'],
-					$tsconfig['properties']['config.']['csv.']['encoding']
+					$this->settings['csv.']['delimiter'],
+					$this->settings['csv.']['enclosure'],
+					$this->settings['csv.']['encoding'],
+					$this->settings['csv.']['outputFileName']
 				);
 			}
 		}
 		return '';
-	}
-
-	public function pdfAction(\Typoheads\Formhandler\Domain\Model\LogData $logDataRow = NULL) {
-
-		if($logDataRow !== NULL) {
-			$logDataRow->setParams(unserialize($logDataRow->getParams()));
-			$this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'm-d-Y' : 'd-m-Y');
-			$this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
-			$this->view->assign('data', $logDataRow);
-		}
 	}
 
 	/**
@@ -188,8 +216,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @return void
 	 */
 	public function clearLogsAction() {
-
-		$this->view->assign('test', 'test');
+		if($GLOBALS['BE_USER']->user['admin'] || intval($this->settings['enableClearLogs']) === 1) {
+			$this->view->assign('test', 'test');
+		} else {
+			return '';
+		}
 	}
 
 }
