@@ -6,12 +6,15 @@
 			<label index="action.clearLogs">Clear log data</label>
 			
 			<label index="headline.index">Log Data</label>
+			<label index="headline.clearLogs">Clear Log Data</label>
+			<label index="headline.selectFields">Select the fields to export</label>
 			<label index="label.pid">Page ID</label>
 			<label index="label.submissionDate">Submission Date</label>
 			<label index="label.ip">IP</label>
 			<label index="label.detailView">View</label>
 			<label index="label.export">Export as</label>
 			<label index="label.submit">Filter</label>
+			
 			<label index="label.start">Start</label>
 			<label index="label.end">End</label>
 			<label index="label.params">Submitted Values</label>
@@ -19,6 +22,7 @@
 			<label index="label.back">Back to list</label>
 
 			<label index="message.noRecordsFound">No records found</label>
+			<label index="button.export">Export</label>
 
 
 			<label index="title">Formhandler</label>

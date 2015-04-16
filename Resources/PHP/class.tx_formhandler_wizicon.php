@@ -40,7 +40,7 @@ class tx_formhandler_wizicon {
 		$LL = $this->includeLocalLang();
 
 		$wizardItems['plugins_tx_formhandler_pi1'] = array(
-			'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Images/ce_wiz_pi1.png',
+			'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'Resources/Public/Images/ce_wiz_pi1.png',
 			'title' => $GLOBALS['LANG']->getLLL('wizard_pi1.title', $LL),
 			'description' => $GLOBALS['LANG']->getLLL('tt_content.pi1_plus_wiz_description', $LL),
 			'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=formhandler_pi1'
@@ -55,7 +55,7 @@ class tx_formhandler_wizicon {
 	 * @return array The LOCAL_LANG array
 	 */
 	function includeLocalLang()	{
-		$llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/Language/locallang_db.xml';
+		$llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/Private/Language/locallang_db.xml';
 		$parser = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser');
 		$LOCAL_LANG = $parser->getParsedData($llFile, $GLOBALS['LANG']->lang, 'utf-8');
 		return $LOCAL_LANG;
