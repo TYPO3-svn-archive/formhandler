@@ -20,6 +20,14 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
+	 * The request arguments
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $gp;
+
+	/**
 	 * The Formhandler component manager
 	 *
 	 * @access protected
@@ -60,10 +68,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$this->settings = $tsconfig['properties']['config.'];
 		}
 
+		$this->gp = $this->request->getArguments();
 		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
 		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
 		$this->pageRenderer = $this->objectManager->get(\TYPO3\CMS\Core\Page\PageRenderer::class);
-		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
 
 		if (!isset($this->settings['dateFormat'])) {
 			$this->settings['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'm-d-Y' : 'd-m-Y';
@@ -81,35 +89,47 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	public function indexAction(\Typoheads\Formhandler\Domain\Model\Demand $demand = NULL) {
 		if($demand === NULL) {
 			$demand = $this->objectManager->get(\Typoheads\Formhandler\Domain\Model\Demand::class);
-			$demand->setPid(intval($_GET['id']));
+			if(!isset($this->gp['demand']['pid'])) {
+				$demand->setPid($this->id);
+			}
 		}
+		$isAllowedToShowAll = (intval($this->settings['enableShowAllButton']) === 1);
+		if($GLOBALS['BE_USER']->user['admin']) {
+			$isAllowedToShowAll = TRUE;
+		}
+		if(!$isAllowedToShowAll && isset($this->gp['demand']['pid']) && (strlen($this->gp['demand']['pid']) === 0 || intval($this->gp['demand']['pid']) === 0)) {
+			return '';
+		}
+		$this->settings['enableShowAllButton'] = $isAllowedToShowAll;
 		$logDataRows = $this->logDataRepository->findDemanded($demand);
 		$this->view->assign('demand', $demand);
-		$this->view->assign('dateFormat', $this->settings['dateFormat']);
-		$this->view->assign('timeFormat', $this->settings['timeFormat']);
 		$this->view->assign('logDataRows', $logDataRows);
+		$this->view->assign('settings', $this->settings);
+		$permissions = array();
+		if($GLOBALS['BE_USER']->user['admin'] || intval($this->settings['enableClearLogs']) === 1) {
+			$permissions['delete'] = TRUE;
+		}
+		$this->view->assign('permissions', $permissions);
 	}
 
 	public function viewAction(\Typoheads\Formhandler\Domain\Model\LogData $logDataRow = NULL) {
 
 		if($logDataRow !== NULL) {
 			$logDataRow->setParams(unserialize($logDataRow->getParams()));
-			$this->view->assign('dateFormat', $this->settings['dateFormat']);
-			$this->view->assign('timeFormat', $this->settings['timeFormat']);
 			$this->view->assign('data', $logDataRow);
+			$this->view->assign('settings', $this->settings);
 		}
 	}
 
 	/**
 	 * Displays fields selector
-	 * @param array rows to export
+	 * @param string uids to export
 	 * @param string export file type (PDF || CSV)
 	 * @return void
 	 */
-	public function selectFieldsAction(array $logDataUids = NULL, $filetype = '') {
+	public function selectFieldsAction($logDataUids = NULL, $filetype = '') {
 		if($logDataUids !== NULL) {
-			$uids = implode(',', $logDataUids);
-			$logDataRows = $this->logDataRepository->findByUids($uids);
+			$logDataRows = $this->logDataRepository->findByUids($logDataUids);
 			$fields = array(
 				'global' => array(
 					'pid',
@@ -135,13 +155,15 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 						if(!in_array($rowField, $fields['system'])) {
 							$fields['system'][] = $rowField;
 						}
+					} elseif(!in_array($rowField, $fields['custom'])) {
+						$fields['custom'][] = $rowField;
 					}
 				}
-				$fields['custom'] = array_merge($fields['custom'], $rowFields);
 			}
 			$this->view->assign('fields', $fields);
-			$this->view->assign('logDataUids', $uids);
+			$this->view->assign('logDataUids', $logDataUids);
 			$this->view->assign('filetype', $filetype);
+			$this->view->assign('settings', $this->settings);
 		}
 	}
 
@@ -211,16 +233,19 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	}
 
 	/**
-	 * Displays log data
-
+	 * Deletes given logs or all if value is "all"
+	 * @param string uids to delete
 	 * @return void
 	 */
-	public function clearLogsAction() {
-		if($GLOBALS['BE_USER']->user['admin'] || intval($this->settings['enableClearLogs']) === 1) {
-			$this->view->assign('test', 'test');
+	public function deleteLogRowsAction($logDataUids = NULL) {
+		if($logDataUids === 'all') {
+			$text = 'Deleted all logs!';
 		} else {
-			return '';
+			$text = 'Deleted ' . count($logDataUids) . ' log row(s)!';
 		}
+
+		$this->addFlashMessage($text);
+		$this->redirect("index");
 	}
 
 }

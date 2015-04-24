@@ -61,7 +61,7 @@ class tx_dynaflex_formhandler {
 		$js .= "var flexformBoxId = '" . $divId . "'\n";
 		//$js .= "var flexformBoxId = 'DIV.c-tablayer'\n";
 		$js .= "var newRecord = " . $newRecord . "\n";
-		$js .= file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/Public/Js/addFields_predefinedJS.js');
+		$js .= file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/Public/JavaScript/addFields_predefinedJS.js');
 		$js .= "/*]]>*/\n";
 		$js .= "</script>\n";
 		return $js;

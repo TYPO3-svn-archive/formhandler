@@ -24,16 +24,13 @@ if (TYPO3_MODE === 'BE') {
 	// Add flexform DataStructure
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi1', $file);
 
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('web', 'txformhandlermoduleM1', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/Module/');
-	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_formhandler_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Resources/PHP/class.tx_formhandler_wizicon.php';
-	
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'TYPOHEADS.' . $_EXTKEY,
 		'web',
 		'tx_Formhandler',
 		'bottom',
 		array(
-			'Module' => 'index, view, selectFields, export, clearLogs'
+			'Module' => 'index, view, selectFields, export, deleteLogRows'
 		),
 		array(
 			'access' => 'admin,user',

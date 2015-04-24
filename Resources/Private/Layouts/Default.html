@@ -1,16 +1,17 @@
-<f:be.container>
+<f:be.container
+  includeJsFiles="{0:'{f:uri.resource(path:\'JavaScript/module.js\')}'}" 
+  loadJQuery="TRUE"
+  loadPrototype="FALSE"
+  loadExtJsTheme="FALSE"
+  enableClickMenu="FALSE"
+  includeRequireJsModules="{
+	0:'TYPO3/CMS/Backend/Modal',
+	1:'TYPO3/CMS/Backend/DateTimePicker'
+  }"
+>
 	<div class="typo3-fullDoc">
 		<div id="typo3-docheader">
 			<div class="typo3-docheader-functions">
-				<div class="left">
-					<f:be.buttons.csh />
-					<f:be.menus.actionMenu>
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'action.index')}" controller="Module" action="index" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'action.clearLogs')}" controller="Module" action="clearLogs" />
-					</f:be.menus.actionMenu>
-				</div>
-				<div class="right">
-				</div>
 			</div>
 		</div>
 		<div id="typo3-docbody">
@@ -18,8 +19,9 @@
 				<f:render section="headline" />
 
 				<f:flashMessages renderMode="div" />
-
-				<f:render section="content" />
+				<div id="formhandler-module">
+					<f:render section="content" />
+				</div>
 			</div>
 		</div>
 	</div>
