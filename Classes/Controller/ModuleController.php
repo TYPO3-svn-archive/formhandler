@@ -240,8 +240,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	public function deleteLogRowsAction($logDataUids = NULL) {
 		if($logDataUids === 'all') {
 			$text = 'Deleted all logs!';
+			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_formhandler_log');
 		} else {
+			$logDataUids = explode(',', $logDataUids);
 			$text = 'Deleted ' . count($logDataUids) . ' log row(s)!';
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_formhandler_log', 'uid IN (' . implode(',', $logDataUids). ')');
 		}
 
 		$this->addFlashMessage($text);

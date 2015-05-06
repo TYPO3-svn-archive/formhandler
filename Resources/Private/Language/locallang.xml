@@ -25,9 +25,12 @@
 			<label index="label.data">Submission Data</label>
 			<label index="label.back">Back to list</label>
 			
-			<label index="label.delete-all-logs">Delete all selected log rows</label>
+			<label index="label.delete-all-selected-logs">Delete all selected log rows</label>
+			<label index="label.delete-all-logs">Delete all log rows</label>
 			<label index="label.delete-log-row">Delete this log row</label>
 			<label index="label.select-all-rows">Select all/Select none</label>
+			
+			<label index="message.delete-all-logs">Are your sure you want to delete all log rows?</label>
 
 			<label index="message.noRecordsFound">No records found</label>
 			<label index="button.export">Export</label>
