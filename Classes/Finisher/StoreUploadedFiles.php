@@ -72,18 +72,19 @@ class StoreUploadedFiles extends AbstractFinisher {
 	protected function moveUploadedFiles() {
 		$sessionFiles = $this->globals->getSession()->get('files');
 		if (is_array($sessionFiles) && !empty($sessionFiles)) {
+			$disablePathCheck = intval($this->utilityFuncs->getSingle($this->settings, 'disablePathCheck'));
 			foreach ($sessionFiles as $field => $files) {
 				$this->gp[$field] = array();
 				$uploadPath = $this->getNewFolderPath($field);
 				if(strlen($uploadPath) > 0) {
 					foreach ($files as $key => $file) {
-						if ($file['uploaded_path'] != $uploadPath) {
+						if ($file['uploaded_path'] !== $uploadPath || $disablePathCheck === 1) {
 							$newFilename = $this->getNewFilename($file['uploaded_name']);
 							$filename = substr($newFilename, 0, strrpos($newFilename, '.'));
 							$ext = substr($newFilename, strrpos($newFilename, '.'));
-	
+
 							$suffix = 1;
-	
+
 							//rename if exists
 							while(file_exists($uploadPath . $newFilename)) {
 								$newFilename = $filename . '_' . $suffix . $ext;
