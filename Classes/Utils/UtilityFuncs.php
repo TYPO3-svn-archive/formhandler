@@ -505,10 +505,10 @@ class UtilityFuncs {
 	 * @return string Sanitized path
 	 */
 	public function sanitizePath($path) {
-		if (substr($path, 0, 1) != '/') {
+		if (substr($path, 0, 1) !== '/' && substr($path, 1, 2) !== ':/') {
 			$path = '/' . $path;
 		}
-		if (substr($path, (strlen($path) - 1)) != '/' && !strstr($path, '.')) {
+		if (substr($path, (strlen($path) - 1)) !== '/' && !strstr($path, '.')) {
 			$path = $path . '/';
 		}
 		while(strstr($path, '//')) {
