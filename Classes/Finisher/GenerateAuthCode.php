@@ -40,21 +40,21 @@ class GenerateAuthCode extends AbstractFinisher {
 				'uidField' => $uidField,
 				'uid' => $this->utilityFuncs->getSingle($this->settings, 'uid')
 			);
- 		} elseif (is_array($this->gp['saveDB'])) {
- 			if (isset($this->settings['table'])) {
- 				$table = $this->utilityFuncs->getSingle($this->settings, 'table');
- 				foreach ($this->gp['saveDB'] as $idx => $insertInfo) {
- 					if ($insertInfo['table'] === $table) {
- 						$firstInsertInfo = $insertInfo;
- 						break;
- 					}
- 				}
- 			}
- 			if (empty($firstInsertInfo)) {
- 				reset($this->gp['saveDB']);
- 				$firstInsertInfo = current($this->gp['saveDB']);
- 			}
- 		}
+		} elseif (is_array($this->gp['saveDB'])) {
+			if (isset($this->settings['table'])) {
+				$table = $this->utilityFuncs->getSingle($this->settings, 'table');
+				foreach ($this->gp['saveDB'] as $idx => $insertInfo) {
+					if ($insertInfo['table'] === $table) {
+						$firstInsertInfo = $insertInfo;
+						break;
+					}
+				}
+			}
+			if (empty($firstInsertInfo)) {
+				reset($this->gp['saveDB']);
+				$firstInsertInfo = current($this->gp['saveDB']);
+			}
+		}
 		$table = $firstInsertInfo['table'];
 		$uid = $GLOBALS['TYPO3_DB']->fullQuoteStr($firstInsertInfo['uid'], $table);
 		$uidField = $firstInsertInfo['uidField'];
@@ -86,7 +86,7 @@ class GenerateAuthCode extends AbstractFinisher {
 
 				//create the parameter-array for the authCode Link
 				$paramsArray = array_merge($firstInsertInfo, array('authCode' => $authCode));
-				
+
 				if($this->settings['excludeParams']) {
 					$excludeParams = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->utilityFuncs->getSingle($this->settings, 'excludeParams'));
 					foreach($excludeParams as $param) {
@@ -97,11 +97,16 @@ class GenerateAuthCode extends AbstractFinisher {
 				}
 
 				// If we have set a formValuesPrefix, add it to the parameter-array
-				$formValuesPrefix = $this->globals->getFormValuesPrefix();
+				if($this->settings['customFormValuesPrefix']) {
+					$formValuesPrefix = $this->utilityFuncs->getSingle($this->settings, 'customFormValuesPrefix');
+				} else {
+					$formValuesPrefix = $this->globals->getFormValuesPrefix();
+				}
 				if (!empty($formValuesPrefix)) {
 					$paramsArray = array($formValuesPrefix => $paramsArray);
 				}
-				
+				$paramsArray['no_cache'] = 1;
+
 				$linkConf = array(
 					'parameter' => $authCodePage,
 					'additionalParams' => \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $paramsArray),
