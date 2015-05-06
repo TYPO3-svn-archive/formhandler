@@ -1035,43 +1035,7 @@ class Form extends AbstractController {
 			foreach ($conditions as $subIdx => $andConditions) {
 				$results = array();
 				foreach ($andConditions as $subSubIdx => $andCondition) {
-					if (strstr($andCondition, '!=')) {
-						list($field, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('!=', $andCondition);
-						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
-						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) !== $value);
-					} elseif (strstr($andCondition, '=')) {
-						list($field, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $andCondition);
-						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
-						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) === $value);
-					} elseif (strstr($andCondition, '>')) {
-						list($field, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('>', $andCondition);
-						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
-						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) > $value);
-					} elseif (strstr($andCondition, '<')) {
-						list($field, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('<', $andCondition);
-						$value = $this->utilityFuncs->parseOperand($value, $this->gp);
-						$result = ($this->utilityFuncs->getGlobal($field, $this->gp) < $value);
-					} else {
-						$field = $andCondition;
-						$keys = explode('|', $field);
-						$numberOfLevels = count($keys);
-						$rootKey = trim($keys[0]);
-						$value = $this->gp[$rootKey];
-
-						$result = (isset($this->gp[$rootKey]) && !empty($this->gp[$rootKey]));
-						for ($i = 1; $i < $numberOfLevels && isset($value); $i++) {
-							$currentKey = trim($keys[$i]);
-							if (is_object($value)) {
-								$value = $value->$currentKey;
-								$result = (isset($value->$currentKey) && !empty($value->$currentKey));
-							} elseif (is_array($value)) {
-								$value = $value[$currentKey];
-								$result = (isset($value[$currentKey]) && !empty($value[$currentKey]));
-							} else {
-								$result = FALSE;
-							}
-						}
-					}
+					$result = $this->utilityFuncs->getConditionResult($andCondition, $this->gp);
 					$results[] = ($result ? 'TRUE' : 'FALSE');
 				}
 				$orConditions[] = '(' . implode(' && ', $results) . ')';

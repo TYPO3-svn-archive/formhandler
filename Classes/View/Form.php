@@ -334,74 +334,7 @@ class Form extends AbstractView {
 	}
 
 	protected function handleIfSubpartCondition($condition) {
-		$valueConditions = preg_split('/\s*(!=|\^=|\$=|~=|>=|<=|=|<|>)\s*/', $condition, -1, PREG_SPLIT_DELIM_CAPTURE);
-
-		$conditionOperator = trim($valueConditions[1]);
-		$fieldName = trim($valueConditions[0]);
-
-		$conditionResult = FALSE;
-		switch($conditionOperator) {
-			case '!=':
-				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
-				$conditionResult = $this->utilityFuncs->getGlobal($fieldName, $this->gp) != $value;
-				break;
-			case '^=':
-				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
-				$conditionResult = strpos($this->utilityFuncs->getGlobal($fieldName, $this->gp), $value) === 0;
-				break;
-			case '$=':
-				$gpValue = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
-				$gpValue = substr($gpValue, -strlen($valueConditions[2]));
-				$checkValue = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
-				$conditionResult = (strcmp($checkValue, $gpValue) === 0);
-				break;
-			case '~=':
-				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
-				$gpValue = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
-				if(is_array($gpValue)) {
-					$conditionResult = in_array($value, $gpValue);
-				} else {
-					$conditionResult = strpos($this->utilityFuncs->getGlobal($fieldName, $this->gp), $value) !== FALSE;
-				}
-				break;
-			case '=':
-				$value = $this->utilityFuncs->parseOperand($valueConditions[2], $this->gp);
-				$conditionResult = $this->utilityFuncs->getGlobal($fieldName, $this->gp) == $value;
-				break;
-			case '>':
-				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
-				if(is_numeric($value)) {
-					$conditionResult = floatval($value) > floatval($this->utilityFuncs->parseOperand($valueConditions[2], $this->gp));
-				}
-				break;
-			case '<':
-				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
-				if(is_numeric($value)) {
-					$conditionResult = floatval($value) < floatval($this->utilityFuncs->parseOperand($valueConditions[2], $this->gp));
-				}
-				break;
-			case '>=':
-				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
-				if(is_numeric($value)) {
-					$conditionResult = floatval($value) >= floatval($this->utilityFuncs->parseOperand($valueConditions[2], $this->gp));
-				}
-				break;
-			case '<=':
-				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
-				if(is_numeric($value)) {
-					$conditionResult = floatval($value) <= floatval($this->utilityFuncs->parseOperand($valueConditions[2], $this->gp));
-				}
-				break;
-			default:
-				$value = $this->utilityFuncs->getGlobal($fieldName, $this->gp);
-				if(is_array($value)) {
-					$conditionResult = (count($value) > 0);
-				} else {
-					$conditionResult = strlen(trim($value)) > 0;
-				}
-		}
-
-		return $conditionResult;
+		return $this->utilityFuncs->getConditionResult($condition, $this->gp);
 	}
 
 	/**

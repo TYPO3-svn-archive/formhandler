@@ -1123,4 +1123,74 @@ class UtilityFuncs {
 		}
 		return $resourceFiles;
 	}
+
+	public function getConditionResult($condition, $gp) {
+		$valueConditions = preg_split('/\s*(!=|\^=|\$=|~=|>=|<=|=|<|>)\s*/', $condition, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+		$conditionOperator = trim($valueConditions[1]);
+		$fieldName = trim($valueConditions[0]);
+		$conditionResult = FALSE;
+		switch($conditionOperator) {
+			case '!=':
+				$value = $this->parseOperand($valueConditions[2], $gp);
+				$conditionResult = $this->getGlobal($fieldName, $gp) != $value;
+				break;
+			case '^=':
+				$value = $this->parseOperand($valueConditions[2], $gp);
+				$conditionResult = strpos($this->getGlobal($fieldName, $gp), $value) === 0;
+				break;
+			case '$=':
+				$gpValue = $this->getGlobal($fieldName, $gp);
+				$gpValue = substr($gpValue, -strlen($valueConditions[2]));
+				$checkValue = $this->parseOperand($valueConditions[2], $gp);
+				$conditionResult = (strcmp($checkValue, $gpValue) === 0);
+				break;
+			case '~=':
+				$value = $this->parseOperand($valueConditions[2], $gp);
+				$gpValue = $this->getGlobal($fieldName, $gp);
+				if(is_array($gpValue)) {
+					$conditionResult = in_array($value, $gpValue);
+				} else {
+					$conditionResult = strpos($this->getGlobal($fieldName, $gp), $value) !== FALSE;
+				}
+				break;
+			case '=':
+				$value = $this->parseOperand($valueConditions[2], $gp);
+				$conditionResult = $this->getGlobal($fieldName, $gp) == $value;
+				break;
+			case '>':
+				$value = $this->getGlobal($fieldName, $gp);
+				if(is_numeric($value)) {
+					$conditionResult = floatval($value) > floatval($this->parseOperand($valueConditions[2], $gp));
+				}
+				break;
+			case '<':
+				$value = $this->getGlobal($fieldName, $gp);
+				if(is_numeric($value)) {
+					$conditionResult = floatval($value) < floatval($this->parseOperand($valueConditions[2], $gp));
+				}
+				break;
+			case '>=':
+				$value = $this->getGlobal($fieldName, $gp);
+				if(is_numeric($value)) {
+					$conditionResult = floatval($value) >= floatval($this->parseOperand($valueConditions[2], $gp));
+				}
+				break;
+			case '<=':
+				$value = $this->getGlobal($fieldName, $gp);
+				if(is_numeric($value)) {
+					$conditionResult = floatval($value) <= floatval($this->parseOperand($valueConditions[2], $gp));
+				}
+				break;
+			default:
+				$value = $this->getGlobal($fieldName, $gp);
+				if(is_array($value)) {
+					$conditionResult = (count($value) > 0);
+				} else {
+					$conditionResult = strlen(trim($value)) > 0;
+				}
+		}
+
+		return $conditionResult;
+	}
 }
