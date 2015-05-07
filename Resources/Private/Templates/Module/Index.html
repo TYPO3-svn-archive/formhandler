@@ -110,8 +110,8 @@
 																<a href="#" class="btn btn-default delete" title="{f:translate(key: 'label.delete-all-selected-logs')}">
 																	<span 
 																		class="fa fa-trash delete-info" 
-																		data-title="Delete log rows"
-																		data-message="Are you sure you want to delete these logs?"> 
+																		data-title="{f:translate(key: 'label.delete-all-selected-logs')}"
+																		data-message="{f:translate(key: 'message.delete-log-row')}"> 
 																	</span>
 																</a>
 															</f:then>
@@ -140,8 +140,8 @@
 	
 																	<span 
 																		class="fa fa-trash delete-info" 
-																		data-title="Delete log row"
-																		data-message="Are you sure you want to delete this log row?"
+																		data-title="{f:translate(key: 'label.delete-log-row')}"
+																		data-message="{f:translate(key: 'message.delete-log-row')}"
 																		data-uid="{logDataRow.uid}"> 
 																	</span>
 																</f:link.action>

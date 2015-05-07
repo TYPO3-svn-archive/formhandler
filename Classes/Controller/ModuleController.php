@@ -14,9 +14,6 @@ namespace Typoheads\Formhandler\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
 class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
@@ -239,11 +236,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	public function deleteLogRowsAction($logDataUids = NULL) {
 		if($logDataUids === 'all') {
-			$text = 'Deleted all logs!';
+			$text = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('message.deleted-all-logs', 'formhandler');
 			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_formhandler_log');
 		} else {
 			$logDataUids = explode(',', $logDataUids);
-			$text = 'Deleted ' . count($logDataUids) . ' log row(s)!';
+			$text = sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('message.deleted-log-rows', 'formhandler'), count($logDataUids));
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_formhandler_log', 'uid IN (' . implode(',', $logDataUids). ')');
 		}
 
