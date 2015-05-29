@@ -12,21 +12,7 @@
 					<f:form method="post" action="index" name="demand" object="{demand}" class="filterForm form-horizontal">
 						<div class="form-group">
 							<label for="tx_formhandler_logdata_pid"><f:translate key="label.pid" /></label>
-							<f:if condition="{settings.enableShowAllButton} == 1">
-								<f:then>
-									<div class="input-group input-group-sm">
-										<f:form.textfield id="tx_formhandler_logdata_pid" property="pid" class="form-control input-sm"/>
-										<span class="input-group-btn">
-											<label class="btn btn-default" for="tx_formhandler_logdata_pid">
-												<span class="fa fa-check-square select-all-pages" title="{f:translate(key: 'label.select-all')}"></span>
-											</label>
-										</span>
-									</div>
-								</f:then>
-								<f:else>
-									<f:form.textfield id="tx_formhandler_logdata_pid" property="pid" readonly="readonly" title="{f:translate(key: 'label.select-page-from-tree')}" class="form-control input-sm"/>
-								</f:else>
-							</f:if>
+							<f:form.textfield id="tx_formhandler_logdata_pid" property="pid" readonly="readonly" title="{f:translate(key: 'label.select-page-from-tree')}" class="form-control input-sm"/>
 						</div>
 						<div class="form-group">
 							<label for="tx_formhandler_logdata_ip"><f:translate key="label.ip" /></label>

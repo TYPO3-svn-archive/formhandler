@@ -68,7 +68,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$this->gp = $this->request->getArguments();
 		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
 		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
-		$this->pageRenderer = $this->objectManager->get(\TYPO3\CMS\Core\Page\PageRenderer::class);
+		$this->pageRenderer = $this->objectManager->get('TYPO3\CMS\Core\Page\PageRenderer');
 
 		if (!isset($this->settings['dateFormat'])) {
 			$this->settings['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'm-d-Y' : 'd-m-Y';
@@ -85,19 +85,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	public function indexAction(\Typoheads\Formhandler\Domain\Model\Demand $demand = NULL) {
 		if($demand === NULL) {
-			$demand = $this->objectManager->get(\Typoheads\Formhandler\Domain\Model\Demand::class);
+			$demand = $this->objectManager->get('Typoheads\Formhandler\Domain\Model\Demand');
 			if(!isset($this->gp['demand']['pid'])) {
 				$demand->setPid($this->id);
 			}
 		}
-		$isAllowedToShowAll = (intval($this->settings['enableShowAllButton']) === 1);
-		if($GLOBALS['BE_USER']->user['admin']) {
-			$isAllowedToShowAll = TRUE;
-		}
-		if(!$isAllowedToShowAll && isset($this->gp['demand']['pid']) && (strlen($this->gp['demand']['pid']) === 0 || intval($this->gp['demand']['pid']) === 0)) {
-			return '';
-		}
-		$this->settings['enableShowAllButton'] = $isAllowedToShowAll;
 		$logDataRows = $this->logDataRepository->findDemanded($demand);
 		$this->view->assign('demand', $demand);
 		$this->view->assign('logDataRows', $logDataRows);
@@ -110,7 +102,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	}
 
 	public function viewAction(\Typoheads\Formhandler\Domain\Model\LogData $logDataRow = NULL) {
-
 		if($logDataRow !== NULL) {
 			$logDataRow->setParams(unserialize($logDataRow->getParams()));
 			$this->view->assign('data', $logDataRow);

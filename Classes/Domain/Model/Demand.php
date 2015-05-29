@@ -35,7 +35,7 @@ class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var string
 	 */
 	protected $params = '';
-	
+
 	/**
 	 * @var bool
 	 */
@@ -126,4 +126,3 @@ class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 }
-	
