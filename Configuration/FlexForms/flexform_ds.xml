@@ -7,13 +7,13 @@
 	<sDEF>
 	<ROOT>
 		<TCEforms>
-			<sheetTitle>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.sheet_general</sheetTitle>
+			<sheetTitle>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.sheet_general</sheetTitle>
 		</TCEforms>
 		<type>array</type>
 		<el>
 			<template_file>
 				<TCEforms>
-					<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.template_file</label>
+					<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.template_file</label>
 					<config>
 						<type>group</type>
 						<internal_type>file</internal_type>
@@ -28,7 +28,7 @@
 			</template_file>
 			<lang_file>
 				<TCEforms>
-					<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.lang_file</label>
+					<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.lang_file</label>
 					<config>
 						<type>group</type>
 						<internal_type>file</internal_type>
@@ -43,7 +43,7 @@
 			</lang_file>
 			<predefined>
 				<TCEforms>
-					<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.template_predefined</label>
+					<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.template_predefined</label>
 					<config>
 					    <type>select</type>
 						<itemsProcFunc>tx_dynaflex_formhandler->addFields_predefined</itemsProcFunc>
@@ -69,13 +69,13 @@
 	<sEMAILADMIN>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.sheet_emailAdminSettings</sheetTitle>
+				<sheetTitle>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.sheet_emailAdminSettings</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
 				<to_email>
 					<TCEforms>
-					<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.emailRecipient</label>
+					<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.emailRecipient</label>
 					<config>
 						<type>input</type>
 						<eval>text</eval>
@@ -88,7 +88,7 @@
 
 				<subject>
 					<TCEforms>
-					<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.emailSubject</label>
+					<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.emailSubject</label>
 					<config>
 						<type>input</type>
 						<eval>text</eval>
@@ -99,7 +99,7 @@
 
 				<sender_email>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.emailFrom</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.emailFrom</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -110,7 +110,7 @@
 				
 				<sender_name>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.emailFromName</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.emailFromName</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -121,7 +121,7 @@
 
 				<replyto_email>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.replyTo</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.replyTo</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -132,7 +132,7 @@
 
 				<replyto_name>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.replyToName</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.replyToName</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -143,7 +143,7 @@
 
 				<cc_email>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.cc</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.cc</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -154,7 +154,7 @@
 				
 				<cc_name>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.ccName</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.ccName</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -165,7 +165,7 @@
 				
 				<bcc_email>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.bcc</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.bcc</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -176,7 +176,7 @@
 				
 				<bcc_name>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.bccName</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.bccName</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -190,13 +190,13 @@
 	<sEMAILUSER>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.sheet_emailUserSettings</sheetTitle>
+				<sheetTitle>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.sheet_emailUserSettings</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
 				<to_email>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.emailConfirm</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.emailConfirm</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -206,7 +206,7 @@
 				</to_email>
 				<subject>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.emailConfirmSubject</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.emailConfirmSubject</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -216,7 +216,7 @@
 				</subject>
 				<sender_email>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.emailFrom</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.emailFrom</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -226,7 +226,7 @@
 				</sender_email>
 				<sender_name>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.emailFromName</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.emailFromName</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -237,7 +237,7 @@
 
 				<replyto_email>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.replyTo</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.replyTo</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -248,7 +248,7 @@
 				
 				<replyto_name>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.replyToName</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.replyToName</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -259,7 +259,7 @@
 				
 				<cc_email>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.cc</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.cc</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -270,7 +270,7 @@
 				
 				<cc_name>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.ccName</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.ccName</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -281,7 +281,7 @@
 				
 				<bcc_email>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.bcc</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.bcc</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -292,7 +292,7 @@
 				
 				<bcc_name>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.bccName</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.bccName</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
@@ -306,13 +306,13 @@
 	<sMISC>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:formhandler/Resources/Language/locallang_tca.php:formhandler.pi_flexform.sheet_miscSettings</sheetTitle>
+				<sheetTitle>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.php:formhandler.pi_flexform.sheet_miscSettings</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
 				<redirect_page>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.redirectPage</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.redirectPage</label>
 						<config>
 							<type>group</type>
 							<internal_type>db</internal_type>
@@ -332,7 +332,7 @@
 
 				<required_fields>
 					<TCEforms>
-						<label>LLL:EXT:formhandler/Resources/Language/locallang_tca.xml:formhandler.pi_flexform.mandatoryFields</label>
+						<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.mandatoryFields</label>
 						<config>
 							<type>input</type>
 							<eval>text</eval>
