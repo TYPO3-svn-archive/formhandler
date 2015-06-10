@@ -24,21 +24,21 @@ class TYPO3Mailer extends AbstractMailer implements MailerInterface {
 	/**
 	 * The TYPO3 mail message object
 	 *
-	 * @var TYPO3\CMS\Core\Mail\MailMessage
+	 * @var \TYPO3\CMS\Core\Mail\MailMessage
 	 */
 	protected $emailObj;
 
 	/**
 	 * The html part of the message
 	 *
-	 * @var Swift_Mime_MimePart
+	 * @var \Swift_Mime_MimePart
 	 */
 	protected $htmlMimePart;
 
 	/**
 	 * The plain text part of the message
 	 *
-	 * @var Swift_Mime_MimePart
+	 * @var \Swift_Mime_MimePart
 	 */
 	protected $plainMimePart;
 
@@ -83,7 +83,7 @@ class TYPO3Mailer extends AbstractMailer implements MailerInterface {
 	public function setHTML($html) {
 
 		if (!isset($this->htmlMimePart)) {
-			$this->htmlMimePart = Swift_MimePart::newInstance($html, 'text/html');
+			$this->htmlMimePart = \Swift_MimePart::newInstance($html, 'text/html');
 		} else {
 			$this->emailObj->detach($this->htmlMimePart);
 			$this->htmlMimePart->setBody($html);
@@ -100,7 +100,7 @@ class TYPO3Mailer extends AbstractMailer implements MailerInterface {
 	public function setPlain($plain) {
 
 		if (!isset($this->plainMimePart)) {
-			$this->plainMimePart = Swift_MimePart::newInstance($plain, 'text/plain');
+			$this->plainMimePart = \Swift_MimePart::newInstance($plain, 'text/plain');
 		} else {
 			$this->emailObj->detach($this->plainMimePart);
 			$this->plainMimePart->setBody($plain);
@@ -174,7 +174,7 @@ class TYPO3Mailer extends AbstractMailer implements MailerInterface {
 	 * @see Classes/Mailer/Tx_FormhandlerMailerInterface#addAttachment()
 	*/
 	public function addAttachment($value) {
-		$this->emailObj->attach(Swift_Attachment::fromPath($value));
+		$this->emailObj->attach(\Swift_Attachment::fromPath($value));
 	}
 
 	/* (non-PHPdoc)
@@ -256,7 +256,7 @@ class TYPO3Mailer extends AbstractMailer implements MailerInterface {
 	}
 
 	public function embed($image) {
-		return $this->emailObj->embed(Swift_Image::fromPath($image));
+		return $this->emailObj->embed(\Swift_Image::fromPath($image));
 	}
 
 }
