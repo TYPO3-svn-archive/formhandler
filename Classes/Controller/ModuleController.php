@@ -77,14 +77,16 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$this->settings['timeFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 		}
 
-		$propertyMappingConfiguration = $this->arguments['demand']->getPropertyMappingConfiguration();
-		// allow all properties:
-		$propertyMappingConfiguration->allowAllProperties();
-		$propertyMappingConfiguration->setTypeConverterOption(
-			'TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter',
-			\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
-			TRUE
-		);
+		if($this->arguments->hasArgument('demand')) {
+			$propertyMappingConfiguration = $this->arguments['demand']->getPropertyMappingConfiguration();
+			// allow all properties:
+			$propertyMappingConfiguration->allowAllProperties();
+			$propertyMappingConfiguration->setTypeConverterOption(
+				'TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter',
+				\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+				TRUE
+			);
+		}
 		// or just allow certain properties
 		//$propertyMappingConfiguration->allowProperties('firstname');
 	}

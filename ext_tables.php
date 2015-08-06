@@ -25,9 +25,9 @@ if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi1', $file);
 
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPOHEADS.' . $_EXTKEY,
+		'Typoheads.' . $_EXTKEY,
 		'web',
-		'tx_Formhandler',
+		'log',
 		'bottom',
 		array(
 			'Module' => 'index, view, selectFields, export, deleteLogRows'

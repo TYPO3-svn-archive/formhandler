@@ -23,7 +23,7 @@ namespace Typoheads\Formhandler\View;
  * @subpackage	View
  */
 class Mail extends Form {
-	
+
 	protected $currentMailSettings;
 
 	/**

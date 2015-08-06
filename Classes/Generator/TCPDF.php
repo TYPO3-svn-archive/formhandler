@@ -87,6 +87,7 @@ class TCPDF {
 				$nameWidth = 70;
 				$valueWidth = 70;
 				$feedWidth = 30;
+
 				if (count($exportFields) == 0 || in_array('pid', $exportFields)) {
 					$this->pdf->Cell($standardWidth, '15', 'Page-ID:', 0, 0);
 					$this->pdf->Cell($standardWidth, '15', $data['pid'], 0, 1);
@@ -110,14 +111,6 @@ class TCPDF {
 				$this->pdf->SetFillColor(200, 200, 200);
 				$fill = FALSE;
 
-				foreach ($exportFields as $key => $field) {
-					if (strcmp($field, 'pid') == FALSE ||
-						strcmp($field, 'submission_date') == FALSE ||
-						strcmp($field, 'ip') == FALSE) {
-
-						unset($exportFields[$key]);
-					}
-				}
 				if (count($exportFields) == 0) {
 					$exportFields = array_keys($data['params']);
 				}

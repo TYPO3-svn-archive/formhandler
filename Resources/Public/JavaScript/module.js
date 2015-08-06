@@ -2,7 +2,7 @@ jQuery(function() {
 
 	function getSelectedUids(el) {
 		var selected = new Array();
-		if(el.attr("data-uid") && el.attr("data-uid").length > 0) {
+		if(typeof el !== 'undefined' && el.attr("data-uid") && el.attr("data-uid").length > 0) {
 			selected.push(el.attr("data-uid"));
 		} else {
 			jQuery('#formhandler-module .mark-row:checked').each(function() {
