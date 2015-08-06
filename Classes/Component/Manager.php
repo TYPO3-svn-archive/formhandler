@@ -127,35 +127,10 @@ class Manager {
 		} elseif ('Typoheads\Formhandler\Utils\UtilityFuncs' === $componentName) {
 			return \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
 		}
+		
+		$arguments =  array_slice(func_get_args(), 1, NULL, TRUE); 
+		$componentObject = $this->createComponentObject($componentName, $arguments);
 
-		if (!is_array($this->classFiles)) {
-			$this->classFiles = array();
-		}
-		$classNameParts = explode('_', $componentName, 3);
-		if (!is_array($this->classFiles[$classNameParts[1]])) {
-			$this->classFiles[$classNameParts[1]] = array();
-		}
-		if (!array_key_exists($componentName, $this->classFiles[$classNameParts[1]])) {
-			$found = FALSE;
-
-			//Look for the requested component in other cached packages
-			foreach($this->classFiles as $packageKey => $classFiles) {
-				if (array_key_exists($componentName, $classFiles)) {
-					$found = TRUE;
-					$arguments =  array_slice(func_get_args(), 1, NULL, TRUE); 
-					$componentObject = $this->createComponentObject($componentName, $arguments);
-				}
-			}
-
-			//Component couldn't be found anywhere in the cache
-			if(!$found) {
-				$this->loadClass($componentName);
-				$componentObject = $this->createComponentObject($componentName, array());
-			}
-		} else {
-			$arguments = array_slice(func_get_args(), 1, NULL, TRUE); // array keys are preserved (TRUE) -> argument array starts with key=1 
-			$componentObject = $this->createComponentObject($componentName, $arguments);
-		}
 		return $componentObject;
 	}
 
@@ -258,64 +233,6 @@ class Manager {
 	}
 
 	/**
-	 * Builds and returns an array of class names => file names of all
-	 * tx_*.php files in the extension's Classes directory and its sub-
-	 * directories.
-	 *
-	 * @param string $packageKey
-	 * @param string $subDirectory: for recursion 
-	 * @param int $recursionLevel: maximum depth of recursion
-	 * @return array
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author adapted for TYPO3v4 by Jochen Rau <jochen.rau@typoplanet.de>
-	 * @throws Exception if recursion into directories was too deep or another error occurred
-	 */
-	protected function buildArrayOfClassFiles($packageKey, $subDirectory = '', $recursionLevel = 0) {
-		$classFiles = array();
-		if (strpos($packageKey, '/') === FALSE) {
-			$currentPath = $this->getPackagePath($packageKey) . self::DIRECTORY_CLASSES . $subDirectory;
-		} else {
-			$currentPath = $this->getPackagePath($packageKey) . $subDirectory;
-		}
-
-		// special handling for extension keys with underscores
-		if (!is_dir($currentPath)) {
-			$packageKey{0} = strtolower($packageKey{0});
-			$packageKey = preg_replace('/([A-Z])/', '_$1', $packageKey);
-			$packageKey = strtolower($packageKey);
-			$currentPath = $this->getPackagePath($packageKey) . $subDirectory;
-		}
-		if (!is_dir($currentPath)) {
-			return array();
-		}
-		if ($recursionLevel > 100) {
-			throw new Exception('Recursion too deep.');
-		}
-
-		try {
-			$classesDirectoryIterator = new DirectoryIterator($currentPath);
-			while ($classesDirectoryIterator->valid()) {
-				$filename = $classesDirectoryIterator->getFilename();
-				if ($filename{0} !== '.') {
-					if (is_dir($currentPath . $filename)) {
-						$classFiles = array_merge($classFiles, $this->buildArrayOfClassFiles($packageKey, $subDirectory . $filename . '/', ($recursionLevel+1)));
-					} else {
-						if (substr($filename, 0, 10) === self::PACKAGE_PREFIX . '\\' && substr($filename, -4, 4) === '.php') {
-							$absPath = $currentPath . $filename;
-							$relPath = str_replace(PATH_site, '', $absPath);
-							$classFiles[substr($filename, 0, -4)] = $relPath;
-						}
-					}
-				}
-				$classesDirectoryIterator->next();
-			}
-		} catch(Exception $exception) {
-			throw new Exception($exception->getMessage());
-		}
-		return $classFiles;
-	}
-
-	/**
 	 * Loads php files containing classes or interfaces found in the classes directory of
 	 * a package and specifically registered classes.
 	 *
@@ -324,12 +241,18 @@ class Manager {
 	 * @author  Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	private function loadClass($className) {
-		$classNameParts = explode('_', $className,3);
+		$classNameParts = explode('\\', $className, 4);
+		if(empty($classNameParts[0])) {
+			array_shift($classNameParts);
+		}
+
 		if ($classNameParts[0] === self::PACKAGE_PREFIX) {
 
 				// Caches the $classFiles
 			if (!is_array($this->classFiles[$classNameParts[1]]) || empty($this->classFiles[$classNameParts[1]])) {
 				$this->classFiles[$classNameParts[1]] = $this->buildArrayOfClassFiles($classNameParts[1]);
+				print_r($this->classFiles[$classNameParts[1]]);
+				exit;
 				if (is_array($this->additionalIncludePaths)) {
 					foreach ($this->additionalIncludePaths as $idx => $dir) {
 						$temp = $this->buildArrayOfClassFiles($dir);
