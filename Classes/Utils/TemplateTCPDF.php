@@ -13,7 +13,7 @@ namespace Typoheads\Formhandler\Utils;
 * Public License for more details.                                       *
 *                                                                        */
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/tcpdf/tcpdf.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'vendor/tecnick.com/tcpdf/tcpdf.php');
 
 /**
  * A PDF Template class for Formhandler generated PDF files for usage with Generator_TCPDF.
@@ -62,15 +62,15 @@ class TemplateTCPDF extends \TCPDF {
 			$this->SetY(5);
 			$this->SetFont('Helvetica', 'I', 8);
 			$text = str_ireplace(
-					array(
-						'###PDF_PAGE_NUMBER###',
-						'###PDF_TOTAL_PAGES###'
-					),
-					array(
-						$this->PageNo(),
-						$this->numpages
-					),
-					$headerText
+				array(
+					'###PDF_PAGE_NUMBER###',
+					'###PDF_TOTAL_PAGES###'
+				),
+				array(
+					$this->PageNo(),
+					$this->numpages
+				),
+				$headerText
 			);
 			$this->Cell(0, 10, $text, 'B', 0, 'C');
 		}
