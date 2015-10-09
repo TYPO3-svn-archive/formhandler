@@ -60,7 +60,7 @@ class Manager {
 			$this->classFiles = array();
 		}
 		$this->loadTypoScriptConfig();
-		spl_autoload_register(array($this, 'loadClass'));
+		//spl_autoload_register(array($this, 'loadClass'));
 	}
 
 	private function __clone() {}
@@ -251,8 +251,6 @@ class Manager {
 				// Caches the $classFiles
 			if (!is_array($this->classFiles[$classNameParts[1]]) || empty($this->classFiles[$classNameParts[1]])) {
 				$this->classFiles[$classNameParts[1]] = $this->buildArrayOfClassFiles($classNameParts[1]);
-				print_r($this->classFiles[$classNameParts[1]]);
-				exit;
 				if (is_array($this->additionalIncludePaths)) {
 					foreach ($this->additionalIncludePaths as $idx => $dir) {
 						$temp = $this->buildArrayOfClassFiles($dir);
