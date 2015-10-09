@@ -21,7 +21,7 @@ namespace Typoheads\Formhandler\Controller;
  * @author	Reinhard Führicht <rf@typoheads.at>
  * @abstract
  */
-abstract class AbstractController extends \Typoheads\Formhandler\Component\AbstractClass implements ControllerInterface {
+abstract class AbstractController extends \Typoheads\Formhandler\Component\AbstractClass {
 
 	/**
 	 * The content returned by the controller

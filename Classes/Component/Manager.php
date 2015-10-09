@@ -60,7 +60,6 @@ class Manager {
 			$this->classFiles = array();
 		}
 		$this->loadTypoScriptConfig();
-		//spl_autoload_register(array($this, 'loadClass'));
 	}
 
 	private function __clone() {}
@@ -232,64 +231,4 @@ class Manager {
 		return $constructorArguments;
 	}
 
-	/**
-	 * Loads php files containing classes or interfaces found in the classes directory of
-	 * a package and specifically registered classes.
-	 *
-	 * @param   string $className: Name of the class/interface to load
-	 * @return  void
-	 * @author  Jochen Rau <jochen.rau@typoplanet.de>
-	 */
-	private function loadClass($className) {
-		$classNameParts = explode('\\', $className, 4);
-		if(empty($classNameParts[0])) {
-			array_shift($classNameParts);
-		}
-
-		if ($classNameParts[0] === self::PACKAGE_PREFIX) {
-
-				// Caches the $classFiles
-			if (!is_array($this->classFiles[$classNameParts[1]]) || empty($this->classFiles[$classNameParts[1]])) {
-				$this->classFiles[$classNameParts[1]] = $this->buildArrayOfClassFiles($classNameParts[1]);
-				if (is_array($this->additionalIncludePaths)) {
-					foreach ($this->additionalIncludePaths as $idx => $dir) {
-						$temp = $this->buildArrayOfClassFiles($dir);
-						$this->classFiles[$classNameParts[1]] = array_merge($temp, $this->classFiles[$classNameParts[1]]);
-					}
-				}
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
-
-				//If the package exists in the cache, but the class does not, look in the additionalIncludePaths again.
-			} elseif(!array_key_exists($className, $this->classFiles[$classNameParts[1]])) {
-				if (is_array($this->additionalIncludePaths)) {
-					foreach ($this->additionalIncludePaths as $idx => $dir) {
-						$temp = array();
-						$temp = $this->buildArrayOfClassFiles($dir);
-						$this->classFiles[$classNameParts[1]] = array_merge($temp, $this->classFiles[$classNameParts[1]]);
-					}
-				}
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($this->cacheFilePath, serialize($this->classFiles));
-			}
-			$classFilePathAndName = NULL;
-			if(isset($this->classFiles[$classNameParts[1]][$className])) {
-				$classFilePathAndName = PATH_site . $this->classFiles[$classNameParts[1]][$className];
-			}
-			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) {
-				require_once ($classFilePathAndName);
-			}
-		}
-	}
-
-	protected function getPackagePath($packageKey) {
-		if (strpos($packageKey, '/') === FALSE && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded(strtolower($packageKey))) {
-			$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(strtolower($packageKey));
-		} else {
-			$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($packageKey);
-			if (substr($path,strlen($path) -1) !== '/') {
-				$path .= '/';
-			}
-		}
-
-		return $path;
-	}
 }
