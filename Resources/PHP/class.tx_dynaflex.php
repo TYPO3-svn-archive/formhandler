@@ -32,12 +32,15 @@ class tx_dynaflex_formhandler {
 	 */
 	function addFields_predefinedJS($config) {
 		$newRecord = 'true';
-		if ($config['row']['pi_flexform'] != '') {
+		if(!is_array($config['row']['pi_flexform']) && $config['row']['pi_flexform'] != '') {
 			$flexData = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($config['row']['pi_flexform']);
-			if (isset($flexData['data']['sDEF']['lDEF']['predefined'])) {
-				$newRecord = 'false';
-			}
+		} elseif(is_array($config['row']['pi_flexform'])) {
+			$flexData = $config['row']['pi_flexform'];
 		}
+		if (isset($flexData['data']['sDEF']['lDEF']['predefined'])) {
+			$newRecord = 'false';
+		}
+
 		$uid = NULL;
 		if(is_array($GLOBALS['SOBE']->editconf['tt_content'])) {
 			$uid = key($GLOBALS['SOBE']->editconf['tt_content']);
