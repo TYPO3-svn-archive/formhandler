@@ -1,6 +1,7 @@
 <?php
+namespace Typoheads\Formhandler\Hooks;
 
-class tx_formhandler_stdwrapHook implements \TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface {
+class StdWrapHook implements \TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface {
 
 	private $originalGET;
 	private $originalPOST;

@@ -29,7 +29,6 @@ class Manager {
 	const DIRECTORY_TEMPLATE = 'Resources/Template/';
 
 	private static $instance = NULL;
-	protected $classFiles;
 	protected $packagePath;
 
 	/**
@@ -41,8 +40,6 @@ class Manager {
 	protected $globals;
 	protected $additionalIncludePaths = NULL;
 
-	protected $cacheFilePath = '';
-
 	public static function getInstance() {
 		if (self::$instance === NULL) {
 			self::$instance = new Manager();
@@ -53,12 +50,7 @@ class Manager {
 	protected function __construct() {
 		$this->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
 		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
-		$this->cacheFilePath = PATH_site . 'typo3temp/formhandlerClassesCache.txt';
-		if(file_exists($this->cacheFilePath)) {
-			$this->classFiles = unserialize(file_get_contents($this->cacheFilePath));
-		} else {
-			$this->classFiles = array();
-		}
+
 		$this->loadTypoScriptConfig();
 	}
 
