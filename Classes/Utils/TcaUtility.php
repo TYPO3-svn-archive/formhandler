@@ -1,4 +1,5 @@
 <?php
+namespace Typoheads\Formhandler\Utils;
 /***************************************************************
  *  Copyright notice
 *
@@ -29,9 +30,9 @@
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-class tx_formhandler_tcafuncs {
+class TcaUtility {
 
-	public function user_getParams($PA, $fobj) {
+	public function getParams($PA, $fobj) {
 		$params = unserialize($PA['itemFormElValue']);
 		$output =
 			'<input

@@ -1,9 +1,14 @@
 <?php
-
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/class.tx_formhandler_tcafuncs.php');
-
-$TCA['tx_formhandler_log'] = array (
-	'ctrl' => $TCA['tx_formhandler_log']['ctrl'],
+return array (
+	'ctrl' => array (
+		'title' => 'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tx_formhandler_log',
+		'label' => 'uid',
+		'default_sortby' => 'ORDER BY crdate DESC',
+		'crdate' => 'crdate',
+		'tstamp' => 'tstamp',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('formhandler') . 'ext_icon.gif',
+		'adminOnly' => 1
+	),
 	'interface' => array (
 		'showRecordFieldList' => 'crdate,ip,params,is_spam,key_hash'
 	),
@@ -31,7 +36,7 @@ $TCA['tx_formhandler_log'] = array (
 			'label' => 'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tx_formhandler_log.params',
 			'config' => array (
 				'type' => 'user',
-				'userFunc' => 'tx_formhandler_tcafuncs->user_getParams'
+				'userFunc' => 'Typoheads\Formhandler\Utils\TcaUtility->getParams'
 			)
 		),
 		'is_spam' => array (

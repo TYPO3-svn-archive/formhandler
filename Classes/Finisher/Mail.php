@@ -89,11 +89,11 @@ class Mail extends AbstractFinisher {
 		//init mailer object
 		$globalSettings = $this->globals->getSettings();
 		if(is_array($this->settings['mailer.'])) {
-			$emailClass = $this->utilityFuncs->getPreparedClassName($this->settings['mailer.'], 'Mailer\HtmlMail');
+			$emailClass = $this->utilityFuncs->getPreparedClassName($this->settings['mailer.'], 'Mailer\TYPO3Mailer');
 		} elseif(is_array($globalSettings['mailer.'])) {
-			$emailClass = $this->utilityFuncs->getPreparedClassName($globalSettings['mailer.'], 'Mailer\HtmlMail');
+			$emailClass = $this->utilityFuncs->getPreparedClassName($globalSettings['mailer.'], 'Mailer\TYPO3Mailer');
 		} else {
-			$emailClass = '\\Typoheads\\Formhandler\\Mailer\\HtmlMail';
+			$emailClass = '\\Typoheads\\Formhandler\\Mailer\\TYPO3Mailer';
 		}
 
 		$this->emailObj = $this->componentManager->getComponent($emailClass);

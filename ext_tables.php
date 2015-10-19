@@ -62,18 +62,6 @@ if (TYPO3_MODE === 'BE') {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/DefaultConfiguration', 'Default Configuration');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/ExampleConfiguration', 'Example Configuration');
 
-$TCA['tx_formhandler_log'] = array (
-	'ctrl' => array (
-		'title' => 'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tx_formhandler_log',
-		'label' => 'uid',
-		'default_sortby' => 'ORDER BY crdate DESC',
-		'crdate' => 'crdate',
-		'tstamp' => 'tstamp',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'ext_icon.gif',
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-		'adminOnly' => 1
-	)
-);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_formhandler_log');
 
 $TCA['pages']['columns']['module']['config']['items'][] = array(
