@@ -68,10 +68,11 @@ class Dispatcher extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$predef = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'predefined', 'sDEF');
 
 			$this->globals->setCObj($this->cObj);
+			$this->globals->getCObj()->setCurrentVal($predef);
 			if($setup['usePredef']) {
 				$predef = $this->utilityFuncs->getSingle($setup, 'usePredef');
 			}
-			$this->globals->getCObj()->setCurrentVal($predef);
+
 			$this->globals->setPredef($predef);
 			$this->globals->setOverrideSettings($setup);
 			$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
