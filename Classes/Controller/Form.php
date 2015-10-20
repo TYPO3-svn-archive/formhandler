@@ -266,7 +266,7 @@ class Form extends AbstractController {
 		}
 
 		//run init interceptors
-		$this->addFormhandlerClass($this->settings['initInterceptors.'], '\Typoheads\Formhandler\Interceptor\Filtreatment');
+		$this->addFormhandlerClass($this->settings['initInterceptors.'], '\Typoheads\Formhandler\Interceptor\RemoveXSS');
 		$output = $this->runClasses($this->settings['initInterceptors.']);
 		if (strlen($output) > 0) {
 			return $output;
@@ -509,7 +509,7 @@ class Form extends AbstractController {
 			}
 
 			//run init interceptors
-			$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
+			$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor\\RemoveXSS');
 			$output = $this->runClasses($this->settings['initInterceptors.']);
 			if (strlen($output) > 0) {
 				return $output;
@@ -518,7 +518,7 @@ class Form extends AbstractController {
 		$this->storeSettingsInSession();
 
 		//run save interceptors
-		$this->addFormhandlerClass($this->settings['saveInterceptors.'], 'Interceptor_Filtreatment');
+		$this->addFormhandlerClass($this->settings['saveInterceptors.'], 'Interceptor\\RemoveXSS');
 		$output = $this->runClasses($this->settings['saveInterceptors.']);
 		if (strlen($output) > 0) {
 			return $output;
@@ -588,7 +588,7 @@ class Form extends AbstractController {
 			return $output;
 		}
 
-		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor_Filtreatment');
+		$this->addFormhandlerClass($this->settings['initInterceptors.'], 'Interceptor\\RemoveXSS');
 		$output = $this->runClasses($this->settings['initInterceptors.']);
 		if (strlen($output) > 0) {
 			return $output;

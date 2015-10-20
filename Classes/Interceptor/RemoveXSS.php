@@ -12,7 +12,6 @@ namespace Typoheads\Formhandler\Interceptor;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *
- * $Id$
  *                                                                        */
 
 /**
@@ -20,7 +19,7 @@ namespace Typoheads\Formhandler\Interceptor;
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-class Filtreatment extends AbstractInterceptor {
+class RemoveXSS extends AbstractInterceptor {
 
 	/**
 	 * The main method called by the controller
@@ -71,10 +70,6 @@ class Filtreatment extends AbstractInterceptor {
 			return array();
 		}
 
-		if (!class_exists('Filtreatment')) {
-			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/filtreatment/Filtreatment.php');
-		}
-		$filter = new \Filtreatment();
 		foreach ($values as $key => $value) {
 			if (!in_array($key, $this->doNotSanitizeFields) && is_array($value)) {
 				$sanitizedArray[$key] = $this->sanitizeValues($value);
@@ -114,7 +109,7 @@ class Filtreatment extends AbstractInterceptor {
 				if (!$isUTF8) {
 					$value = utf8_encode($value);
 				}
-				$value = $filter->ft_xss($value, 'UTF-8');
+				$value = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($value);
 
 				if (!$isUTF8) {
 					$value = utf8_decode($value);
