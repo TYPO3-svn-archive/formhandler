@@ -89,12 +89,16 @@ class UtilityFuncs {
 		if(strstr($className, '_') !== FALSE) {
 			$className = str_replace('_', '\\', $className);
 		}
-		if($className === 'Validator\\Default') {
-			$className = 'Validator\\DefaultValidator';
+		if(substr($className, 0, 1) !== '\\') {
+			$className = '\\' . $className;
 		}
-		if (substr_count($className, '\\') === 1 && substr($className, 0, 11) !== '\\Typoheads\\') {
-			$className = '\\Typoheads\\Formhandler\\' . $className;
+		if (substr_count($className, '\\') === 2 && substr($className, 0, 11) !== '\\Typoheads\\') {
+			$className = '\\Typoheads\\Formhandler' . $className;
 		}
+		if($className === '\\Typoheads\\Formhandler\\Validator\\Default') {
+			$className = '\\Typoheads\\Formhandler\\Validator\\DefaultValidator';
+		}
+
 		return $className;
 	}
 

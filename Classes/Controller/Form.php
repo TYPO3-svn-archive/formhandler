@@ -992,7 +992,7 @@ class Form extends AbstractController {
 			array('to_email', 'sEMAILADMIN', 'finishers', '\Typoheads\Formhandler\Finisher\Mail'),
 			array('to_email', 'sEMAILUSER', 'finishers', '\Typoheads\Formhandler\Finisher\Mail'),
 			array('redirect_page', 'sMISC', 'finishers', '\Typoheads\Formhandler\Finisher\Redirect'),
-			array('required_fields', 'sMISC', 'validators', '\Typoheads\Formhandler\Validator\Default'),
+			array('required_fields', 'sMISC', 'validators', '\Typoheads\Formhandler\Validator\DefaultValidator'),
 		);
 		foreach ($options as $idx => $option) {
 			$fieldName = $option[0];
