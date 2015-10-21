@@ -34,7 +34,7 @@ class Dispatcher extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * The global Formhandler values
 	 *
 	 * @access protected
-	 * @var \Typoheads\Formhandler\Utils\Globals
+	 * @var \Typoheads\Formhandler\Utility\Globals
 	 */
 	protected $globals;
 
@@ -47,8 +47,8 @@ class Dispatcher extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function main($content, $setup) {
 		$this->pi_USER_INT_obj = 1;
-		$this->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
-		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
+		$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
+		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
 		try {
 
 			//init flexform

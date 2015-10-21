@@ -1,5 +1,5 @@
 <?php
-namespace Typoheads\Formhandler\Utils;
+namespace Typoheads\Formhandler\Utility;
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
 *                                                                        *
@@ -24,7 +24,7 @@ class Globals {
 	 * Holds the instance of the class
 	 *
 	 * @access private
-	 * @var \Typoheads\Formhandler\Utils\Globals
+	 * @var \Typoheads\Formhandler\Utility\Globals
 	 */
 	static private $instance = NULL;
 
@@ -47,7 +47,7 @@ class Globals {
 
 	static public function getInstance() {
 		if (self::$instance === NULL) {
-			self::$instance = new \Typoheads\Formhandler\Utils\Globals();
+			self::$instance = new \Typoheads\Formhandler\Utility\Globals();
 		}
 		return self::$instance;
 	}

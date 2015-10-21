@@ -35,7 +35,7 @@ class Manager {
 	 * The global Formhandler values
 	 *
 	 * @access protected
-	 * @var \Typoheads\Formhandler\Utils\Globals
+	 * @var \Typoheads\Formhandler\Utility\Globals
 	 */
 	protected $globals;
 	protected $additionalIncludePaths = NULL;
@@ -48,8 +48,8 @@ class Manager {
 	}
 
 	protected function __construct() {
-		$this->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
-		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
+		$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
+		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
 
 		$this->loadTypoScriptConfig();
 	}
@@ -64,7 +64,7 @@ class Manager {
 			$conf = array();
 			$overrideSettings = $this->globals->getOverrideSettings();
 			if (!is_array($overrideSettings['settings.'])) {
-				$utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
+				$utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
 				$setup = $GLOBALS['TSFE']->tmpl->setup;
 				if (is_array($setup['plugin.']['Tx_Formhandler.']['settings.']['additionalIncludePaths.'])) {
 					$conf = $setup['plugin.']['Tx_Formhandler.']['settings.']['additionalIncludePaths.'];
@@ -113,10 +113,10 @@ class Manager {
 		//Avoid component manager creating multiple instances of itself:
 		if (get_class($this) === $componentName) {
 			return $this;
-		} elseif ('Typoheads\Formhandler\Utils\Globals' === $componentName) {
-			return \Typoheads\Formhandler\Utils\Globals::getInstance();
-		} elseif ('Typoheads\Formhandler\Utils\UtilityFuncs' === $componentName) {
-			return \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
+		} elseif ('Typoheads\Formhandler\Utility\Globals' === $componentName) {
+			return \Typoheads\Formhandler\Utility\Globals::getInstance();
+		} elseif ('Typoheads\Formhandler\Utility\GeneralUtility' === $componentName) {
+			return \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
 		}
 		
 		$arguments =  array_slice(func_get_args(), 1, NULL, TRUE); 

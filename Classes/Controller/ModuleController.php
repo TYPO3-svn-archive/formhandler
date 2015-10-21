@@ -36,7 +36,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * The Formhandler utility funcs
 	 *
 	 * @access protected
-	 * @var \\Typoheads\Formhandler\Utils\UtilityFuncs
+	 * @var \\Typoheads\Formhandler\Utility\GeneralUtility
 	 */
 	protected $utilityFuncs;
 
@@ -67,7 +67,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 		$this->gp = $this->request->getArguments();
 		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
-		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
+		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
 		$this->pageRenderer = $this->objectManager->get('TYPO3\CMS\Core\Page\PageRenderer');
 
 		if (!isset($this->settings['dateFormat'])) {

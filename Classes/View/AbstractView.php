@@ -74,7 +74,7 @@ abstract class AbstractView extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * The global Formhandler values
 	 *
 	 * @access protected
-	 * @var \Typoheads\Formhandler\Utils\Globals
+	 * @var \Typoheads\Formhandler\Utility\Globals
 	 */
 	protected $globals;
 
@@ -82,7 +82,7 @@ abstract class AbstractView extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * The Formhandler utility methods
 	 *
 	 * @access protected
-	 * @var \Typoheads\Formhandler\Utils\UtilityFuncs
+	 * @var \Typoheads\Formhandler\Utility\GeneralUtility
 	 */
 	protected $utilityFuncs;
 
@@ -137,8 +137,8 @@ abstract class AbstractView extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function __construct(\Typoheads\Formhandler\Component\Manager $componentManager, 
 								\Typoheads\Formhandler\Controller\Configuration $configuration, 
-								\Typoheads\Formhandler\Utils\Globals $globals,
-								\Typoheads\Formhandler\Utils\UtilityFuncs $utilityFuncs) {
+								\Typoheads\Formhandler\Utility\Globals $globals,
+								\Typoheads\Formhandler\Utility\GeneralUtility $utilityFuncs) {
 
 		parent::__construct();
 		$this->componentManager = $componentManager;

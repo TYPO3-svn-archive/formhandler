@@ -27,7 +27,7 @@ class TcPdf extends AbstractGenerator {
 	 */
 	public function process() {
 
-		$this->pdf = $this->componentManager->getComponent('\Typoheads\Formhandler\Utils\TemplateTCPDF');
+		$this->pdf = $this->componentManager->getComponent('\Typoheads\Formhandler\Utility\TemplateTCPDF');
 
 		$this->pdf->setHeaderText($this->utilityFuncs->getSingle($this->settings, 'headerText'));
 		$this->pdf->setFooterText($this->utilityFuncs->getSingle($this->settings, 'footerText'));

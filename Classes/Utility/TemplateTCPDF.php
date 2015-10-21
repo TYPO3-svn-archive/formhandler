@@ -1,5 +1,5 @@
 <?php
-namespace Typoheads\Formhandler\Utils;
+namespace Typoheads\Formhandler\Utility;
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
 *                                                                        *

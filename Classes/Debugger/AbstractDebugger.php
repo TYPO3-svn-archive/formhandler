@@ -47,7 +47,7 @@ abstract class AbstractDebugger extends \Typoheads\Formhandler\Component\Abstrac
 		$section = '';
 		if (isset($trace[2])) {
 			$section = $trace[2]['class'];
-			if($section === '\Typoheads\Formhandler\Utils\UtilityFuncs') {
+			if($section === '\Typoheads\Formhandler\Utility\GeneralUtility') {
 				$section = $trace[3]['class'];
 			}
 		}

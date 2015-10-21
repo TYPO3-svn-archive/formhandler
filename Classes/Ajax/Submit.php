@@ -52,8 +52,8 @@ class Submit {
 		}
 
 		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
-		$this->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
-		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
+		$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
+		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
 		$this->utilityFuncs->initializeTSFE($this->id);
 
 		$elementUID = intval($_GET['uid']);

@@ -1,5 +1,5 @@
 <?php
-namespace Typoheads\Formhandler\Utils;
+namespace Typoheads\Formhandler\Utility;
 /***************************************************************
  *  Copyright notice
 *

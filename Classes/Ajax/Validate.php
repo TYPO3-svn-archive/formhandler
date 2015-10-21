@@ -86,9 +86,9 @@ class Validate {
 		} else {
 			$this->id = intval($_GET['id']);
 		}
-		$this->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
+		$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
 		$this->globals->setAjaxMode(TRUE);
-		$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
+		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
 		$this->utilityFuncs->initializeTSFE($this->id);
 	}
 

@@ -42,7 +42,7 @@ abstract class AbstractClass {
 	 * The global Formhandler values
 	 *
 	 * @access protected
-	 * @var \Typoheads\Formhandler\Utils\Globals
+	 * @var \Typoheads\Formhandler\Utility\Globals
 	 */
 	protected $globals;
 
@@ -50,7 +50,7 @@ abstract class AbstractClass {
 	 * The Formhandler utility methods
 	 *
 	 * @access protected
-	 * @var \Typoheads\Formhandler\Utils\UtilityFuncs
+	 * @var \Typoheads\Formhandler\Utility\GeneralUtility
 	 */
 	protected $utilityFuncs;
 
@@ -71,8 +71,8 @@ abstract class AbstractClass {
 	 */
 	public function __construct(\Typoheads\Formhandler\Component\Manager $componentManager, 
 								\Typoheads\Formhandler\Controller\Configuration $configuration, 
-								\Typoheads\Formhandler\Utils\Globals $globals,
-								\Typoheads\Formhandler\Utils\UtilityFuncs $utilityFuncs) {
+								\Typoheads\Formhandler\Utility\Globals $globals,
+								\Typoheads\Formhandler\Utility\GeneralUtility $utilityFuncs) {
 
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;

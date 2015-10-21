@@ -44,8 +44,8 @@ class Configuration implements \ArrayAccess {
 	 */
 	public function __construct() {
 		if (TYPO3_MODE === 'FE') {
-			$this->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
-			$this->utilityFuncs = \Typoheads\Formhandler\Utils\UtilityFuncs::getInstance();
+			$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
+			$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
 			$this->setup = $GLOBALS['TSFE']->tmpl->setup['plugin.'][$this->getPrefixedPackageKey() . '.'];
 			if (!is_array($this->setup)) {
 				$this->utilityFuncs->throwException('missing_config');

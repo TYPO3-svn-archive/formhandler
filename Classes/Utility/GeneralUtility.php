@@ -1,5 +1,5 @@
 <?php
-namespace Typoheads\Formhandler\Utils;
+namespace Typoheads\Formhandler\Utility;
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -20,7 +20,7 @@ namespace Typoheads\Formhandler\Utils;
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-class UtilityFuncs {
+class GeneralUtility {
 
 	static private $instance = NULL;
 
@@ -28,14 +28,14 @@ class UtilityFuncs {
 	 * The global Formhandler values
 	 *
 	 * @access protected
-	 * @var \Typoheads\Formhandler\Utils\Globals
+	 * @var \Typoheads\Formhandler\Utility\Globals
 	 */
 	protected $globals;
 
 	static public function getInstance() {
 		if (self::$instance === NULL) {
-			self::$instance = new \Typoheads\Formhandler\Utils\UtilityFuncs();
-			self::$instance->globals = \Typoheads\Formhandler\Utils\Globals::getInstance();
+			self::$instance = new \Typoheads\Formhandler\Utility\GeneralUtility();
+			self::$instance->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
 		}
 		return self::$instance;
 	}
