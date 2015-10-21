@@ -102,24 +102,25 @@ class TcaUtility {
 	 */
 	public function addFields_predefined ($config) {
 		$pid = $config['row']['pid'] ?: -1;
-        $contentUid = $config['row']['uid'] ?: 0;
-        if($pid < 0) {
-            $contentUid = $contentUid ?: str_replace('-','',$pid);
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid','tt_content','uid='.$contentUid);
-            if($res) {
-                $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-                $pid = $row['pid'];
-                $GLOBALS['TYPO3_DB']->sql_free_result($res);
-            }
-        }
+		$contentUid = $config['row']['uid'] ?: 0;
+		if($pid < 0) {
+			$contentUid = $contentUid ?: str_replace('-', '', $pid);
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('pid', 'tt_content', 'uid=' . $contentUid);
+			if($row) {
+				$pid = $row['pid'];
+			}
+		}
 		$ts = $this->loadTS($pid);
-		
+
 		$predef = array();
 
 		# no config available
-		if (!is_array($ts['plugin.']['Tx_Formhandler.']['settings.']['predef.']) || sizeof($ts['plugin.']['Tx_Formhandler.']['settings.']['predef.']) == 0) {
-			$optionList[] = array(0 => $GLOBALS['LANG']->sL('LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:be_missing_config'), 1 => '');
-			return $config['items'] = array_merge($config['items'],$optionList);
+		if (!is_array($ts['plugin.']['Tx_Formhandler.']['settings.']['predef.']) || count($ts['plugin.']['Tx_Formhandler.']['settings.']['predef.']) === 0) {
+			$optionList[] = array(
+				0 => $GLOBALS['LANG']->sL('LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:be_missing_config'),
+				1 => ''
+			);
+			return $config['items'] = array_merge($config['items'], $optionList);
 		}
 
 		# for each view
@@ -135,16 +136,25 @@ class TcaUtility {
 					$langFileAndKey = implode(':', $data);
 					$beName = $GLOBALS['LANG']->sL('LLL:' . $langFileAndKey);
 				}
-				if (!$predef[$key]) $predef[$key] = $beName;
+				if (!$predef[$key]) {
+					$predef[$key] = $beName;
+				}
 			}
 		}
 
-		$optionList = array();
-		$optionList[] = array(0 => $GLOBALS['LANG']->sL('LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:be_please_select'), 1 => '');
+		$optionList = array(
+			array(
+				0 => $GLOBALS['LANG']->sL('LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:be_please_select'),
+				1 => ''
+			)
+		);
 		foreach($predef as $k => $v) {
-			$optionList[] = array(0 => $v, 1 => $k);
+			$optionList[] = array(
+				0 => $v,
+				1 => $k
+			);
 		}
-		$config['items'] = array_merge($config['items'],$optionList);
+		$config['items'] = array_merge($config['items'], $optionList);
 		return $config;
 	}
 

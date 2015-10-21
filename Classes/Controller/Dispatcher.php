@@ -21,6 +21,9 @@ namespace Typoheads\Formhandler\Controller;
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
 class Dispatcher extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
+	var $prefixId = 'tx_formhandler_pi1';
+	var $scriptRelPath = 'Classes/Controller/Dispatcher.php';
+	var $extKey = 'formhandler';
 
 	/**
 	 * Compontent Manager

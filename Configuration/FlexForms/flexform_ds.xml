@@ -45,21 +45,21 @@
 				<TCEforms>
 					<label>LLL:EXT:formhandler/Resources/Private/Language/locallang_tca.xml:formhandler.pi_flexform.template_predefined</label>
 					<config>
-					    <type>select</type>
-						<itemsProcFunc>Typoheads\Formhandler\Utils\TcaUtility->addFields_predefined</itemsProcFunc>
-					    <maxitems>1</maxitems>
-					    <size>1</size>
-					    <multiple>0</multiple>
-					    <selectedListStyle>width:150px</selectedListStyle>
-					    <itemListStyle>width:150px</itemListStyle>
+						<type>select</type>
+						<itemsProcFunc>Typoheads\Formhandler\Utility\TcaUtility->addFields_predefined</itemsProcFunc>
+						<maxitems>1</maxitems>
+						<size>1</size>
+						<multiple>0</multiple>
+						<selectedListStyle>width:150px</selectedListStyle>
+						<itemListStyle>width:150px</itemListStyle>
 					</config>
 				</TCEforms>
 			</predefined>
 			<predefinedJS>
 				<TCEforms>
 					<config>
-					    <type>user</type>
-						<userFunc>Typoheads\Formhandler\Utils\TcaUtility->addFields_predefinedJS</userFunc>
+						<type>user</type>
+						<userFunc>Typoheads\Formhandler\Utility\TcaUtility->addFields_predefinedJS</userFunc>
 					</config>
 				</TCEforms>
 			</predefinedJS>

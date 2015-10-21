@@ -36,7 +36,7 @@ if (TYPO3_MODE === 'BE') {
 		array(
 			'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi1', 
 			$_EXTKEY . '_pi1'
-		), 
+		),
 		'CType'
 	);
 

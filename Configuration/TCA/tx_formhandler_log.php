@@ -36,7 +36,7 @@ return array (
 			'label' => 'LLL:EXT:formhandler/Resources/Private/Language/locallang_db.xml:tx_formhandler_log.params',
 			'config' => array (
 				'type' => 'user',
-				'userFunc' => 'Typoheads\Formhandler\Utils\TcaUtility->getParams'
+				'userFunc' => 'Typoheads\Formhandler\Utility\TcaUtility->getParams'
 			)
 		),
 		'is_spam' => array (

@@ -62,7 +62,7 @@ class TCPDF {
 	function generateModulePDF($records, $exportFields = array(), $fileName = 'formhandler.pdf') {
 
 		//init pdf object
-		$this->pdf = $this->componentManager->getComponent('Typoheads\Formhandler\Utils\TemplateTCPDF');
+		$this->pdf = $this->componentManager->getComponent('Typoheads\Formhandler\Utility\TemplateTCPDF');
 		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 		$addedOneRecord = FALSE;
 
