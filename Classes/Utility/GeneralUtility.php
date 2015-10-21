@@ -435,22 +435,6 @@ class GeneralUtility {
 	}
 
 	/**
-	 * This function formats a date used by the backend module
-	 *
-	 * @param string $date The date string to convert
-	 * @param boolean $end Is end date or start date
-	 * @return long timestamp
-	 * @author Reinhard Führicht <rf@typoheads.at>
-	 */
-	public function dateToTimestampForBackendModule($date, $end = FALSE) {
-		$dateArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $date);
-		if ($end) {
-			return mktime(23, 59, 59, $dateArr[1], $dateArr[0], $dateArr[2]);
-		}
-		return mktime(0, 0, 0, $dateArr[1], $dateArr[0], $dateArr[2]);
-	}
-
-	/**
 	 * Converts a date to a UNIX timestamp.
 	 *
 	 * @param array $options The TS settings of the "special" section
@@ -485,15 +469,6 @@ class GeneralUtility {
 			}
 		}
 		return $timestamp;
-	}
-
-	/**
-	 * Returns the http path to the site
-	 *
-	 * @return string
-	 */
-	public function getHostname() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 	}
 
 	/**

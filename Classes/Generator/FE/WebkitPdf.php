@@ -34,7 +34,7 @@ class WebkitPdf extends AbstractGenerator {
 				$linkGP = $this->gp;
 			}
 
-			$url = $this->utilityFuncs->getHostname() . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $linkGP);
+			$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $linkGP);
 			if($this->url) {
 				$url = $this->url;
 			}
@@ -87,7 +87,7 @@ class WebkitPdf extends AbstractGenerator {
 			$params = $this->utilityFuncs->mergeConfiguration($params, $componentParams);
 		}
 		$text = $this->getLinkText();
-		$this->url = $this->utilityFuncs->getHostname() . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $params);
+		$this->url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $this->cObj->getTypolink_URL($GLOBALS['TSFE']->id, $params);
 		$params = array(
 			'tx_webkitpdf_pi1' => array(
 				'urls' => array(
