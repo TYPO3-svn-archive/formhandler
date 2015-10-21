@@ -33,30 +33,8 @@ class Date extends AbstractErrorCheck {
 		$checkFailed = '';
 
 		if (isset($this->gp[$this->formFieldName]) && strlen(trim($this->gp[$this->formFieldName])) > 0) {
-
-			// find out separator
 			$pattern = $this->utilityFuncs->getSingle($this->settings['params'], 'pattern');
-			$upperCaseYearPattern = str_replace('y', 'Y', $this->utilityFuncs->normalizeDatePattern($pattern));
-			preg_match('/^[d|m|y]*(.)[d|m|y]*/i', $pattern, $res);
-			$sep = $res[1];
-
-			// normalisation of format
-			$pattern = $this->utilityFuncs->normalizeDatePattern($pattern, $sep);
-
-			// find out correct positions of "d","m","y"
-			$pos1 = strpos($pattern, 'd');
-			$pos2 = strpos($pattern, 'm');
-			$pos3 = strpos($pattern, 'y');
-			$dateCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($sep, $this->gp[$this->formFieldName]);
-			if (sizeof($dateCheck) !== 3) {
-				$checkFailed = $this->getCheckFailed();
-			} elseif (intval($dateCheck[0]) === 0 || intval($dateCheck[1]) === 0 || intval($dateCheck[2]) === 0) {
-				$checkFailed = $this->getCheckFailed();
-			} elseif (!checkdate($dateCheck[$pos2], $dateCheck[$pos1], $dateCheck[$pos3])) {
-				$checkFailed = $this->getCheckFailed();
-			} elseif (strlen($dateCheck[$pos3]) !== 4) {
-				$checkFailed = $this->getCheckFailed();
-			} elseif (\DateTime::createFromFormat($upperCaseYearPattern, $this->gp[$this->formFieldName]) === FALSE) {
+			if (\DateTime::createFromFormat($pattern, $this->gp[$this->formFieldName]) === FALSE) {
 				$checkFailed = $this->getCheckFailed();
 			}
 		}
