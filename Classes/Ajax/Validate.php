@@ -1,5 +1,5 @@
 <?php
-namespace Typoheads\Formhandler\Utils;
+namespace Typoheads\Formhandler\Ajax;
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
 *                                                                        *
@@ -20,7 +20,7 @@ namespace Typoheads\Formhandler\Utils;
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
 
-class AjaxValidate {
+class Validate {
 
 	/**
 	 * Main method of the class.
@@ -112,5 +112,5 @@ class AjaxValidate {
 
 }
 
-$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Typoheads\Formhandler\Utils\AjaxValidate');
-$validator->main();
+$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Typoheads\Formhandler\Ajax\Validate');
+$obj->main();
