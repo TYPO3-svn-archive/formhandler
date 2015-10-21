@@ -6,6 +6,6 @@
 		"psr-4": {
 			"Typoheads\\Formhandler\\": "Classes/"
 		},
-		"classmap": ["Resources/tcpdf/tcpdf.php"]
+		"classmap": ["Resources/PHP/tcpdf/tcpdf.php"]
 	}
 }
