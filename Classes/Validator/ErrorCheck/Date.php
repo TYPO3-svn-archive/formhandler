@@ -56,7 +56,7 @@ class Date extends AbstractErrorCheck {
 				$checkFailed = $this->getCheckFailed();
 			} elseif (strlen($dateCheck[$pos3]) !== 4) {
 				$checkFailed = $this->getCheckFailed();
-			} elseif (DateTime::createFromFormat($upperCaseYearPattern, $this->gp[$this->formFieldName]) === FALSE) {
+			} elseif (\DateTime::createFromFormat($upperCaseYearPattern, $this->gp[$this->formFieldName]) === FALSE) {
 				$checkFailed = $this->getCheckFailed();
 			}
 		}
