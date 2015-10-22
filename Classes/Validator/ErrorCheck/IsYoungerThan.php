@@ -20,7 +20,7 @@ namespace Typoheads\Formhandler\Validator\ErrorCheck;
  * @package	Tx_Formhandler
  * @subpackage	ErrorChecks
  */
-class IsYoungerThan extends Tx_Formhandler_ErrorCheck_IsOlderThan {
+class IsYoungerThan extends IsOlderThan {
 
 	public function init($gp, $settings) {
 		parent::init($gp, $settings);

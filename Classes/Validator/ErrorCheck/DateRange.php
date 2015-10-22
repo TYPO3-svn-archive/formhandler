@@ -22,7 +22,7 @@ namespace Typoheads\Formhandler\Validator\ErrorCheck;
  * @package	Tx_Formhandler
  * @subpackage	ErrorChecks
  */
-class DateRange extends Tx_Formhandler_ErrorCheck_Date {
+class DateRange extends Date {
 
 	public function init($gp, $settings) {
 		parent::init($gp, $settings);

@@ -459,7 +459,7 @@ class GeneralUtility {
 				$dateParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($sep, $date);
 				$timestamp = mktime(0, 0, 0, $dateParts[$pos2], $dateParts[$pos1], $dateParts[$pos3]);
 			} else {
-				$dateObj = DateTime::createFromFormat($format, $date);
+				$dateObj = \DateTime::createFromFormat($format, $date);
 				if($dateObj) {
 					$timestamp = $dateObj->getTimestamp();
 				} else {
