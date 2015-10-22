@@ -56,12 +56,7 @@ class TcaUtility {
 	 */
 	public function addFields_predefinedJS($config) {
 		$newRecord = 'true';
-		if(!is_array($config['row']['pi_flexform']) && $config['row']['pi_flexform'] != '') {
-			$flexData = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($config['row']['pi_flexform']);
-		} elseif(is_array($config['row']['pi_flexform'])) {
-			$flexData = $config['row']['pi_flexform'];
-		}
-		if (isset($flexData['data']['sDEF']['lDEF']['predefined'])) {
+		if (reset($GLOBALS['SOBE']->editconf['tt_content']) === 'edit') {
 			$newRecord = 'false';
 		}
 
@@ -76,7 +71,7 @@ class TcaUtility {
 		
 		$js = "<script>\n";
 		$js .= "/*<![CDATA[*/\n";
-		
+
 		$divId = $GLOBALS['SOBE']->tceforms->dynNestedStack[0][1];
 		if(!$divId) {
 			//$divId = 'DTM-' . $uid;
@@ -101,10 +96,13 @@ class TcaUtility {
 	 * @return array The config including the items for the dropdown
 	 */
 	public function addFields_predefined ($config) {
-		$pid = $config['row']['pid'] ?: -1;
+		$pid = FALSE;
+		if (reset($GLOBALS['SOBE']->editconf['tt_content']) === 'new') {
+			$pid = key($GLOBALS['SOBE']->editconf['tt_content']);
+		}
+
 		$contentUid = $config['row']['uid'] ?: 0;
-		if($pid < 0) {
-			$contentUid = $contentUid ?: str_replace('-', '', $pid);
+		if(!$pid) {
 			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('pid', 'tt_content', 'uid=' . $contentUid);
 			if($row) {
 				$pid = $row['pid'];
