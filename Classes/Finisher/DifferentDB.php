@@ -200,7 +200,7 @@ class DifferentDB extends DB {
 			$this->user = $this->utilityFuncs->getSingle($settings, 'username');
 			$this->password = $this->utilityFuncs->getSingle($settings, 'password');
 			if (!$this->driver) {
-				throw new Exception('No driver given!');
+				throw new \Exception('No driver given!');
 			}
 		} else {
 			$this->utilityFuncs->throwException('extension_required', 'adodb', '\\Typoheads\\Formhandler\\Finisher\\DifferentDB');

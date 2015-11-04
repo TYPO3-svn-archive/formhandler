@@ -633,7 +633,7 @@ class Form extends AbstractView {
 		}
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('jm_recaptcha')) {
 			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('jm_recaptcha') . 'class.tx_jmrecaptcha.php');
-			$this->recaptcha = new tx_jmrecaptcha();
+			$this->recaptcha = new \tx_jmrecaptcha();
 			$markers['###RECAPTCHA###'] = $this->recaptcha->getReCaptcha();
 			$markers['###recaptcha###'] = $markers['###RECAPTCHA###'];
 		}

@@ -117,7 +117,7 @@ class ValidateAuthCode extends AbstractPreProcessor {
 				if($redirectPage) {
 					$this->utilityFuncs->doRedirectBasedOnSettings($this->settings, $this->gp, 'errorRedirectPage');
 				} else {
-					throw new Exception($e->getMessage());
+					throw new \Exception($e->getMessage());
 				}
 			}
 		}

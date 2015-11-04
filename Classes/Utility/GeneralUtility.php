@@ -609,7 +609,7 @@ class GeneralUtility {
 	public function throwException($key) {
 		$message = $this->getExceptionMessage($key);
 		if (strlen($message) == 0) {
-			throw new Exception($key);
+			throw new \Exception($key);
 		} else {
 			if (func_num_args() > 1) {
 				$args = func_get_args();

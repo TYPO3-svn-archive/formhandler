@@ -45,7 +45,7 @@ class Csv extends AbstractGenerator {
 		}
 
 		// create new parseCSV object.
-		$csv = new parseCSV();
+		$csv = new \parseCSV();
 
 		//parseCSV expects data to be a two dimensional array
 		$data = array($params);
