@@ -223,7 +223,7 @@ class LoadDB extends AbstractPreProcessor {
 		//map the old TypoScript setting "limit" to "begin" and "max".
 		$limit = $this->utilityFuncs->getSingle($conf, 'limit');
 		if(strlen($limit) > 0) {
-			$parts = t3lib_div::trimExplode(',', $limit);
+			$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $limit);
 			if(count($parts) === 2) {
 				$conf['begin'] = $parts[0];
 				$conf['max'] = $parts[1];
