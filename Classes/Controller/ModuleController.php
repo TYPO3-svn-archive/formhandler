@@ -57,13 +57,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	public function initializeAction() {
 		$this->id = intval($_GET['id']);
-		$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'module.tx_formhandler');
-		if(!empty($tsconfig['properties']['settings.'])) {
-			$this->settings = $tsconfig['properties']['settings.'];
-		} else {
-			$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'tx_formhandler_mod1');
-			$this->settings = $tsconfig['properties']['config.'];
-		}
 
 		$this->gp = $this->request->getArguments();
 		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
@@ -188,46 +181,29 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				);
 			}
 			if($filetype === 'pdf') {
-				$className = '\Typoheads\Formhandler\Generator\TCPDF';
-				if($this->settings['generators.']['pdf']) {
-					$className = $this->utilityFuncs->prepareClassName($this->settings['generators.']['pdf']);
-				}
-				$generator = $this->componentManager->getComponent($className);
-				if(!$this->settings['pdf.']['outputFileName']) {
-					$this->settings['pdf.']['outputFileName'] = 'formhandler.pdf';
-				}
-				$generator->generateModulePDF(
-					$convertedLogDataRows,
-					$fields,
-					$this->settings['pdf.']['outputFileName']
+				$className = $this->utilityFuncs->getPreparedClassName(
+					$this->settings['pdf'],
+					'\Typoheads\Formhandler\Generator\TCPDF'
 				);
-			} elseif($filetype === 'csv') {
-				$className = '\Typoheads\Formhandler\Generator\CSV';
-				if($this->settings['generators.']['csv']) {
-					$className = $this->utilityFuncs->prepareClassName($this->settings['generators.']['csv']);
-				}
-				$generator = $this->componentManager->getComponent($className);
 
-				if(!$this->settings['csv.']['delimiter']) {
-					$this->settings['csv.']['delimiter'] = ',';
-				}
-				if(!$this->settings['csv.']['enclosure']) {
-					$this->settings['csv.']['enclosure'] = '"';
-				}
-				if(!$this->settings['csv.']['encoding']) {
-					$this->settings['csv.']['encoding'] = 'utf-8';
-				}
-				if(!$this->settings['csv.']['outputFileName']) {
-					$this->settings['csv.']['outputFileName'] = 'formhandler.csv';
-				}
-				$generator->generateModuleCSV(
-					$convertedLogDataRows,
-					$fields,
-					$this->settings['csv.']['delimiter'],
-					$this->settings['csv.']['enclosure'],
-					$this->settings['csv.']['encoding'],
-					$this->settings['csv.']['outputFileName']
+				$generator = $this->componentManager->getComponent($className);
+				$this->settings['pdf']['config']['records'] = $convertedLogDataRows;
+				$this->settings['pdf']['config']['exportFields'] = $fields;
+				$generator->init(array(), $this->settings['pdf']['config']);
+				$generator->process();
+
+			} elseif($filetype === 'csv') {
+				$className = $this->utilityFuncs->getPreparedClassName(
+					$this->settings['generators.']['csv.'],
+					'\Typoheads\Formhandler\Generator\CSV'
 				);
+
+				$generator = $this->componentManager->getComponent($className);
+				$this->settings['csv']['config']['records'] = $convertedLogDataRows;
+				$this->settings['csv']['config']['exportFields'] = $fields;
+				$generator->init(array(), $this->settings['csv']['config']);
+				$generator->process();
+
 			}
 		}
 		return '';

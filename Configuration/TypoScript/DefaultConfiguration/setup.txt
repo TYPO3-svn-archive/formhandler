@@ -25,4 +25,25 @@ config.tx_extbase.persistence.classes {
 
 module.tx_formhandler {
 	view.widget.TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\PaginateViewHelper.templateRootPath = EXT:formhandler/Resources/Private/Templates/
+	settings {
+		pdf {
+			class = Generator\TCPDF
+			config {
+				font = FreeSans
+				fontSize = 12
+				fontSizeHeader = 8
+				fontSizeFooter = 8
+				fileName = formhandler.pdf
+			}
+		}
+		csv {
+			class = Generator\CSV
+			config {
+				encoding = utf-8
+				delimiter = ,
+				enclosure = "
+				fileName = formhandler.csv
+			}
+		}
+	}
 }

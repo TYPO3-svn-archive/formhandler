@@ -22,7 +22,7 @@ namespace Typoheads\Formhandler\Generator;
  * @uses export2CSV in csv.lib.php
  */
 require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/PHP/parsecsv.lib.php');
-class CSV {
+class CSV extends \Typoheads\Formhandler\Component\AbstractComponent {
 
 	/**
 	 * The internal CSV object
@@ -32,22 +32,31 @@ class CSV {
 	 */
 	protected $csv;
 
-	/**
-	 * The Formhandler component manager
-	 *
-	 * @access protected
-	 * @var \Typoheads\Formhandler\Component\Manager
-	 */
-	protected $componentManager;
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$fileName = $this->utilityFuncs->getSingle($this->settings, 'fileName');
+		if(!$fileName) {
+			$fileName = 'formhandler.csv';
+		}
+		$this->settings['fileName'] = $fileName;
 
-	/**
-	 * Default Constructor
-	 *
-	 * @param \Typoheads\Formhandler\Component\Manager $componentManager The component manager of Formhandler
-	 * @return void
-	 */
-	public function __construct(\Typoheads\Formhandler\Component\Manager $componentManager) {
-		$this->componentManager = $componentManager;
+		$delimiter = $this->utilityFuncs->getSingle($this->settings, 'delimiter');
+		if(!$delimiter) {
+			$delimiter = ',';
+		}
+		$this->settings['delimiter'] = $delimiter;
+
+		$enclosure = $this->utilityFuncs->getSingle($this->settings, 'enclosure');
+		if(!$enclosure) {
+			$enclosure = '"';
+		}
+		$this->settings['enclosure'] = $enclosure;
+
+		$encoding = $this->utilityFuncs->getSingle($this->settings, 'encoding');
+		if(!$encoding) {
+			$encoding = 'utf-8';
+		}
+		$this->settings['encoding'] = $encoding;
 	}
 
 	/**
@@ -58,7 +67,10 @@ class CSV {
 	 * @see Tx_Formhandler_Controller_Backend::generateCSV()
 	 * @return void
 	 */
-	public function generateModuleCSV($records, $exportParams = array(), $delimiter = ',', $enclosure = '"', $encoding = 'utf-8', $fileName = 'formhandler.csv') {
+	public function process() {
+
+		$records = $this->settings['records'];
+		$exportParams = $this->settings['exportFields'];
 
 		$data = array();
 		$dataSorted = array();
@@ -112,15 +124,15 @@ class CSV {
 
 		// create new parseCSV object.
 		$csv = new \parseCSV();
-		$csv->delimiter = $csv->output_delimiter = $delimiter;
-		$csv->enclosure = $enclosure;
+		$csv->delimiter = $csv->output_delimiter = $this->settings['delimiter'];
+		$csv->enclosure = $this->settings['enclosure'];
 		$csv->input_encoding = strtolower($this->getInputCharset());
-		$csv->output_encoding = strtolower($encoding);
+		$csv->output_encoding = strtolower($this->settings['encoding']);
 		$csv->convert_encoding = FALSE;
 		if($csv->input_encoding !== $csv->output_encoding) {
 			$csv->convert_encoding = TRUE;
 		}
-		$csv->output($fileName, $data, $exportParams);
+		$csv->output($this->settings['fileName'], $data, $exportParams);
 		die();
 	}
 

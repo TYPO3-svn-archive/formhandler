@@ -60,7 +60,7 @@ class TemplateTCPDF extends \TCPDF {
 		$headerText = $this->getHeaderText();
 		if(strlen($headerText) > 0) {
 			$this->SetY(5);
-			$this->SetFont('Helvetica', 'I', 8);
+
 			$text = str_ireplace(
 				array(
 					'###PDF_PAGE_NUMBER###',
@@ -85,7 +85,6 @@ class TemplateTCPDF extends \TCPDF {
 
 		//Position at 1.5 cm from bottom
 		$this->SetY(-15);
-		$this->SetFont('Helvetica', 'I', 8);
 
 		$footerText = $this->getFooterText();
 

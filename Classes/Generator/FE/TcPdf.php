@@ -21,8 +21,6 @@ namespace Typoheads\Formhandler\Generator\FE;
 class TcPdf extends AbstractGenerator {
 
 	/**
-	 * Renders the CSV.
-	 *
 	 * @return void
 	 */
 	public function process() {

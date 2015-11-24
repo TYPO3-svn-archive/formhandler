@@ -23,7 +23,7 @@ namespace Typoheads\Formhandler\Generator;
  * @subpackage	Generator
  * @uses Tx_Formhandler_Template_TCPDF
  */
-class TCPDF {
+class TCPDF extends \Typoheads\Formhandler\Component\AbstractComponent {
 
 	/**
 	 * The internal PDF object
@@ -33,37 +33,55 @@ class TCPDF {
 	 */
 	protected $pdf;
 
-	/**
-	 * The Formhandler component manager
-	 *
-	 * @access protected
-	 * @var \Typoheads\Formhandler\Component\Manager
-	 */
-	protected $componentManager;
+	public function init($gp, $settings) {
+		parent::init($gp, $settings);
+		$fileName = $this->utilityFuncs->getSingle($this->settings, 'fileName');
+		if(!$fileName) {
+			$fileName = 'formhandler.pdf';
+		}
+		$this->settings['fileName'] = $fileName;
 
-	/**
-	 * Default Constructor
-	 *
-	 * @param \Typoheads\Formhandler\Component\Manager $componentManager The component manager of Formhandler
-	 * @return void
-	 */
-	public function __construct(\Typoheads\Formhandler\Component\Manager $componentManager) {
-		$this->componentManager = $componentManager;
+		$fontSize = $this->utilityFuncs->getSingle($this->settings, 'fontSize');
+		if(!$fontSize) {
+			$fontSize = 12;
+		}
+		$this->settings['fontSize'] = $fontSize;
+
+		$fontSizeHeader = $this->utilityFuncs->getSingle($this->settings, 'fontSizeHeader');
+		if(!$fontSizeHeader) {
+			$fontSizeHeader = 8;
+		}
+		$this->settings['fontSizeHeader'] = $fontSizeHeader;
+
+		$fontSizeFooter = $this->utilityFuncs->getSingle($this->settings, 'fontSizeFooter');
+		if(!$fontSizeFooter) {
+			$fontSizeFooter = 8;
+		}
+		$this->settings['fontSizeFooter'] = $fontSizeFooter;
+
+		$font = $this->utilityFuncs->getSingle($this->settings, 'font');
+		if(!$font) {
+			$font = 'FreeSans';
+		}
+		$this->settings['font'] = $font;
 	}
 
 	/**
-	 * Function to generate a PDF file from submitted form values. This function is called by Tx_Formhandler_Controller_Backend
-	 *
-	 * @param array $records The records to export to PDF
-	 * @param array $exportFields A list of fields to export. If not set all fields are exported
-	 * @see Tx_Formhandler_Controller_Backend::generatePDF()
 	 * @return void
 	 */
-	function generateModulePDF($records, $exportFields = array(), $fileName = 'formhandler.pdf') {
+	public function process() {
+
+		$records = $this->settings['records'];
+		$exportFields = $this->settings['exportFields'];
 
 		//init pdf object
 		$this->pdf = $this->componentManager->getComponent('Typoheads\Formhandler\Utility\TemplateTCPDF');
 		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		$this->pdf->SetFont($this->settings['font'], '', $this->settings['fontSize']);
+		$this->pdf->SetHeaderFont(array($this->settings['font'], '', $this->settings['fontSizeHeader']));
+		$this->pdf->SetFooterFont(array($this->settings['font'], '', $this->settings['fontSizeFooter']));
+
 		$addedOneRecord = FALSE;
 
 		//for all records,
@@ -82,7 +100,6 @@ class TCPDF {
 			if ($valid) {
 				$addedOneRecord = TRUE;
 				$this->pdf->AddPage();
-				$this->pdf->SetFont('Helvetica', '', 12);
 				$standardWidth = 100;
 				$nameWidth = 70;
 				$valueWidth = 70;
@@ -157,11 +174,10 @@ class TCPDF {
 		//if no valid record was found, render an error message
 		if (!$addedOneRecord) {
 			$this->pdf->AddPage();
-			$this->pdf->SetFont('Helvetica', '', 12);
 			$this->pdf->Cell(300, 100, 'No valid records found! Try to select more fields to export!', 0, 0, 'L');
 		}
 
-		$this->pdf->Output($fileName, 'D');
+		$this->pdf->Output($this->settings['fileName'], 'D');
 		exit;
 	}
 
