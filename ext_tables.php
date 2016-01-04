@@ -49,7 +49,7 @@ if (TYPO3_MODE === 'BE') {
 			'Module' => 'index, view, selectFields, export, deleteLogRows'
 		),
 		array(
-			'access' => 'admin,user',
+			'access' => 'admin,user,group',
 			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/moduleicon.gif',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml'
 		)
