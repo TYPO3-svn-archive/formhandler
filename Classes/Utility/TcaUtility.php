@@ -67,21 +67,18 @@ class TcaUtility {
 		if($uid < 0 || empty($uid) || !strstr($uid,'NEW')) {
 			$uid = $GLOBALS['SOBE']->elementsData[0]['uid'];
 		}
-		//print_r($GLOBALS['SOBE']->elementsData[0]);
-		
+
 		$js = "<script>\n";
 		$js .= "/*<![CDATA[*/\n";
 
 		$divId = $GLOBALS['SOBE']->tceforms->dynNestedStack[0][1];
 		if(!$divId) {
-			//$divId = 'DTM-' . $uid;
 			$divId = "DIV.c-tablayer";
 		} else {
 			$divId .= "-DIV";
 		}
 		$js .= "var uid = '" . $uid . "'\n";
 		$js .= "var flexformBoxId = '" . $divId . "'\n";
-		//$js .= "var flexformBoxId = 'DIV.c-tablayer'\n";
 		$js .= "var newRecord = " . $newRecord . "\n";
 		$js .= file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('formhandler') . 'Resources/Public/JavaScript/addFields_predefinedJS.js');
 		$js .= "/*]]>*/\n";
