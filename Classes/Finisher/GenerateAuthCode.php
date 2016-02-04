@@ -111,15 +111,11 @@ class GenerateAuthCode extends AbstractFinisher {
 					'parameter' => $authCodePage,
 					'additionalParams' => \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $paramsArray),
 					'returnLast' => 'url',
-					'useCacheHash' => 1
+					'useCacheHash' => 1,
+					'forceAbsoluteUrl' => 1
 				);
 
-				// create the link, using typolink function, use baseUrl if set, else use \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')
 				$url = $this->cObj->typoLink_URL($linkConf);
-				$tmpArr = parse_url($url);
-				if (empty($tmpArr['scheme'])) {
-					$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($url, '/');
-				}
 				$this->gp['authCodeUrl'] = $url;
 			}
 		}
