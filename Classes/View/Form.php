@@ -129,6 +129,11 @@ class Form extends AbstractView {
 		//fill LLL:[language_key] markers again to make language markers in other markers possible
 		$this->fillLangMarkers();
 
+		//fill Typoscript markers
+		if (is_array($this->settings['markers.'])) {
+			$this->fillTypoScriptMarkers();
+		}
+
 		//remove markers that were not substituted
 		$content = $this->utilityFuncs->removeUnfilledMarkers($this->template);
 
