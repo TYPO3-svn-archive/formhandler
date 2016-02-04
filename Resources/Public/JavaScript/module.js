@@ -6,7 +6,7 @@ TYPO3.jQuery(function() {
 			selected.push(el.attr("data-uid"));
 		} else {
 			TYPO3.jQuery('#formhandler-module .mark-row:checked').each(function() {
-				selected.push(jQuery(this).attr("value"));
+				selected.push(TYPO3.jQuery(this).attr("value"));
 			});
 		}
 		return selected.join(",");
