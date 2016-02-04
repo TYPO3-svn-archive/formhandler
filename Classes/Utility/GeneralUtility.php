@@ -14,15 +14,14 @@ namespace Typoheads\Formhandler\Utility;
  *
  * $Id$
  *                                                                        */
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * A class providing helper functions for Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-class GeneralUtility {
-
-	static private $instance = NULL;
+class GeneralUtility implements SingletonInterface {
 
 	/**
 	 * The global Formhandler values
@@ -32,17 +31,9 @@ class GeneralUtility {
 	 */
 	protected $globals;
 
-	static public function getInstance() {
-		if (self::$instance === NULL) {
-			self::$instance = new \Typoheads\Formhandler\Utility\GeneralUtility();
-			self::$instance->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
-		}
-		return self::$instance;
+	public function __construct() {
+		$this->globals = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\Globals::class);
 	}
-
-	protected function __construct() {}
-
-	private function __clone() {}
 
 	/**
 	 * Returns the absolute path to the document root
@@ -85,20 +76,18 @@ class GeneralUtility {
 	 * @return string
 	 */
 	public function prepareClassName($className) {
-		$className = str_replace('Tx_Formhandler_', '\\Typoheads\\Formhandler\\', $className);
+		$className = ltrim($className, '\\');
+		$className = str_replace('Tx_Formhandler_', 'Typoheads\\Formhandler\\', $className);
 		if(strstr($className, '_') !== FALSE) {
 			$className = str_replace('_', '\\', $className);
 		}
-		if(substr($className, 0, 1) !== '\\') {
-			$className = '\\' . $className;
+		if (substr_count($className, '\\') === 1 && substr($className, 0, 11) !== '\\Typoheads\\') {
+			$className = 'Typoheads\\Formhandler\\' . $className;
 		}
-		if (substr_count($className, '\\') === 2 && substr($className, 0, 11) !== '\\Typoheads\\') {
-			$className = '\\Typoheads\\Formhandler' . $className;
+		if($className === 'Typoheads\\Formhandler\\Validator\\Default') {
+			$className = 'Typoheads\\Formhandler\\Validator\\DefaultValidator';
 		}
-		if($className === '\\Typoheads\\Formhandler\\Validator\\Default') {
-			$className = '\\Typoheads\\Formhandler\\Validator\\DefaultValidator';
-		}
-
+		$className = ltrim($className, '\\');
 		return $className;
 	}
 

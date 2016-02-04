@@ -12,13 +12,14 @@ namespace Typoheads\Formhandler\Utility;
 * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
 * Public License for more details.                                       *
 *                                                                        */
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * A helper class for Formhandler to store global values
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
  */
-class Globals {
+class Globals implements SingletonInterface {
 
 	/**
 	 * Holds the instance of the class
@@ -44,16 +45,6 @@ class Globals {
 	protected $submitted;
 	protected $templateCode;
 	protected $templateSuffix;
-
-	static public function getInstance() {
-		if (self::$instance === NULL) {
-			self::$instance = new \Typoheads\Formhandler\Utility\Globals();
-		}
-		return self::$instance;
-	}
-
-	protected function __construct() {}
-	protected function __clone() {}
 
 	public function setAjaxMode($mode) {
 		$this->ajaxMode = $mode;

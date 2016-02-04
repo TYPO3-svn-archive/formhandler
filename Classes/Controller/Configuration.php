@@ -14,6 +14,7 @@ namespace Typoheads\Formhandler\Controller;
  *
  * $Id$
  *                                                                        */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The configuration of the Formhandler
@@ -44,8 +45,8 @@ class Configuration implements \ArrayAccess {
 	 */
 	public function __construct() {
 		if (TYPO3_MODE === 'FE') {
-			$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
-			$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
+			$this->globals = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\Globals::class);
+			$this->utilityFuncs = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\GeneralUtility::class);
 			$this->setup = $GLOBALS['TSFE']->tmpl->setup['plugin.'][$this->getPrefixedPackageKey() . '.'];
 			if (!is_array($this->setup)) {
 				$this->utilityFuncs->throwException('missing_config');

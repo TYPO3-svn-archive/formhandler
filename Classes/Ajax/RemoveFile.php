@@ -12,6 +12,7 @@ namespace Typoheads\Formhandler\Ajax;
 * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
 * Public License for more details.                                       *
 *                                                                        */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A class removing uploaded files. This class is called via AJAX.
@@ -73,7 +74,7 @@ class RemoveFile {
 			// Add the content to or Result Box: #formResult
 			if (is_array($sessionFiles) && !empty($sessionFiles[$field])) {
 				$markers = array();
-				$view = $this->componentManager->getComponent('Tx_Formhandler_View_Form');
+				$view = $this->componentManager->getComponent('View\\Form');
 				$view->setSettings($this->settings);
 				$view->fillFileMarkers($markers);
 				$langMarkers = $this->utilityFuncs->getFilledLangMarkers($markers['###'. $this->fieldName . '_uploadedFiles###'], $this->langFiles);
@@ -98,9 +99,9 @@ class RemoveFile {
 			$this->id = intval($_GET['id']);
 		}
 		
-		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
-		$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
-		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
+		$this->componentManager = GeneralUtility::makeInstance(\Typoheads\Formhandler\Component\Manager::class);
+		$this->globals = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\Globals::class);
+		$this->utilityFuncs = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\GeneralUtility::class);
 		$this->utilityFuncs->initializeTSFE($this->id);
 		$this->globals->setCObj($GLOBALS['TSFE']->cObj);
 		$randomID = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('randomID'));
@@ -108,8 +109,8 @@ class RemoveFile {
 
 		if(!$this->globals->getSession()) {
 			$ts = $GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.'];
-			$sessionClass = $this->utilityFuncs->getPreparedClassName($ts['session.'], 'Session\PHP');
-			$this->globals->setSession($this->componentManager->getComponent($sessionClass));
+			$sessionClass = $this->utilityFuncs->getPreparedClassName($ts['session.'], 'Session\\PHP');
+			$this->globals->setSession($sessionClass);
 		}
 
 		$this->settings = $this->globals->getSession()->get('settings');
@@ -117,7 +118,7 @@ class RemoveFile {
 
 		//init ajax
 		if ($this->settings['ajax.']) {
-			$class = $this->utilityFuncs->getPreparedClassName($this->settings['ajax.'], 'AjaxHandler\JQuery');
+			$class = $this->utilityFuncs->getPreparedClassName($this->settings['ajax.'], 'AjaxHandler\\JQuery');
 			$ajaxHandler = $this->componentManager->getComponent($class);
 			$this->globals->setAjaxHandler($ajaxHandler);
 
@@ -128,5 +129,5 @@ class RemoveFile {
 
 }
 
-$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Typoheads\Formhandler\Ajax\RemoveFile');
+$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Typoheads\Formhandler\Ajax\RemoveFile::class);
 $obj->main();

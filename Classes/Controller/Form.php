@@ -1537,7 +1537,7 @@ class Form extends AbstractController {
 	 * @return void
 	 */
 	protected function initializeDebuggers() {
-		$this->addFormhandlerClass($this->settings['debuggers.'], '\\Typoheads\\Formhandler\\Debugger\\PrintToScreen');
+		$this->addFormhandlerClass($this->settings['debuggers.'], 'Typoheads\\Formhandler\\Debugger\\PrintToScreen');
 
 		foreach ($this->settings['debuggers.'] as $idx => $options) {
 			if(intval($this->utilityFuncs->getSingle($options, 'disable')) !== 1) {

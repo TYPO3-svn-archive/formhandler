@@ -12,6 +12,7 @@ namespace Typoheads\Formhandler\Ajax;
 * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
 * Public License for more details.                                       *
 *                                                                        */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A class calling the controller and returning the form content as JSON. This class is called via AJAX.
@@ -51,9 +52,9 @@ class Submit {
 			$this->id = intval($_GET['id']);
 		}
 
-		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
-		$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
-		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
+		$this->componentManager = GeneralUtility::makeInstance(\Typoheads\Formhandler\Component\Manager::class);
+		$this->globals = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\Globals::class);
+		$this->utilityFuncs = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\GeneralUtility::class);
 		$this->utilityFuncs->initializeTSFE($this->id);
 
 		$elementUID = intval($_GET['uid']);
@@ -89,5 +90,5 @@ class Submit {
 
 }
 
-$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Typoheads\Formhandler\Ajax\Submit');
+$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Typoheads\Formhandler\Ajax\Submit::class);
 $obj->main();

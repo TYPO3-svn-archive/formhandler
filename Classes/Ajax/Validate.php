@@ -13,6 +13,7 @@ namespace Typoheads\Formhandler\Ajax;
 * Public License for more details.                                       *
 *
 *                                                                        */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A class validating a field via AJAX.
@@ -33,7 +34,6 @@ class Validate {
 			$this->globals->setCObj($GLOBALS['TSFE']->cObj);
 			$randomID = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('randomID'));
 			$this->globals->setRandomID($randomID);
-			$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
 			if(!$this->globals->getSession()) {
 				$ts = $GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.'];
 				$sessionClass = $this->utilityFuncs->getPreparedClassName($ts['session.'], 'Session\PHP');
@@ -86,9 +86,10 @@ class Validate {
 		} else {
 			$this->id = intval($_GET['id']);
 		}
-		$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
+		$this->componentManager = GeneralUtility::makeInstance(\Typoheads\Formhandler\Component\Manager::class);
+		$this->globals = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\Globals::class);
+		$this->utilityFuncs = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\GeneralUtility::class);
 		$this->globals->setAjaxMode(TRUE);
-		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
 		$this->utilityFuncs->initializeTSFE($this->id);
 	}
 
@@ -112,5 +113,5 @@ class Validate {
 
 }
 
-$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Typoheads\Formhandler\Ajax\Validate');
+$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Typoheads\Formhandler\Ajax\Validate::class);
 $obj->main();

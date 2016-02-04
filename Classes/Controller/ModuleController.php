@@ -14,6 +14,8 @@ namespace Typoheads\Formhandler\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
@@ -59,8 +61,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$this->id = intval($_GET['id']);
 
 		$this->gp = $this->request->getArguments();
-		$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
-		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
+		$this->componentManager = GeneralUtility::makeInstance(\Typoheads\Formhandler\Component\Manager::class);
+		$this->utilityFuncs = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\GeneralUtility::class);
 		$this->pageRenderer = $this->objectManager->get('TYPO3\CMS\Core\Page\PageRenderer');
 
 		if (!isset($this->settings['dateFormat'])) {

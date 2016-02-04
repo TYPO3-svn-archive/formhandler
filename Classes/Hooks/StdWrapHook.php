@@ -1,6 +1,8 @@
 <?php
 namespace Typoheads\Formhandler\Hooks;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class StdWrapHook implements \TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface {
 
 	private $originalGET;
@@ -16,7 +18,7 @@ class StdWrapHook implements \TYPO3\CMS\Frontend\ContentObject\ContentObjectStdW
 	 */
 	public function stdWrapPreProcess($content, array $configuration, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject) {
 		if(intval($configuration['sanitize']) === 1) {
-			$globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
+			$globals = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\Globals::class);
 			$this->originalGET = $_GET;
 			$this->originalPOST = $_POST;
 			$prefix = $globals->getFormValuesPrefix();

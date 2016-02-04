@@ -14,6 +14,7 @@ namespace Typoheads\Formhandler\Controller;
  *
  * $Id$
  *                                                                        */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The Dispatcher instantiates the Component Manager and delegates the process to the given controller.
@@ -47,8 +48,9 @@ class Dispatcher extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function main($content, $setup) {
 		$this->pi_USER_INT_obj = 1;
-		$this->globals = \Typoheads\Formhandler\Utility\Globals::getInstance();
-		$this->utilityFuncs = \Typoheads\Formhandler\Utility\GeneralUtility::getInstance();
+		$this->componentManager = GeneralUtility::makeInstance(\Typoheads\Formhandler\Component\Manager::class);
+		$this->globals = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\Globals::class);
+		$this->utilityFuncs = GeneralUtility::makeInstance(\Typoheads\Formhandler\Utility\GeneralUtility::class);
 		try {
 
 			//init flexform
@@ -75,7 +77,6 @@ class Dispatcher extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 			$this->globals->setPredef($predef);
 			$this->globals->setOverrideSettings($setup);
-			$this->componentManager = \Typoheads\Formhandler\Component\Manager::getInstance();
 
 			/*
 			 * set controller:
@@ -86,12 +87,10 @@ class Dispatcher extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			if ($setup['controller']) {
 				$controller = $setup['controller'];
 			}
-
-			$controller = $this->utilityFuncs->prepareClassName($controller);
 			$controller = $this->componentManager->getComponent($controller);
 
 			if (isset($content)) {
-				$controller->setContent($this->componentManager->getComponent('\Typoheads\Formhandler\Controller\Content', $content));
+				$controller->setContent($this->componentManager->getComponent($this->utilityFuncs->prepareClassName('Typoheads\Formhandler\Controller\Content'), $content));
 			}
 			if (strlen($templateFile) > 0) {
 				$controller->setTemplateFile($templateFile);
